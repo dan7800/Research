@@ -1,0 +1,153 @@
+-- Run for all
+
+
+select
+ai.apkid, 
+ai2.range 
+,ai.genre
+,ai.UserRating
+,ai.LowerDownloads
+,JavaFiles
+,DefectCount
+,loc
+,Simcad_SourceFragment
+,Simcad_CloneFragment
+,Simcad_CloneGroup
+,overprivCount.oprivcount as OPrivCount
+,underprivCount.uprivcount UPrivCount
+,intentscount.intentscount as IntentsCount
+,permissionCount.permissionCount as PermissionCount
+--, JLintResult
+
+, ari.* -- Kind of messy to do this, but it seems to work
+from 
+apkinformation ai
+inner join AndroRiskInfo ARI on ari.rowID = ai.rowID
+inner join toolresults tr on tr.apkid = ai.rowID
+inner join (
+select ai2.rowID, ai2.range
+from (
+select rowID, Name, version, case
+when UserRating <.1 then '0'
+when UserRating <=3 then '1'
+when UserRating >3 then '2'
+else 'x' end as range from apkinformation) ai2) ai2
+on ai2.rowid = ai.rowID
+left outer join (select count (permissionID) as oprivcount, apkID from overprivilege group by
+apkid) overprivCount on (overprivCount.apkid) = ai.rowID
+left outer join (select count (permissionID) as uprivcount, apkID from underprivilege group
+by apkid) underprivCount on (underprivCount.apkid) = ai.rowID
+left outer join (select count (intentID) as intentscount, rowID from apkParser_intents_join
+group by rowID) intentscount on (intentsCount.rowid) = ai.rowID
+left outer join
+(select count(rowID) as permissionCount from apkParser_privs_join group by
+rowID) permissionCount on (permissionCount.rowID) = ai.rowID
+where ai.lowerdownloads > 999
+and userrating != 0.0
+and ari.FuzzyRisk != ''
+and ai2.range ='1' -- Change this to be 1 or 2 . 1=0-3; 2 =3-5
+--order by random() limit 1000
+
+
+
+
+**************************
+Group 1 (1-2.99)
+
+
+select
+ai2.range 
+,ai.genre
+,ai.UserRating
+,ai.LowerDownloads
+,tr.FuzzyRiskValue
+,JavaFiles
+,DefectCount
+,loc
+,Simcad_SourceFragment
+,Simcad_CloneFragment
+,Simcad_CloneGroup
+,overprivCount.oprivcount as OPrivCount
+,underprivCount.uprivcount UPrivCount
+,intentscount.intentscount as IntentsCount
+,permissionCount.permissionCount as PermissionCount
+, JLintResult
+
+from 
+apkinformation ai
+inner join toolresults tr on tr.apkid = ai.rowID
+inner join (
+select ai2.rowID, ai2.range
+from (
+select rowID, Name, version, case
+when UserRating <.1 then '0'
+when UserRating <=3 then '1'
+when UserRating >3 then '2'
+else 'x' end as range from apkinformation) ai2) ai2
+on ai2.rowid = ai.rowID
+left outer join (select count (permissionID) as oprivcount, apkID from overprivilege group by
+apkid) overprivCount on (overprivCount.apkid) = ai.rowID
+left outer join (select count (permissionID) as uprivcount, apkID from underprivilege group
+by apkid) underprivCount on (underprivCount.apkid) = ai.rowID
+left outer join (select count (intentID) as intentscount, rowID from apkParser_intents_join
+group by rowID) intentscount on (intentsCount.rowid) = ai.rowID
+left outer join
+(select count(rowID) as permissionCount from apkParser_privs_join group by
+rowID) permissionCount on (permissionCount.rowID) = ai.rowID
+where ai.lowerdownloads > 999
+and userrating != 0.0
+and ai2.range ='1'
+--order by random() limit 1000
+
+
+
+
+Group 2 (3-5)
+
+select
+
+ai2.range 
+,ai.genre
+,ai.UserRating
+,ai.LowerDownloads
+,tr.FuzzyRiskValue
+,JavaFiles
+,DefectCount
+,loc
+,Simcad_SourceFragment
+,Simcad_CloneFragment
+,Simcad_CloneGroup
+,overprivCount.oprivcount as OPrivCount
+,underprivCount.uprivcount UPrivCount
+,intentscount.intentscount as IntentsCount
+,permissionCount.permissionCount as PermissionCount
+, JlintResult
+from 
+apkinformation ai
+inner join toolresults tr on tr.apkid = ai.rowID
+inner join (
+select ai2.rowID, ai2.range
+from (
+select rowID, Name, version, case
+when UserRating <.1 then '0'
+when UserRating <=3 then '1'
+when UserRating >3 then '2'
+else 'x' end as range from apkinformation) ai2) ai2
+on ai2.rowid = ai.rowID
+left outer join (select count (permissionID) as oprivcount, apkID from overprivilege group by
+apkid) overprivCount on (overprivCount.apkid) = ai.rowID
+left outer join (select count (permissionID) as uprivcount, apkID from underprivilege group
+by apkid) underprivCount on (underprivCount.apkid) = ai.rowID
+left outer join (select count (intentID) as intentscount, rowID from apkParser_intents_join
+group by rowID) intentscount on (intentsCount.rowid) = ai.rowID
+left outer join
+(select count(rowID) as permissionCount from apkParser_privs_join group by
+rowID) permissionCount on (permissionCount.rowID) = ai.rowID
+where ai.lowerdownloads > 999
+and userrating != 0.0
+and ai2.range ='2'
+order by random() limit 1000
+
+
+
+
