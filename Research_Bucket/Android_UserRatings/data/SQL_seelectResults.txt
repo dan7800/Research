@@ -1,3 +1,18 @@
+--Find Information about the top over prived apps from each group
+
+
+select Name, Genre, JavaFiles, Loc, OverPrivCount, Opriv_Java_Ratio, oPriv_LOC_Ratio, Frisk
+from view_3_5_1000_Limit v1
+--from view_0_3 v1
+where LOC >=5000
+--and name = 'Galaxy (OWA Contacts Sync) ish'
+order by OPriv_java_Ratio desc
+
+
+--select * from view_0_3
+
+
+
 
 /*
 	Is now view "view_0_3"
@@ -5,19 +20,21 @@
 drop view view_0_3;
 CREATE VIEW view_0_3 AS
 select
-ai.Name as Name,
 --ai.apkid as apkID ,
+
 --, ai2.range as Range
---,ai.genre as Genre
---,ai.UserRating as UserRating
---,ai.LowerDownloads as LowerDownloads
-JavaFiles
+ai.Name as Name,
+ai.genre as Genre,
+ai.UserRating as UserRating,
+JavaFiles,
+ai.LowerDownloads as LowerDownloads,
+
 --,DefectCount
 --,Simcad_SourceFragment
 --,Simcad_CloneFragment
 --,Simcad_CloneGroup
-,loc
-,case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OverPrivCount
+loc,
+case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OverPrivCount
 ,case when underprivCount.uprivcount is null then 0 else underprivCount.uprivcount end as UnderPrivCount
 
 
@@ -66,6 +83,7 @@ and ai2.range ='1' -- Change this to be 1 or 2 . 1=0-3; 2 =3-5
 
 
 
+
 *****************
 /*
 	Is now view "view_3_5_1000_Limit"
@@ -74,19 +92,21 @@ and ai2.range ='1' -- Change this to be 1 or 2 . 1=0-3; 2 =3-5
 drop view view_3_5_1000_Limit;
 CREATE VIEW view_3_5_1000_Limit AS
 select
-ai.Name as Name,
 --ai.apkid as apkID ,
+
 --, ai2.range as Range
---,ai.genre as Genre
---,ai.UserRating as UserRating
---,ai.LowerDownloads as LowerDownloads
-JavaFiles
+ai.Name as Name,
+ai.genre as Genre,
+ai.UserRating as UserRating,
+JavaFiles,
+ai.LowerDownloads as LowerDownloads,
+
 --,DefectCount
 --,Simcad_SourceFragment
 --,Simcad_CloneFragment
 --,Simcad_CloneGroup
-,loc
-,case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OverPrivCount
+loc,
+case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OverPrivCount
 ,case when underprivCount.uprivcount is null then 0 else underprivCount.uprivcount end as UnderPrivCount
 
 
