@@ -75,8 +75,7 @@ by apkid) underprivCount on (underprivCount.apkid) = ai.rowID
 left outer join (select count (intentID) as intentscount, rowID from apkParser_intents_join
 group by rowID) intentscount on (intentsCount.rowid) = ai.rowID
 left outer join
-(select count(rowID) as permissionCount from apkParser_privs_join group by
-rowID) permissionCount on (permissionCount.rowID) = ai.rowID
+(select rowID, count(rowid) as permissionCount from apkParser_privs_join group by rowID) permissionCount on permissionCount.rowID = ai.rowID
 where ai.lowerdownloads > 999
 and userrating != 0.0
 and ari.FuzzyRisk != ''
