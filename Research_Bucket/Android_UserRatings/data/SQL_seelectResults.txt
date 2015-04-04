@@ -14,13 +14,16 @@ order by OPriv_java_Ratio desc
 
 
 
+*********************************************************************************
+
 /*
-	Is now view "view_0_3"
+	Create the main view that 0-3 and 3-5 are grouped off of.
 */
-drop view view_0_3;
-CREATE VIEW view_0_3 AS
+drop view view_all_apps;
+CREATE VIEW view_all_apps AS
+
 select
---ai.apkid as apkID ,
+ai.rowID as RowID, ai.apkid as apkID ,range, 
 
 --, ai2.range as Range
 ai.Name as Name,
@@ -77,79 +80,42 @@ rowID) permissionCount on (permissionCount.rowID) = ai.rowID
 where ai.lowerdownloads > 999
 and userrating != 0.0
 and ari.FuzzyRisk != ''
-and ai2.range ='1' -- Change this to be 1 or 2 . 1=0-3; 2 =3-5
+
+order by ai.RowID
+
+--and ai2.range ='1' -- Change this to be 1 or 2 . 1=0-3; 2 =3-5
 --order by random() limit 1000
 
 
 
+*********************************************************************************
 
 
-*****************
+
+
 /*
-	Is now view "view_3_5_1000_Limit"
+	Find all items with a rating of 0-3
 */
+drop view view_0_3;
+CREATE VIEW view_0_3 AS
+select * 
+from view_all_apps
+where range ='1' -- Change this to be 1 or 2 . 1=0-3; 2 =3-5
 
+
+
+
+*********************************************************************************
+
+
+/*
+	Find all items with a rating of 3-5
+*/
 drop view view_3_5_1000_Limit;
 CREATE VIEW view_3_5_1000_Limit AS
-select
---ai.apkid as apkID ,
-
---, ai2.range as Range
-ai.Name as Name,
-ai.genre as Genre,
-ai.UserRating as UserRating,
-JavaFiles,
-ai.LowerDownloads as LowerDownloads,
-
---,DefectCount
---,Simcad_SourceFragment
---,Simcad_CloneFragment
---,Simcad_CloneGroup
-loc,
-case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OverPrivCount
-,case when underprivCount.uprivcount is null then 0 else underprivCount.uprivcount end as UnderPrivCount
-
-
-,case when round(round(overprivCount.oprivcount,1)/round(JavaFiles,1),5) * 1000 is null then 0 else round(round(overprivCount.oprivcount,1)/round(JavaFiles,1),5) * 1000 end as oPriv_Java_Ratio
-
-,case when round(round(overprivCount.oprivcount,4)/round(LOC,4),5) * 10000 is null then 0 else round(round(overprivCount.oprivcount,4)/round(LOC,4),5) * 10000 end as oPriv_LOC_Ratio
-
-
-
---, round(round(overprivCount.oprivcount,1)/round(JavaFiles,1),5) * 1000 as oPriv_Java_Ratio
---, round(round(overprivCount.oprivcount,4)/round(LOC,4),5) * 10000 as oPriv_LOC_Ratio
-,intentscount.intentscount as IntentsCount
-,permissionCount.permissionCount as PermissionCount
---, JLintResult
---, ari.* -- Kind of messy to do this, but it seems to work
-, round(ari.FuzzyRisk,2) as FRisk
-
-from 
-apkinformation ai
-inner join AndroRiskInfo ARI on ari.rowID = ai.rowID
-inner join toolresults tr on tr.apkid = ai.rowID
-inner join (
-select ai2.rowID, ai2.range
-from (
-select rowID, Name, version, case
-when UserRating <.1 then '0'
-when UserRating <=3 then '1'
-when UserRating >3 then '2'
-else 'x' end as range from apkinformation) ai2) ai2
-on ai2.rowid = ai.rowID
-left outer join (select count (permissionID) as oprivcount, apkID from overprivilege group by
-apkid) overprivCount on (overprivCount.apkid) = ai.rowID
-left outer join (select count (permissionID) as uprivcount, apkID from underprivilege group
-by apkid) underprivCount on (underprivCount.apkid) = ai.rowID
-left outer join (select count (intentID) as intentscount, rowID from apkParser_intents_join
-group by rowID) intentscount on (intentsCount.rowid) = ai.rowID
-left outer join
-(select count(rowID) as permissionCount from apkParser_privs_join group by
-rowID) permissionCount on (permissionCount.rowID) = ai.rowID
-where ai.lowerdownloads > 999
-and userrating != 0.0
-and ari.FuzzyRisk != ''
-and ai2.range ='2' -- Change this to be 1 or 2 . 1=0-3; 2 =3-5
+select * 
+from view_all_apps
+where range ='2' -- Change this to be 1 or 2 . 1=0-3; 2 =3-5
 order by random() limit 1000
 
 
