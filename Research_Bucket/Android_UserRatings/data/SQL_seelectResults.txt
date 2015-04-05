@@ -1,7 +1,7 @@
 -- Find the apps with the highest rates of OPriv (with at least 5,000 lines of code)
 
 
-select rowID, Name, Genre, JavaFiles, Loc, OverPrivCount, Opriv_Java_Ratio, oPriv_LOC_Ratio, round(Frisk,0) as FuzzyRisk, permissioncount, JlintResult
+select rowID, Name, Genre, JavaFiles, Loc, OverPrivCount, round(Opriv_Java_Ratio,1) as Opriv_Java_Ratio, oPriv_LOC_Ratio, round(oPriv_Perm_Ratio,1) as oPriv_Perm_Ratio ,round(Frisk,0) as FuzzyRisk, permissioncount, JlintResult
 --from view_3_5_1000_Limit v1
 from view_0_3 v1
 where LOC >=5000
@@ -23,10 +23,10 @@ drop view view_all_apps;
 CREATE VIEW view_all_apps AS
 
 select
-ai.rowID as RowID, ai.apkid as apkID ,range, 
+ai.rowID as RowID, ai.apkid as apkID ,range 
 
 --, ai2.range as Range
-ai.Name as Name,
+,ai.Name as Name,
 ai.genre as Genre,
 ai.UserRating as UserRating,
 JavaFiles,
@@ -45,7 +45,7 @@ case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount 
 
 ,case when round(round(overprivCount.oprivcount,4)/round(LOC,4),5) * 10000 is null then 0 else round(round(overprivCount.oprivcount,4)/round(LOC,4),5) * 10000 end as oPriv_LOC_Ratio
 
-
+,case when round(round(overprivCount.oprivcount,1)/round(PermissionCount,1),5) * 1000 is null then 0 else round(round(overprivCount.oprivcount,1)/round(PermissionCount,1),5) * 10 end as oPriv_Perm_Ratio
 
 --, round(round(overprivCount.oprivcount,1)/round(JavaFiles,1),5) * 1000 as oPriv_Java_Ratio
 --, round(round(overprivCount.oprivcount,4)/round(LOC,4),5) * 10000 as oPriv_LOC_Ratio
@@ -142,6 +142,25 @@ order by v1.Genre
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 
+@@@@@@@@@@@@@@@@@@@@@@@@@@@ OLD QUERIES @@@@@@@@@@@@@@@@@@@@@@@@@@@ 
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 
