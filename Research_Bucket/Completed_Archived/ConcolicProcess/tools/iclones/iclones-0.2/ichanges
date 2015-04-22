@@ -1,0 +1,177 @@
+#!/usr/bin/ruby
+#
+# Calculates changes between consecutive versions of source code. Createsa a
+# file named 'changes' in each versions directory that contains information
+# about added, deleted and modified files.
+#
+#   Nils Göde
+#   University of Bremen
+#
+#   Version: 2010-06-26
+#
+# Feel free to adjust to your own needs.
+#
+
+require "md5"
+require "find"
+
+# Determines if the given path is relevant. Returns true if the path ends with a
+# file extension related to the given programming language and false otherwise.
+def is_relevant(p, language)
+    if language == "cpp" then
+        return p[p.length - 4 .. p.length - 1].downcase == ".cpp" ||
+               p[p.length - 3 .. p.length - 1].downcase == ".cc"  ||
+               p[p.length - 2 .. p.length - 1].downcase == ".c"
+               p[p.length - 2 .. p.length - 1].downcase == ".h"
+    elsif language == "c" then
+        return p[p.length - 2 .. p.length - 1].downcase == ".c" ||
+               p[p.length - 2 .. p.length - 1].downcase == ".h"
+    elsif language == "java" then
+        return p[p.length - 5 .. p.length - 1].downcase == ".java"
+    elsif language == "ada" then
+        return p[p.length - 4 .. p.length - 1].downcase == ".adb" ||
+               p[p.length - 4 .. p.length - 1].downcase == ".ads"
+    elsif language == "cobol" then
+        return p[p.length - 4 .. p.length - 1].downcase == ".cbl" ||
+               p[p.length - 4 .. p.length - 1].downcase == ".cpy"
+    end
+    
+    return false;
+end
+
+# Extract all relevant files found in the given directory.
+def get_files(d, language)
+    if File.symlink?(d) then
+        d = File.expand_path(File.readlink(d))
+    end
+    print "Getting files for #{d}... "
+    $stdout.flush
+    files = Hash.new
+    Find.find(d) do |f|
+        if FileTest.file?(f) && is_relevant(f, language) then
+            files[f[d.length + 1 .. f.length - 1]] = false
+        end
+    end
+    puts "#{files.length} files"
+    return files
+end
+
+# ------------------------------------------------------------------------- hash
+#
+# Returns an MD5 hash for the contents of the given file. If the file does not
+# exist or is not readable, 0 is returned.
+#
+def hash(file)
+    return 0 unless FileTest.readable?(file)
+    return MD5.new(File.read(file)).hexdigest
+end
+
+# ------------------------------------------------------------------------- MAIN
+unless ARGV.length >= 2 && ARGV.length <= 3 && ["ada", "c", "cpp", "java", "cobol"].member?(ARGV[0])
+    puts "Usage: ichanges <language> <directory> [-single]"
+    puts "    language  - determines relevant files, one of [ada, c, cpp, java, cobol]"
+    puts "    directory - directory containing one subdirectory for each version"
+    puts "    -single   - create changes for a single version only (optional)"
+    exit
+end
+
+language = ARGV[0]
+main_dir = ARGV[1]
+main_dir = main_dir[main_dir.length - 1 .. main_dir.length - 1] == "/" ? main_dir : main_dir + "/"
+
+if ARGV.length == 3 then
+    puts "Creating changes for a single version only..."
+    outfile = File.open(main_dir + "changes", "w")
+    get_files(main_dir[0 .. main_dir.length - 2], language).each do |f,bla|
+        outfile.puts "A \"#{f}\""
+    end
+    outfile.close
+    puts "Finished"
+    exit
+end
+
+# Read directories for versions
+print "Reading version directories... "
+$stdout.flush
+versions = Dir.entries(main_dir)
+versions.delete_if do |e| !FileTest.directory?(main_dir + e) or e[0 .. 0] == "." end
+versions.sort!
+puts "#{versions.length} found"
+
+versionFiles = Hash.new
+versions.each do |v|
+    versionFiles[v] = get_files(main_dir + v, language)
+end
+
+if versions.length > 0 then
+    outfile = File.open(main_dir + versions[0] + "/changes", "w")
+    versionFiles[versions[0]].each do |f,bla|
+        outfile.puts "A \"#{f}\""
+    end
+    outfile.close
+end
+
+# Main loop. Create changes for all versions but the first
+for i in 1 .. versions.length - 1
+    old_version = versions[i - 1]
+    new_version = versions[i]
+    puts "\rCreating changes from version #{old_version} to #{new_version} [#{i}/#{versions.length - 1}]... "
+    $stdout.flush
+    outfile = File.open(main_dir + new_version + "/changes", "w")
+    adds = Hash.new
+    dels = Hash.new
+    
+    keys_done = 0
+    
+    # Iterate over all relevant files in OLD version
+    print "Detecting modified and deleted files... 0%"
+    $stdout.flush
+    versionFiles[old_version].each_key do |f|
+        # If the file exists in new version test it for changes. If it is
+        # modified write the changes to the file.
+        if versionFiles[new_version][f] != nil then
+            versionFiles[new_version][f] = true
+            #result = `diff -E -b \"#{main_dir + old_version + "/" + f}\" \"#{main_dir + new_version + "/" + f}\"`
+            if hash(main_dir + old_version + "/" + f) != hash(main_dir + new_version + "/" + f) then #result.strip != "" then
+                outfile.print "M \"" + f + "\""
+                #result.each_line do |line|
+                #    if line[0 .. 0] >= "0" and line[0 .. 0] <= "9" then
+                #        outfile.print " " + line.strip
+                #    end
+                #end
+                outfile.puts ""
+            end
+        else # Otherwise the file has been deleted
+            dels[f] = false
+        end
+        
+        # Inform about process
+        keys_done = keys_done + 1
+        if keys_done % 50 == 0 then
+            percent = (keys_done.to_f / versionFiles[old_version].size.to_f * 100.0).to_i
+            print "\rDetecting modified and deleted files... #{percent}%"
+            $stdout.flush
+        end
+    end
+    
+    # Iterate over all relevant files in NEW version to find added files
+    print "\rDetecting added files...                             "
+    $stdout.flush
+    versionFiles[new_version].each_pair do |f,exists|
+        if !exists then
+            adds[f] = false
+        end
+    end
+    
+    # Write remaining additions and deletions to the change file
+    print "\rWrite changes...                 "
+    $stdout.flush
+    adds.each do |a,relocated| outfile.puts "A \"#{a}\"" unless relocated end
+    dels.each do |d,relocated| outfile.puts "D \"#{d}\"" unless relocated end
+    
+    # Close the change file for this version and continue with the next
+    outfile.close
+end
+
+puts "\rFinished              "
+

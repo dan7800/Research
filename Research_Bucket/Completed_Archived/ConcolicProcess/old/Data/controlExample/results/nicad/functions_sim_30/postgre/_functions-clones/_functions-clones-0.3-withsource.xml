@@ -1,0 +1,1115 @@
+<clones>
+<systeminfo processor="nicad3" system="_" granularity="unctions" threshold="30%" minlines="3" maxlines="2500"/>
+<cloneinfo npcs="289" npairs="26"/>
+<runinfo ncompares="16203" cputime="6"/>
+
+<clone nlines="14" similarity="85">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="857" endline="877" pcid="36">
+List *
+list_difference_ptr(List *list1, List *list2)
+{
+	ListCell   *cell;
+	List	   *result = NIL;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	if (list2 == NIL)
+		return list_copy(list1);
+
+	foreach(cell, list1)
+	{
+		if (!list_member_ptr(list2, lfirst(cell)))
+			result = lappend(result, lfirst(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="831" endline="851" pcid="35">
+List *
+list_difference(List *list1, List *list2)
+{
+	ListCell   *cell;
+	List	   *result = NIL;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	if (list2 == NIL)
+		return list_copy(list1);
+
+	foreach(cell, list1)
+	{
+		if (!list_member(list2, lfirst(cell)))
+			result = lappend(result, lfirst(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</source>
+</clone>
+
+<clone nlines="14" similarity="71">
+<source file="examples/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="545" endline="566" pcid="85">
+static void
+_outAgg(StringInfo str, Agg *node)
+{
+	int			i;
+
+	WRITE_NODE_TYPE("AGG");
+
+	_outPlanInfo(str, (Plan *) node);
+
+	WRITE_ENUM_FIELD(aggstrategy, AggStrategy);
+	WRITE_INT_FIELD(numCols);
+
+	appendStringInfo(str, " :grpColIdx");
+	for (i = 0; i < node->numCols; i++)
+		appendStringInfo(str, " %d", node->grpColIdx[i]);
+
+	appendStringInfo(str, " :grpOperators");
+	for (i = 0; i < node->numCols; i++)
+		appendStringInfo(str, " %u", node->grpOperators[i]);
+
+	WRITE_LONG_FIELD(numGroups);
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="601" endline="619" pcid="87">
+static void
+_outGroup(StringInfo str, Group *node)
+{
+	int			i;
+
+	WRITE_NODE_TYPE("GROUP");
+
+	_outPlanInfo(str, (Plan *) node);
+
+	WRITE_INT_FIELD(numCols);
+
+	appendStringInfo(str, " :grpColIdx");
+	for (i = 0; i < node->numCols; i++)
+		appendStringInfo(str, " %d", node->grpColIdx[i]);
+
+	appendStringInfo(str, " :grpOperators");
+	for (i = 0; i < node->numCols; i++)
+		appendStringInfo(str, " %u", node->grpOperators[i]);
+}
+</source>
+</clone>
+
+<clone nlines="13" similarity="84">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="720" endline="738" pcid="31">
+List *
+list_union_ptr(List *list1, List *list2)
+{
+	List	   *result;
+	ListCell   *cell;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	result = list_copy(list1);
+	foreach(cell, list2)
+	{
+		if (!list_member_ptr(result, lfirst(cell)))
+			result = lappend(result, lfirst(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="696" endline="714" pcid="30">
+List *
+list_union(List *list1, List *list2)
+{
+	List	   *result;
+	ListCell   *cell;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	result = list_copy(list1);
+	foreach(cell, list2)
+	{
+		if (!list_member(result, lfirst(cell)))
+			result = lappend(result, lfirst(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</source>
+</clone>
+
+<clone nlines="13" similarity="76">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="635" endline="655" pcid="28">
+List *
+list_delete_oid(List *list, Oid datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsOidList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (lfirst_oid(cell) == datum)
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="612" endline="632" pcid="27">
+List *
+list_delete_int(List *list, int datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsIntegerList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (lfirst_int(cell) == datum)
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</source>
+</clone>
+
+<clone nlines="13" similarity="76">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="635" endline="655" pcid="28">
+List *
+list_delete_oid(List *list, Oid datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsOidList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (lfirst_oid(cell) == datum)
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="589" endline="609" pcid="26">
+List *
+list_delete_ptr(List *list, void *datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (lfirst(cell) == datum)
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</source>
+</clone>
+
+<clone nlines="13" similarity="76">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="635" endline="655" pcid="28">
+List *
+list_delete_oid(List *list, Oid datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsOidList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (lfirst_oid(cell) == datum)
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="566" endline="586" pcid="25">
+List *
+list_delete(List *list, void *datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (equal(lfirst(cell), datum))
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</source>
+</clone>
+
+<clone nlines="13" similarity="76">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="612" endline="632" pcid="27">
+List *
+list_delete_int(List *list, int datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsIntegerList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (lfirst_int(cell) == datum)
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="589" endline="609" pcid="26">
+List *
+list_delete_ptr(List *list, void *datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (lfirst(cell) == datum)
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</source>
+</clone>
+
+<clone nlines="13" similarity="76">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="612" endline="632" pcid="27">
+List *
+list_delete_int(List *list, int datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsIntegerList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (lfirst_int(cell) == datum)
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="566" endline="586" pcid="25">
+List *
+list_delete(List *list, void *datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (equal(lfirst(cell), datum))
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</source>
+</clone>
+
+<clone nlines="13" similarity="84">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="589" endline="609" pcid="26">
+List *
+list_delete_ptr(List *list, void *datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (lfirst(cell) == datum)
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="566" endline="586" pcid="25">
+List *
+list_delete(List *list, void *datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (equal(lfirst(cell), datum))
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</source>
+</clone>
+
+<clone nlines="11" similarity="81">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="991" endline="1007" pcid="43">
+List *
+list_concat_unique(List *list1, List *list2)
+{
+	ListCell   *cell;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	foreach(cell, list2)
+	{
+		if (!list_member(list1, lfirst(cell)))
+			list1 = lappend(list1, lfirst(cell));
+	}
+
+	check_list_invariants(list1);
+	return list1;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="1013" endline="1029" pcid="44">
+List *
+list_concat_unique_ptr(List *list1, List *list2)
+{
+	ListCell   *cell;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	foreach(cell, list2)
+	{
+		if (!list_member_ptr(list1, lfirst(cell)))
+			list1 = lappend(list1, lfirst(cell));
+	}
+
+	check_list_invariants(list1);
+	return list1;
+}
+</source>
+</clone>
+
+<clone nlines="11" similarity="81">
+<source file="examples/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="560" endline="584" pcid="253">
+static DistinctExpr *
+_readDistinctExpr(void)
+{
+	READ_LOCALS(DistinctExpr);
+
+	READ_OID_FIELD(opno);
+	READ_OID_FIELD(opfuncid);
+
+	/*
+	 * The opfuncid is stored in the textual format primarily for debugging
+	 * and documentation reasons.  We want to always read it as zero to force
+	 * it to be re-looked-up in the pg_operator entry.	This ensures that
+	 * stored rules don't have hidden dependencies on operators' functions.
+	 * (We don't currently support an ALTER OPERATOR command, but might
+	 * someday.)
+	 */
+	local_node->opfuncid = InvalidOid;
+
+	READ_OID_FIELD(opresulttype);
+	READ_BOOL_FIELD(opretset);
+	READ_NODE_FIELD(args);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="531" endline="555" pcid="252">
+static OpExpr *
+_readOpExpr(void)
+{
+	READ_LOCALS(OpExpr);
+
+	READ_OID_FIELD(opno);
+	READ_OID_FIELD(opfuncid);
+
+	/*
+	 * The opfuncid is stored in the textual format primarily for debugging
+	 * and documentation reasons.  We want to always read it as zero to force
+	 * it to be re-looked-up in the pg_operator entry.	This ensures that
+	 * stored rules don't have hidden dependencies on operators' functions.
+	 * (We don't currently support an ALTER OPERATOR command, but might
+	 * someday.)
+	 */
+	local_node->opfuncid = InvalidOid;
+
+	READ_OID_FIELD(opresulttype);
+	READ_BOOL_FIELD(opretset);
+	READ_NODE_FIELD(args);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</source>
+</clone>
+
+<clone nlines="11" similarity="81">
+<source file="examples/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="560" endline="584" pcid="253">
+static DistinctExpr *
+_readDistinctExpr(void)
+{
+	READ_LOCALS(DistinctExpr);
+
+	READ_OID_FIELD(opno);
+	READ_OID_FIELD(opfuncid);
+
+	/*
+	 * The opfuncid is stored in the textual format primarily for debugging
+	 * and documentation reasons.  We want to always read it as zero to force
+	 * it to be re-looked-up in the pg_operator entry.	This ensures that
+	 * stored rules don't have hidden dependencies on operators' functions.
+	 * (We don't currently support an ALTER OPERATOR command, but might
+	 * someday.)
+	 */
+	local_node->opfuncid = InvalidOid;
+
+	READ_OID_FIELD(opresulttype);
+	READ_BOOL_FIELD(opretset);
+	READ_NODE_FIELD(args);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="913" endline="937" pcid="272">
+static NullIfExpr *
+_readNullIfExpr(void)
+{
+	READ_LOCALS(NullIfExpr);
+
+	READ_OID_FIELD(opno);
+	READ_OID_FIELD(opfuncid);
+
+	/*
+	 * The opfuncid is stored in the textual format primarily for debugging
+	 * and documentation reasons.  We want to always read it as zero to force
+	 * it to be re-looked-up in the pg_operator entry.	This ensures that
+	 * stored rules don't have hidden dependencies on operators' functions.
+	 * (We don't currently support an ALTER OPERATOR command, but might
+	 * someday.)
+	 */
+	local_node->opfuncid = InvalidOid;
+
+	READ_OID_FIELD(opresulttype);
+	READ_BOOL_FIELD(opretset);
+	READ_NODE_FIELD(args);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</source>
+</clone>
+
+<clone nlines="11" similarity="81">
+<source file="examples/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="531" endline="555" pcid="252">
+static OpExpr *
+_readOpExpr(void)
+{
+	READ_LOCALS(OpExpr);
+
+	READ_OID_FIELD(opno);
+	READ_OID_FIELD(opfuncid);
+
+	/*
+	 * The opfuncid is stored in the textual format primarily for debugging
+	 * and documentation reasons.  We want to always read it as zero to force
+	 * it to be re-looked-up in the pg_operator entry.	This ensures that
+	 * stored rules don't have hidden dependencies on operators' functions.
+	 * (We don't currently support an ALTER OPERATOR command, but might
+	 * someday.)
+	 */
+	local_node->opfuncid = InvalidOid;
+
+	READ_OID_FIELD(opresulttype);
+	READ_BOOL_FIELD(opretset);
+	READ_NODE_FIELD(args);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="913" endline="937" pcid="272">
+static NullIfExpr *
+_readNullIfExpr(void)
+{
+	READ_LOCALS(NullIfExpr);
+
+	READ_OID_FIELD(opno);
+	READ_OID_FIELD(opfuncid);
+
+	/*
+	 * The opfuncid is stored in the textual format primarily for debugging
+	 * and documentation reasons.  We want to always read it as zero to force
+	 * it to be re-looked-up in the pg_operator entry.	This ensures that
+	 * stored rules don't have hidden dependencies on operators' functions.
+	 * (We don't currently support an ALTER OPERATOR command, but might
+	 * someday.)
+	 */
+	local_node->opfuncid = InvalidOid;
+
+	READ_OID_FIELD(opresulttype);
+	READ_BOOL_FIELD(opretset);
+	READ_NODE_FIELD(args);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</source>
+</clone>
+
+<clone nlines="10" similarity="70">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="127" endline="140" pcid="4">
+List *
+lappend(List *list, void *datum)
+{
+	Assert(IsPointerList(list));
+
+	if (list == NIL)
+		list = new_list(T_List);
+	else
+		new_tail_cell(list);
+
+	lfirst(list->tail) = datum;
+	check_list_invariants(list);
+	return list;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="258" endline="271" pcid="11">
+List *
+lcons(void *datum, List *list)
+{
+	Assert(IsPointerList(list));
+
+	if (list == NIL)
+		list = new_list(T_List);
+	else
+		new_head_cell(list);
+
+	lfirst(list->head) = datum;
+	check_list_invariants(list);
+	return list;
+}
+</source>
+</clone>
+
+<clone nlines="10" similarity="70">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="163" endline="176" pcid="6">
+List *
+lappend_oid(List *list, Oid datum)
+{
+	Assert(IsOidList(list));
+
+	if (list == NIL)
+		list = new_list(T_OidList);
+	else
+		new_tail_cell(list);
+
+	lfirst_oid(list->tail) = datum;
+	check_list_invariants(list);
+	return list;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="294" endline="307" pcid="13">
+List *
+lcons_oid(Oid datum, List *list)
+{
+	Assert(IsOidList(list));
+
+	if (list == NIL)
+		list = new_list(T_OidList);
+	else
+		new_head_cell(list);
+
+	lfirst_oid(list->head) = datum;
+	check_list_invariants(list);
+	return list;
+}
+</source>
+</clone>
+
+<clone nlines="10" similarity="70">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="484" endline="499" pcid="22">
+bool
+list_member_int(List *list, int datum)
+{
+	ListCell   *cell;
+
+	Assert(IsIntegerList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (lfirst_int(cell) == datum)
+			return true;
+	}
+
+	return false;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="504" endline="519" pcid="23">
+bool
+list_member_oid(List *list, Oid datum)
+{
+	ListCell   *cell;
+
+	Assert(IsOidList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (lfirst_oid(cell) == datum)
+			return true;
+	}
+
+	return false;
+}
+</source>
+</clone>
+
+<clone nlines="10" similarity="70">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="484" endline="499" pcid="22">
+bool
+list_member_int(List *list, int datum)
+{
+	ListCell   *cell;
+
+	Assert(IsIntegerList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (lfirst_int(cell) == datum)
+			return true;
+	}
+
+	return false;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="464" endline="479" pcid="21">
+bool
+list_member_ptr(List *list, void *datum)
+{
+	ListCell   *cell;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (lfirst(cell) == datum)
+			return true;
+	}
+
+	return false;
+}
+</source>
+</clone>
+
+<clone nlines="10" similarity="70">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="484" endline="499" pcid="22">
+bool
+list_member_int(List *list, int datum)
+{
+	ListCell   *cell;
+
+	Assert(IsIntegerList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (lfirst_int(cell) == datum)
+			return true;
+	}
+
+	return false;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="443" endline="458" pcid="20">
+bool
+list_member(List *list, void *datum)
+{
+	ListCell   *cell;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (equal(lfirst(cell), datum))
+			return true;
+	}
+
+	return false;
+}
+</source>
+</clone>
+
+<clone nlines="10" similarity="70">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="504" endline="519" pcid="23">
+bool
+list_member_oid(List *list, Oid datum)
+{
+	ListCell   *cell;
+
+	Assert(IsOidList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (lfirst_oid(cell) == datum)
+			return true;
+	}
+
+	return false;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="464" endline="479" pcid="21">
+bool
+list_member_ptr(List *list, void *datum)
+{
+	ListCell   *cell;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (lfirst(cell) == datum)
+			return true;
+	}
+
+	return false;
+}
+</source>
+</clone>
+
+<clone nlines="10" similarity="70">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="504" endline="519" pcid="23">
+bool
+list_member_oid(List *list, Oid datum)
+{
+	ListCell   *cell;
+
+	Assert(IsOidList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (lfirst_oid(cell) == datum)
+			return true;
+	}
+
+	return false;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="443" endline="458" pcid="20">
+bool
+list_member(List *list, void *datum)
+{
+	ListCell   *cell;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (equal(lfirst(cell), datum))
+			return true;
+	}
+
+	return false;
+}
+</source>
+</clone>
+
+<clone nlines="10" similarity="80">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="464" endline="479" pcid="21">
+bool
+list_member_ptr(List *list, void *datum)
+{
+	ListCell   *cell;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (lfirst(cell) == datum)
+			return true;
+	}
+
+	return false;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="443" endline="458" pcid="20">
+bool
+list_member(List *list, void *datum)
+{
+	ListCell   *cell;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (equal(lfirst(cell), datum))
+			return true;
+	}
+
+	return false;
+}
+</source>
+</clone>
+
+<clone nlines="10" similarity="70">
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="145" endline="158" pcid="5">
+List *
+lappend_int(List *list, int datum)
+{
+	Assert(IsIntegerList(list));
+
+	if (list == NIL)
+		list = new_list(T_IntList);
+	else
+		new_tail_cell(list);
+
+	lfirst_int(list->tail) = datum;
+	check_list_invariants(list);
+	return list;
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/list.c.ifdefed" startline="276" endline="289" pcid="12">
+List *
+lcons_int(int datum, List *list)
+{
+	Assert(IsIntegerList(list));
+
+	if (list == NIL)
+		list = new_list(T_IntList);
+	else
+		new_head_cell(list);
+
+	lfirst_int(list->head) = datum;
+	check_list_invariants(list);
+	return list;
+}
+</source>
+</clone>
+
+<clone nlines="9" similarity="77">
+<source file="examples/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="892" endline="903" pcid="106">
+static void
+_outDistinctExpr(StringInfo str, DistinctExpr *node)
+{
+	WRITE_NODE_TYPE("DISTINCTEXPR");
+
+	WRITE_OID_FIELD(opno);
+	WRITE_OID_FIELD(opfuncid);
+	WRITE_OID_FIELD(opresulttype);
+	WRITE_BOOL_FIELD(opretset);
+	WRITE_NODE_FIELD(args);
+	WRITE_LOCATION_FIELD(location);
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="879" endline="890" pcid="105">
+static void
+_outOpExpr(StringInfo str, OpExpr *node)
+{
+	WRITE_NODE_TYPE("OPEXPR");
+
+	WRITE_OID_FIELD(opno);
+	WRITE_OID_FIELD(opfuncid);
+	WRITE_OID_FIELD(opresulttype);
+	WRITE_BOOL_FIELD(opretset);
+	WRITE_NODE_FIELD(args);
+	WRITE_LOCATION_FIELD(location);
+}
+</source>
+</clone>
+
+<clone nlines="9" similarity="77">
+<source file="examples/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="892" endline="903" pcid="106">
+static void
+_outDistinctExpr(StringInfo str, DistinctExpr *node)
+{
+	WRITE_NODE_TYPE("DISTINCTEXPR");
+
+	WRITE_OID_FIELD(opno);
+	WRITE_OID_FIELD(opfuncid);
+	WRITE_OID_FIELD(opresulttype);
+	WRITE_BOOL_FIELD(opretset);
+	WRITE_NODE_FIELD(args);
+	WRITE_LOCATION_FIELD(location);
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1159" endline="1170" pcid="127">
+static void
+_outNullIfExpr(StringInfo str, NullIfExpr *node)
+{
+	WRITE_NODE_TYPE("NULLIFEXPR");
+
+	WRITE_OID_FIELD(opno);
+	WRITE_OID_FIELD(opfuncid);
+	WRITE_OID_FIELD(opresulttype);
+	WRITE_BOOL_FIELD(opretset);
+	WRITE_NODE_FIELD(args);
+	WRITE_LOCATION_FIELD(location);
+}
+</source>
+</clone>
+
+<clone nlines="9" similarity="77">
+<source file="examples/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="879" endline="890" pcid="105">
+static void
+_outOpExpr(StringInfo str, OpExpr *node)
+{
+	WRITE_NODE_TYPE("OPEXPR");
+
+	WRITE_OID_FIELD(opno);
+	WRITE_OID_FIELD(opfuncid);
+	WRITE_OID_FIELD(opresulttype);
+	WRITE_BOOL_FIELD(opretset);
+	WRITE_NODE_FIELD(args);
+	WRITE_LOCATION_FIELD(location);
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1159" endline="1170" pcid="127">
+static void
+_outNullIfExpr(StringInfo str, NullIfExpr *node)
+{
+	WRITE_NODE_TYPE("NULLIFEXPR");
+
+	WRITE_OID_FIELD(opno);
+	WRITE_OID_FIELD(opfuncid);
+	WRITE_OID_FIELD(opresulttype);
+	WRITE_BOOL_FIELD(opretset);
+	WRITE_NODE_FIELD(args);
+	WRITE_LOCATION_FIELD(location);
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="71">
+<source file="examples/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="1002" endline="1012" pcid="277">
+static SetToDefault *
+_readSetToDefault(void)
+{
+	READ_LOCALS(SetToDefault);
+
+	READ_OID_FIELD(typeId);
+	READ_INT_FIELD(typeMod);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</source>
+<source file="examples/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="987" endline="997" pcid="276">
+static CoerceToDomainValue *
+_readCoerceToDomainValue(void)
+{
+	READ_LOCALS(CoerceToDomainValue);
+
+	READ_OID_FIELD(typeId);
+	READ_INT_FIELD(typeMod);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</source>
+</clone>
+
+</clones>

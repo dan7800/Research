@@ -1,0 +1,194 @@
+<html>
+<head>
+<style type="text/css">
+body {font-family:Arial}
+table {background-color:white; border:0px solid white; width:95%; margin-left:auto; margin-right: auto}
+td {background-color:#b0c4de; padding:16px; border:4px solid white}
+pre {background-color:white; padding:4px}
+</style>
+<title>
+NiCad Clone Report
+</title>
+</head>
+<body>
+<h2>
+NiCad Clone Report
+</h2>
+System: apache
+<br>
+<br>Granularity: functions
+<br>Max difference threshold: 40%
+<br>Clone size: 3 - 2500 lines
+<br>
+<br>Total functions: 40
+<br>Clone pairs found: 5
+<br>
+<br>LCS compares: 261 &nbsp;&nbsp;&nbsp; CPU time: 0 min 0.0 sec
+<br>
+<br>Number of  classes: 3
+<br>
+<h3>Clone class 1, 2 fragments, nominal size 21 lines, similarity 66%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 1120 - 1148 of examples2/apache/smallApache/mod_cache.c.ifdefed
+<pre>
+static const char *add_cache_enable(cmd_parms *parms, void *dummy,
+                                    const char *type,
+                                    const char *url)
+{
+    cache_server_conf *conf;
+    struct cache_enable *new;
+
+    if (*type == '/') {
+        return apr_psprintf(parms-&gt;pool,
+          "provider (%s) starts with a '/'.  Are url and provider switched?",
+          type);
+    }
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms-&gt;server-&gt;module_config,
+                                                  &amp;cache_module);
+    new = apr_array_push(conf-&gt;cacheenable);
+    new-&gt;type = type;
+    if (apr_uri_parse(parms-&gt;pool, url, &amp;(new-&gt;url))) {
+        return NULL;
+    }
+    if (new-&gt;url.path) {
+        new-&gt;pathlen = strlen(new-&gt;url.path);
+    } else {
+        new-&gt;pathlen = 1;
+        new-&gt;url.path = "/";
+    }
+    return NULL;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1150 - 1170 of examples2/apache/smallApache/mod_cache.c.ifdefed
+<pre>
+static const char *add_cache_disable(cmd_parms *parms, void *dummy,
+                                     const char *url)
+{
+    cache_server_conf *conf;
+    struct cache_disable *new;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms-&gt;server-&gt;module_config,
+                                                  &amp;cache_module);
+    new = apr_array_push(conf-&gt;cachedisable);
+    if (apr_uri_parse(parms-&gt;pool, url, &amp;(new-&gt;url))) {
+        return NULL;
+    }
+    if (new-&gt;url.path) {
+        new-&gt;pathlen = strlen(new-&gt;url.path);
+    } else {
+        new-&gt;pathlen = 1;
+        new-&gt;url.path = "/";
+    }
+    return NULL;
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 2, 2 fragments, nominal size 8 lines, similarity 75%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 79 - 89 of examples2/apache/smallApache/http_core.c.ifdefed
+<pre>
+static const char *set_keep_alive_max(cmd_parms *cmd, void *dummy,
+                                      const char *arg)
+{
+    const char *err = ap_check_cmd_context(cmd, NOT_IN_DIR_LOC_FILE|NOT_IN_LIMIT);
+    if (err != NULL) {
+        return err;
+    }
+
+    cmd-&gt;server-&gt;keep_alive_max = atoi(arg);
+    return NULL;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 47 - 57 of examples2/apache/smallApache/http_core.c.ifdefed
+<pre>
+static const char *set_keep_alive_timeout(cmd_parms *cmd, void *dummy,
+                                          const char *arg)
+{
+    const char *err = ap_check_cmd_context(cmd, NOT_IN_DIR_LOC_FILE|NOT_IN_LIMIT);
+    if (err != NULL) {
+        return err;
+    }
+
+    cmd-&gt;server-&gt;keep_alive_timeout = apr_time_from_sec(atoi(arg));
+    return NULL;
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 3, 3 fragments, nominal size 3 lines, similarity 66%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 293 - 310 of examples2/apache/smallApache/mod_file_cache.c.ifdefed
+<pre>
+static int sendfile_handler(request_rec *r, a_file *file)
+{
+//#if APR_HAS_SENDFILE
+//    conn_rec *c = r-&gt;connection;
+//    apr_bucket *b;
+//    apr_bucket_brigade *bb = apr_brigade_create(r-&gt;pool, c-&gt;bucket_alloc);
+//
+//    b = apr_bucket_file_create(file-&gt;file, 0, (apr_size_t)file-&gt;finfo.size,
+//                               r-&gt;pool, c-&gt;bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//    b = apr_bucket_eos_create(c-&gt;bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//
+//    if (ap_pass_brigade(r-&gt;output_filters, bb) != APR_SUCCESS)
+//        return HTTP_INTERNAL_SERVER_ERROR;
+//#endif
+    return OK;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 272 - 291 of examples2/apache/smallApache/mod_file_cache.c.ifdefed
+<pre>
+static int mmap_handler(request_rec *r, a_file *file)
+{
+//#if APR_HAS_MMAP
+//    conn_rec *c = r-&gt;connection;
+//    apr_bucket *b;
+//    apr_mmap_t *mm;
+//    apr_bucket_brigade *bb = apr_brigade_create(r-&gt;pool, c-&gt;bucket_alloc);
+//
+//    apr_mmap_dup(&amp;mm, file-&gt;mm, r-&gt;pool);
+//    b = apr_bucket_mmap_create(mm, 0, (apr_size_t)file-&gt;finfo.size,
+//                               c-&gt;bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//    b = apr_bucket_eos_create(c-&gt;bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//
+//    if (ap_pass_brigade(r-&gt;output_filters, bb) != APR_SUCCESS)
+//        return HTTP_INTERNAL_SERVER_ERROR;
+//#endif
+    return OK;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 231 - 236 of examples2/apache/smallApache/mod_file_cache.c.ifdefed
+<pre>
+static int file_cache_post_config(apr_pool_t *p, apr_pool_t *plog,
+                                   apr_pool_t *ptemp, server_rec *s)
+{
+    /* Hummm, anything to do here? */
+    return OK;
+}
+</pre>
+</td></tr>
+</table>
+</body>
+</html>

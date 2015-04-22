@@ -1,0 +1,504 @@
+<clones>
+<systeminfo processor="nicad3" system="apache" granularity="blocks" threshold="30%" minlines="3" maxlines="2500"/>
+<cloneinfo npcs="175" npairs="81"/>
+<runinfo ncompares="6266" cputime="5"/>
+<classinfo nclasses="14"/>
+
+<class classid="1" nclones="2" nlines="21" similarity="71">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1123" endline="1148" pcid="136">
+{
+    cache_server_conf *conf;
+    struct cache_enable *new;
+
+    if (*type == '/') {
+        return apr_psprintf(parms->pool,
+          "provider (%s) starts with a '/'.  Are url and provider switched?",
+          type);
+    }
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    new = apr_array_push(conf->cacheenable);
+    new->type = type;
+    if (apr_uri_parse(parms->pool, url, &(new->url))) {
+        return NULL;
+    }
+    if (new->url.path) {
+        new->pathlen = strlen(new->url.path);
+    } else {
+        new->pathlen = 1;
+        new->url.path = "/";
+    }
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1152" endline="1170" pcid="141">
+{
+    cache_server_conf *conf;
+    struct cache_disable *new;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    new = apr_array_push(conf->cachedisable);
+    if (apr_uri_parse(parms->pool, url, &(new->url))) {
+        return NULL;
+    }
+    if (new->url.path) {
+        new->pathlen = strlen(new->url.path);
+    } else {
+        new->pathlen = 1;
+        new->url.path = "/";
+    }
+    return NULL;
+}
+</source>
+</class>
+
+<class classid="2" nclones="2" nlines="8" similarity="87">
+<source file="examples2/apache/smallApache/http_core.c.ifdefed" startline="81" endline="89" pcid="7">
+{
+    const char *err = ap_check_cmd_context(cmd, NOT_IN_DIR_LOC_FILE|NOT_IN_LIMIT);
+    if (err != NULL) {
+        return err;
+    }
+
+    cmd->server->keep_alive_max = atoi(arg);
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/http_core.c.ifdefed" startline="49" endline="57" pcid="1">
+{
+    const char *err = ap_check_cmd_context(cmd, NOT_IN_DIR_LOC_FILE|NOT_IN_LIMIT);
+    if (err != NULL) {
+        return err;
+    }
+
+    cmd->server->keep_alive_timeout = apr_time_from_sec(atoi(arg));
+    return NULL;
+}
+</source>
+</class>
+
+<class classid="3" nclones="2" nlines="7" similarity="85">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="152" endline="163" pcid="38">
+            else {
+                if (cache->stale_headers) {
+                    ap_log_error(APLOG_MARK, APLOG_DEBUG, APR_SUCCESS,
+                                 r->server, "Restoring request headers for %s",
+                                 r->uri);
+
+                    r->headers_in = cache->stale_headers;
+                }
+
+                /* Delete our per-request configuration. */
+                ap_set_module_config(r->request_config, &cache_module, NULL);
+            }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="176" endline="185" pcid="41">
+    if (lookup) {
+        if (cache->stale_headers) {
+            ap_log_error(APLOG_MARK, APLOG_DEBUG, APR_SUCCESS, r->server,
+                         "Restoring request headers.");
+            r->headers_in = cache->stale_headers;
+        }
+
+        /* Delete our per-request configuration. */
+        ap_set_module_config(r->request_config, &cache_module, NULL);
+    }
+</source>
+</class>
+
+<class classid="4" nclones="7" nlines="7" similarity="71">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1013" endline="1023" pcid="124">
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->no_last_mod_ignore = flag;
+    conf->no_last_mod_ignore_set = 1;
+    return NULL;
+
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1027" endline="1036" pcid="125">
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorecachecontrol = flag;
+    conf->ignorecachecontrol_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1174" endline="1183" pcid="145">
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->maxex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->maxex_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1040" endline="1049" pcid="126">
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_private = flag;
+    conf->store_private_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1217" endline="1226" pcid="149">
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorequerystring = flag;
+    conf->ignorequerystring_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1187" endline="1196" pcid="146">
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->defex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->defex_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1053" endline="1062" pcid="127">
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_nostore = flag;
+    conf->store_nostore_set = 1;
+    return NULL;
+}
+</source>
+</class>
+
+<class classid="5" nclones="6" nlines="5" similarity="75">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="551" endline="561" pcid="84">
+    if (reason) {
+        ap_log_error(APLOG_MARK, APLOG_DEBUG, 0, r->server,
+                     "cache: %s not cached. Reason: %s", r->unparsed_uri,
+                     reason);
+
+        /* remove this filter from the chain */
+        ap_remove_output_filter(f);
+
+        /* ship the data up the stack */
+        return ap_pass_brigade(f->next, in);
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="900" endline="910" pcid="121">
+    if (!cache) {
+        /* user likely configured CACHE_REMOVE_URL manually; they should really
+         * use mod_cache configuration to do that. So:
+         * 1. Remove ourselves
+         * 2. Do nothing and bail out
+         */
+        ap_log_error(APLOG_MARK, APLOG_DEBUG, 0, r->server,
+                     "cache: CACHE_REMOVE_URL enabled unexpectedly");
+        ap_remove_output_filter(f);
+        return ap_pass_brigade(f->next, in);
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="853" endline="859" pcid="118">
+    if(rv != APR_SUCCESS) {
+        ap_log_error(APLOG_MARK, APLOG_DEBUG, rv, r->server,
+                     "cache: store_headers failed");
+        ap_remove_output_filter(f);
+
+        return ap_pass_brigade(f->next, in);
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="657" endline="661" pcid="98">
+    if (rv != OK) {
+        /* Caching layer declined the opportunity to cache the response */
+        ap_remove_output_filter(f);
+        return ap_pass_brigade(f->next, in);
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="369" endline="373" pcid="57">
+        if (rv != APR_SUCCESS) {
+            ap_log_error(APLOG_MARK, APLOG_DEBUG, rv, r->server,
+                         "cache: Cache provider's store_body failed!");
+            ap_remove_output_filter(f);
+        }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="862" endline="866" pcid="119">
+    if (rv != APR_SUCCESS) {
+        ap_log_error(APLOG_MARK, APLOG_DEBUG, rv, r->server,
+                     "cache: store_body failed");
+        ap_remove_output_filter(f);
+    }
+</source>
+</class>
+
+<class classid="6" nclones="2" nlines="4" similarity="100">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="80" endline="83" pcid="31">
+    if (!cache) {
+        cache = apr_pcalloc(r->pool, sizeof(cache_request_rec));
+        ap_set_module_config(r->request_config, &cache_module, cache);
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="338" endline="344" pcid="54">
+    if (!cache) {
+        /* user likely configured CACHE_SAVE manually; they should really use
+         * mod_cache configuration to do that
+         */
+        cache = apr_pcalloc(r->pool, sizeof(cache_request_rec));
+        ap_set_module_config(r->request_config, &cache_module, cache);
+    }
+</source>
+</class>
+
+<class classid="7" nclones="4" nlines="4" similarity="75">
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="209" endline="218" pcid="160">
+{
+//#if APR_HAS_SENDFILE
+//    cache_the_file(cmd, filename, 0);
+//#else
+    /* Sendfile not supported by this OS */
+    ap_log_error(APLOG_MARK, APLOG_WARNING, 0, cmd->server,
+                 "mod_file_cache: unable to cache file: %s. Sendfile is not supported on this OS", filename);
+//#endif
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="220" endline="229" pcid="161">
+{
+//#if APR_HAS_MMAP
+//    cache_the_file(cmd, filename, 1);
+//#else
+    /* MMAP not supported by this OS */
+    ap_log_error(APLOG_MARK, APLOG_WARNING, 0, cmd->server,
+                 "mod_file_cache: unable to cache file: %s. MMAP is not supported by this OS", filename);
+//#endif
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1138" endline="1140" pcid="138">
+    if (apr_uri_parse(parms->pool, url, &(new->url))) {
+        return NULL;
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1160" endline="1162" pcid="142">
+    if (apr_uri_parse(parms->pool, url, &(new->url))) {
+        return NULL;
+    }
+</source>
+</class>
+
+<class classid="8" nclones="5" nlines="4" similarity="75">
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="162" endline="166" pcid="159">
+    if (rc != APR_SUCCESS) {
+        ap_log_error(APLOG_MARK, APLOG_WARNING, rc, cmd->server,
+                     "mod_file_cache: unable to open(%s, O_RDONLY), skipping", fspec);
+        return;
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="154" endline="158" pcid="158">
+    if (tmp.finfo.size > AP_MAX_SENDFILE) {
+        ap_log_error(APLOG_MARK, APLOG_WARNING, 0, cmd->server,
+            "mod_file_cache: %s is too large to cache, skipping", fspec);
+        return;
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="149" endline="153" pcid="157">
+    if (tmp.finfo.filetype != APR_REG) {
+        ap_log_error(APLOG_MARK, APLOG_WARNING, 0, cmd->server,
+            "mod_file_cache: %s isn't a regular file, skipping", fspec);
+        return;
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="144" endline="148" pcid="156">
+                                 cmd->temp_pool)) != APR_SUCCESS) {
+        ap_log_error(APLOG_MARK, APLOG_WARNING, rc, cmd->server,
+            "mod_file_cache: unable to stat(%s), skipping", fspec);
+        return;
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="137" endline="142" pcid="155">
+    if (!fspec) {
+        ap_log_error(APLOG_MARK, APLOG_WARNING, APR_EBADPATH, cmd->server,
+                     "mod_file_cache: invalid file path "
+                     "%s, skipping", filename);
+        return;
+    }
+</source>
+</class>
+
+<class classid="9" nclones="2" nlines="4" similarity="75">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="591" endline="594" pcid="90">
+            if (APR_BUCKET_IS_EOS(e)) {
+                all_buckets_here=1;
+                break;
+            }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="599" endline="601" pcid="92">
+            if (e->length == (apr_size_t)-1) {
+                break;
+            }
+</source>
+</class>
+
+<class classid="10" nclones="2" nlines="3" similarity="100">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="742" endline="744" pcid="108">
+            if (x > conf->maxex) {
+                x = conf->maxex;
+            }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="754" endline="756" pcid="110">
+            if (x > conf->maxex) {
+                x = conf->maxex;
+            }
+</source>
+</class>
+
+<class classid="11" nclones="2" nlines="3" similarity="100">
+<source file="examples2/apache/smallApache/http_core.c.ifdefed" startline="164" endline="166" pcid="17">
+        else {   /* ap_read_request failed - client may have closed */
+            cs->state = CONN_STATE_LINGER;
+        }
+</source>
+<source file="examples2/apache/smallApache/http_core.c.ifdefed" startline="151" endline="153" pcid="15">
+                    || ap_graceful_stop_signalled()) {
+                cs->state = CONN_STATE_LINGER;
+            }
+</source>
+</class>
+
+<class classid="12" nclones="7" nlines="3" similarity="100">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="63" endline="65" pcid="29">
+    if (r->method_number != M_GET) {
+        return DECLINED;
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="73" endline="75" pcid="30">
+    if (!(providers = ap_cache_get_providers(r, conf, r->parsed_uri))) {
+        return DECLINED;
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="98" endline="100" pcid="32">
+    if (auth) {
+        return DECLINED;
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="250" endline="252" pcid="164">
+    if (!apr_hash_count(sconf->fileht)) {
+        return DECLINED;
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="321" endline="323" pcid="169">
+    if (ap_strcmp_match(r->handler, "*/*")) {
+        return DECLINED;
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="331" endline="333" pcid="170">
+    if (match == NULL) {
+        return DECLINED;
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="192" endline="194" pcid="44">
+        if (lookup) {
+            return DECLINED;
+        }
+</source>
+</class>
+
+<class classid="13" nclones="3" nlines="3" similarity="100">
+<source file="examples2/apache/smallApache/http_core.c.ifdefed" startline="83" endline="85" pcid="8">
+    if (err != NULL) {
+        return err;
+    }
+</source>
+<source file="examples2/apache/smallApache/http_core.c.ifdefed" startline="63" endline="65" pcid="4">
+    if (err != NULL) {
+        return err;
+    }
+</source>
+<source file="examples2/apache/smallApache/http_core.c.ifdefed" startline="51" endline="53" pcid="2">
+    if (err != NULL) {
+        return err;
+    }
+</source>
+</class>
+
+<class classid="14" nclones="4" nlines="3" similarity="100">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="201" endline="203" pcid="45">
+    if (lookup) {
+        return OK;
+    }
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="233" endline="236" pcid="162">
+{
+    /* Hummm, anything to do here? */
+    return OK;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="273" endline="291" pcid="166">
+{
+//#if APR_HAS_MMAP
+//    conn_rec *c = r->connection;
+//    apr_bucket *b;
+//    apr_mmap_t *mm;
+//    apr_bucket_brigade *bb = apr_brigade_create(r->pool, c->bucket_alloc);
+//
+//    apr_mmap_dup(&mm, file->mm, r->pool);
+//    b = apr_bucket_mmap_create(mm, 0, (apr_size_t)file->finfo.size,
+//                               c->bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//    b = apr_bucket_eos_create(c->bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//
+//    if (ap_pass_brigade(r->output_filters, bb) != APR_SUCCESS)
+//        return HTTP_INTERNAL_SERVER_ERROR;
+//#endif
+    return OK;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="294" endline="310" pcid="167">
+{
+//#if APR_HAS_SENDFILE
+//    conn_rec *c = r->connection;
+//    apr_bucket *b;
+//    apr_bucket_brigade *bb = apr_brigade_create(r->pool, c->bucket_alloc);
+//
+//    b = apr_bucket_file_create(file->file, 0, (apr_size_t)file->finfo.size,
+//                               r->pool, c->bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//    b = apr_bucket_eos_create(c->bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//
+//    if (ap_pass_brigade(r->output_filters, bb) != APR_SUCCESS)
+//        return HTTP_INTERNAL_SERVER_ERROR;
+//#endif
+    return OK;
+}
+</source>
+</class>
+
+</clones>
