@@ -1,0 +1,211 @@
+.class public abstract org/apache/commons/lang3/text/translate/CharSequenceTranslator
+.super java/lang/Object
+.source CharSequenceTranslator.java
+
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;)
+.line 32
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;
+	return-void	
+.end method
+
+.method public static hex(I)Ljava/lang/String;
+.limit registers 3
+; parameter[0] : v2 (I)
+.line 122
+	invoke-static	{v2},java/lang/Integer/toHexString	; toHexString(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	sget-object	v1,java/util/Locale.ENGLISH Ljava/util/Locale;
+; v1 : Ljava/util/Locale;
+	invoke-virtual	{v0,v1},java/lang/String/toUpperCase	; toUpperCase(Ljava/util/Locale;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Ljava/util/Locale;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public abstract translate(Ljava/lang/CharSequence;ILjava/io/Writer;)I
+.throws Ljava/io/IOException;
+.end method
+
+.method public final translate(Ljava/lang/CharSequence;)Ljava/lang/String;
+.throws Ljava/io/IOException;
+.limit registers 5
+; this: v3 (Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;)
+; parameter[0] : v4 (Ljava/lang/CharSequence;)
+.catch java/io/IOException from l12afac to l12afce using l12afd2
+.var 1 is writer Ljava/io/StringWriter; from l12afc2 to l12afd2
+.line 54
+	if-nez	v4,l12afac
+; v4 : Ljava/lang/CharSequence;
+.line 55
+	const/4	v2,0
+; v2 : single-length
+l12afaa:
+.line 60
+	return-object	v2
+; v2 : Ljava/lang/String;
+l12afac:
+.line 58
+	new-instance	v1,java/io/StringWriter
+; v1 : Ljava/io/StringWriter;
+	invoke-interface	{v4},java/lang/CharSequence/length	; length()I
+; v4 : Ljava/lang/CharSequence;
+	move-result	v2
+; v2 : single-length
+	mul-int/lit-8	v2,v2,2
+; v2 : single-length , v2 : single-length
+	invoke-direct	{v1,v2},java/io/StringWriter/<init>	; <init>(I)V
+; v1 : Ljava/io/StringWriter; , v2 : single-length
+.line 59
+	invoke-virtual	{v3,v4,v1},org/apache/commons/lang3/text/translate/CharSequenceTranslator/translate	; translate(Ljava/lang/CharSequence;Ljava/io/Writer;)V
+; v3 : Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator; , v4 : Ljava/lang/CharSequence; , v1 : Ljava/io/StringWriter;
+.line 60
+	invoke-virtual	{v1},java/io/StringWriter/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/io/StringWriter;
+l12afce:
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	goto	l12afaa
+l12afd2:
+.line 61
+	move-exception	v0
+; v0 : java/io/IOException
+.line 63
+	new-instance	v2,java/lang/RuntimeException
+; v2 : Ljava/lang/RuntimeException;
+	invoke-direct	{v2,v0},java/lang/RuntimeException/<init>	; <init>(Ljava/lang/Throwable;)V
+; v2 : Ljava/lang/RuntimeException; , v0 : java/io/IOException
+	throw	v2
+; v2 : Ljava/lang/RuntimeException;
+.end method
+
+.method public final translate(Ljava/lang/CharSequence;Ljava/io/Writer;)V
+.throws Ljava/io/IOException;
+.limit registers 10
+; this: v7 (Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;)
+; parameter[0] : v8 (Ljava/lang/CharSequence;)
+; parameter[1] : v9 (Ljava/io/Writer;)
+.var 0 is c [C from l12b044 to l12b050
+.line 76
+	if-nez	v9,l12b014
+; v9 : Ljava/io/Writer;
+.line 77
+	new-instance	v5,java/lang/IllegalArgumentException
+; v5 : Ljava/lang/IllegalArgumentException;
+	const-string	v6,"The Writer must not be null"
+; v6 : Ljava/lang/String;
+	invoke-direct	{v5,v6},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v5 : Ljava/lang/IllegalArgumentException; , v6 : Ljava/lang/String;
+	throw	v5
+; v5 : Ljava/lang/IllegalArgumentException;
+l12b014:
+.line 79
+	if-nez	v8,l12b01a
+; v8 : Ljava/lang/CharSequence;
+l12b018:
+.line 98
+	return-void	
+l12b01a:
+.line 82
+	const/4	v3,0
+; v3 : single-length
+.line 83
+	invoke-interface	{v8},java/lang/CharSequence/length	; length()I
+; v8 : Ljava/lang/CharSequence;
+	move-result	v2
+; v2 : single-length
+l12b024:
+.line 84
+	if-ge	v3,v2,l12b018
+; v3 : single-length , v2 : single-length
+.line 85
+	invoke-virtual	{v7,v8,v3,v9},org/apache/commons/lang3/text/translate/CharSequenceTranslator/translate	; translate(Ljava/lang/CharSequence;ILjava/io/Writer;)I
+; v7 : Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator; , v8 : Ljava/lang/CharSequence; , v3 : single-length , v9 : Ljava/io/Writer;
+	move-result	v1
+; v1 : single-length
+.line 86
+	if-nez	v1,l12b050
+; v1 : single-length
+.line 87
+	invoke-static	{v8,v3},java/lang/Character/codePointAt	; codePointAt(Ljava/lang/CharSequence;I)I
+; v8 : Ljava/lang/CharSequence; , v3 : single-length
+	move-result	v5
+; v5 : single-length
+	invoke-static	{v5},java/lang/Character/toChars	; toChars(I)[C
+; v5 : single-length
+	move-result-object	v0
+; v0 : [C
+.line 88
+	invoke-virtual	{v9,v0},java/io/Writer/write	; write([C)V
+; v9 : Ljava/io/Writer; , v0 : [C
+.line 89
+	array-length	v5,v0
+; v5 : single-length , v0 : [C
+	add-int/2addr	v3,v5
+; v3 : single-length , v5 : single-length
+.line 90
+	goto	l12b024
+l12b050:
+.line 94
+	const/4	v4,0
+; v4 : single-length
+l12b052:
+	if-ge	v4,v1,l12b024
+; v4 : single-length , v1 : single-length
+.line 95
+	invoke-static	{v8,v3},java/lang/Character/codePointAt	; codePointAt(Ljava/lang/CharSequence;I)I
+; v8 : Ljava/lang/CharSequence; , v3 : single-length
+	move-result	v5
+; v5 : single-length
+	invoke-static	{v5},java/lang/Character/charCount	; charCount(I)I
+; v5 : single-length
+	move-result	v5
+; v5 : single-length
+	add-int/2addr	v3,v5
+; v3 : single-length , v5 : single-length
+.line 94
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	goto	l12b052
+.end method
+
+.method public final with([Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;)Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;
+.limit registers 6
+; this: v4 (Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;)
+; parameter[0] : v5 ([Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;)
+	const/4	v3,0
+; v3 : single-length
+.line 108
+	array-length	v1,v5
+; v1 : single-length , v5 : [Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	new-array	v0,v1,[Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;
+; v0 : [Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator; , v1 : single-length
+.line 109
+	aput-object	v4,v0,v3
+; v4 : Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator; , v0 : [Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator; , v3 : single-length
+.line 110
+	const/4	v1,1
+; v1 : single-length
+	array-length	v2,v5
+; v2 : single-length , v5 : [Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;
+	invoke-static	{v5,v3,v0,v1,v2},java/lang/System/arraycopy	; arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+; v5 : [Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator; , v3 : single-length , v0 : [Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator; , v1 : single-length , v2 : single-length
+.line 111
+	new-instance	v1,org/apache/commons/lang3/text/translate/AggregateTranslator
+; v1 : Lorg/apache/commons/lang3/text/translate/AggregateTranslator;
+	invoke-direct	{v1,v0},org/apache/commons/lang3/text/translate/AggregateTranslator/<init>	; <init>([Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;)V
+; v1 : Lorg/apache/commons/lang3/text/translate/AggregateTranslator; , v0 : [Lorg/apache/commons/lang3/text/translate/CharSequenceTranslator;
+	return-object	v1
+; v1 : Lorg/apache/commons/lang3/text/translate/AggregateTranslator;
+.end method
+
+

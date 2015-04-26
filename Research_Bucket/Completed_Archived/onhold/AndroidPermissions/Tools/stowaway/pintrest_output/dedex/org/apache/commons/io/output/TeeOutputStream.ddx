@@ -1,0 +1,152 @@
+.class public org/apache/commons/io/output/TeeOutputStream
+.super org/apache/commons/io/output/ProxyOutputStream
+.source TeeOutputStream.java
+
+.field protected branch Ljava/io/OutputStream;
+
+.method public <init>(Ljava/io/OutputStream;Ljava/io/OutputStream;)V
+.limit registers 3
+; this: v0 (Lorg/apache/commons/io/output/TeeOutputStream;)
+; parameter[0] : v1 (Ljava/io/OutputStream;)
+; parameter[1] : v2 (Ljava/io/OutputStream;)
+.line 40
+	invoke-direct	{v0,v1},org/apache/commons/io/output/ProxyOutputStream/<init>	; <init>(Ljava/io/OutputStream;)V
+; v0 : Lorg/apache/commons/io/output/TeeOutputStream; , v1 : Ljava/io/OutputStream;
+.line 41
+	iput-object	v2,v0,org/apache/commons/io/output/TeeOutputStream.branch Ljava/io/OutputStream;
+; v2 : Ljava/io/OutputStream; , v0 : Lorg/apache/commons/io/output/TeeOutputStream;
+.line 42
+	return-void	
+.end method
+
+.method public close()V
+.throws Ljava/io/IOException;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/output/TeeOutputStream;)
+.line 95
+	invoke-super	{v1},org/apache/commons/io/output/ProxyOutputStream/close	; close()V
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+.line 96
+	iget-object	v0,v1,org/apache/commons/io/output/TeeOutputStream.branch Ljava/io/OutputStream;
+; v0 : Ljava/io/OutputStream; , v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+	invoke-virtual	{v0},java/io/OutputStream/close	; close()V
+; v0 : Ljava/io/OutputStream;
+.line 97
+	return-void	
+.end method
+
+.method public flush()V
+.throws Ljava/io/IOException;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/output/TeeOutputStream;)
+.line 85
+	invoke-super	{v1},org/apache/commons/io/output/ProxyOutputStream/flush	; flush()V
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+.line 86
+	iget-object	v0,v1,org/apache/commons/io/output/TeeOutputStream.branch Ljava/io/OutputStream;
+; v0 : Ljava/io/OutputStream; , v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+	invoke-virtual	{v0},java/io/OutputStream/flush	; flush()V
+; v0 : Ljava/io/OutputStream;
+.line 87
+	return-void	
+.end method
+
+.method public synchronized write(I)V
+.throws Ljava/io/IOException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/output/TeeOutputStream;)
+; parameter[0] : v2 (I)
+.catch java/lang/Exception from l1200f2 to l120102 using l120106
+.line 75
+	monitor-enter	v1
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+l1200f2:
+	invoke-super	{v1,v2},org/apache/commons/io/output/ProxyOutputStream/write	; write(I)V
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream; , v2 : single-length
+.line 76
+	iget-object	v0,v1,org/apache/commons/io/output/TeeOutputStream.branch Ljava/io/OutputStream;
+; v0 : Ljava/io/OutputStream; , v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+	invoke-virtual	{v0,v2},java/io/OutputStream/write	; write(I)V
+; v0 : Ljava/io/OutputStream; , v2 : single-length
+l120102:
+.line 77
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+	return-void	
+l120106:
+.line 75
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public synchronized write([B)V
+.throws Ljava/io/IOException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/output/TeeOutputStream;)
+; parameter[0] : v2 ([B)
+.catch java/lang/Exception from l12012a to l12013a using l12013e
+.line 51
+	monitor-enter	v1
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+l12012a:
+	invoke-super	{v1,v2},org/apache/commons/io/output/ProxyOutputStream/write	; write([B)V
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream; , v2 : [B
+.line 52
+	iget-object	v0,v1,org/apache/commons/io/output/TeeOutputStream.branch Ljava/io/OutputStream;
+; v0 : Ljava/io/OutputStream; , v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+	invoke-virtual	{v0,v2},java/io/OutputStream/write	; write([B)V
+; v0 : Ljava/io/OutputStream; , v2 : [B
+l12013a:
+.line 53
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+	return-void	
+l12013e:
+.line 51
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public synchronized write([BII)V
+.throws Ljava/io/IOException;
+.limit registers 5
+; this: v1 (Lorg/apache/commons/io/output/TeeOutputStream;)
+; parameter[0] : v2 ([B)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+.catch java/lang/Exception from l120162 to l120172 using l120176
+.line 64
+	monitor-enter	v1
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+l120162:
+	invoke-super	{v1,v2,v3,v4},org/apache/commons/io/output/ProxyOutputStream/write	; write([BII)V
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream; , v2 : [B , v3 : single-length , v4 : single-length
+.line 65
+	iget-object	v0,v1,org/apache/commons/io/output/TeeOutputStream.branch Ljava/io/OutputStream;
+; v0 : Ljava/io/OutputStream; , v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+	invoke-virtual	{v0,v2,v3,v4},java/io/OutputStream/write	; write([BII)V
+; v0 : Ljava/io/OutputStream; , v2 : [B , v3 : single-length , v4 : single-length
+l120172:
+.line 66
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+	return-void	
+l120176:
+.line 64
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/io/output/TeeOutputStream;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+

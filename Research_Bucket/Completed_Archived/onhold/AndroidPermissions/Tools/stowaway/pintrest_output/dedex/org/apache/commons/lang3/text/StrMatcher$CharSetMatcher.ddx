@@ -1,0 +1,62 @@
+.class final org/apache/commons/lang3/text/StrMatcher$CharSetMatcher
+.super org/apache/commons/lang3/text/StrMatcher
+.source StrMatcher.java
+
+.inner class CharSetMatcher inner org/apache/commons/lang3/text/StrMatcher$CharSetMatcher outer org/apache/commons/lang3/text/StrMatcher
+.field private final chars [C
+
+.method <init>([C)V
+.limit registers 3
+; this: v1 (Lorg/apache/commons/lang3/text/StrMatcher$CharSetMatcher;)
+; parameter[0] : v2 ([C)
+.line 285
+	invoke-direct	{v1},org/apache/commons/lang3/text/StrMatcher/<init>	; <init>()V
+; v1 : Lorg/apache/commons/lang3/text/StrMatcher$CharSetMatcher;
+.line 286
+	invoke-virtual	{v2},[C/clone	; clone()Ljava/lang/Object;
+; v2 : [C
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,[C
+; v0 : [C
+	iput-object	v0,v1,org/apache/commons/lang3/text/StrMatcher$CharSetMatcher.chars [C
+; v0 : [C , v1 : Lorg/apache/commons/lang3/text/StrMatcher$CharSetMatcher;
+.line 287
+	iget-object	v0,v1,org/apache/commons/lang3/text/StrMatcher$CharSetMatcher.chars [C
+; v0 : [C , v1 : Lorg/apache/commons/lang3/text/StrMatcher$CharSetMatcher;
+	invoke-static	{v0},java/util/Arrays/sort	; sort([C)V
+; v0 : [C
+.line 288
+	return-void	
+.end method
+
+.method public isMatch([CIII)I
+.limit registers 7
+; this: v2 (Lorg/apache/commons/lang3/text/StrMatcher$CharSetMatcher;)
+; parameter[0] : v3 ([C)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (I)
+; parameter[3] : v6 (I)
+.line 301
+	iget-object	v0,v2,org/apache/commons/lang3/text/StrMatcher$CharSetMatcher.chars [C
+; v0 : [C , v2 : Lorg/apache/commons/lang3/text/StrMatcher$CharSetMatcher;
+	aget-char	v1,v3,v4
+; v1 : single-length , v3 : [C , v4 : single-length
+	invoke-static	{v0,v1},java/util/Arrays/binarySearch	; binarySearch([CC)I
+; v0 : [C , v1 : single-length
+	move-result	v0
+; v0 : single-length
+	if-ltz	v0,l140638
+; v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l140636:
+	return	v0
+; v0 : single-length
+l140638:
+	const/4	v0,0
+; v0 : single-length
+	goto	l140636
+.end method
+
+

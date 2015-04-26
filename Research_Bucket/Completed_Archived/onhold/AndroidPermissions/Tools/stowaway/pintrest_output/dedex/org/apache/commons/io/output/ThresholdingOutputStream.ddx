@@ -1,0 +1,263 @@
+.class public abstract org/apache/commons/io/output/ThresholdingOutputStream
+.super java/io/OutputStream
+.source ThresholdingOutputStream.java
+
+.field private final threshold I
+.field private thresholdExceeded Z
+.field private written J
+
+.method public <init>(I)V
+.limit registers 2
+; this: v0 (Lorg/apache/commons/io/output/ThresholdingOutputStream;)
+; parameter[0] : v1 (I)
+.line 76
+	invoke-direct	{v0},java/io/OutputStream/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+.line 77
+	iput	v1,v0,org/apache/commons/io/output/ThresholdingOutputStream.threshold I
+; v1 : single-length , v0 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+.line 78
+	return-void	
+.end method
+
+.method protected checkThreshold(I)V
+.throws Ljava/io/IOException;
+.limit registers 6
+; this: v4 (Lorg/apache/commons/io/output/ThresholdingOutputStream;)
+; parameter[0] : v5 (I)
+.line 223
+	iget-boolean	v0,v4,org/apache/commons/io/output/ThresholdingOutputStream.thresholdExceeded Z
+; v0 : single-length , v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	if-nez	v0,l11ecd6
+; v0 : single-length
+	iget-wide	v0,v4,org/apache/commons/io/output/ThresholdingOutputStream.written J
+; v0 : double-length , v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	int-to-long	v2,v5
+; v2 : double-length , v5 : single-length
+	add-long/2addr	v0,v2
+; v0 : double-length , v2 : double-length
+	iget	v2,v4,org/apache/commons/io/output/ThresholdingOutputStream.threshold I
+; v2 : single-length , v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	int-to-long	v2,v2
+; v2 : double-length , v2 : double-length
+	cmp-long	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : double-length
+	if-lez	v0,l11ecd6
+; v0 : single-length
+.line 225
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v4,org/apache/commons/io/output/ThresholdingOutputStream.thresholdExceeded Z
+; v0 : single-length , v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+.line 226
+	invoke-virtual	{v4},org/apache/commons/io/output/ThresholdingOutputStream/thresholdReached	; thresholdReached()V
+; v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+l11ecd6:
+.line 228
+	return-void	
+.end method
+
+.method public close()V
+.throws Ljava/io/IOException;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/output/ThresholdingOutputStream;)
+.catch java/io/IOException from l11ece8 to l11ecee using l11ecfe
+l11ece8:
+.line 160
+	invoke-virtual	{v1},org/apache/commons/io/output/ThresholdingOutputStream/flush	; flush()V
+; v1 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+l11ecee:
+.line 166
+	invoke-virtual	{v1},org/apache/commons/io/output/ThresholdingOutputStream/getStream	; getStream()Ljava/io/OutputStream;
+; v1 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	move-result-object	v0
+; v0 : Ljava/io/OutputStream;
+	invoke-virtual	{v0},java/io/OutputStream/close	; close()V
+; v0 : Ljava/io/OutputStream;
+.line 167
+	return-void	
+l11ecfe:
+.line 162
+	move-exception	v0
+; v0 : java/io/IOException
+	goto	l11ecee
+.end method
+
+.method public flush()V
+.throws Ljava/io/IOException;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/output/ThresholdingOutputStream;)
+.line 145
+	invoke-virtual	{v1},org/apache/commons/io/output/ThresholdingOutputStream/getStream	; getStream()Ljava/io/OutputStream;
+; v1 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	move-result-object	v0
+; v0 : Ljava/io/OutputStream;
+	invoke-virtual	{v0},java/io/OutputStream/flush	; flush()V
+; v0 : Ljava/io/OutputStream;
+.line 146
+	return-void	
+.end method
+
+.method public getByteCount()J
+.limit registers 3
+; this: v2 (Lorg/apache/commons/io/output/ThresholdingOutputStream;)
+.line 191
+	iget-wide	v0,v2,org/apache/commons/io/output/ThresholdingOutputStream.written J
+; v0 : double-length , v2 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	return-wide	v0
+; v0 : double-length
+.end method
+
+.method protected abstract getStream()Ljava/io/OutputStream;
+.throws Ljava/io/IOException;
+.end method
+
+.method public getThreshold()I
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/output/ThresholdingOutputStream;)
+.line 180
+	iget	v0,v1,org/apache/commons/io/output/ThresholdingOutputStream.threshold I
+; v0 : single-length , v1 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public isThresholdExceeded()Z
+.limit registers 5
+; this: v4 (Lorg/apache/commons/io/output/ThresholdingOutputStream;)
+.line 204
+	iget-wide	v0,v4,org/apache/commons/io/output/ThresholdingOutputStream.written J
+; v0 : double-length , v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	iget	v2,v4,org/apache/commons/io/output/ThresholdingOutputStream.threshold I
+; v2 : single-length , v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	int-to-long	v2,v2
+; v2 : double-length , v2 : double-length
+	cmp-long	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : double-length
+	if-lez	v0,l11ed8a
+; v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l11ed88:
+	return	v0
+; v0 : single-length
+l11ed8a:
+	const/4	v0,0
+; v0 : single-length
+	goto	l11ed88
+.end method
+
+.method protected resetByteCount()V
+.limit registers 3
+; this: v2 (Lorg/apache/commons/io/output/ThresholdingOutputStream;)
+.line 236
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v2,org/apache/commons/io/output/ThresholdingOutputStream.thresholdExceeded Z
+; v0 : single-length , v2 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+.line 237
+	const-wide/16	v0,0
+; v0 : double-length
+	iput-wide	v0,v2,org/apache/commons/io/output/ThresholdingOutputStream.written J
+; v0 : double-length , v2 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+.line 238
+	return-void	
+.end method
+
+.method protected abstract thresholdReached()V
+.throws Ljava/io/IOException;
+.end method
+
+.method public write(I)V
+.throws Ljava/io/IOException;
+.limit registers 6
+; this: v4 (Lorg/apache/commons/io/output/ThresholdingOutputStream;)
+; parameter[0] : v5 (I)
+.line 94
+	const/4	v0,1
+; v0 : single-length
+	invoke-virtual	{v4,v0},org/apache/commons/io/output/ThresholdingOutputStream/checkThreshold	; checkThreshold(I)V
+; v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream; , v0 : single-length
+.line 95
+	invoke-virtual	{v4},org/apache/commons/io/output/ThresholdingOutputStream/getStream	; getStream()Ljava/io/OutputStream;
+; v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	move-result-object	v0
+; v0 : Ljava/io/OutputStream;
+	invoke-virtual	{v0,v5},java/io/OutputStream/write	; write(I)V
+; v0 : Ljava/io/OutputStream; , v5 : single-length
+.line 96
+	iget-wide	v0,v4,org/apache/commons/io/output/ThresholdingOutputStream.written J
+; v0 : double-length , v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	const-wide/16	v2,1
+; v2 : double-length
+	add-long/2addr	v0,v2
+; v0 : double-length , v2 : double-length
+	iput-wide	v0,v4,org/apache/commons/io/output/ThresholdingOutputStream.written J
+; v0 : double-length , v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+.line 97
+	return-void	
+.end method
+
+.method public write([B)V
+.throws Ljava/io/IOException;
+.limit registers 6
+; this: v4 (Lorg/apache/commons/io/output/ThresholdingOutputStream;)
+; parameter[0] : v5 ([B)
+.line 111
+	array-length	v0,v5
+; v0 : single-length , v5 : [B
+	invoke-virtual	{v4,v0},org/apache/commons/io/output/ThresholdingOutputStream/checkThreshold	; checkThreshold(I)V
+; v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream; , v0 : single-length
+.line 112
+	invoke-virtual	{v4},org/apache/commons/io/output/ThresholdingOutputStream/getStream	; getStream()Ljava/io/OutputStream;
+; v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	move-result-object	v0
+; v0 : Ljava/io/OutputStream;
+	invoke-virtual	{v0,v5},java/io/OutputStream/write	; write([B)V
+; v0 : Ljava/io/OutputStream; , v5 : [B
+.line 113
+	iget-wide	v0,v4,org/apache/commons/io/output/ThresholdingOutputStream.written J
+; v0 : double-length , v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	array-length	v2,v5
+; v2 : single-length , v5 : [B
+	int-to-long	v2,v2
+; v2 : double-length , v2 : double-length
+	add-long/2addr	v0,v2
+; v0 : double-length , v2 : double-length
+	iput-wide	v0,v4,org/apache/commons/io/output/ThresholdingOutputStream.written J
+; v0 : double-length , v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+.line 114
+	return-void	
+.end method
+
+.method public write([BII)V
+.throws Ljava/io/IOException;
+.limit registers 8
+; this: v4 (Lorg/apache/commons/io/output/ThresholdingOutputStream;)
+; parameter[0] : v5 ([B)
+; parameter[1] : v6 (I)
+; parameter[2] : v7 (I)
+.line 130
+	invoke-virtual	{v4,v7},org/apache/commons/io/output/ThresholdingOutputStream/checkThreshold	; checkThreshold(I)V
+; v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream; , v7 : single-length
+.line 131
+	invoke-virtual	{v4},org/apache/commons/io/output/ThresholdingOutputStream/getStream	; getStream()Ljava/io/OutputStream;
+; v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	move-result-object	v0
+; v0 : Ljava/io/OutputStream;
+	invoke-virtual	{v0,v5,v6,v7},java/io/OutputStream/write	; write([BII)V
+; v0 : Ljava/io/OutputStream; , v5 : [B , v6 : single-length , v7 : single-length
+.line 132
+	iget-wide	v0,v4,org/apache/commons/io/output/ThresholdingOutputStream.written J
+; v0 : double-length , v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+	int-to-long	v2,v7
+; v2 : double-length , v7 : single-length
+	add-long/2addr	v0,v2
+; v0 : double-length , v2 : double-length
+	iput-wide	v0,v4,org/apache/commons/io/output/ThresholdingOutputStream.written J
+; v0 : double-length , v4 : Lorg/apache/commons/io/output/ThresholdingOutputStream;
+.line 133
+	return-void	
+.end method
+
+

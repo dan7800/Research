@@ -1,0 +1,117 @@
+.class public com/pinterest/activity/PinterestActivity
+.super android/app/Activity
+.source PinterestActivity.java
+
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/activity/PinterestActivity;)
+.line 17
+	invoke-direct	{v0},android/app/Activity/<init>	; <init>()V
+; v0 : Lcom/pinterest/activity/PinterestActivity;
+	return-void	
+.end method
+
+.method protected init()V
+.limit registers 3
+; this: v2 (Lcom/pinterest/activity/PinterestActivity;)
+.line 37
+	invoke-static	{},com/pinterest/base/Application/getPreferences	; getPreferences()Landroid/content/SharedPreferences;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Landroid/content/SharedPreferences;
+	const-string	v1,"PREF_ACCESSTOKEN"
+; v1 : Ljava/lang/String;
+	invoke-interface	{v0,v1},android/content/SharedPreferences/contains	; contains(Ljava/lang/String;)Z
+; v0 : Landroid/content/SharedPreferences; , v1 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,ld3926
+; v0 : single-length
+.line 39
+	invoke-static	{v2},com/pinterest/activity/ActivityHelper/goSplash	; goSplash(Landroid/app/Activity;)V
+; v2 : Lcom/pinterest/activity/PinterestActivity;
+ld391e:
+.line 70
+	invoke-virtual	{v2},com/pinterest/activity/PinterestActivity/finish	; finish()V
+; v2 : Lcom/pinterest/activity/PinterestActivity;
+.line 71
+	return-void	
+ld3926:
+.line 43
+	invoke-static	{},com/pinterest/base/Application/getMe	; getMe()Lcom/pinterest/api/models/User;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Lcom/pinterest/api/models/User;
+	if-nez	v0,ld393a
+; v0 : Lcom/pinterest/api/models/User;
+.line 45
+	invoke-static	{v2},com/pinterest/activity/ActivityHelper/goSplash	; goSplash(Landroid/app/Activity;)V
+; v2 : Lcom/pinterest/activity/PinterestActivity;
+	goto	ld391e
+ld393a:
+.line 49
+	invoke-static	{},com/pinterest/base/Application/getMe	; getMe()Lcom/pinterest/api/models/User;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Lcom/pinterest/api/models/User;
+	iget-object	v0,v0,com/pinterest/api/models/User.username Ljava/lang/String;
+; v0 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	new-instance	v1,com/pinterest/activity/PinterestActivity$1
+; v1 : Lcom/pinterest/activity/PinterestActivity$1;
+	invoke-direct	{v1,v2},com/pinterest/activity/PinterestActivity$1/<init>	; <init>(Lcom/pinterest/activity/PinterestActivity;)V
+; v1 : Lcom/pinterest/activity/PinterestActivity$1; , v2 : Lcom/pinterest/activity/PinterestActivity;
+	invoke-static	{v0,v1},com/pinterest/api/PAPI/loadUser	; loadUser(Ljava/lang/String;Lcom/loopj/android/http/JsonHttpResponseHandler;)V
+; v0 : Ljava/lang/String; , v1 : Lcom/pinterest/activity/PinterestActivity$1;
+.line 66
+	invoke-static	{v2},com/pinterest/activity/ActivityHelper/goHome	; goHome(Landroid/app/Activity;)V
+; v2 : Lcom/pinterest/activity/PinterestActivity;
+.line 67
+	invoke-static	{v2},com/pinterest/kit/notification/PRater/registerLaunch	; registerLaunch(Landroid/content/Context;)V
+; v2 : Lcom/pinterest/activity/PinterestActivity;
+	goto	ld391e
+.end method
+
+.method protected onCreate(Landroid/os/Bundle;)V
+.limit registers 6
+; this: v4 (Lcom/pinterest/activity/PinterestActivity;)
+; parameter[0] : v5 (Landroid/os/Bundle;)
+.line 22
+	invoke-super	{v4,v5},android/app/Activity/onCreate	; onCreate(Landroid/os/Bundle;)V
+; v4 : Lcom/pinterest/activity/PinterestActivity; , v5 : Landroid/os/Bundle;
+.line 23
+	if-nez	v5,ld3992
+; v5 : Landroid/os/Bundle;
+.line 24
+	const-string	v0,"application"
+; v0 : Ljava/lang/String;
+	const-string	v1,"closed"
+; v1 : Ljava/lang/String;
+	const-string	v2,"application closed"
+; v2 : Ljava/lang/String;
+	const/4	v3,0
+; v3 : single-length
+	invoke-static	{v0,v1,v2,v3},com/pinterest/base/Analytics/event	; event(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : single-length
+ld3992:
+.line 26
+	return-void	
+.end method
+
+.method protected onStart()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/activity/PinterestActivity;)
+.line 31
+	invoke-virtual	{v0},com/pinterest/activity/PinterestActivity/init	; init()V
+; v0 : Lcom/pinterest/activity/PinterestActivity;
+.line 32
+	invoke-super	{v0},android/app/Activity/onStart	; onStart()V
+; v0 : Lcom/pinterest/activity/PinterestActivity;
+.line 33
+	return-void	
+.end method
+
+

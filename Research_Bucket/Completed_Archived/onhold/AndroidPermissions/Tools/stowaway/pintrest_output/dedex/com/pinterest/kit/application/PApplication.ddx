@@ -1,0 +1,621 @@
+.class public com/pinterest/kit/application/PApplication
+.super android/app/Application
+.source PApplication.java
+
+.field public static APP_NAME Ljava/lang/String;
+.field private static PERSIST_NAME Ljava/lang/String;
+.field private static context Landroid/content/Context;
+.field private static sCanShowNoInternetToast Z
+.field private static sToastHandler Landroid/os/Handler;
+
+.method static <clinit>()V
+.limit registers 1
+.line 30
+	const-string	v0,"SomeApp"
+; v0 : Ljava/lang/String;
+	sput-object	v0,com/pinterest/kit/application/PApplication.APP_NAME Ljava/lang/String;
+; v0 : Ljava/lang/String;
+.line 80
+	const-string	v0,"pinterest.persist"
+; v0 : Ljava/lang/String;
+	sput-object	v0,com/pinterest/kit/application/PApplication.PERSIST_NAME Ljava/lang/String;
+; v0 : Ljava/lang/String;
+.line 89
+	new-instance	v0,android/os/Handler
+; v0 : Landroid/os/Handler;
+	invoke-direct	{v0},android/os/Handler/<init>	; <init>()V
+; v0 : Landroid/os/Handler;
+	sput-object	v0,com/pinterest/kit/application/PApplication.sToastHandler Landroid/os/Handler;
+; v0 : Landroid/os/Handler;
+.line 90
+	const/4	v0,1
+; v0 : single-length
+	sput-boolean	v0,com/pinterest/kit/application/PApplication.sCanShowNoInternetToast Z
+; v0 : Z
+	return-void	
+.end method
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/kit/application/PApplication;)
+.line 28
+	invoke-direct	{v0},android/app/Application/<init>	; <init>()V
+; v0 : Lcom/pinterest/kit/application/PApplication;
+	return-void	
+.end method
+
+.method static access$002(Z)Z
+.limit registers 1
+; parameter[0] : v0 (Z)
+.line 28
+	sput-boolean	v0,com/pinterest/kit/application/PApplication.sCanShowNoInternetToast Z
+; v0 : Z
+	return	v0
+; v0 : Z
+.end method
+
+.method public static context()Lcom/pinterest/kit/application/PApplication;
+.limit registers 1
+.line 63
+	sget-object	v0,com/pinterest/kit/application/PApplication.context Landroid/content/Context;
+; v0 : Landroid/content/Context;
+	check-cast	v0,com/pinterest/kit/application/PApplication
+; v0 : Lcom/pinterest/kit/application/PApplication;
+	return-object	v0
+; v0 : Lcom/pinterest/kit/application/PApplication;
+.end method
+
+.method public static getPersistPreferences()Landroid/content/SharedPreferences;
+.limit registers 3
+.line 86
+	invoke-static	{},com/pinterest/kit/application/PApplication/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Lcom/pinterest/kit/application/PApplication;
+	sget-object	v1,com/pinterest/kit/application/PApplication.PERSIST_NAME Ljava/lang/String;
+; v1 : Ljava/lang/String;
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v0,v1,v2},com/pinterest/kit/application/PApplication/getSharedPreferences	; getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;
+; v0 : Lcom/pinterest/kit/application/PApplication; , v1 : Ljava/lang/String; , v2 : single-length
+	move-result-object	v0
+; v0 : Landroid/content/SharedPreferences;
+	return-object	v0
+; v0 : Landroid/content/SharedPreferences;
+.end method
+
+.method public static getPreferences()Landroid/content/SharedPreferences;
+.limit registers 3
+.line 77
+	invoke-static	{},com/pinterest/kit/application/PApplication/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Lcom/pinterest/kit/application/PApplication;
+	sget-object	v1,com/pinterest/kit/application/PApplication.APP_NAME Ljava/lang/String;
+; v1 : Ljava/lang/String;
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v0,v1,v2},com/pinterest/kit/application/PApplication/getSharedPreferences	; getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;
+; v0 : Lcom/pinterest/kit/application/PApplication; , v1 : Ljava/lang/String; , v2 : single-length
+	move-result-object	v0
+; v0 : Landroid/content/SharedPreferences;
+	return-object	v0
+; v0 : Landroid/content/SharedPreferences;
+.end method
+
+.method public static showAlert(Landroid/app/Activity;IIILandroid/content/DialogInterface$OnClickListener;)V
+.limit registers 8
+; parameter[0] : v3 (Landroid/app/Activity;)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (I)
+; parameter[3] : v6 (I)
+; parameter[4] : v7 (Landroid/content/DialogInterface$OnClickListener;)
+.line 260
+	invoke-static	{v3},com/pinterest/activity/ActivityHelper/getPinterestDialog	; getPinterestDialog(Landroid/content/Context;)Lcom/pinterest/ui/dialog/PinterestDialog;
+; v3 : Landroid/app/Activity;
+	move-result-object	v0
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog;
+.line 261
+	invoke-virtual	{v0,v4},com/pinterest/ui/dialog/PinterestDialog/setTitle	; setTitle(I)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v4 : single-length
+.line 262
+	invoke-virtual	{v0,v6,v7},com/pinterest/ui/dialog/PinterestDialog/setPositiveButton	; setPositiveButton(ILandroid/content/DialogInterface$OnClickListener;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v6 : single-length , v7 : Landroid/content/DialogInterface$OnClickListener;
+.line 263
+	const	v1,2131427382	; 0x7f0b0036
+; v1 : single-length
+	invoke-virtual	{v3,v1},android/app/Activity/getString	; getString(I)Ljava/lang/String;
+; v3 : Landroid/app/Activity; , v1 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v0,v1,v2},com/pinterest/ui/dialog/PinterestDialog/setNegativeButton	; setNegativeButton(Ljava/lang/String;Landroid/content/DialogInterface$OnClickListener;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v1 : Ljava/lang/String; , v2 : single-length
+.line 264
+	invoke-virtual	{v0,v5},com/pinterest/ui/dialog/PinterestDialog/setMessage	; setMessage(I)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v5 : single-length
+.line 265
+	const/4	v1,1
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/pinterest/ui/dialog/PinterestDialog/setCancelable	; setCancelable(Z)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v1 : single-length
+.line 266
+	invoke-virtual	{v0},com/pinterest/ui/dialog/PinterestDialog/show	; show()V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog;
+.line 267
+	return-void	
+.end method
+
+.method public static showAlert(Landroid/app/Activity;IIILandroid/content/DialogInterface$OnClickListener;ILandroid/content/DialogInterface$OnClickListener;)V
+.limit registers 9
+; parameter[0] : v2 (Landroid/app/Activity;)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+; parameter[3] : v5 (I)
+; parameter[4] : v6 (Landroid/content/DialogInterface$OnClickListener;)
+; parameter[5] : v7 (I)
+; parameter[6] : v8 (Landroid/content/DialogInterface$OnClickListener;)
+.line 279
+	invoke-static	{v2},com/pinterest/activity/ActivityHelper/getPinterestDialog	; getPinterestDialog(Landroid/content/Context;)Lcom/pinterest/ui/dialog/PinterestDialog;
+; v2 : Landroid/app/Activity;
+	move-result-object	v0
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog;
+.line 280
+	invoke-virtual	{v0,v3},com/pinterest/ui/dialog/PinterestDialog/setTitle	; setTitle(I)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v3 : single-length
+.line 281
+	invoke-virtual	{v0,v5,v6},com/pinterest/ui/dialog/PinterestDialog/setPositiveButton	; setPositiveButton(ILandroid/content/DialogInterface$OnClickListener;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v5 : single-length , v6 : Landroid/content/DialogInterface$OnClickListener;
+.line 282
+	invoke-virtual	{v2,v7},android/app/Activity/getString	; getString(I)Ljava/lang/String;
+; v2 : Landroid/app/Activity; , v7 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v8},com/pinterest/ui/dialog/PinterestDialog/setNegativeButton	; setNegativeButton(Ljava/lang/String;Landroid/content/DialogInterface$OnClickListener;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v1 : Ljava/lang/String; , v8 : Landroid/content/DialogInterface$OnClickListener;
+.line 283
+	invoke-virtual	{v0,v4},com/pinterest/ui/dialog/PinterestDialog/setMessage	; setMessage(I)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v4 : single-length
+.line 284
+	const/4	v1,1
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/pinterest/ui/dialog/PinterestDialog/setCancelable	; setCancelable(Z)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v1 : single-length
+.line 285
+	invoke-virtual	{v0},com/pinterest/ui/dialog/PinterestDialog/show	; show()V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog;
+.line 286
+	return-void	
+.end method
+
+.method public static showAlert(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;)V
+.limit registers 6
+; parameter[0] : v3 (Landroid/app/Activity;)
+; parameter[1] : v4 (Ljava/lang/String;)
+; parameter[2] : v5 (Ljava/lang/String;)
+.line 203
+	invoke-static	{v3},com/pinterest/activity/ActivityHelper/getPinterestDialog	; getPinterestDialog(Landroid/content/Context;)Lcom/pinterest/ui/dialog/PinterestDialog;
+; v3 : Landroid/app/Activity;
+	move-result-object	v0
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog;
+.line 204
+	invoke-virtual	{v0,v4},com/pinterest/ui/dialog/PinterestDialog/setTitle	; setTitle(Ljava/lang/CharSequence;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v4 : Ljava/lang/String;
+.line 205
+	const-string	v1,"OK"
+; v1 : Ljava/lang/String;
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v0,v1,v2},com/pinterest/ui/dialog/PinterestDialog/setPositiveButton	; setPositiveButton(Ljava/lang/String;Landroid/content/DialogInterface$OnClickListener;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v1 : Ljava/lang/String; , v2 : single-length
+.line 206
+	invoke-virtual	{v0,v5},com/pinterest/ui/dialog/PinterestDialog/setMessage	; setMessage(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v5 : Ljava/lang/String;
+.line 207
+	const/4	v1,1
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/pinterest/ui/dialog/PinterestDialog/setCancelable	; setCancelable(Z)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v1 : single-length
+.line 208
+	invoke-virtual	{v0},com/pinterest/ui/dialog/PinterestDialog/show	; show()V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog;
+.line 209
+	return-void	
+.end method
+
+.method public static showAlert(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/content/DialogInterface$OnClickListener;)V
+.limit registers 8
+; parameter[0] : v3 (Landroid/app/Activity;)
+; parameter[1] : v4 (Ljava/lang/String;)
+; parameter[2] : v5 (Ljava/lang/String;)
+; parameter[3] : v6 (Ljava/lang/String;)
+; parameter[4] : v7 (Landroid/content/DialogInterface$OnClickListener;)
+.line 221
+	invoke-static	{v3},com/pinterest/activity/ActivityHelper/getPinterestDialog	; getPinterestDialog(Landroid/content/Context;)Lcom/pinterest/ui/dialog/PinterestDialog;
+; v3 : Landroid/app/Activity;
+	move-result-object	v0
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog;
+.line 222
+	invoke-virtual	{v0,v4},com/pinterest/ui/dialog/PinterestDialog/setTitle	; setTitle(Ljava/lang/CharSequence;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v4 : Ljava/lang/String;
+.line 223
+	invoke-virtual	{v0,v6,v7},com/pinterest/ui/dialog/PinterestDialog/setPositiveButton	; setPositiveButton(Ljava/lang/String;Landroid/content/DialogInterface$OnClickListener;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v6 : Ljava/lang/String; , v7 : Landroid/content/DialogInterface$OnClickListener;
+.line 224
+	const-string	v1,"CANCEL"
+; v1 : Ljava/lang/String;
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v0,v1,v2},com/pinterest/ui/dialog/PinterestDialog/setNegativeButton	; setNegativeButton(Ljava/lang/String;Landroid/content/DialogInterface$OnClickListener;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v1 : Ljava/lang/String; , v2 : single-length
+.line 225
+	invoke-virtual	{v0,v5},com/pinterest/ui/dialog/PinterestDialog/setMessage	; setMessage(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v5 : Ljava/lang/String;
+.line 226
+	const/4	v1,1
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/pinterest/ui/dialog/PinterestDialog/setCancelable	; setCancelable(Z)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v1 : single-length
+.line 227
+	invoke-virtual	{v0},com/pinterest/ui/dialog/PinterestDialog/show	; show()V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog;
+.line 228
+	return-void	
+.end method
+
+.method public static showAlert(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/content/DialogInterface$OnClickListener;Ljava/lang/String;Landroid/content/DialogInterface$OnClickListener;)V
+.limit registers 9
+; parameter[0] : v2 (Landroid/app/Activity;)
+; parameter[1] : v3 (Ljava/lang/String;)
+; parameter[2] : v4 (Ljava/lang/String;)
+; parameter[3] : v5 (Ljava/lang/String;)
+; parameter[4] : v6 (Landroid/content/DialogInterface$OnClickListener;)
+; parameter[5] : v7 (Ljava/lang/String;)
+; parameter[6] : v8 (Landroid/content/DialogInterface$OnClickListener;)
+.line 242
+	invoke-static	{v2},com/pinterest/activity/ActivityHelper/getPinterestDialog	; getPinterestDialog(Landroid/content/Context;)Lcom/pinterest/ui/dialog/PinterestDialog;
+; v2 : Landroid/app/Activity;
+	move-result-object	v0
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog;
+.line 243
+	invoke-virtual	{v0,v3},com/pinterest/ui/dialog/PinterestDialog/setTitle	; setTitle(Ljava/lang/CharSequence;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v3 : Ljava/lang/String;
+.line 244
+	invoke-virtual	{v0,v5,v6},com/pinterest/ui/dialog/PinterestDialog/setPositiveButton	; setPositiveButton(Ljava/lang/String;Landroid/content/DialogInterface$OnClickListener;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v5 : Ljava/lang/String; , v6 : Landroid/content/DialogInterface$OnClickListener;
+.line 245
+	invoke-virtual	{v0,v7,v8},com/pinterest/ui/dialog/PinterestDialog/setNegativeButton	; setNegativeButton(Ljava/lang/String;Landroid/content/DialogInterface$OnClickListener;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v7 : Ljava/lang/String; , v8 : Landroid/content/DialogInterface$OnClickListener;
+.line 246
+	invoke-virtual	{v0,v4},com/pinterest/ui/dialog/PinterestDialog/setMessage	; setMessage(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v4 : Ljava/lang/String;
+.line 247
+	const/4	v1,1
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/pinterest/ui/dialog/PinterestDialog/setCancelable	; setCancelable(Z)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v1 : single-length
+.line 248
+	invoke-virtual	{v0},com/pinterest/ui/dialog/PinterestDialog/show	; show()V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog;
+.line 249
+	return-void	
+.end method
+
+.method public static showNoInternetToast()V
+.limit registers 4
+	const/4	v2,0
+; v2 : single-length
+.line 92
+	sget-boolean	v0,com/pinterest/kit/application/PApplication.sCanShowNoInternetToast Z
+; v0 : single-length
+	if-nez	v0,lf4ab4
+; v0 : single-length
+lf4ab2:
+.line 103
+	return-void	
+lf4ab4:
+.line 94
+	const	v0,2131427461	; 0x7f0b0085
+; v0 : single-length
+	const	v1,2130837659	; 0x7f02009b
+; v1 : single-length
+	invoke-static	{v0,v2,v1},com/pinterest/kit/application/PApplication/showToast	; showToast(III)V
+; v0 : single-length , v2 : single-length , v1 : single-length
+.line 95
+	sput-boolean	v2,com/pinterest/kit/application/PApplication.sCanShowNoInternetToast Z
+; v2 : Z
+.line 96
+	sget-object	v0,com/pinterest/kit/application/PApplication.sToastHandler Landroid/os/Handler;
+; v0 : Landroid/os/Handler;
+	new-instance	v1,com/pinterest/kit/application/PApplication$1
+; v1 : Lcom/pinterest/kit/application/PApplication$1;
+	invoke-direct	{v1},com/pinterest/kit/application/PApplication$1/<init>	; <init>()V
+; v1 : Lcom/pinterest/kit/application/PApplication$1;
+	const-wide/16	v2,5000
+; v2 : double-length
+	invoke-virtual	{v0,v1,v2,v3},android/os/Handler/postDelayed	; postDelayed(Ljava/lang/Runnable;J)Z
+; v0 : Landroid/os/Handler; , v1 : Lcom/pinterest/kit/application/PApplication$1; , v2 : double-length
+	goto	lf4ab2
+.end method
+
+.method public static showToast(I)V
+.limit registers 3
+; parameter[0] : v2 (I)
+.line 130
+	const/4	v0,1
+; v0 : single-length
+	const/4	v1,0
+; v1 : single-length
+	invoke-static	{v2,v0,v1},com/pinterest/kit/application/PApplication/showToast	; showToast(III)V
+; v2 : single-length , v0 : single-length , v1 : single-length
+.line 131
+	return-void	
+.end method
+
+.method public static showToast(II)V
+.limit registers 3
+; parameter[0] : v1 (I)
+; parameter[1] : v2 (I)
+.line 140
+	const/4	v0,1
+; v0 : single-length
+	invoke-static	{v1,v0,v2},com/pinterest/kit/application/PApplication/showToast	; showToast(III)V
+; v1 : single-length , v0 : single-length , v2 : single-length
+.line 141
+	return-void	
+.end method
+
+.method public static showToast(III)V
+.limit registers 4
+; parameter[0] : v1 (I)
+; parameter[1] : v2 (I)
+; parameter[2] : v3 (I)
+.line 151
+	const/16	v0,17
+; v0 : single-length
+	invoke-static	{v1,v2,v3,v0},com/pinterest/kit/application/PApplication/showToast	; showToast(IIII)V
+; v1 : single-length , v2 : single-length , v3 : single-length , v0 : single-length
+.line 152
+	return-void	
+.end method
+
+.method public static showToast(IIII)V
+.limit registers 6
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+; parameter[3] : v5 (I)
+.line 163
+	invoke-static	{},com/pinterest/kit/application/PApplication/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Lcom/pinterest/kit/application/PApplication;
+	invoke-virtual	{v1,v2},com/pinterest/kit/application/PApplication/getString	; getString(I)Ljava/lang/String;
+; v1 : Lcom/pinterest/kit/application/PApplication; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 164
+	invoke-static	{v0,v3,v4,v5},com/pinterest/kit/application/PApplication/showToast	; showToast(Ljava/lang/String;III)V
+; v0 : Ljava/lang/String; , v3 : single-length , v4 : single-length , v5 : single-length
+.line 165
+	return-void	
+.end method
+
+.method public static showToast(Ljava/lang/String;)V
+.limit registers 4
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 111
+	const/4	v0,1
+; v0 : single-length
+	const/4	v1,0
+; v1 : single-length
+	const/16	v2,17
+; v2 : single-length
+	invoke-static	{v3,v0,v1,v2},com/pinterest/kit/application/PApplication/showToast	; showToast(Ljava/lang/String;III)V
+; v3 : Ljava/lang/String; , v0 : single-length , v1 : single-length , v2 : single-length
+.line 112
+	return-void	
+.end method
+
+.method public static showToast(Ljava/lang/String;I)V
+.limit registers 4
+; parameter[0] : v2 (Ljava/lang/String;)
+; parameter[1] : v3 (I)
+.line 121
+	const/4	v0,1
+; v0 : single-length
+	const/16	v1,17
+; v1 : single-length
+	invoke-static	{v2,v0,v3,v1},com/pinterest/kit/application/PApplication/showToast	; showToast(Ljava/lang/String;III)V
+; v2 : Ljava/lang/String; , v0 : single-length , v3 : single-length , v1 : single-length
+.line 122
+	return-void	
+.end method
+
+.method public static showToast(Ljava/lang/String;III)V
+.limit registers 11
+; parameter[0] : v7 (Ljava/lang/String;)
+; parameter[1] : v8 (I)
+; parameter[2] : v9 (I)
+; parameter[3] : v10 (I)
+.var 0 is toast Landroid/widget/Toast; from lf4c44 to lf4c5c
+.var 1 is toastView Landroid/view/View; from lf4bf2 to lf4c5c
+	const	v6,2131099695	; 0x7f06002f
+; v6 : single-length
+	const/4	v5,0
+; v5 : single-length
+.line 176
+	if-eqz	v7,lf4c5c
+; v7 : Ljava/lang/String;
+	const-string	v2,""
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v7,v2},java/lang/String/equalsIgnoreCase	; equalsIgnoreCase(Ljava/lang/String;)Z
+; v7 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-nez	v2,lf4c5c
+; v2 : single-length
+.line 178
+	invoke-static	{v7},com/pinterest/base/Analytics/showToast	; showToast(Ljava/lang/String;)V
+; v7 : Ljava/lang/String;
+.line 180
+	invoke-static	{},com/pinterest/kit/application/PApplication/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v2
+; v2 : Lcom/pinterest/kit/application/PApplication;
+	invoke-static	{v2},android/view/LayoutInflater/from	; from(Landroid/content/Context;)Landroid/view/LayoutInflater;
+; v2 : Lcom/pinterest/kit/application/PApplication;
+	move-result-object	v2
+; v2 : Landroid/view/LayoutInflater;
+	const	v3,2130903164	; 0x7f03007c
+; v3 : single-length
+	const/4	v4,0
+; v4 : single-length
+	invoke-virtual	{v2,v3,v4},android/view/LayoutInflater/inflate	; inflate(ILandroid/view/ViewGroup;)Landroid/view/View;
+; v2 : Landroid/view/LayoutInflater; , v3 : single-length , v4 : single-length
+	move-result-object	v1
+; v1 : Landroid/view/View;
+.line 181
+	const	v2,2131099690	; 0x7f06002a
+; v2 : single-length
+	invoke-virtual	{v1,v2},android/view/View/findViewById	; findViewById(I)Landroid/view/View;
+; v1 : Landroid/view/View; , v2 : single-length
+	move-result-object	v2
+; v2 : Landroid/view/View;
+	check-cast	v2,android/widget/TextView
+; v2 : Landroid/widget/TextView;
+	invoke-virtual	{v2,v7},android/widget/TextView/setText	; setText(Ljava/lang/CharSequence;)V
+; v2 : Landroid/widget/TextView; , v7 : Ljava/lang/String;
+.line 182
+	if-eqz	v9,lf4c32
+; v9 : single-length
+.line 184
+	invoke-virtual	{v1,v6},android/view/View/findViewById	; findViewById(I)Landroid/view/View;
+; v1 : Landroid/view/View; , v6 : single-length
+	move-result-object	v2
+; v2 : Landroid/view/View;
+	check-cast	v2,android/widget/ImageView
+; v2 : Landroid/widget/ImageView;
+	invoke-virtual	{v2,v9},android/widget/ImageView/setImageResource	; setImageResource(I)V
+; v2 : Landroid/widget/ImageView; , v9 : single-length
+.line 185
+	invoke-virtual	{v1,v6},android/view/View/findViewById	; findViewById(I)Landroid/view/View;
+; v1 : Landroid/view/View; , v6 : single-length
+	move-result-object	v2
+; v2 : Landroid/view/View;
+	check-cast	v2,android/widget/ImageView
+; v2 : Landroid/widget/ImageView;
+	invoke-virtual	{v2,v5},android/widget/ImageView/setVisibility	; setVisibility(I)V
+; v2 : Landroid/widget/ImageView; , v5 : single-length
+lf4c32:
+.line 188
+	new-instance	v0,android/widget/Toast
+; v0 : Landroid/widget/Toast;
+	invoke-static	{},com/pinterest/kit/application/PApplication/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v2
+; v2 : Lcom/pinterest/kit/application/PApplication;
+	invoke-direct	{v0,v2},android/widget/Toast/<init>	; <init>(Landroid/content/Context;)V
+; v0 : Landroid/widget/Toast; , v2 : Lcom/pinterest/kit/application/PApplication;
+.line 189
+	invoke-virtual	{v0,v10,v5,v5},android/widget/Toast/setGravity	; setGravity(III)V
+; v0 : Landroid/widget/Toast; , v10 : single-length , v5 : single-length , v5 : single-length
+.line 190
+	invoke-virtual	{v0,v1},android/widget/Toast/setView	; setView(Landroid/view/View;)V
+; v0 : Landroid/widget/Toast; , v1 : Landroid/view/View;
+.line 191
+	invoke-virtual	{v0,v8},android/widget/Toast/setDuration	; setDuration(I)V
+; v0 : Landroid/widget/Toast; , v8 : single-length
+.line 192
+	invoke-virtual	{v0},android/widget/Toast/show	; show()V
+; v0 : Landroid/widget/Toast;
+lf4c5c:
+.line 194
+	return-void	
+.end method
+
+.method public static string(I)Ljava/lang/String;
+.limit registers 2
+; parameter[0] : v1 (I)
+.line 68
+	invoke-static	{},com/pinterest/kit/application/PApplication/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Lcom/pinterest/kit/application/PApplication;
+	invoke-virtual	{v0,v1},com/pinterest/kit/application/PApplication/getString	; getString(I)Ljava/lang/String;
+; v0 : Lcom/pinterest/kit/application/PApplication; , v1 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method protected init()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/kit/application/PApplication;)
+.line 45
+	invoke-static	{},com/pinterest/kit/utils/PConstants/init	; init()V
+; 
+	nop	
+.line 46
+	return-void	
+.end method
+
+.method public onCreate()V
+.limit registers 3
+; this: v2 (Lcom/pinterest/kit/application/PApplication;)
+.line 37
+	invoke-super	{v2},android/app/Application/onCreate	; onCreate()V
+; v2 : Lcom/pinterest/kit/application/PApplication;
+.line 38
+	invoke-virtual	{v2},com/pinterest/kit/application/PApplication/getApplicationContext	; getApplicationContext()Landroid/content/Context;
+; v2 : Lcom/pinterest/kit/application/PApplication;
+	move-result-object	v0
+; v0 : Landroid/content/Context;
+	sput-object	v0,com/pinterest/kit/application/PApplication.context Landroid/content/Context;
+; v0 : Landroid/content/Context;
+.line 39
+	sget-object	v0,com/pinterest/kit/application/PApplication.context Landroid/content/Context;
+; v0 : Landroid/content/Context;
+	const	v1,2131427375	; 0x7f0b002f
+; v1 : single-length
+	invoke-virtual	{v0,v1},android/content/Context/getString	; getString(I)Ljava/lang/String;
+; v0 : Landroid/content/Context; , v1 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	sput-object	v0,com/pinterest/kit/application/PApplication.APP_NAME Ljava/lang/String;
+; v0 : Ljava/lang/String;
+.line 40
+	invoke-virtual	{v2},com/pinterest/kit/application/PApplication/init	; init()V
+; v2 : Lcom/pinterest/kit/application/PApplication;
+.line 41
+	return-void	
+.end method
+
+.method public unregisterReceiver(Landroid/content/BroadcastReceiver;)V
+.limit registers 3
+; this: v1 (Lcom/pinterest/kit/application/PApplication;)
+; parameter[0] : v2 (Landroid/content/BroadcastReceiver;)
+.catch java/lang/IllegalArgumentException from lf4cec to lf4cf2 using lf4cf4
+lf4cec:
+.line 53
+	invoke-super	{v1,v2},android/app/Application/unregisterReceiver	; unregisterReceiver(Landroid/content/BroadcastReceiver;)V
+; v1 : Lcom/pinterest/kit/application/PApplication; , v2 : Landroid/content/BroadcastReceiver;
+lf4cf2:
+.line 56
+	return-void	
+lf4cf4:
+.line 55
+	move-exception	v0
+; v0 : java/lang/IllegalArgumentException
+	goto	lf4cf2
+.end method
+
+

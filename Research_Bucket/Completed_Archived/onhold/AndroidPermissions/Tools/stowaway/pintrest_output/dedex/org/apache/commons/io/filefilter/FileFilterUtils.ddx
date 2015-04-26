@@ -1,0 +1,966 @@
+.class public org/apache/commons/io/filefilter/FileFilterUtils
+.super java/lang/Object
+.source FileFilterUtils.java
+
+.field private static final cvsFilter Lorg/apache/commons/io/filefilter/IOFileFilter;
+.field private static final svnFilter Lorg/apache/commons/io/filefilter/IOFileFilter;
+
+.method static <clinit>()V
+.limit registers 5
+	const/4	v4,2
+; v4 : single-length
+	const/4	v3,1
+; v3 : single-length
+	const/4	v2,0
+; v2 : single-length
+.line 729
+	new-array	v0,v4,[Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v4 : single-length
+	invoke-static	{},org/apache/commons/io/filefilter/FileFilterUtils/directoryFileFilter	; directoryFileFilter()Lorg/apache/commons/io/filefilter/IOFileFilter;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	aput-object	v1,v0,v2
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v2 : single-length
+	const-string	v1,"CVS"
+; v1 : Ljava/lang/String;
+	invoke-static	{v1},org/apache/commons/io/filefilter/FileFilterUtils/nameFileFilter	; nameFileFilter(Ljava/lang/String;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v1 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	aput-object	v1,v0,v3
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v3 : single-length
+	invoke-static	{v0},org/apache/commons/io/filefilter/FileFilterUtils/and	; and([Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	invoke-static	{v0},org/apache/commons/io/filefilter/FileFilterUtils/notFileFilter	; notFileFilter(Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	sput-object	v0,org/apache/commons/io/filefilter/FileFilterUtils.cvsFilter Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 733
+	new-array	v0,v4,[Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v4 : single-length
+	invoke-static	{},org/apache/commons/io/filefilter/FileFilterUtils/directoryFileFilter	; directoryFileFilter()Lorg/apache/commons/io/filefilter/IOFileFilter;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	aput-object	v1,v0,v2
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v2 : single-length
+	const-string	v1,".svn"
+; v1 : Ljava/lang/String;
+	invoke-static	{v1},org/apache/commons/io/filefilter/FileFilterUtils/nameFileFilter	; nameFileFilter(Ljava/lang/String;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v1 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	aput-object	v1,v0,v3
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v3 : single-length
+	invoke-static	{v0},org/apache/commons/io/filefilter/FileFilterUtils/and	; and([Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	invoke-static	{v0},org/apache/commons/io/filefilter/FileFilterUtils/notFileFilter	; notFileFilter(Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	sput-object	v0,org/apache/commons/io/filefilter/FileFilterUtils.svnFilter Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	return-void	
+.end method
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/io/filefilter/FileFilterUtils;)
+.line 50
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/filefilter/FileFilterUtils;
+.line 51
+	return-void	
+.end method
+
+.method public static ageFileFilter(J)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 3
+; parameter[0] : v1 (J)
+.line 535
+	new-instance	v0,org/apache/commons/io/filefilter/AgeFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter;
+	invoke-direct	{v0,v1,v2},org/apache/commons/io/filefilter/AgeFileFilter/<init>	; <init>(J)V
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter; , v1 : double-length
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter;
+.end method
+
+.method public static ageFileFilter(JZ)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 4
+; parameter[0] : v1 (J)
+; parameter[1] : v3 (Z)
+.line 548
+	new-instance	v0,org/apache/commons/io/filefilter/AgeFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter;
+	invoke-direct	{v0,v1,v2,v3},org/apache/commons/io/filefilter/AgeFileFilter/<init>	; <init>(JZ)V
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter; , v1 : double-length , v3 : single-length
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter;
+.end method
+
+.method public static ageFileFilter(Ljava/io/File;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 2
+; parameter[0] : v1 (Ljava/io/File;)
+.line 588
+	new-instance	v0,org/apache/commons/io/filefilter/AgeFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/AgeFileFilter/<init>	; <init>(Ljava/io/File;)V
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter; , v1 : Ljava/io/File;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter;
+.end method
+
+.method public static ageFileFilter(Ljava/io/File;Z)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 3
+; parameter[0] : v1 (Ljava/io/File;)
+; parameter[1] : v2 (Z)
+.line 602
+	new-instance	v0,org/apache/commons/io/filefilter/AgeFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter;
+	invoke-direct	{v0,v1,v2},org/apache/commons/io/filefilter/AgeFileFilter/<init>	; <init>(Ljava/io/File;Z)V
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter; , v1 : Ljava/io/File; , v2 : single-length
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter;
+.end method
+
+.method public static ageFileFilter(Ljava/util/Date;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 2
+; parameter[0] : v1 (Ljava/util/Date;)
+.line 561
+	new-instance	v0,org/apache/commons/io/filefilter/AgeFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/AgeFileFilter/<init>	; <init>(Ljava/util/Date;)V
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter; , v1 : Ljava/util/Date;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter;
+.end method
+
+.method public static ageFileFilter(Ljava/util/Date;Z)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 3
+; parameter[0] : v1 (Ljava/util/Date;)
+; parameter[1] : v2 (Z)
+.line 574
+	new-instance	v0,org/apache/commons/io/filefilter/AgeFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter;
+	invoke-direct	{v0,v1,v2},org/apache/commons/io/filefilter/AgeFileFilter/<init>	; <init>(Ljava/util/Date;Z)V
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter; , v1 : Ljava/util/Date; , v2 : single-length
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/AgeFileFilter;
+.end method
+
+.method public static and([Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 3
+; parameter[0] : v2 ([Lorg/apache/commons/io/filefilter/IOFileFilter;)
+.line 426
+	new-instance	v0,org/apache/commons/io/filefilter/AndFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/AndFileFilter;
+	invoke-static	{v2},org/apache/commons/io/filefilter/FileFilterUtils/toList	; toList([Lorg/apache/commons/io/filefilter/IOFileFilter;)Ljava/util/List;
+; v2 : [Lorg/apache/commons/io/filefilter/IOFileFilter;
+	move-result-object	v1
+; v1 : Ljava/util/List;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/AndFileFilter/<init>	; <init>(Ljava/util/List;)V
+; v0 : Lorg/apache/commons/io/filefilter/AndFileFilter; , v1 : Ljava/util/List;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/AndFileFilter;
+.end method
+
+.method public static andFileFilter(Lorg/apache/commons/io/filefilter/IOFileFilter;Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.annotation runtimeVisibility Ljava/lang/Deprecated;
+.end annotation
+.limit registers 3
+; parameter[0] : v1 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+; parameter[1] : v2 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+.line 396
+	new-instance	v0,org/apache/commons/io/filefilter/AndFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/AndFileFilter;
+	invoke-direct	{v0,v1,v2},org/apache/commons/io/filefilter/AndFileFilter/<init>	; <init>(Lorg/apache/commons/io/filefilter/IOFileFilter;Lorg/apache/commons/io/filefilter/IOFileFilter;)V
+; v0 : Lorg/apache/commons/io/filefilter/AndFileFilter; , v1 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v2 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/AndFileFilter;
+.end method
+
+.method public static asFileFilter(Ljava/io/FileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 2
+; parameter[0] : v1 (Ljava/io/FileFilter;)
+.line 509
+	new-instance	v0,org/apache/commons/io/filefilter/DelegateFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/DelegateFileFilter/<init>	; <init>(Ljava/io/FileFilter;)V
+; v0 : Lorg/apache/commons/io/filefilter/DelegateFileFilter; , v1 : Ljava/io/FileFilter;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+.end method
+
+.method public static asFileFilter(Ljava/io/FilenameFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 2
+; parameter[0] : v1 (Ljava/io/FilenameFilter;)
+.line 521
+	new-instance	v0,org/apache/commons/io/filefilter/DelegateFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/DelegateFileFilter/<init>	; <init>(Ljava/io/FilenameFilter;)V
+; v0 : Lorg/apache/commons/io/filefilter/DelegateFileFilter; , v1 : Ljava/io/FilenameFilter;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+.end method
+
+.method public static directoryFileFilter()Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 1
+.line 370
+	sget-object	v0,org/apache/commons/io/filefilter/DirectoryFileFilter.DIRECTORY Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.end method
+
+.method public static falseFileFilter()Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 1
+.line 496
+	sget-object	v0,org/apache/commons/io/filefilter/FalseFileFilter.FALSE Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.end method
+
+.method public static fileFileFilter()Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 1
+.line 380
+	sget-object	v0,org/apache/commons/io/filefilter/FileFileFilter.FILE Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.end method
+
+.method private static filter(Lorg/apache/commons/io/filefilter/IOFileFilter;Ljava/lang/Iterable;Ljava/util/Collection;)Ljava/util/Collection;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/io/filefilter/IOFileFilter;" , "Ljava/lang/Iterable" , "<" , "Ljava/io/File;" , ">;)[" , "Ljava/io/File;" }
+.end annotation
+.limit registers 7
+; parameter[0] : v4 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+; parameter[1] : v5 (Ljava/lang/Iterable;)
+; parameter[2] : v6 (Ljava/util/Collection;)
+.var 0 is file Ljava/io/File; from l118978 to l1189a0
+.var 1 is i$ Ljava/util/Iterator; from l118960 to l1189a0
+.line 275
+	if-nez	v4,l118954
+; v4 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 276
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	const-string	v3,"file filter is null"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+l118954:
+.line 278
+	if-eqz	v5,l1189a0
+; v5 : Ljava/lang/Iterable;
+.line 279
+	invoke-interface	{v5},java/lang/Iterable/iterator	; iterator()Ljava/util/Iterator;
+; v5 : Ljava/lang/Iterable;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+l118960:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,l1189a0
+; v2 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/io/File
+; v0 : Ljava/io/File;
+.line 280
+	if-nez	v0,l11898c
+; v0 : Ljava/io/File;
+.line 281
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	const-string	v3,"file collection contains null"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+l11898c:
+.line 283
+	invoke-interface	{v4,v0},org/apache/commons/io/filefilter/IOFileFilter/accept	; accept(Ljava/io/File;)Z
+; v4 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : Ljava/io/File;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,l118960
+; v2 : single-length
+.line 284
+	invoke-interface	{v6,v0},java/util/Collection/add	; add(Ljava/lang/Object;)Z
+; v6 : Ljava/util/Collection; , v0 : Ljava/io/File;
+	goto	l118960
+l1189a0:
+.line 288
+	return-object	v6
+; v6 : Ljava/util/Collection;
+.end method
+
+.method public static filter(Lorg/apache/commons/io/filefilter/IOFileFilter;Ljava/lang/Iterable;)[Ljava/io/File;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/io/filefilter/IOFileFilter;" , "Ljava/lang/Iterable" , "<" , "Ljava/io/File;" , ">;)[" , "Ljava/io/File;" }
+.end annotation
+.limit registers 4
+; parameter[0] : v2 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+; parameter[1] : v3 (Ljava/lang/Iterable;)
+.line 127
+	invoke-static	{v2,v3},org/apache/commons/io/filefilter/FileFilterUtils/filterList	; filterList(Lorg/apache/commons/io/filefilter/IOFileFilter;Ljava/lang/Iterable;)Ljava/util/List;
+; v2 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v3 : Ljava/lang/Iterable;
+	move-result-object	v0
+; v0 : Ljava/util/List;
+.line 128
+	invoke-interface	{v0},java/util/List/size	; size()I
+; v0 : Ljava/util/List;
+	move-result	v1
+; v1 : single-length
+	new-array	v1,v1,[Ljava/io/File;
+; v1 : [Ljava/io/File; , v1 : [Ljava/io/File;
+	invoke-interface	{v0,v1},java/util/List/toArray	; toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+; v0 : Ljava/util/List; , v1 : [Ljava/io/File;
+	move-result-object	v1
+; v1 : [Ljava/lang/Object;
+	check-cast	v1,[Ljava/io/File
+; v1 : [Ljava/io/File
+	return-object	v1
+; v1 : [Ljava/io/File
+.end method
+
+.method public static filter(Lorg/apache/commons/io/filefilter/IOFileFilter;[Ljava/io/File;)[Ljava/io/File;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/io/filefilter/IOFileFilter;" , "Ljava/lang/Iterable" , "<" , "Ljava/io/File;" , ">;)[" , "Ljava/io/File;" }
+.end annotation
+.limit registers 9
+; parameter[0] : v7 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+; parameter[1] : v8 ([Ljava/io/File;)
+.var 2 is file Ljava/io/File; from l118a20 to l118a4c
+.line 82
+	if-nez	v7,l1189fc
+; v7 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 83
+	new-instance	v5,java/lang/IllegalArgumentException
+; v5 : Ljava/lang/IllegalArgumentException;
+	const-string	v6,"file filter is null"
+; v6 : Ljava/lang/String;
+	invoke-direct	{v5,v6},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v5 : Ljava/lang/IllegalArgumentException; , v6 : Ljava/lang/String;
+	throw	v5
+; v5 : Ljava/lang/IllegalArgumentException;
+l1189fc:
+.line 85
+	if-nez	v8,l118a08
+; v8 : [Ljava/io/File;
+.line 86
+	const/4	v5,0
+; v5 : single-length
+	new-array	v5,v5,[Ljava/io/File;
+; v5 : [Ljava/io/File; , v5 : [Ljava/io/File;
+l118a06:
+.line 97
+	return-object	v5
+; v5 : [Ljava/io/File
+l118a08:
+.line 88
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+.line 89
+	move-object	v1,v8
+; v1 : [Ljava/io/File; , v8 : [Ljava/io/File;
+	array-length	v4,v1
+; v4 : single-length , v1 : [Ljava/io/File;
+	const/4	v3,0
+; v3 : single-length
+l118a18:
+	if-ge	v3,v4,l118a4c
+; v3 : single-length , v4 : single-length
+	aget-object	v2,v1,v3
+; v2 : Ljava/io/File; , v1 : [Ljava/io/File; , v3 : single-length
+.line 90
+	if-nez	v2,l118a34
+; v2 : Ljava/io/File;
+.line 91
+	new-instance	v5,java/lang/IllegalArgumentException
+; v5 : Ljava/lang/IllegalArgumentException;
+	const-string	v6,"file array contains null"
+; v6 : Ljava/lang/String;
+	invoke-direct	{v5,v6},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v5 : Ljava/lang/IllegalArgumentException; , v6 : Ljava/lang/String;
+	throw	v5
+; v5 : Ljava/lang/IllegalArgumentException;
+l118a34:
+.line 93
+	invoke-interface	{v7,v2},org/apache/commons/io/filefilter/IOFileFilter/accept	; accept(Ljava/io/File;)Z
+; v7 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v2 : Ljava/io/File;
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l118a46
+; v5 : single-length
+.line 94
+	invoke-interface	{v0,v2},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v0 : Ljava/util/ArrayList; , v2 : Ljava/io/File;
+l118a46:
+.line 89
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	l118a18
+l118a4c:
+.line 97
+	invoke-interface	{v0},java/util/List/size	; size()I
+; v0 : Ljava/util/ArrayList;
+	move-result	v5
+; v5 : single-length
+	new-array	v5,v5,[Ljava/io/File;
+; v5 : [Ljava/io/File; , v5 : [Ljava/io/File;
+	invoke-interface	{v0,v5},java/util/List/toArray	; toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+; v0 : Ljava/util/ArrayList; , v5 : [Ljava/io/File;
+	move-result-object	v5
+; v5 : [Ljava/lang/Object;
+	check-cast	v5,[Ljava/io/File
+; v5 : [Ljava/io/File
+	goto	l118a06
+.end method
+
+.method public static filterList(Lorg/apache/commons/io/filefilter/IOFileFilter;Ljava/lang/Iterable;)Ljava/util/List;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/io/filefilter/IOFileFilter;" , "[" , "Ljava/io/File;" , ")" , "Ljava/util/List" , "<" , "Ljava/io/File;" , ">;" }
+.end annotation
+.limit registers 3
+; parameter[0] : v1 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+; parameter[1] : v2 (Ljava/lang/Iterable;)
+.line 157
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+	invoke-static	{v1,v2,v0},org/apache/commons/io/filefilter/FileFilterUtils/filter	; filter(Lorg/apache/commons/io/filefilter/IOFileFilter;Ljava/lang/Iterable;Ljava/util/Collection;)Ljava/util/Collection;
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v2 : Ljava/lang/Iterable; , v0 : Ljava/util/ArrayList;
+	move-result-object	v0
+; v0 : Ljava/util/Collection;
+	check-cast	v0,java/util/List
+; v0 : Ljava/util/List;
+	return-object	v0
+; v0 : Ljava/util/List;
+.end method
+
+.method public static filterList(Lorg/apache/commons/io/filefilter/IOFileFilter;[Ljava/io/File;)Ljava/util/List;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/io/filefilter/IOFileFilter;" , "[" , "Ljava/io/File;" , ")" , "Ljava/util/List" , "<" , "Ljava/io/File;" , ">;" }
+.end annotation
+.limit registers 4
+; parameter[0] : v2 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+; parameter[1] : v3 ([Ljava/io/File;)
+.line 186
+	invoke-static	{v2,v3},org/apache/commons/io/filefilter/FileFilterUtils/filter	; filter(Lorg/apache/commons/io/filefilter/IOFileFilter;[Ljava/io/File;)[Ljava/io/File;
+; v2 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v3 : [Ljava/io/File;
+	move-result-object	v0
+; v0 : [Ljava/io/File;
+.line 187
+	invoke-static	{v0},java/util/Arrays/asList	; asList([Ljava/lang/Object;)Ljava/util/List;
+; v0 : [Ljava/io/File;
+	move-result-object	v1
+; v1 : Ljava/util/List;
+	return-object	v1
+; v1 : Ljava/util/List;
+.end method
+
+.method public static filterSet(Lorg/apache/commons/io/filefilter/IOFileFilter;Ljava/lang/Iterable;)Ljava/util/Set;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/io/filefilter/IOFileFilter;" , "[" , "Ljava/io/File;" , ")" , "Ljava/util/Set" , "<" , "Ljava/io/File;" , ">;" }
+.end annotation
+.limit registers 3
+; parameter[0] : v1 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+; parameter[1] : v2 (Ljava/lang/Iterable;)
+.line 248
+	new-instance	v0,java/util/HashSet
+; v0 : Ljava/util/HashSet;
+	invoke-direct	{v0},java/util/HashSet/<init>	; <init>()V
+; v0 : Ljava/util/HashSet;
+	invoke-static	{v1,v2,v0},org/apache/commons/io/filefilter/FileFilterUtils/filter	; filter(Lorg/apache/commons/io/filefilter/IOFileFilter;Ljava/lang/Iterable;Ljava/util/Collection;)Ljava/util/Collection;
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v2 : Ljava/lang/Iterable; , v0 : Ljava/util/HashSet;
+	move-result-object	v0
+; v0 : Ljava/util/Collection;
+	check-cast	v0,java/util/Set
+; v0 : Ljava/util/Set;
+	return-object	v0
+; v0 : Ljava/util/Set;
+.end method
+
+.method public static filterSet(Lorg/apache/commons/io/filefilter/IOFileFilter;[Ljava/io/File;)Ljava/util/Set;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/io/filefilter/IOFileFilter;" , "[" , "Ljava/io/File;" , ")" , "Ljava/util/Set" , "<" , "Ljava/io/File;" , ">;" }
+.end annotation
+.limit registers 5
+; parameter[0] : v3 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+; parameter[1] : v4 ([Ljava/io/File;)
+.line 217
+	invoke-static	{v3,v4},org/apache/commons/io/filefilter/FileFilterUtils/filter	; filter(Lorg/apache/commons/io/filefilter/IOFileFilter;[Ljava/io/File;)[Ljava/io/File;
+; v3 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v4 : [Ljava/io/File;
+	move-result-object	v0
+; v0 : [Ljava/io/File;
+.line 218
+	new-instance	v1,java/util/HashSet
+; v1 : Ljava/util/HashSet;
+	invoke-static	{v0},java/util/Arrays/asList	; asList([Ljava/lang/Object;)Ljava/util/List;
+; v0 : [Ljava/io/File;
+	move-result-object	v2
+; v2 : Ljava/util/List;
+	invoke-direct	{v1,v2},java/util/HashSet/<init>	; <init>(Ljava/util/Collection;)V
+; v1 : Ljava/util/HashSet; , v2 : Ljava/util/List;
+	return-object	v1
+; v1 : Ljava/util/HashSet;
+.end method
+
+.method public static magicNumberFileFilter(Ljava/lang/String;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 663
+	new-instance	v0,org/apache/commons/io/filefilter/MagicNumberFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/MagicNumberFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/MagicNumberFileFilter/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/io/filefilter/MagicNumberFileFilter; , v1 : Ljava/lang/String;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/MagicNumberFileFilter;
+.end method
+
+.method public static magicNumberFileFilter(Ljava/lang/String;J)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 4
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (J)
+.line 684
+	new-instance	v0,org/apache/commons/io/filefilter/MagicNumberFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/MagicNumberFileFilter;
+	invoke-direct	{v0,v1,v2,v3},org/apache/commons/io/filefilter/MagicNumberFileFilter/<init>	; <init>(Ljava/lang/String;J)V
+; v0 : Lorg/apache/commons/io/filefilter/MagicNumberFileFilter; , v1 : Ljava/lang/String; , v2 : double-length
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/MagicNumberFileFilter;
+.end method
+
+.method public static magicNumberFileFilter([B)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 2
+; parameter[0] : v1 ([B)
+.line 703
+	new-instance	v0,org/apache/commons/io/filefilter/MagicNumberFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/MagicNumberFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/MagicNumberFileFilter/<init>	; <init>([B)V
+; v0 : Lorg/apache/commons/io/filefilter/MagicNumberFileFilter; , v1 : [B
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/MagicNumberFileFilter;
+.end method
+
+.method public static magicNumberFileFilter([BJ)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 4
+; parameter[0] : v1 ([B)
+; parameter[1] : v2 (J)
+.line 724
+	new-instance	v0,org/apache/commons/io/filefilter/MagicNumberFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/MagicNumberFileFilter;
+	invoke-direct	{v0,v1,v2,v3},org/apache/commons/io/filefilter/MagicNumberFileFilter/<init>	; <init>([BJ)V
+; v0 : Lorg/apache/commons/io/filefilter/MagicNumberFileFilter; , v1 : [B , v2 : double-length
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/MagicNumberFileFilter;
+.end method
+
+.method public static makeCVSAware(Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 4
+; parameter[0] : v3 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+.line 746
+	if-nez	v3,l118b92
+; v3 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 747
+	sget-object	v0,org/apache/commons/io/filefilter/FileFilterUtils.cvsFilter Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+l118b90:
+.line 749
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+l118b92:
+	const/4	v0,2
+; v0 : single-length
+	new-array	v0,v0,[Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter;
+	const/4	v1,0
+; v1 : single-length
+	aput-object	v3,v0,v1
+; v3 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v1 : single-length
+	const/4	v1,1
+; v1 : single-length
+	sget-object	v2,org/apache/commons/io/filefilter/FileFilterUtils.cvsFilter Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v2 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	aput-object	v2,v0,v1
+; v2 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v1 : single-length
+	invoke-static	{v0},org/apache/commons/io/filefilter/FileFilterUtils/and	; and([Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	goto	l118b90
+.end method
+
+.method public static makeDirectoryOnly(Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 3
+; parameter[0] : v2 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+.line 780
+	if-nez	v2,l118bce
+; v2 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 781
+	sget-object	v0,org/apache/commons/io/filefilter/DirectoryFileFilter.DIRECTORY Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+l118bcc:
+.line 783
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/AndFileFilter;
+l118bce:
+	new-instance	v0,org/apache/commons/io/filefilter/AndFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/AndFileFilter;
+	sget-object	v1,org/apache/commons/io/filefilter/DirectoryFileFilter.DIRECTORY Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	invoke-direct	{v0,v1,v2},org/apache/commons/io/filefilter/AndFileFilter/<init>	; <init>(Lorg/apache/commons/io/filefilter/IOFileFilter;Lorg/apache/commons/io/filefilter/IOFileFilter;)V
+; v0 : Lorg/apache/commons/io/filefilter/AndFileFilter; , v1 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v2 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	goto	l118bcc
+.end method
+
+.method public static makeFileOnly(Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 3
+; parameter[0] : v2 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+.line 795
+	if-nez	v2,l118bfa
+; v2 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 796
+	sget-object	v0,org/apache/commons/io/filefilter/FileFileFilter.FILE Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+l118bf8:
+.line 798
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/AndFileFilter;
+l118bfa:
+	new-instance	v0,org/apache/commons/io/filefilter/AndFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/AndFileFilter;
+	sget-object	v1,org/apache/commons/io/filefilter/FileFileFilter.FILE Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	invoke-direct	{v0,v1,v2},org/apache/commons/io/filefilter/AndFileFilter/<init>	; <init>(Lorg/apache/commons/io/filefilter/IOFileFilter;Lorg/apache/commons/io/filefilter/IOFileFilter;)V
+; v0 : Lorg/apache/commons/io/filefilter/AndFileFilter; , v1 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v2 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	goto	l118bf8
+.end method
+
+.method public static makeSVNAware(Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 4
+; parameter[0] : v3 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+.line 763
+	if-nez	v3,l118c26
+; v3 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 764
+	sget-object	v0,org/apache/commons/io/filefilter/FileFilterUtils.svnFilter Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+l118c24:
+.line 766
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+l118c26:
+	const/4	v0,2
+; v0 : single-length
+	new-array	v0,v0,[Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter;
+	const/4	v1,0
+; v1 : single-length
+	aput-object	v3,v0,v1
+; v3 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v1 : single-length
+	const/4	v1,1
+; v1 : single-length
+	sget-object	v2,org/apache/commons/io/filefilter/FileFilterUtils.svnFilter Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v2 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	aput-object	v2,v0,v1
+; v2 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v1 : single-length
+	invoke-static	{v0},org/apache/commons/io/filefilter/FileFilterUtils/and	; and([Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : [Lorg/apache/commons/io/filefilter/IOFileFilter;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	goto	l118c24
+.end method
+
+.method public static nameFileFilter(Ljava/lang/String;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 347
+	new-instance	v0,org/apache/commons/io/filefilter/NameFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/NameFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/NameFileFilter/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/io/filefilter/NameFileFilter; , v1 : Ljava/lang/String;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/NameFileFilter;
+.end method
+
+.method public static nameFileFilter(Ljava/lang/String;Lorg/apache/commons/io/IOCase;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 3
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (Lorg/apache/commons/io/IOCase;)
+.line 360
+	new-instance	v0,org/apache/commons/io/filefilter/NameFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/NameFileFilter;
+	invoke-direct	{v0,v1,v2},org/apache/commons/io/filefilter/NameFileFilter/<init>	; <init>(Ljava/lang/String;Lorg/apache/commons/io/IOCase;)V
+; v0 : Lorg/apache/commons/io/filefilter/NameFileFilter; , v1 : Ljava/lang/String; , v2 : Lorg/apache/commons/io/IOCase;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/NameFileFilter;
+.end method
+
+.method public static notFileFilter(Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 2
+; parameter[0] : v1 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+.line 475
+	new-instance	v0,org/apache/commons/io/filefilter/NotFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/NotFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/NotFileFilter/<init>	; <init>(Lorg/apache/commons/io/filefilter/IOFileFilter;)V
+; v0 : Lorg/apache/commons/io/filefilter/NotFileFilter; , v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/NotFileFilter;
+.end method
+
+.method public static or([Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 3
+; parameter[0] : v2 ([Lorg/apache/commons/io/filefilter/IOFileFilter;)
+.line 441
+	new-instance	v0,org/apache/commons/io/filefilter/OrFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/OrFileFilter;
+	invoke-static	{v2},org/apache/commons/io/filefilter/FileFilterUtils/toList	; toList([Lorg/apache/commons/io/filefilter/IOFileFilter;)Ljava/util/List;
+; v2 : [Lorg/apache/commons/io/filefilter/IOFileFilter;
+	move-result-object	v1
+; v1 : Ljava/util/List;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/OrFileFilter/<init>	; <init>(Ljava/util/List;)V
+; v0 : Lorg/apache/commons/io/filefilter/OrFileFilter; , v1 : Ljava/util/List;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/OrFileFilter;
+.end method
+
+.method public static orFileFilter(Lorg/apache/commons/io/filefilter/IOFileFilter;Lorg/apache/commons/io/filefilter/IOFileFilter;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.annotation runtimeVisibility Ljava/lang/Deprecated;
+.end annotation
+.limit registers 3
+; parameter[0] : v1 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+; parameter[1] : v2 (Lorg/apache/commons/io/filefilter/IOFileFilter;)
+.line 411
+	new-instance	v0,org/apache/commons/io/filefilter/OrFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/OrFileFilter;
+	invoke-direct	{v0,v1,v2},org/apache/commons/io/filefilter/OrFileFilter/<init>	; <init>(Lorg/apache/commons/io/filefilter/IOFileFilter;Lorg/apache/commons/io/filefilter/IOFileFilter;)V
+; v0 : Lorg/apache/commons/io/filefilter/OrFileFilter; , v1 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v2 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/OrFileFilter;
+.end method
+
+.method public static prefixFileFilter(Ljava/lang/String;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 299
+	new-instance	v0,org/apache/commons/io/filefilter/PrefixFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/PrefixFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/PrefixFileFilter/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/io/filefilter/PrefixFileFilter; , v1 : Ljava/lang/String;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/PrefixFileFilter;
+.end method
+
+.method public static prefixFileFilter(Ljava/lang/String;Lorg/apache/commons/io/IOCase;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 3
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (Lorg/apache/commons/io/IOCase;)
+.line 312
+	new-instance	v0,org/apache/commons/io/filefilter/PrefixFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/PrefixFileFilter;
+	invoke-direct	{v0,v1,v2},org/apache/commons/io/filefilter/PrefixFileFilter/<init>	; <init>(Ljava/lang/String;Lorg/apache/commons/io/IOCase;)V
+; v0 : Lorg/apache/commons/io/filefilter/PrefixFileFilter; , v1 : Ljava/lang/String; , v2 : Lorg/apache/commons/io/IOCase;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/PrefixFileFilter;
+.end method
+
+.method public static sizeFileFilter(J)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 3
+; parameter[0] : v1 (J)
+.line 615
+	new-instance	v0,org/apache/commons/io/filefilter/SizeFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/SizeFileFilter;
+	invoke-direct	{v0,v1,v2},org/apache/commons/io/filefilter/SizeFileFilter/<init>	; <init>(J)V
+; v0 : Lorg/apache/commons/io/filefilter/SizeFileFilter; , v1 : double-length
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/SizeFileFilter;
+.end method
+
+.method public static sizeFileFilter(JZ)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 4
+; parameter[0] : v1 (J)
+; parameter[1] : v3 (Z)
+.line 628
+	new-instance	v0,org/apache/commons/io/filefilter/SizeFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/SizeFileFilter;
+	invoke-direct	{v0,v1,v2,v3},org/apache/commons/io/filefilter/SizeFileFilter/<init>	; <init>(JZ)V
+; v0 : Lorg/apache/commons/io/filefilter/SizeFileFilter; , v1 : double-length , v3 : single-length
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/SizeFileFilter;
+.end method
+
+.method public static sizeRangeFileFilter(JJ)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 9
+; parameter[0] : v5 (J)
+; parameter[1] : v7 (J)
+.line 642
+	new-instance	v1,org/apache/commons/io/filefilter/SizeFileFilter
+; v1 : Lorg/apache/commons/io/filefilter/SizeFileFilter;
+	const/4	v2,1
+; v2 : single-length
+	invoke-direct	{v1,v5,v6,v2},org/apache/commons/io/filefilter/SizeFileFilter/<init>	; <init>(JZ)V
+; v1 : Lorg/apache/commons/io/filefilter/SizeFileFilter; , v5 : double-length , v2 : single-length
+.line 643
+	new-instance	v0,org/apache/commons/io/filefilter/SizeFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/SizeFileFilter;
+	const-wide/16	v2,1
+; v2 : double-length
+	add-long/2addr	v2,v7
+; v2 : double-length , v7 : double-length
+	const/4	v4,0
+; v4 : single-length
+	invoke-direct	{v0,v2,v3,v4},org/apache/commons/io/filefilter/SizeFileFilter/<init>	; <init>(JZ)V
+; v0 : Lorg/apache/commons/io/filefilter/SizeFileFilter; , v2 : double-length , v4 : single-length
+.line 644
+	new-instance	v2,org/apache/commons/io/filefilter/AndFileFilter
+; v2 : Lorg/apache/commons/io/filefilter/AndFileFilter;
+	invoke-direct	{v2,v1,v0},org/apache/commons/io/filefilter/AndFileFilter/<init>	; <init>(Lorg/apache/commons/io/filefilter/IOFileFilter;Lorg/apache/commons/io/filefilter/IOFileFilter;)V
+; v2 : Lorg/apache/commons/io/filefilter/AndFileFilter; , v1 : Lorg/apache/commons/io/filefilter/SizeFileFilter; , v0 : Lorg/apache/commons/io/filefilter/SizeFileFilter;
+	return-object	v2
+; v2 : Lorg/apache/commons/io/filefilter/AndFileFilter;
+.end method
+
+.method public static suffixFileFilter(Ljava/lang/String;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 323
+	new-instance	v0,org/apache/commons/io/filefilter/SuffixFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/SuffixFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/SuffixFileFilter/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/io/filefilter/SuffixFileFilter; , v1 : Ljava/lang/String;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/SuffixFileFilter;
+.end method
+
+.method public static suffixFileFilter(Ljava/lang/String;Lorg/apache/commons/io/IOCase;)Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 3
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (Lorg/apache/commons/io/IOCase;)
+.line 336
+	new-instance	v0,org/apache/commons/io/filefilter/SuffixFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/SuffixFileFilter;
+	invoke-direct	{v0,v1,v2},org/apache/commons/io/filefilter/SuffixFileFilter/<init>	; <init>(Ljava/lang/String;Lorg/apache/commons/io/IOCase;)V
+; v0 : Lorg/apache/commons/io/filefilter/SuffixFileFilter; , v1 : Ljava/lang/String; , v2 : Lorg/apache/commons/io/IOCase;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/SuffixFileFilter;
+.end method
+
+.method public static toList([Lorg/apache/commons/io/filefilter/IOFileFilter;)Ljava/util/List;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "([" , "Lorg/apache/commons/io/filefilter/IOFileFilter;" , ")" , "Ljava/util/List" , "<" , "Lorg/apache/commons/io/filefilter/IOFileFilter;" , ">;" }
+.end annotation
+.limit registers 6
+; parameter[0] : v5 ([Lorg/apache/commons/io/filefilter/IOFileFilter;)
+.line 454
+	if-nez	v5,l118de4
+; v5 : [Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 455
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	const-string	v3,"The filters must not be null"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+l118de4:
+.line 457
+	new-instance	v1,java/util/ArrayList
+; v1 : Ljava/util/ArrayList;
+	array-length	v2,v5
+; v2 : single-length , v5 : [Lorg/apache/commons/io/filefilter/IOFileFilter;
+	invoke-direct	{v1,v2},java/util/ArrayList/<init>	; <init>(I)V
+; v1 : Ljava/util/ArrayList; , v2 : single-length
+.line 458
+	const/4	v0,0
+; v0 : single-length
+l118df2:
+	array-length	v2,v5
+; v2 : single-length , v5 : [Lorg/apache/commons/io/filefilter/IOFileFilter;
+	if-ge	v0,v2,l118e4e
+; v0 : single-length , v2 : single-length
+.line 459
+	aget-object	v2,v5,v0
+; v2 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v5 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : single-length
+	if-nez	v2,l118e3e
+; v2 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 460
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	new-instance	v3,java/lang/StringBuilder
+; v3 : Ljava/lang/StringBuilder;
+	invoke-direct	{v3},java/lang/StringBuilder/<init>	; <init>()V
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"The filter["
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3,v0},java/lang/StringBuilder/append	; append(I)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v0 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"] is null"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+l118e3e:
+.line 462
+	aget-object	v2,v5,v0
+; v2 : Lorg/apache/commons/io/filefilter/IOFileFilter; , v5 : [Lorg/apache/commons/io/filefilter/IOFileFilter; , v0 : single-length
+	invoke-interface	{v1,v2},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v1 : Ljava/util/ArrayList; , v2 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 458
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l118df2
+l118e4e:
+.line 464
+	return-object	v1
+; v1 : Ljava/util/ArrayList;
+.end method
+
+.method public static trueFileFilter()Lorg/apache/commons/io/filefilter/IOFileFilter;
+.limit registers 1
+.line 486
+	sget-object	v0,org/apache/commons/io/filefilter/TrueFileFilter.TRUE Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.end method
+
+

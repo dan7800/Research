@@ -1,0 +1,1323 @@
+.class com/actionbarsherlock/widget/ActivityChooserModel
+.super android/database/DataSetObservable
+.source ActivityChooserModel.java
+
+.inner class 1 inner com/actionbarsherlock/widget/ActivityChooserModel$1 outer com/actionbarsherlock/widget/ActivityChooserModel
+.inner class HistoryPersister inner com/actionbarsherlock/widget/ActivityChooserModel$HistoryPersister outer com/actionbarsherlock/widget/ActivityChooserModel
+.inner class HistoryLoader inner com/actionbarsherlock/widget/ActivityChooserModel$HistoryLoader outer com/actionbarsherlock/widget/ActivityChooserModel
+.inner class DefaultSorter inner com/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter outer com/actionbarsherlock/widget/ActivityChooserModel
+.inner class ActivityResolveInfo inner com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo outer com/actionbarsherlock/widget/ActivityChooserModel
+.inner class HistoricalRecord inner com/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord outer com/actionbarsherlock/widget/ActivityChooserModel
+.inner class SerialExecutor inner com/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor outer com/actionbarsherlock/widget/ActivityChooserModel
+.inner class OnChooseActivityListener inner com/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener outer com/actionbarsherlock/widget/ActivityChooserModel
+.inner class ActivitySorter inner com/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter outer com/actionbarsherlock/widget/ActivityChooserModel
+.inner class ActivityChooserModelClient inner com/actionbarsherlock/widget/ActivityChooserModel$ActivityChooserModelClient outer com/actionbarsherlock/widget/ActivityChooserModel
+.field private static final ATTRIBUTE_ACTIVITY Ljava/lang/String; = "activity"
+.field private static final ATTRIBUTE_TIME Ljava/lang/String; = "time"
+.field private static final ATTRIBUTE_WEIGHT Ljava/lang/String; = "weight"
+.field private static final DEBUG Z = false
+.field private static final DEFAULT_ACTIVITY_INFLATION I = 5	; 0x5
+.field private static final DEFAULT_HISTORICAL_RECORD_WEIGHT F = 1.0
+.field public static final DEFAULT_HISTORY_FILE_NAME Ljava/lang/String; = "activity_choser_model_history.xml"
+.field public static final DEFAULT_HISTORY_MAX_LENGTH I = 50	; 0x32
+.field private static final HISTORY_FILE_EXTENSION Ljava/lang/String; = ".xml"
+.field private static final INVALID_INDEX I = -1	; 0xffffffff
+.field private static final LOG_TAG Ljava/lang/String; = null
+.field private static final SERIAL_EXECUTOR Lcom/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor; = null
+.field private static final TAG_HISTORICAL_RECORD Ljava/lang/String; = "historical-record"
+.field private static final TAG_HISTORICAL_RECORDS Ljava/lang/String; = "historical-records"
+.field private static final sDataModelRegistry Ljava/util/Map;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "Lcom/actionbarsherlock/widget/ActivityChooserModel;" , ">;" }
+  .end annotation
+.end field
+.field private static final sRegistryLock Ljava/lang/Object;
+.field private final mActivites Ljava/util/List;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/List" , "<" , "Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;" , ">;" }
+  .end annotation
+.end field
+.field private mActivityChoserModelPolicy Lcom/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener;
+.field private mActivitySorter Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter;
+.field private mCanReadHistoricalData Z
+.field private final mContext Landroid/content/Context;
+.field private final mHandler Landroid/os/Handler;
+.field private final mHistoricalRecords Ljava/util/List;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/List" , "<" , "Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;" , ">;" }
+  .end annotation
+.end field
+.field private mHistoricalRecordsChanged Z
+.field private final mHistoryFileName Ljava/lang/String;
+.field private mHistoryMaxSize I
+.field private final mInstanceLock Ljava/lang/Object;
+.field private mIntent Landroid/content/Intent;
+.field private mReadShareHistoryCalled Z
+
+.method static <clinit>()V
+.limit registers 2
+.line 163
+	const-class	v0,com/actionbarsherlock/widget/ActivityChooserModel
+; v0 : Ljava/lang/Class;
+	invoke-virtual	{v0},java/lang/Class/getSimpleName	; getSimpleName()Ljava/lang/String;
+; v0 : Ljava/lang/Class;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	sput-object	v0,com/actionbarsherlock/widget/ActivityChooserModel.LOG_TAG Ljava/lang/String;
+; v0 : Ljava/lang/String;
+.line 224
+	new-instance	v0,java/lang/Object
+; v0 : Ljava/lang/Object;
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Ljava/lang/Object;
+	sput-object	v0,com/actionbarsherlock/widget/ActivityChooserModel.sRegistryLock Ljava/lang/Object;
+; v0 : Ljava/lang/Object;
+.line 229
+	new-instance	v0,java/util/HashMap
+; v0 : Ljava/util/HashMap;
+	invoke-direct	{v0},java/util/HashMap/<init>	; <init>()V
+; v0 : Ljava/util/HashMap;
+	sput-object	v0,com/actionbarsherlock/widget/ActivityChooserModel.sDataModelRegistry Ljava/util/Map;
+; v0 : Ljava/util/Map;
+.line 565
+	new-instance	v0,com/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor;
+	const/4	v1,0
+; v1 : single-length
+	invoke-direct	{v0,v1},com/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor/<init>	; <init>(Lcom/actionbarsherlock/widget/ActivityChooserModel$1;)V
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor; , v1 : single-length
+	sput-object	v0,com/actionbarsherlock/widget/ActivityChooserModel.SERIAL_EXECUTOR Lcom/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor;
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor;
+	return-void	
+.end method
+
+.method private <init>(Landroid/content/Context;Ljava/lang/String;)V
+.limit registers 6
+; this: v3 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+; parameter[0] : v4 (Landroid/content/Context;)
+; parameter[1] : v5 (Ljava/lang/String;)
+	const/4	v2,1
+; v2 : single-length
+.line 353
+	invoke-direct	{v3},android/database/DataSetObservable/<init>	; <init>()V
+; v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 235
+	new-instance	v0,java/lang/Object
+; v0 : Ljava/lang/Object;
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Ljava/lang/Object;
+	iput-object	v0,v3,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v0 : Ljava/lang/Object; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 240
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+	iput-object	v0,v3,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v0 : Ljava/util/ArrayList; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 245
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+	iput-object	v0,v3,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecords Ljava/util/List;
+; v0 : Ljava/util/ArrayList; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 265
+	new-instance	v0,com/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter;
+	const/4	v1,0
+; v1 : single-length
+	invoke-direct	{v0,v3,v1},com/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter/<init>	; <init>(Lcom/actionbarsherlock/widget/ActivityChooserModel;Lcom/actionbarsherlock/widget/ActivityChooserModel$1;)V
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel; , v1 : single-length
+	iput-object	v0,v3,com/actionbarsherlock/widget/ActivityChooserModel.mActivitySorter Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter;
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 270
+	const/16	v0,50
+; v0 : single-length
+	iput	v0,v3,com/actionbarsherlock/widget/ActivityChooserModel.mHistoryMaxSize I
+; v0 : single-length , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 280
+	iput-boolean	v2,v3,com/actionbarsherlock/widget/ActivityChooserModel.mCanReadHistoricalData Z
+; v2 : single-length , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 291
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v3,com/actionbarsherlock/widget/ActivityChooserModel.mReadShareHistoryCalled Z
+; v0 : single-length , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 299
+	iput-boolean	v2,v3,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecordsChanged Z
+; v2 : single-length , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 304
+	new-instance	v0,android/os/Handler
+; v0 : Landroid/os/Handler;
+	invoke-direct	{v0},android/os/Handler/<init>	; <init>()V
+; v0 : Landroid/os/Handler;
+	iput-object	v0,v3,com/actionbarsherlock/widget/ActivityChooserModel.mHandler Landroid/os/Handler;
+; v0 : Landroid/os/Handler; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 354
+	invoke-virtual	{v4},android/content/Context/getApplicationContext	; getApplicationContext()Landroid/content/Context;
+; v4 : Landroid/content/Context;
+	move-result-object	v0
+; v0 : Landroid/content/Context;
+	iput-object	v0,v3,com/actionbarsherlock/widget/ActivityChooserModel.mContext Landroid/content/Context;
+; v0 : Landroid/content/Context; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 355
+	invoke-static	{v5},android/text/TextUtils/isEmpty	; isEmpty(Ljava/lang/CharSequence;)Z
+; v5 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,la751e
+; v0 : single-length
+	const-string	v0,".xml"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v5,v0},java/lang/String/endsWith	; endsWith(Ljava/lang/String;)Z
+; v5 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,la751e
+; v0 : single-length
+.line 357
+	new-instance	v0,java/lang/StringBuilder
+; v0 : Ljava/lang/StringBuilder;
+	invoke-direct	{v0},java/lang/StringBuilder/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,".xml"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	iput-object	v0,v3,com/actionbarsherlock/widget/ActivityChooserModel.mHistoryFileName Ljava/lang/String;
+; v0 : Ljava/lang/String; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+la751c:
+.line 361
+	return-void	
+la751e:
+.line 359
+	iput-object	v5,v3,com/actionbarsherlock/widget/ActivityChooserModel.mHistoryFileName Ljava/lang/String;
+; v5 : Ljava/lang/String; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	goto	la751c
+.end method
+
+.method static access$1000(Lcom/actionbarsherlock/widget/ActivityChooserModel;)V
+.limit registers 1
+; parameter[0] : v0 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.line 96
+	invoke-direct	{v0},com/actionbarsherlock/widget/ActivityChooserModel/sortActivities	; sortActivities()V
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	return-void	
+.end method
+
+.method static access$1100(Lcom/actionbarsherlock/widget/ActivityChooserModel;)Landroid/os/Handler;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.line 96
+	iget-object	v0,v1,com/actionbarsherlock/widget/ActivityChooserModel.mHandler Landroid/os/Handler;
+; v0 : Landroid/os/Handler; , v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	return-object	v0
+; v0 : Landroid/os/Handler;
+.end method
+
+.method static access$1200()Ljava/lang/String;
+.limit registers 1
+.line 96
+	sget-object	v0,com/actionbarsherlock/widget/ActivityChooserModel.LOG_TAG Ljava/lang/String;
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method static access$400(Lcom/actionbarsherlock/widget/ActivityChooserModel;)Ljava/lang/String;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.line 96
+	iget-object	v0,v1,com/actionbarsherlock/widget/ActivityChooserModel.mHistoryFileName Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method static access$500(Lcom/actionbarsherlock/widget/ActivityChooserModel;)Landroid/content/Context;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.line 96
+	iget-object	v0,v1,com/actionbarsherlock/widget/ActivityChooserModel.mContext Landroid/content/Context;
+; v0 : Landroid/content/Context; , v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	return-object	v0
+; v0 : Landroid/content/Context;
+.end method
+
+.method static access$600(Lcom/actionbarsherlock/widget/ActivityChooserModel;)Ljava/lang/Object;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.line 96
+	iget-object	v0,v1,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v0 : Ljava/lang/Object; , v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	return-object	v0
+; v0 : Ljava/lang/Object;
+.end method
+
+.method static access$700(Lcom/actionbarsherlock/widget/ActivityChooserModel;)Ljava/util/List;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.line 96
+	iget-object	v0,v1,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecords Ljava/util/List;
+; v0 : Ljava/util/List; , v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	return-object	v0
+; v0 : Ljava/util/List;
+.end method
+
+.method static access$802(Lcom/actionbarsherlock/widget/ActivityChooserModel;Z)Z
+.limit registers 2
+; parameter[0] : v0 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+; parameter[1] : v1 (Z)
+.line 96
+	iput-boolean	v1,v0,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecordsChanged Z
+; v1 : single-length , v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	return	v1
+; v1 : single-length
+.end method
+
+.method static access$900(Lcom/actionbarsherlock/widget/ActivityChooserModel;)V
+.limit registers 1
+; parameter[0] : v0 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.line 96
+	invoke-direct	{v0},com/actionbarsherlock/widget/ActivityChooserModel/pruneExcessiveHistoricalRecordsLocked	; pruneExcessiveHistoricalRecordsLocked()V
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	return-void	
+.end method
+
+.method private addHisoricalRecord(Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;)Z
+.limit registers 5
+; this: v3 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+; parameter[0] : v4 (Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;)
+.catch java/lang/Exception from la7612 to la7642 using la763e
+.var 0 is added Z from la761e to la763e
+.line 704
+	iget-object	v2,v3,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v2 : Ljava/lang/Object; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v2
+; v2 : Ljava/lang/Object;
+la7612:
+.line 705
+	iget-object	v1,v3,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecords Ljava/util/List;
+; v1 : Ljava/util/List; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-interface	{v1,v4},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v1 : Ljava/util/List; , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;
+	move-result	v0
+; v0 : single-length
+.line 706
+	if-eqz	v0,la763a
+; v0 : single-length
+.line 707
+	const/4	v1,1
+; v1 : single-length
+	iput-boolean	v1,v3,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecordsChanged Z
+; v1 : single-length , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 708
+	invoke-direct	{v3},com/actionbarsherlock/widget/ActivityChooserModel/pruneExcessiveHistoricalRecordsLocked	; pruneExcessiveHistoricalRecordsLocked()V
+; v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 709
+	invoke-direct	{v3},com/actionbarsherlock/widget/ActivityChooserModel/persistHistoricalData	; persistHistoricalData()V
+; v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 710
+	invoke-direct	{v3},com/actionbarsherlock/widget/ActivityChooserModel/sortActivities	; sortActivities()V
+; v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+la763a:
+.line 712
+	monitor-exit	v2
+; v2 : Ljava/lang/Object;
+	return	v0
+; v0 : single-length
+la763e:
+.line 713
+	move-exception	v1
+; v1 : java/lang/Exception
+	monitor-exit	v2
+; v2 : Ljava/lang/Object;
+la7642:
+	throw	v1
+; v1 : java/lang/Exception
+.end method
+
+.method public static get(Landroid/content/Context;Ljava/lang/String;)Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.limit registers 5
+; parameter[0] : v3 (Landroid/content/Context;)
+; parameter[1] : v4 (Ljava/lang/String;)
+.catch java/lang/Exception from la7666 to la769c using la7698
+.var 0 is dataModel Lcom/actionbarsherlock/widget/ActivityChooserModel; from la7676 to la767e
+.var 0 is dataModel Lcom/actionbarsherlock/widget/ActivityChooserModel; from la7684 to la7698
+.line 336
+	sget-object	v2,com/actionbarsherlock/widget/ActivityChooserModel.sRegistryLock Ljava/lang/Object;
+; v2 : Ljava/lang/Object;
+	monitor-enter	v2
+; v2 : Ljava/lang/Object;
+la7666:
+.line 337
+	sget-object	v1,com/actionbarsherlock/widget/ActivityChooserModel.sDataModelRegistry Ljava/util/Map;
+; v1 : Ljava/util/Map;
+	invoke-interface	{v1,v4},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/Map; , v4 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/actionbarsherlock/widget/ActivityChooserModel
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 338
+	if-nez	v0,la768e
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 339
+	new-instance	v0,com/actionbarsherlock/widget/ActivityChooserModel
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+la767e:
+	invoke-direct	{v0,v3,v4},com/actionbarsherlock/widget/ActivityChooserModel/<init>	; <init>(Landroid/content/Context;Ljava/lang/String;)V
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel; , v3 : Landroid/content/Context; , v4 : Ljava/lang/String;
+.line 340
+	sget-object	v1,com/actionbarsherlock/widget/ActivityChooserModel.sDataModelRegistry Ljava/util/Map;
+; v1 : Ljava/util/Map;
+	invoke-interface	{v1,v4,v0},java/util/Map/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/Map; , v4 : Ljava/lang/String; , v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+la768e:
+.line 342
+	invoke-direct	{v0},com/actionbarsherlock/widget/ActivityChooserModel/readHistoricalData	; readHistoricalData()V
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 343
+	monitor-exit	v2
+; v2 : Ljava/lang/Object;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+la7698:
+.line 344
+	move-exception	v1
+; v1 : java/lang/Exception
+	monitor-exit	v2
+; v2 : Ljava/lang/Object;
+la769c:
+	throw	v1
+; v1 : java/lang/Exception
+.end method
+
+.method private loadActivitiesLocked()V
+.limit registers 8
+; this: v7 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.var 1 is resolveInfo Landroid/content/pm/ResolveInfo; from la7702 to la771c
+.var 0 is i I from la76f2 to la7722
+.var 2 is resolveInfoCount I from la76f0 to la7722
+.var 3 is resolveInfos Ljava/util/List; from la76e8 to la7722
+.line 738
+	iget-object	v4,v7,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v4 : Ljava/util/List; , v7 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-interface	{v4},java/util/List/clear	; clear()V
+; v4 : Ljava/util/List;
+.line 739
+	iget-object	v4,v7,com/actionbarsherlock/widget/ActivityChooserModel.mIntent Landroid/content/Intent;
+; v4 : Landroid/content/Intent; , v7 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	if-eqz	v4,la7724
+; v4 : Landroid/content/Intent;
+.line 740
+	iget-object	v4,v7,com/actionbarsherlock/widget/ActivityChooserModel.mContext Landroid/content/Context;
+; v4 : Landroid/content/Context; , v7 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-virtual	{v4},android/content/Context/getPackageManager	; getPackageManager()Landroid/content/pm/PackageManager;
+; v4 : Landroid/content/Context;
+	move-result-object	v4
+; v4 : Landroid/content/pm/PackageManager;
+	iget-object	v5,v7,com/actionbarsherlock/widget/ActivityChooserModel.mIntent Landroid/content/Intent;
+; v5 : Landroid/content/Intent; , v7 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	const/4	v6,0
+; v6 : single-length
+	invoke-virtual	{v4,v5,v6},android/content/pm/PackageManager/queryIntentActivities	; queryIntentActivities(Landroid/content/Intent;I)Ljava/util/List;
+; v4 : Landroid/content/pm/PackageManager; , v5 : Landroid/content/Intent; , v6 : single-length
+	move-result-object	v3
+; v3 : Ljava/util/List;
+.line 742
+	invoke-interface	{v3},java/util/List/size	; size()I
+; v3 : Ljava/util/List;
+	move-result	v2
+; v2 : single-length
+.line 743
+	const/4	v0,0
+; v0 : single-length
+la76f2:
+	if-ge	v0,v2,la771c
+; v0 : single-length , v2 : single-length
+.line 744
+	invoke-interface	{v3,v0},java/util/List/get	; get(I)Ljava/lang/Object;
+; v3 : Ljava/util/List; , v0 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,android/content/pm/ResolveInfo
+; v1 : Landroid/content/pm/ResolveInfo;
+.line 745
+	iget-object	v4,v7,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v4 : Ljava/util/List; , v7 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	new-instance	v5,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo
+; v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+	invoke-direct	{v5,v7,v1},com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo/<init>	; <init>(Lcom/actionbarsherlock/widget/ActivityChooserModel;Landroid/content/pm/ResolveInfo;)V
+; v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo; , v7 : Lcom/actionbarsherlock/widget/ActivityChooserModel; , v1 : Landroid/content/pm/ResolveInfo;
+	invoke-interface	{v4,v5},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v4 : Ljava/util/List; , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+.line 743
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	la76f2
+la771c:
+.line 747
+	invoke-direct	{v7},com/actionbarsherlock/widget/ActivityChooserModel/sortActivities	; sortActivities()V
+; v7 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+la7722:
+.line 751
+	return-void	
+la7724:
+.line 749
+	invoke-virtual	{v7},com/actionbarsherlock/widget/ActivityChooserModel/notifyChanged	; notifyChanged()V
+; v7 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	goto	la7722
+.end method
+
+.method private persistHistoricalData()V
+.limit registers 5
+; this: v4 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.catch java/lang/Exception from la7760 to la77a0 using la775a
+.catch java/lang/Exception from la7742 to la775e using la775a
+.line 603
+	iget-object	v1,v4,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+la7742:
+.line 604
+	iget-boolean	v0,v4,com/actionbarsherlock/widget/ActivityChooserModel.mReadShareHistoryCalled Z
+; v0 : single-length , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	if-nez	v0,la7760
+; v0 : single-length
+.line 605
+	new-instance	v0,java/lang/IllegalStateException
+; v0 : Ljava/lang/IllegalStateException;
+	const-string	v2,"No preceding call to #readHistoricalData"
+; v2 : Ljava/lang/String;
+	invoke-direct	{v0,v2},java/lang/IllegalStateException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalStateException; , v2 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalStateException;
+la775a:
+.line 615
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la775e:
+	throw	v0
+; v0 : java/lang/Exception
+la7760:
+.line 607
+	iget-boolean	v0,v4,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecordsChanged Z
+; v0 : single-length , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	if-nez	v0,la776c
+; v0 : single-length
+.line 608
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la776a:
+.line 616
+	return-void	
+la776c:
+.line 610
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v4,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecordsChanged Z
+; v0 : single-length , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 611
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v4,com/actionbarsherlock/widget/ActivityChooserModel.mCanReadHistoricalData Z
+; v0 : single-length , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 612
+	iget-object	v0,v4,com/actionbarsherlock/widget/ActivityChooserModel.mHistoryFileName Ljava/lang/String;
+; v0 : Ljava/lang/String; , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-static	{v0},android/text/TextUtils/isEmpty	; isEmpty(Ljava/lang/CharSequence;)Z
+; v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,la779e
+; v0 : single-length
+.line 613
+	sget-object	v0,com/actionbarsherlock/widget/ActivityChooserModel.SERIAL_EXECUTOR Lcom/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor;
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor;
+	new-instance	v2,com/actionbarsherlock/widget/ActivityChooserModel$HistoryPersister
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoryPersister;
+	const/4	v3,0
+; v3 : single-length
+	invoke-direct	{v2,v4,v3},com/actionbarsherlock/widget/ActivityChooserModel$HistoryPersister/<init>	; <init>(Lcom/actionbarsherlock/widget/ActivityChooserModel;Lcom/actionbarsherlock/widget/ActivityChooserModel$1;)V
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoryPersister; , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel; , v3 : single-length
+	invoke-virtual	{v0,v2},com/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor/execute	; execute(Ljava/lang/Runnable;)V
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoryPersister;
+la779e:
+.line 615
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la77a0:
+	goto	la776a
+.end method
+
+.method private pruneExcessiveHistoricalRecordsLocked()V
+.limit registers 6
+; this: v5 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.line 720
+	iget-object	v0,v5,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecords Ljava/util/List;
+; v0 : Ljava/util/List; , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 721
+	invoke-interface	{v0},java/util/List/size	; size()I
+; v0 : Ljava/util/List;
+	move-result	v3
+; v3 : single-length
+	iget	v4,v5,com/actionbarsherlock/widget/ActivityChooserModel.mHistoryMaxSize I
+; v4 : single-length , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	sub-int	v2,v3,v4
+; v2 : single-length , v3 : single-length , v4 : single-length
+.line 722
+	if-gtz	v2,la77e2
+; v2 : single-length
+la77e0:
+.line 732
+	return-void	
+la77e2:
+.line 725
+	const/4	v3,1
+; v3 : single-length
+	iput-boolean	v3,v5,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecordsChanged Z
+; v3 : single-length , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 726
+	const/4	v1,0
+; v1 : single-length
+la77ea:
+	if-ge	v1,v2,la77e0
+; v1 : single-length , v2 : single-length
+.line 727
+	const/4	v3,0
+; v3 : single-length
+	invoke-interface	{v0,v3},java/util/List/remove	; remove(I)Ljava/lang/Object;
+; v0 : Ljava/util/List; , v3 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,com/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord
+; v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;
+.line 726
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	la77ea
+.end method
+
+.method private readHistoricalData()V
+.limit registers 5
+; this: v4 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.catch java/lang/Exception from la781a to la7868 using la7864
+.line 553
+	iget-object	v1,v4,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+la781a:
+.line 554
+	iget-boolean	v0,v4,com/actionbarsherlock/widget/ActivityChooserModel.mCanReadHistoricalData Z
+; v0 : single-length , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	if-eqz	v0,la782a
+; v0 : single-length
+	iget-boolean	v0,v4,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecordsChanged Z
+; v0 : single-length , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	if-nez	v0,la782e
+; v0 : single-length
+la782a:
+.line 555
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la782c:
+.line 563
+	return-void	
+la782e:
+.line 557
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v4,com/actionbarsherlock/widget/ActivityChooserModel.mCanReadHistoricalData Z
+; v0 : single-length , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 558
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v4,com/actionbarsherlock/widget/ActivityChooserModel.mReadShareHistoryCalled Z
+; v0 : single-length , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 559
+	iget-object	v0,v4,com/actionbarsherlock/widget/ActivityChooserModel.mHistoryFileName Ljava/lang/String;
+; v0 : Ljava/lang/String; , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-static	{v0},android/text/TextUtils/isEmpty	; isEmpty(Ljava/lang/CharSequence;)Z
+; v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,la7860
+; v0 : single-length
+.line 560
+	sget-object	v0,com/actionbarsherlock/widget/ActivityChooserModel.SERIAL_EXECUTOR Lcom/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor;
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor;
+	new-instance	v2,com/actionbarsherlock/widget/ActivityChooserModel$HistoryLoader
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoryLoader;
+	const/4	v3,0
+; v3 : single-length
+	invoke-direct	{v2,v4,v3},com/actionbarsherlock/widget/ActivityChooserModel$HistoryLoader/<init>	; <init>(Lcom/actionbarsherlock/widget/ActivityChooserModel;Lcom/actionbarsherlock/widget/ActivityChooserModel$1;)V
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoryLoader; , v4 : Lcom/actionbarsherlock/widget/ActivityChooserModel; , v3 : single-length
+	invoke-virtual	{v0,v2},com/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor/execute	; execute(Ljava/lang/Runnable;)V
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$SerialExecutor; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoryLoader;
+la7860:
+.line 562
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+	goto	la782c
+la7864:
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la7868:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method private sortActivities()V
+.limit registers 6
+; this: v5 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.catch java/lang/Exception from la788e to la78d2 using la78ce
+.line 642
+	iget-object	v1,v5,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+la788e:
+.line 643
+	iget-object	v0,v5,com/actionbarsherlock/widget/ActivityChooserModel.mActivitySorter Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter;
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter; , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	if-eqz	v0,la78ca
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter;
+	iget-object	v0,v5,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v0 : Ljava/util/List; , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-interface	{v0},java/util/List/isEmpty	; isEmpty()Z
+; v0 : Ljava/util/List;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,la78ca
+; v0 : single-length
+.line 644
+	iget-object	v0,v5,com/actionbarsherlock/widget/ActivityChooserModel.mActivitySorter Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter;
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter; , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	iget-object	v2,v5,com/actionbarsherlock/widget/ActivityChooserModel.mIntent Landroid/content/Intent;
+; v2 : Landroid/content/Intent; , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	iget-object	v3,v5,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v3 : Ljava/util/List; , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	iget-object	v4,v5,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecords Ljava/util/List;
+; v4 : Ljava/util/List; , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-static	{v4},java/util/Collections/unmodifiableList	; unmodifiableList(Ljava/util/List;)Ljava/util/List;
+; v4 : Ljava/util/List;
+	move-result-object	v4
+; v4 : Ljava/util/List;
+	invoke-interface	{v0,v2,v3,v4},com/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter/sort	; sort(Landroid/content/Intent;Ljava/util/List;Ljava/util/List;)V
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter; , v2 : Landroid/content/Intent; , v3 : Ljava/util/List; , v4 : Ljava/util/List;
+.line 646
+	invoke-virtual	{v5},com/actionbarsherlock/widget/ActivityChooserModel/notifyChanged	; notifyChanged()V
+; v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+la78ca:
+.line 648
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+.line 649
+	return-void	
+la78ce:
+.line 648
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la78d2:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public chooseActivity(I)Landroid/content/Intent;
+.limit registers 11
+; this: v9 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+; parameter[0] : v10 (I)
+.var 0 is choiceIntent Landroid/content/Intent; from la7930 to la795a
+.var 1 is choiceIntentCopy Landroid/content/Intent; from la7948 to la795a
+.var 4 is handled Z from la7954 to la795a
+.line 457
+	iget-object	v6,v9,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v6 : Ljava/util/List; , v9 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-interface	{v6,v10},java/util/List/get	; get(I)Ljava/lang/Object;
+; v6 : Ljava/util/List; , v10 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+.line 459
+	new-instance	v3,android/content/ComponentName
+; v3 : Landroid/content/ComponentName;
+	iget-object	v6,v2,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.resolveInfo Landroid/content/pm/ResolveInfo;
+; v6 : Landroid/content/pm/ResolveInfo; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+	iget-object	v6,v6,android/content/pm/ResolveInfo.activityInfo Landroid/content/pm/ActivityInfo;
+; v6 : Landroid/content/pm/ActivityInfo; , v6 : Landroid/content/pm/ActivityInfo;
+	iget-object	v6,v6,android/content/pm/ActivityInfo.packageName Ljava/lang/String;
+; v6 : Ljava/lang/String; , v6 : Ljava/lang/String;
+	iget-object	v7,v2,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.resolveInfo Landroid/content/pm/ResolveInfo;
+; v7 : Landroid/content/pm/ResolveInfo; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+	iget-object	v7,v7,android/content/pm/ResolveInfo.activityInfo Landroid/content/pm/ActivityInfo;
+; v7 : Landroid/content/pm/ActivityInfo; , v7 : Landroid/content/pm/ActivityInfo;
+	iget-object	v7,v7,android/content/pm/ActivityInfo.name Ljava/lang/String;
+; v7 : Ljava/lang/String; , v7 : Ljava/lang/String;
+	invoke-direct	{v3,v6,v7},android/content/ComponentName/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;)V
+; v3 : Landroid/content/ComponentName; , v6 : Ljava/lang/String; , v7 : Ljava/lang/String;
+.line 463
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	iget-object	v6,v9,com/actionbarsherlock/widget/ActivityChooserModel.mIntent Landroid/content/Intent;
+; v6 : Landroid/content/Intent; , v9 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-direct	{v0,v6},android/content/Intent/<init>	; <init>(Landroid/content/Intent;)V
+; v0 : Landroid/content/Intent; , v6 : Landroid/content/Intent;
+.line 464
+	invoke-virtual	{v0,v3},android/content/Intent/setComponent	; setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v3 : Landroid/content/ComponentName;
+.line 466
+	iget-object	v6,v9,com/actionbarsherlock/widget/ActivityChooserModel.mActivityChoserModelPolicy Lcom/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener;
+; v6 : Lcom/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener; , v9 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	if-eqz	v6,la795c
+; v6 : Lcom/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener;
+.line 468
+	new-instance	v1,android/content/Intent
+; v1 : Landroid/content/Intent;
+	invoke-direct	{v1,v0},android/content/Intent/<init>	; <init>(Landroid/content/Intent;)V
+; v1 : Landroid/content/Intent; , v0 : Landroid/content/Intent;
+.line 469
+	iget-object	v6,v9,com/actionbarsherlock/widget/ActivityChooserModel.mActivityChoserModelPolicy Lcom/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener;
+; v6 : Lcom/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener; , v9 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-interface	{v6,v9,v1},com/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener/onChooseActivity	; onChooseActivity(Lcom/actionbarsherlock/widget/ActivityChooserModel;Landroid/content/Intent;)Z
+; v6 : Lcom/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener; , v9 : Lcom/actionbarsherlock/widget/ActivityChooserModel; , v1 : Landroid/content/Intent;
+	move-result	v4
+; v4 : single-length
+.line 471
+	if-eqz	v4,la795c
+; v4 : single-length
+.line 472
+	const/4	v0,0
+; v0 : single-length
+la795a:
+.line 480
+	return-object	v0
+; v0 : Landroid/content/Intent;
+la795c:
+.line 476
+	new-instance	v5,com/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord
+; v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;
+	invoke-static	{},java/lang/System/currentTimeMillis	; currentTimeMillis()J
+; 
+	nop	
+	move-result-wide	v6
+; v6 : double-length
+	const/high16	v8,16256
+; v8 : single-length
+	invoke-direct	{v5,v3,v6,v7,v8},com/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord/<init>	; <init>(Landroid/content/ComponentName;JF)V
+; v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord; , v3 : Landroid/content/ComponentName; , v6 : double-length , v8 : single-length
+.line 478
+	invoke-direct	{v9,v5},com/actionbarsherlock/widget/ActivityChooserModel/addHisoricalRecord	; addHisoricalRecord(Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;)Z
+; v9 : Lcom/actionbarsherlock/widget/ActivityChooserModel; , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;
+	goto	la795a
+.end method
+
+.method public getActivity(I)Landroid/content/pm/ResolveInfo;
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+; parameter[0] : v3 (I)
+.catch java/lang/Exception from la7992 to la79ae using la79aa
+.line 415
+	iget-object	v1,v2,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+la7992:
+.line 416
+	iget-object	v0,v2,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v0 : Ljava/util/List; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-interface	{v0,v3},java/util/List/get	; get(I)Ljava/lang/Object;
+; v0 : Ljava/util/List; , v3 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+	iget-object	v0,v0,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.resolveInfo Landroid/content/pm/ResolveInfo;
+; v0 : Landroid/content/pm/ResolveInfo; , v0 : Landroid/content/pm/ResolveInfo;
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+	return-object	v0
+; v0 : Landroid/content/pm/ResolveInfo;
+la79aa:
+.line 417
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la79ae:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public getActivityCount()I
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.catch java/lang/Exception from la79d2 to la79e6 using la79e2
+.line 401
+	iget-object	v1,v2,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+la79d2:
+.line 402
+	iget-object	v0,v2,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v0 : Ljava/util/List; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-interface	{v0},java/util/List/size	; size()I
+; v0 : Ljava/util/List;
+	move-result	v0
+; v0 : single-length
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+	return	v0
+; v0 : single-length
+la79e2:
+.line 403
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la79e6:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public getActivityIndex(Landroid/content/pm/ResolveInfo;)I
+.limit registers 7
+; this: v5 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+; parameter[0] : v6 (Landroid/content/pm/ResolveInfo;)
+.var 2 is currentActivity Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo; from la7a22 to la7a2a
+.var 3 is i I from la7a12 to la7a2a
+.var 2 is currentActivity Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo; from la7a2c to la7a32
+.line 428
+	iget-object	v0,v5,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v0 : Ljava/util/List; , v5 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 429
+	invoke-interface	{v0},java/util/List/size	; size()I
+; v0 : Ljava/util/List;
+	move-result	v1
+; v1 : single-length
+.line 430
+	const/4	v3,0
+; v3 : single-length
+la7a12:
+	if-ge	v3,v1,la7a32
+; v3 : single-length , v1 : single-length
+.line 431
+	invoke-interface	{v0,v3},java/util/List/get	; get(I)Ljava/lang/Object;
+; v0 : Ljava/util/List; , v3 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+.line 432
+	iget-object	v4,v2,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.resolveInfo Landroid/content/pm/ResolveInfo;
+; v4 : Landroid/content/pm/ResolveInfo; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+	if-ne	v4,v6,la7a2c
+; v4 : Landroid/content/pm/ResolveInfo; , v6 : Landroid/content/pm/ResolveInfo;
+la7a2a:
+.line 436
+	return	v3
+; v3 : single-length
+la7a2c:
+.line 430
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	la7a12
+la7a32:
+.line 436
+	const/4	v3,15
+; v3 : single-length
+	goto	la7a2a
+.end method
+
+.method public getDefaultActivity()Landroid/content/pm/ResolveInfo;
+.limit registers 4
+; this: v3 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.catch java/lang/Exception from la7a4e to la7a82 using la7a7e
+.line 502
+	iget-object	v1,v3,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+la7a4e:
+.line 503
+	iget-object	v0,v3,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v0 : Ljava/util/List; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-interface	{v0},java/util/List/isEmpty	; isEmpty()Z
+; v0 : Ljava/util/List;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,la7a78
+; v0 : single-length
+.line 504
+	iget-object	v0,v3,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v0 : Ljava/util/List; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	const/4	v2,0
+; v2 : single-length
+	invoke-interface	{v0,v2},java/util/List/get	; get(I)Ljava/lang/Object;
+; v0 : Ljava/util/List; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+	iget-object	v0,v0,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.resolveInfo Landroid/content/pm/ResolveInfo;
+; v0 : Landroid/content/pm/ResolveInfo; , v0 : Landroid/content/pm/ResolveInfo;
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la7a76:
+.line 507
+	return-object	v0
+; v0 : single-length
+la7a78:
+.line 506
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+.line 507
+	const/4	v0,0
+; v0 : single-length
+	goto	la7a76
+la7a7e:
+.line 506
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la7a82:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public getHistoryMaxSize()I
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.catch java/lang/Exception from la7aa6 to la7ab2 using la7aae
+.line 681
+	iget-object	v1,v2,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+la7aa6:
+.line 682
+	iget	v0,v2,com/actionbarsherlock/widget/ActivityChooserModel.mHistoryMaxSize I
+; v0 : single-length , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+	return	v0
+; v0 : single-length
+la7aae:
+.line 683
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la7ab2:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public getHistorySize()I
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.catch java/lang/Exception from la7ad6 to la7aea using la7ae6
+.line 692
+	iget-object	v1,v2,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+la7ad6:
+.line 693
+	iget-object	v0,v2,com/actionbarsherlock/widget/ActivityChooserModel.mHistoricalRecords Ljava/util/List;
+; v0 : Ljava/util/List; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-interface	{v0},java/util/List/size	; size()I
+; v0 : Ljava/util/List;
+	move-result	v0
+; v0 : single-length
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+	return	v0
+; v0 : single-length
+la7ae6:
+.line 694
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la7aea:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public getIntent()Landroid/content/Intent;
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.catch java/lang/Exception from la7b0e to la7b1a using la7b16
+.line 388
+	iget-object	v1,v2,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+la7b0e:
+.line 389
+	iget-object	v0,v2,com/actionbarsherlock/widget/ActivityChooserModel.mIntent Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+	return-object	v0
+; v0 : Landroid/content/Intent;
+la7b16:
+.line 390
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la7b1a:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public setActivitySorter(Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter;)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+; parameter[0] : v3 (Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter;)
+.catch java/lang/Exception from la7b3e to la7b5c using la7b58
+.line 626
+	iget-object	v1,v2,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+la7b3e:
+.line 627
+	iget-object	v0,v2,com/actionbarsherlock/widget/ActivityChooserModel.mActivitySorter Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter;
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	if-ne	v0,v3,la7b4a
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter; , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter;
+.line 628
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la7b48:
+.line 633
+	return-void	
+la7b4a:
+.line 630
+	iput-object	v3,v2,com/actionbarsherlock/widget/ActivityChooserModel.mActivitySorter Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter;
+; v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 631
+	invoke-direct	{v2},com/actionbarsherlock/widget/ActivityChooserModel/sortActivities	; sortActivities()V
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 632
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+	goto	la7b48
+la7b58:
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la7b5c:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public setDefaultActivity(I)V
+.limit registers 9
+; this: v7 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+; parameter[0] : v8 (I)
+.var 0 is defaultName Landroid/content/ComponentName; from la7bd6 to la7bf0
+.var 1 is historicalRecord Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord; from la7be8 to la7bf0
+.var 4 is weight F from la7bb4 to la7bf0
+.line 521
+	iget-object	v5,v7,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v5 : Ljava/util/List; , v7 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	invoke-interface	{v5,v8},java/util/List/get	; get(I)Ljava/lang/Object;
+; v5 : Ljava/util/List; , v8 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+.line 522
+	iget-object	v5,v7,com/actionbarsherlock/widget/ActivityChooserModel.mActivites Ljava/util/List;
+; v5 : Ljava/util/List; , v7 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	const/4	v6,0
+; v6 : single-length
+	invoke-interface	{v5,v6},java/util/List/get	; get(I)Ljava/lang/Object;
+; v5 : Ljava/util/List; , v6 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo
+; v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+.line 525
+	if-eqz	v3,la7bf0
+; v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+.line 527
+	iget	v5,v3,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.weight F
+; v5 : single-length , v3 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+	iget	v6,v2,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.weight F
+; v6 : single-length , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+	sub-float/2addr	v5,v6
+; v5 : single-length , v6 : single-length
+	const/high16	v6,16544
+; v6 : single-length
+	add-float	v4,v5,v6
+; v4 : single-length , v5 : single-length , v6 : single-length
+la7bb4:
+.line 533
+	new-instance	v0,android/content/ComponentName
+; v0 : Landroid/content/ComponentName;
+	iget-object	v5,v2,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.resolveInfo Landroid/content/pm/ResolveInfo;
+; v5 : Landroid/content/pm/ResolveInfo; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+	iget-object	v5,v5,android/content/pm/ResolveInfo.activityInfo Landroid/content/pm/ActivityInfo;
+; v5 : Landroid/content/pm/ActivityInfo; , v5 : Landroid/content/pm/ActivityInfo;
+	iget-object	v5,v5,android/content/pm/ActivityInfo.packageName Ljava/lang/String;
+; v5 : Ljava/lang/String; , v5 : Ljava/lang/String;
+	iget-object	v6,v2,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.resolveInfo Landroid/content/pm/ResolveInfo;
+; v6 : Landroid/content/pm/ResolveInfo; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+	iget-object	v6,v6,android/content/pm/ResolveInfo.activityInfo Landroid/content/pm/ActivityInfo;
+; v6 : Landroid/content/pm/ActivityInfo; , v6 : Landroid/content/pm/ActivityInfo;
+	iget-object	v6,v6,android/content/pm/ActivityInfo.name Ljava/lang/String;
+; v6 : Ljava/lang/String; , v6 : Ljava/lang/String;
+	invoke-direct	{v0,v5,v6},android/content/ComponentName/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Landroid/content/ComponentName; , v5 : Ljava/lang/String; , v6 : Ljava/lang/String;
+.line 536
+	new-instance	v1,com/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord
+; v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;
+	invoke-static	{},java/lang/System/currentTimeMillis	; currentTimeMillis()J
+; 
+	nop	
+	move-result-wide	v5
+; v5 : double-length
+	invoke-direct	{v1,v0,v5,v6,v4},com/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord/<init>	; <init>(Landroid/content/ComponentName;JF)V
+; v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord; , v0 : Landroid/content/ComponentName; , v5 : double-length , v4 : single-length
+.line 538
+	invoke-direct	{v7,v1},com/actionbarsherlock/widget/ActivityChooserModel/addHisoricalRecord	; addHisoricalRecord(Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;)Z
+; v7 : Lcom/actionbarsherlock/widget/ActivityChooserModel; , v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;
+.line 539
+	return-void	
+la7bf0:
+.line 530
+	const/high16	v4,16256
+; v4 : single-length
+	goto	la7bb4
+.end method
+
+.method public setHistoryMaxSize(I)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+; parameter[0] : v3 (I)
+.catch java/lang/Exception from la7c0e to la7c32 using la7c2e
+.line 665
+	iget-object	v1,v2,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+la7c0e:
+.line 666
+	iget	v0,v2,com/actionbarsherlock/widget/ActivityChooserModel.mHistoryMaxSize I
+; v0 : single-length , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	if-ne	v0,v3,la7c1a
+; v0 : single-length , v3 : single-length
+.line 667
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la7c18:
+.line 673
+	return-void	
+la7c1a:
+.line 669
+	iput	v3,v2,com/actionbarsherlock/widget/ActivityChooserModel.mHistoryMaxSize I
+; v3 : single-length , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 670
+	invoke-direct	{v2},com/actionbarsherlock/widget/ActivityChooserModel/pruneExcessiveHistoricalRecordsLocked	; pruneExcessiveHistoricalRecordsLocked()V
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 671
+	invoke-direct	{v2},com/actionbarsherlock/widget/ActivityChooserModel/sortActivities	; sortActivities()V
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 672
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+	goto	la7c18
+la7c2e:
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la7c32:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public setIntent(Landroid/content/Intent;)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+; parameter[0] : v3 (Landroid/content/Intent;)
+.catch java/lang/Exception from la7c56 to la7c74 using la7c70
+.line 373
+	iget-object	v1,v2,com/actionbarsherlock/widget/ActivityChooserModel.mInstanceLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+la7c56:
+.line 374
+	iget-object	v0,v2,com/actionbarsherlock/widget/ActivityChooserModel.mIntent Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	if-ne	v0,v3,la7c62
+; v0 : Landroid/content/Intent; , v3 : Landroid/content/Intent;
+.line 375
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la7c60:
+.line 380
+	return-void	
+la7c62:
+.line 377
+	iput-object	v3,v2,com/actionbarsherlock/widget/ActivityChooserModel.mIntent Landroid/content/Intent;
+; v3 : Landroid/content/Intent; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 378
+	invoke-direct	{v2},com/actionbarsherlock/widget/ActivityChooserModel/loadActivitiesLocked	; loadActivitiesLocked()V
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 379
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+	goto	la7c60
+la7c70:
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+la7c74:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public setOnChooseActivityListener(Lcom/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener;)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+; parameter[0] : v1 (Lcom/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener;)
+.line 489
+	iput-object	v1,v0,com/actionbarsherlock/widget/ActivityChooserModel.mActivityChoserModelPolicy Lcom/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener;
+; v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel$OnChooseActivityListener; , v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+.line 490
+	return-void	
+.end method
+
+

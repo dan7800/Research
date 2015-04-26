@@ -1,0 +1,76 @@
+.class public com/google/android/apps/analytics/AnalyticsParameterEncoder
+.super java/lang/Object
+
+
+.method private <init>()V
+.limit registers 1
+; this: v0 (Lcom/google/android/apps/analytics/AnalyticsParameterEncoder;)
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lcom/google/android/apps/analytics/AnalyticsParameterEncoder;
+	return-void	
+.end method
+
+.method public static encode(Ljava/lang/String;)Ljava/lang/String;
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/String;)
+	const-string	v0,"UTF-8"
+; v0 : Ljava/lang/String;
+	invoke-static	{v1,v0},com/google/android/apps/analytics/AnalyticsParameterEncoder/encode	; encode(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v1 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method static encode(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+.limit registers 5
+; parameter[0] : v3 (Ljava/lang/String;)
+; parameter[1] : v4 (Ljava/lang/String;)
+.catch java/io/UnsupportedEncodingException from lbd4c4 to lbd4da using lbd4de
+lbd4c4:
+	invoke-static	{v3,v4},java/net/URLEncoder/encode	; encode(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	const-string	v1,"+"
+; v1 : Ljava/lang/String;
+	const-string	v2,"%20"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v2},java/lang/String/replace	; replace(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+lbd4da:
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+lbd4de:
+	move-exception	v0
+; v0 : java/io/UnsupportedEncodingException
+	new-instance	v0,java/lang/AssertionError
+; v0 : Ljava/lang/AssertionError;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"URL encoding failed for: "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/AssertionError/<init>	; <init>(Ljava/lang/Object;)V
+; v0 : Ljava/lang/AssertionError; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/AssertionError;
+.end method
+
+

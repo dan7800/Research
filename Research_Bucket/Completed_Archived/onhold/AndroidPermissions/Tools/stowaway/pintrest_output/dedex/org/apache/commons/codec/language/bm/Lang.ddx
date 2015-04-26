@@ -1,0 +1,469 @@
+.class public org/apache/commons/codec/language/bm/Lang
+.super java/lang/Object
+.source Lang.java
+
+.inner class 1 inner org/apache/commons/codec/language/bm/Lang$1 outer org/apache/commons/codec/language/bm/Lang
+.inner class LangRule inner org/apache/commons/codec/language/bm/Lang$LangRule outer org/apache/commons/codec/language/bm/Lang
+.field private static final LANGUAGE_RULES_RN Ljava/lang/String; = "org/apache/commons/codec/language/bm/lang.txt"
+.field private static final Langs Ljava/util/Map;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/Map" , "<" , "Lorg/apache/commons/codec/language/bm/NameType;" , "Lorg/apache/commons/codec/language/bm/Lang;" , ">;" }
+  .end annotation
+.end field
+.field private final languages Lorg/apache/commons/codec/language/bm/Languages;
+.field private final rules Ljava/util/List;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/List" , "<" , "Lorg/apache/commons/codec/language/bm/Lang$LangRule;" , ">;" }
+  .end annotation
+.end field
+
+.method static <clinit>()V
+.limit registers 7
+.var 3 is s Lorg/apache/commons/codec/language/bm/NameType; from l10c3da to l10c3fe
+.line 98
+	new-instance	v4,java/util/EnumMap
+; v4 : Ljava/util/EnumMap;
+	const-class	v5,org/apache/commons/codec/language/bm/NameType
+; v5 : Ljava/lang/Class;
+	invoke-direct	{v4,v5},java/util/EnumMap/<init>	; <init>(Ljava/lang/Class;)V
+; v4 : Ljava/util/EnumMap; , v5 : Ljava/lang/Class;
+	sput-object	v4,org/apache/commons/codec/language/bm/Lang.Langs Ljava/util/Map;
+; v4 : Ljava/util/Map;
+.line 103
+	invoke-static	{},org/apache/commons/codec/language/bm/NameType/values	; values()[Lorg/apache/commons/codec/language/bm/NameType;
+; 
+	nop	
+	move-result-object	v0
+; v0 : [Lorg/apache/commons/codec/language/bm/NameType;
+	array-length	v2,v0
+; v2 : single-length , v0 : [Lorg/apache/commons/codec/language/bm/NameType;
+	const/4	v1,0
+; v1 : single-length
+l10c3d2:
+	if-ge	v1,v2,l10c3fe
+; v1 : single-length , v2 : single-length
+	aget-object	v3,v0,v1
+; v3 : Lorg/apache/commons/codec/language/bm/NameType; , v0 : [Lorg/apache/commons/codec/language/bm/NameType; , v1 : single-length
+.line 104
+	sget-object	v4,org/apache/commons/codec/language/bm/Lang.Langs Ljava/util/Map;
+; v4 : Ljava/util/Map;
+	const-string	v5,"org/apache/commons/codec/language/bm/lang.txt"
+; v5 : Ljava/lang/String;
+	invoke-static	{v3},org/apache/commons/codec/language/bm/Languages/getInstance	; getInstance(Lorg/apache/commons/codec/language/bm/NameType;)Lorg/apache/commons/codec/language/bm/Languages;
+; v3 : Lorg/apache/commons/codec/language/bm/NameType;
+	move-result-object	v6
+; v6 : Lorg/apache/commons/codec/language/bm/Languages;
+	invoke-static	{v5,v6},org/apache/commons/codec/language/bm/Lang/loadFromResource	; loadFromResource(Ljava/lang/String;Lorg/apache/commons/codec/language/bm/Languages;)Lorg/apache/commons/codec/language/bm/Lang;
+; v5 : Ljava/lang/String; , v6 : Lorg/apache/commons/codec/language/bm/Languages;
+	move-result-object	v5
+; v5 : Lorg/apache/commons/codec/language/bm/Lang;
+	invoke-interface	{v4,v3,v5},java/util/Map/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v4 : Ljava/util/Map; , v3 : Lorg/apache/commons/codec/language/bm/NameType; , v5 : Lorg/apache/commons/codec/language/bm/Lang;
+.line 103
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	l10c3d2
+l10c3fe:
+.line 106
+	return-void	
+.end method
+
+.method private <init>(Ljava/util/List;Lorg/apache/commons/codec/language/bm/Languages;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/util/List" , "<" , "Lorg/apache/commons/codec/language/bm/Lang$LangRule;" , ">;" , "Lorg/apache/commons/codec/language/bm/Languages;" , ")V" }
+.end annotation
+.limit registers 4
+; this: v1 (Lorg/apache/commons/codec/language/bm/Lang;)
+; parameter[0] : v2 (Ljava/util/List;)
+; parameter[1] : v3 (Lorg/apache/commons/codec/language/bm/Languages;)
+.line 197
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lorg/apache/commons/codec/language/bm/Lang;
+.line 198
+	invoke-static	{v2},java/util/Collections/unmodifiableList	; unmodifiableList(Ljava/util/List;)Ljava/util/List;
+; v2 : Ljava/util/List;
+	move-result-object	v0
+; v0 : Ljava/util/List;
+	iput-object	v0,v1,org/apache/commons/codec/language/bm/Lang.rules Ljava/util/List;
+; v0 : Ljava/util/List; , v1 : Lorg/apache/commons/codec/language/bm/Lang;
+.line 199
+	iput-object	v3,v1,org/apache/commons/codec/language/bm/Lang.languages Lorg/apache/commons/codec/language/bm/Languages;
+; v3 : Lorg/apache/commons/codec/language/bm/Languages; , v1 : Lorg/apache/commons/codec/language/bm/Lang;
+.line 200
+	return-void	
+.end method
+
+.method public static instance(Lorg/apache/commons/codec/language/bm/NameType;)Lorg/apache/commons/codec/language/bm/Lang;
+.limit registers 2
+; parameter[0] : v1 (Lorg/apache/commons/codec/language/bm/NameType;)
+.line 116
+	sget-object	v0,org/apache/commons/codec/language/bm/Lang.Langs Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Lorg/apache/commons/codec/language/bm/NameType;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,org/apache/commons/codec/language/bm/Lang
+; v0 : Lorg/apache/commons/codec/language/bm/Lang;
+	return-object	v0
+; v0 : Lorg/apache/commons/codec/language/bm/Lang;
+.end method
+
+.method public static loadFromResource(Ljava/lang/String;Lorg/apache/commons/codec/language/bm/Languages;)Lorg/apache/commons/codec/language/bm/Lang;
+.limit registers 16
+; parameter[0] : v14 (Ljava/lang/String;)
+; parameter[1] : v15 (Lorg/apache/commons/codec/language/bm/Languages;)
+.var 0 is accept Z from l10c592 to l10c5ba
+.var 1 is cmtI I from l10c4ec to l10c5ba
+.var 4 is langs [Ljava/lang/String; from l10c580 to l10c5ba
+.var 5 is line Ljava/lang/String; from l10c4b4 to l10c5ba
+.var 6 is parts [Ljava/lang/String; from l10c51a to l10c5ba
+.var 7 is pattern Ljava/util/regex/Pattern; from l10c56e to l10c5ba
+.var 8 is rawLine Ljava/lang/String; from l10c4b2 to l10c5ba
+.line 135
+	new-instance	v9,java/util/ArrayList
+; v9 : Ljava/util/ArrayList;
+	invoke-direct	{v9},java/util/ArrayList/<init>	; <init>()V
+; v9 : Ljava/util/ArrayList;
+.line 136
+	const-class	v11,org/apache/commons/codec/language/bm/Lang
+; v11 : Ljava/lang/Class;
+	invoke-virtual	{v11},java/lang/Class/getClassLoader	; getClassLoader()Ljava/lang/ClassLoader;
+; v11 : Ljava/lang/Class;
+	move-result-object	v11
+; v11 : Ljava/lang/ClassLoader;
+	invoke-virtual	{v11,v14},java/lang/ClassLoader/getResourceAsStream	; getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;
+; v11 : Ljava/lang/ClassLoader; , v14 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/io/InputStream;
+.line 138
+	if-nez	v3,l10c48e
+; v3 : Ljava/io/InputStream;
+.line 139
+	new-instance	v11,java/lang/IllegalStateException
+; v11 : Ljava/lang/IllegalStateException;
+	const-string	v12,"Unable to resolve required resource:org/apache/commons/codec/language/bm/lang.txt"
+; v12 : Ljava/lang/String;
+	invoke-direct	{v11,v12},java/lang/IllegalStateException/<init>	; <init>(Ljava/lang/String;)V
+; v11 : Ljava/lang/IllegalStateException; , v12 : Ljava/lang/String;
+	throw	v11
+; v11 : Ljava/lang/IllegalStateException;
+l10c48e:
+.line 142
+	new-instance	v10,java/util/Scanner
+; v10 : Ljava/util/Scanner;
+	const-string	v11,"UTF-8"
+; v11 : Ljava/lang/String;
+	invoke-direct	{v10,v3,v11},java/util/Scanner/<init>	; <init>(Ljava/io/InputStream;Ljava/lang/String;)V
+; v10 : Ljava/util/Scanner; , v3 : Ljava/io/InputStream; , v11 : Ljava/lang/String;
+.line 143
+	const/4	v2,0
+; v2 : single-length
+l10c49e:
+.line 144
+	invoke-virtual	{v10},java/util/Scanner/hasNextLine	; hasNextLine()Z
+; v10 : Ljava/util/Scanner;
+	move-result	v11
+; v11 : single-length
+	if-eqz	v11,l10c5ba
+; v11 : single-length
+.line 145
+	invoke-virtual	{v10},java/util/Scanner/nextLine	; nextLine()Ljava/lang/String;
+; v10 : Ljava/util/Scanner;
+	move-result-object	v8
+; v8 : Ljava/lang/String;
+.line 146
+	move-object	v5,v8
+; v5 : Ljava/lang/String; , v8 : Ljava/lang/String;
+.line 148
+	if-eqz	v2,l10c4cc
+; v2 : single-length
+.line 149
+	const-string	v11,"*/"
+; v11 : Ljava/lang/String;
+	invoke-virtual	{v5,v11},java/lang/String/endsWith	; endsWith(Ljava/lang/String;)Z
+; v5 : Ljava/lang/String; , v11 : Ljava/lang/String;
+	move-result	v11
+; v11 : single-length
+	if-eqz	v11,l10c49e
+; v11 : single-length
+.line 150
+	const/4	v2,0
+; v2 : single-length
+	goto	l10c49e
+l10c4cc:
+.line 155
+	const-string	v11,"/*"
+; v11 : Ljava/lang/String;
+	invoke-virtual	{v5,v11},java/lang/String/startsWith	; startsWith(Ljava/lang/String;)Z
+; v5 : Ljava/lang/String; , v11 : Ljava/lang/String;
+	move-result	v11
+; v11 : single-length
+	if-eqz	v11,l10c4e0
+; v11 : single-length
+.line 156
+	const/4	v2,1
+; v2 : single-length
+	goto	l10c49e
+l10c4e0:
+.line 159
+	const-string	v11,"//"
+; v11 : Ljava/lang/String;
+	invoke-virtual	{v5,v11},java/lang/String/indexOf	; indexOf(Ljava/lang/String;)I
+; v5 : Ljava/lang/String; , v11 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+.line 160
+	if-ltz	v1,l10c4fa
+; v1 : single-length
+.line 162
+	const/4	v11,0
+; v11 : single-length
+	invoke-virtual	{v5,v11,v1},java/lang/String/substring	; substring(II)Ljava/lang/String;
+; v5 : Ljava/lang/String; , v11 : single-length , v1 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+l10c4fa:
+.line 166
+	invoke-virtual	{v5},java/lang/String/trim	; trim()Ljava/lang/String;
+; v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+.line 168
+	invoke-virtual	{v5},java/lang/String/length	; length()I
+; v5 : Ljava/lang/String;
+	move-result	v11
+; v11 : single-length
+	if-eqz	v11,l10c49e
+; v11 : single-length
+.line 173
+	const-string	v11,"\s+"
+; v11 : Ljava/lang/String;
+	invoke-virtual	{v5,v11},java/lang/String/split	; split(Ljava/lang/String;)[Ljava/lang/String;
+; v5 : Ljava/lang/String; , v11 : Ljava/lang/String;
+	move-result-object	v6
+; v6 : [Ljava/lang/String;
+.line 176
+	array-length	v11,v6
+; v11 : single-length , v6 : [Ljava/lang/String;
+	const/4	v12,3
+; v12 : single-length
+	if-eq	v11,v12,l10c560
+; v11 : single-length , v12 : single-length
+.line 178
+	sget-object	v11,java/lang/System.err Ljava/io/PrintStream;
+; v11 : Ljava/io/PrintStream;
+	new-instance	v12,java/lang/StringBuilder
+; v12 : Ljava/lang/StringBuilder;
+	invoke-direct	{v12},java/lang/StringBuilder/<init>	; <init>()V
+; v12 : Ljava/lang/StringBuilder;
+	const-string	v13,"Warning: malformed line '"
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v12,v13},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v12 : Ljava/lang/StringBuilder; , v13 : Ljava/lang/String;
+	move-result-object	v12
+; v12 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v12,v8},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v12 : Ljava/lang/StringBuilder; , v8 : Ljava/lang/String;
+	move-result-object	v12
+; v12 : Ljava/lang/StringBuilder;
+	const-string	v13,"'"
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v12,v13},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v12 : Ljava/lang/StringBuilder; , v13 : Ljava/lang/String;
+	move-result-object	v12
+; v12 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v12},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v12 : Ljava/lang/StringBuilder;
+	move-result-object	v12
+; v12 : Ljava/lang/String;
+	invoke-virtual	{v11,v12},java/io/PrintStream/println	; println(Ljava/lang/String;)V
+; v11 : Ljava/io/PrintStream; , v12 : Ljava/lang/String;
+	goto	l10c49e
+l10c560:
+.line 182
+	const/4	v11,0
+; v11 : single-length
+	aget-object	v11,v6,v11
+; v11 : Ljava/lang/String; , v6 : [Ljava/lang/String; , v11 : Ljava/lang/String;
+	invoke-static	{v11},java/util/regex/Pattern/compile	; compile(Ljava/lang/String;)Ljava/util/regex/Pattern;
+; v11 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/util/regex/Pattern;
+.line 183
+	const/4	v11,1
+; v11 : single-length
+	aget-object	v11,v6,v11
+; v11 : Ljava/lang/String; , v6 : [Ljava/lang/String; , v11 : Ljava/lang/String;
+	const-string	v12,"\+"
+; v12 : Ljava/lang/String;
+	invoke-virtual	{v11,v12},java/lang/String/split	; split(Ljava/lang/String;)[Ljava/lang/String;
+; v11 : Ljava/lang/String; , v12 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : [Ljava/lang/String;
+.line 184
+	const/4	v11,2
+; v11 : single-length
+	aget-object	v11,v6,v11
+; v11 : Ljava/lang/String; , v6 : [Ljava/lang/String; , v11 : Ljava/lang/String;
+	const-string	v12,"true"
+; v12 : Ljava/lang/String;
+	invoke-virtual	{v11,v12},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v11 : Ljava/lang/String; , v12 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+.line 186
+	new-instance	v11,org/apache/commons/codec/language/bm/Lang$LangRule
+; v11 : Lorg/apache/commons/codec/language/bm/Lang$LangRule;
+	new-instance	v12,java/util/HashSet
+; v12 : Ljava/util/HashSet;
+	invoke-static	{v4},java/util/Arrays/asList	; asList([Ljava/lang/Object;)Ljava/util/List;
+; v4 : [Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/util/List;
+	invoke-direct	{v12,v13},java/util/HashSet/<init>	; <init>(Ljava/util/Collection;)V
+; v12 : Ljava/util/HashSet; , v13 : Ljava/util/List;
+	const/4	v13,0
+; v13 : single-length
+	invoke-direct	{v11,v7,v12,v0,v13},org/apache/commons/codec/language/bm/Lang$LangRule/<init>	; <init>(Ljava/util/regex/Pattern;Ljava/util/Set;ZLorg/apache/commons/codec/language/bm/Lang$1;)V
+; v11 : Lorg/apache/commons/codec/language/bm/Lang$LangRule; , v7 : Ljava/util/regex/Pattern; , v12 : Ljava/util/HashSet; , v0 : single-length , v13 : single-length
+	invoke-interface	{v9,v11},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v9 : Ljava/util/ArrayList; , v11 : Lorg/apache/commons/codec/language/bm/Lang$LangRule;
+	goto/16	l10c49e
+l10c5ba:
+.line 191
+	new-instance	v11,org/apache/commons/codec/language/bm/Lang
+; v11 : Lorg/apache/commons/codec/language/bm/Lang;
+	invoke-direct	{v11,v9,v15},org/apache/commons/codec/language/bm/Lang/<init>	; <init>(Ljava/util/List;Lorg/apache/commons/codec/language/bm/Languages;)V
+; v11 : Lorg/apache/commons/codec/language/bm/Lang; , v9 : Ljava/util/ArrayList; , v15 : Lorg/apache/commons/codec/language/bm/Languages;
+	return-object	v11
+; v11 : Lorg/apache/commons/codec/language/bm/Lang;
+.end method
+
+.method public guessLanguage(Ljava/lang/String;)Ljava/lang/String;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/codec/language/bm/Lang;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 210
+	invoke-virtual	{v2,v3},org/apache/commons/codec/language/bm/Lang/guessLanguages	; guessLanguages(Ljava/lang/String;)Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+; v2 : Lorg/apache/commons/codec/language/bm/Lang; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+.line 211
+	invoke-virtual	{v0},org/apache/commons/codec/language/bm/Languages$LanguageSet/isSingleton	; isSingleton()Z
+; v0 : Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l10c5f6
+; v1 : single-length
+	invoke-virtual	{v0},org/apache/commons/codec/language/bm/Languages$LanguageSet/getAny	; getAny()Ljava/lang/String;
+; v0 : Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+l10c5f4:
+	return-object	v1
+; v1 : Ljava/lang/String;
+l10c5f6:
+	const-string	v1,"any"
+; v1 : Ljava/lang/String;
+	goto	l10c5f4
+.end method
+
+.method public guessLanguages(Ljava/lang/String;)Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+.limit registers 8
+; this: v6 (Lorg/apache/commons/codec/language/bm/Lang;)
+; parameter[0] : v7 (Ljava/lang/String;)
+.var 3 is rule Lorg/apache/commons/codec/language/bm/Lang$LangRule; from l10c652 to l10c68a
+.var 2 is ls Lorg/apache/commons/codec/language/bm/Languages$LanguageSet; from l10c692 to l10c6a6
+.line 222
+	sget-object	v5,java/util/Locale.ENGLISH Ljava/util/Locale;
+; v5 : Ljava/util/Locale;
+	invoke-virtual	{v7,v5},java/lang/String/toLowerCase	; toLowerCase(Ljava/util/Locale;)Ljava/lang/String;
+; v7 : Ljava/lang/String; , v5 : Ljava/util/Locale;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+.line 225
+	new-instance	v1,java/util/HashSet
+; v1 : Ljava/util/HashSet;
+	iget-object	v5,v6,org/apache/commons/codec/language/bm/Lang.languages Lorg/apache/commons/codec/language/bm/Languages;
+; v5 : Lorg/apache/commons/codec/language/bm/Languages; , v6 : Lorg/apache/commons/codec/language/bm/Lang;
+	invoke-virtual	{v5},org/apache/commons/codec/language/bm/Languages/getLanguages	; getLanguages()Ljava/util/Set;
+; v5 : Lorg/apache/commons/codec/language/bm/Languages;
+	move-result-object	v5
+; v5 : Ljava/util/Set;
+	invoke-direct	{v1,v5},java/util/HashSet/<init>	; <init>(Ljava/util/Collection;)V
+; v1 : Ljava/util/HashSet; , v5 : Ljava/util/Set;
+.line 226
+	iget-object	v5,v6,org/apache/commons/codec/language/bm/Lang.rules Ljava/util/List;
+; v5 : Ljava/util/List; , v6 : Lorg/apache/commons/codec/language/bm/Lang;
+	invoke-interface	{v5},java/util/List/iterator	; iterator()Ljava/util/Iterator;
+; v5 : Ljava/util/List;
+	move-result-object	v0
+; v0 : Ljava/util/Iterator;
+l10c63a:
+	invoke-interface	{v0},java/util/Iterator/hasNext	; hasNext()Z
+; v0 : Ljava/util/Iterator;
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l10c68a
+; v5 : single-length
+	invoke-interface	{v0},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v0 : Ljava/util/Iterator;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,org/apache/commons/codec/language/bm/Lang$LangRule
+; v3 : Lorg/apache/commons/codec/language/bm/Lang$LangRule;
+.line 227
+	invoke-virtual	{v3,v4},org/apache/commons/codec/language/bm/Lang$LangRule/matches	; matches(Ljava/lang/String;)Z
+; v3 : Lorg/apache/commons/codec/language/bm/Lang$LangRule; , v4 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l10c63a
+; v5 : single-length
+.line 229
+	invoke-static	{v3},org/apache/commons/codec/language/bm/Lang$LangRule/access$100	; access$100(Lorg/apache/commons/codec/language/bm/Lang$LangRule;)Z
+; v3 : Lorg/apache/commons/codec/language/bm/Lang$LangRule;
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l10c67a
+; v5 : single-length
+.line 231
+	invoke-static	{v3},org/apache/commons/codec/language/bm/Lang$LangRule/access$200	; access$200(Lorg/apache/commons/codec/language/bm/Lang$LangRule;)Ljava/util/Set;
+; v3 : Lorg/apache/commons/codec/language/bm/Lang$LangRule;
+	move-result-object	v5
+; v5 : Ljava/util/Set;
+	invoke-interface	{v1,v5},java/util/Set/retainAll	; retainAll(Ljava/util/Collection;)Z
+; v1 : Ljava/util/HashSet; , v5 : Ljava/util/Set;
+	goto	l10c63a
+l10c67a:
+.line 234
+	invoke-static	{v3},org/apache/commons/codec/language/bm/Lang$LangRule/access$200	; access$200(Lorg/apache/commons/codec/language/bm/Lang$LangRule;)Ljava/util/Set;
+; v3 : Lorg/apache/commons/codec/language/bm/Lang$LangRule;
+	move-result-object	v5
+; v5 : Ljava/util/Set;
+	invoke-interface	{v1,v5},java/util/Set/removeAll	; removeAll(Ljava/util/Collection;)Z
+; v1 : Ljava/util/HashSet; , v5 : Ljava/util/Set;
+	goto	l10c63a
+l10c68a:
+.line 242
+	invoke-static	{v1},org/apache/commons/codec/language/bm/Languages$LanguageSet/from	; from(Ljava/util/Set;)Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+; v1 : Ljava/util/HashSet;
+	move-result-object	v2
+; v2 : Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+.line 243
+	sget-object	v5,org/apache/commons/codec/language/bm/Languages.NO_LANGUAGES Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+; v5 : Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+	invoke-virtual	{v2,v5},java/lang/Object/equals	; equals(Ljava/lang/Object;)Z
+; v2 : Lorg/apache/commons/codec/language/bm/Languages$LanguageSet; , v5 : Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l10c6a6
+; v5 : single-length
+	sget-object	v2,org/apache/commons/codec/language/bm/Languages.ANY_LANGUAGE Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+; v2 : Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+l10c6a6:
+	return-object	v2
+; v2 : Lorg/apache/commons/codec/language/bm/Languages$LanguageSet;
+.end method
+
+

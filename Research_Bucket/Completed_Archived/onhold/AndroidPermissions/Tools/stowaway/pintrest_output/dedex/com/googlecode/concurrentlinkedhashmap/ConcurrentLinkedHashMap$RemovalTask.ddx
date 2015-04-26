@@ -1,0 +1,67 @@
+.class final com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask
+.super com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AbstractTask
+.source ConcurrentLinkedHashMap.java
+
+.inner class RemovalTask inner com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask outer com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap
+.field final node Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap" , "<TK;TV;>.Node;" }
+  .end annotation
+.end field
+.field final this$0 Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+
+.method <init>(Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap" , "<TK;TV;>.Node;)V" }
+.end annotation
+.limit registers 3
+; this: v0 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask;)
+; parameter[0] : v1 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;)
+; parameter[1] : v2 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;)
+.line 626
+	iput-object	v1,v0,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask.this$0 Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+; v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap; , v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask;
+	invoke-direct	{v0,v1},com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AbstractTask/<init>	; <init>(Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;)V
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask; , v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+.line 627
+	iput-object	v2,v0,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask.node Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;
+; v2 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node; , v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask;
+.line 628
+	return-void	
+.end method
+
+.method public isWrite()Z
+.limit registers 2
+; this: v1 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask;)
+.line 638
+	const/4	v0,1
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public run()V
+.annotation buildVisibility Lcom/googlecode/concurrentlinkedhashmap/GuardedBy;
+    value Ljava/lang/String; = "evictionLock"
+.end annotation
+.limit registers 3
+; this: v2 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask;)
+.line 633
+	iget-object	v0,v2,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask.this$0 Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap; , v2 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask;
+	iget-object	v0,v0,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap.evictionDeque Lcom/googlecode/concurrentlinkedhashmap/LinkedDeque;
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/LinkedDeque; , v0 : Lcom/googlecode/concurrentlinkedhashmap/LinkedDeque;
+	iget-object	v1,v2,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask.node Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;
+; v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node; , v2 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask;
+	invoke-virtual	{v0,v1},com/googlecode/concurrentlinkedhashmap/LinkedDeque/remove	; remove(Ljava/lang/Object;)Z
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/LinkedDeque; , v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;
+.line 634
+	iget-object	v0,v2,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask.node Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node; , v2 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$RemovalTask;
+	invoke-virtual	{v0},com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node/makeDead	; makeDead()V
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;
+.line 635
+	return-void	
+.end method
+
+

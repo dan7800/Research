@@ -1,0 +1,99 @@
+.class com/pinterest/appwidget/StackRemoteViewsFactory$1
+.super com/pinterest/api/PAPIHttpResponseHandler
+.source PWidgetService.java
+
+.inner class 1 inner com/pinterest/appwidget/StackRemoteViewsFactory$1 outer com/pinterest/appwidget/StackRemoteViewsFactory
+.field final this$0 Lcom/pinterest/appwidget/StackRemoteViewsFactory;
+
+.method <init>(Lcom/pinterest/appwidget/StackRemoteViewsFactory;)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/appwidget/StackRemoteViewsFactory$1;)
+; parameter[0] : v1 (Lcom/pinterest/appwidget/StackRemoteViewsFactory;)
+.line 48
+	iput-object	v1,v0,com/pinterest/appwidget/StackRemoteViewsFactory$1.this$0 Lcom/pinterest/appwidget/StackRemoteViewsFactory;
+; v1 : Lcom/pinterest/appwidget/StackRemoteViewsFactory; , v0 : Lcom/pinterest/appwidget/StackRemoteViewsFactory$1;
+	invoke-direct	{v0},com/pinterest/api/PAPIHttpResponseHandler/<init>	; <init>()V
+; v0 : Lcom/pinterest/appwidget/StackRemoteViewsFactory$1;
+	return-void	
+.end method
+
+.method public getActivity()Landroid/app/Activity;
+.limit registers 2
+; this: v1 (Lcom/pinterest/appwidget/StackRemoteViewsFactory$1;)
+.line 74
+	const/4	v0,0
+; v0 : single-length
+	return-object	v0
+; v0 : single-length
+.end method
+
+.method public onFailure(Ljava/lang/Throwable;Lorg/json/JSONObject;)V
+.limit registers 4
+; this: v1 (Lcom/pinterest/appwidget/StackRemoteViewsFactory$1;)
+; parameter[0] : v2 (Ljava/lang/Throwable;)
+; parameter[1] : v3 (Lorg/json/JSONObject;)
+.catch org/json/JSONException from lf3374 to lf3386 using lf3388
+.line 63
+	if-eqz	v3,lf3386
+; v3 : Lorg/json/JSONObject;
+lf3374:
+.line 65
+	const-string	v0,"error"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v3,v0},org/json/JSONObject/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v3 : Lorg/json/JSONObject; , v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	invoke-static	{v0},com/pinterest/base/Application/showToast	; showToast(Ljava/lang/String;)V
+; v0 : Ljava/lang/String;
+lf3386:
+.line 69
+	return-void	
+lf3388:
+.line 66
+	move-exception	v0
+; v0 : org/json/JSONException
+	goto	lf3386
+.end method
+
+.method public onStart()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/appwidget/StackRemoteViewsFactory$1;)
+.line 51
+	return-void	
+.end method
+
+.method public onSuccess(Lorg/json/JSONObject;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/appwidget/StackRemoteViewsFactory$1;)
+; parameter[0] : v3 (Lorg/json/JSONObject;)
+.line 55
+	iget-object	v0,v2,com/pinterest/appwidget/StackRemoteViewsFactory$1.this$0 Lcom/pinterest/appwidget/StackRemoteViewsFactory;
+; v0 : Lcom/pinterest/appwidget/StackRemoteViewsFactory; , v2 : Lcom/pinterest/appwidget/StackRemoteViewsFactory$1;
+	const-string	v1,"user"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v3,v1},org/json/JSONObject/optJSONObject	; optJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
+; v3 : Lorg/json/JSONObject; , v1 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Lorg/json/JSONObject;
+	invoke-static	{v1},com/pinterest/api/models/User/makeUser	; makeUser(Lorg/json/JSONObject;)Lcom/pinterest/api/models/User;
+; v1 : Lorg/json/JSONObject;
+	move-result-object	v1
+; v1 : Lcom/pinterest/api/models/User;
+	invoke-static	{v0,v1},com/pinterest/appwidget/StackRemoteViewsFactory/access$002	; access$002(Lcom/pinterest/appwidget/StackRemoteViewsFactory;Lcom/pinterest/api/models/User;)Lcom/pinterest/api/models/User;
+; v0 : Lcom/pinterest/appwidget/StackRemoteViewsFactory; , v1 : Lcom/pinterest/api/models/User;
+.line 57
+	iget-object	v0,v2,com/pinterest/appwidget/StackRemoteViewsFactory$1.this$0 Lcom/pinterest/appwidget/StackRemoteViewsFactory;
+; v0 : Lcom/pinterest/appwidget/StackRemoteViewsFactory; , v2 : Lcom/pinterest/appwidget/StackRemoteViewsFactory$1;
+	invoke-virtual	{v0,v3},com/pinterest/appwidget/StackRemoteViewsFactory/reset	; reset(Lorg/json/JSONObject;)V
+; v0 : Lcom/pinterest/appwidget/StackRemoteViewsFactory; , v3 : Lorg/json/JSONObject;
+.line 58
+	iget-object	v0,v2,com/pinterest/appwidget/StackRemoteViewsFactory$1.this$0 Lcom/pinterest/appwidget/StackRemoteViewsFactory;
+; v0 : Lcom/pinterest/appwidget/StackRemoteViewsFactory; , v2 : Lcom/pinterest/appwidget/StackRemoteViewsFactory$1;
+	invoke-static	{v0},com/pinterest/appwidget/StackRemoteViewsFactory/access$100	; access$100(Lcom/pinterest/appwidget/StackRemoteViewsFactory;)V
+; v0 : Lcom/pinterest/appwidget/StackRemoteViewsFactory;
+.line 59
+	return-void	
+.end method
+
+

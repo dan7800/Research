@@ -1,0 +1,164 @@
+.class public org/scribe/extractors/BaseStringExtractorImpl
+.super java/lang/Object
+.source BaseStringExtractorImpl.java
+.implements org/scribe/extractors/BaseStringExtractor
+
+.field private static final AMPERSAND_SEPARATED_STRING Ljava/lang/String; = "%s&%s&%s"
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lorg/scribe/extractors/BaseStringExtractorImpl;)
+.line 13
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/scribe/extractors/BaseStringExtractorImpl;
+	return-void	
+.end method
+
+.method private checkPreconditions(Lorg/scribe/model/OAuthRequest;)V
+.limit registers 3
+; this: v1 (Lorg/scribe/extractors/BaseStringExtractorImpl;)
+; parameter[0] : v2 (Lorg/scribe/model/OAuthRequest;)
+.line 41
+	const-string	v0,"Cannot extract base string from null object"
+; v0 : Ljava/lang/String;
+	invoke-static	{v2,v0},org/scribe/utils/Preconditions/checkNotNull	; checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V
+; v2 : Lorg/scribe/model/OAuthRequest; , v0 : Ljava/lang/String;
+.line 43
+	invoke-virtual	{v2},org/scribe/model/OAuthRequest/getOauthParameters	; getOauthParameters()Ljava/util/Map;
+; v2 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Ljava/util/Map;
+	if-eqz	v0,l14a18a
+; v0 : Ljava/util/Map;
+	invoke-virtual	{v2},org/scribe/model/OAuthRequest/getOauthParameters	; getOauthParameters()Ljava/util/Map;
+; v2 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Ljava/util/Map;
+	invoke-interface	{v0},java/util/Map/size	; size()I
+; v0 : Ljava/util/Map;
+	move-result	v0
+; v0 : single-length
+	if-gtz	v0,l14a196
+; v0 : single-length
+l14a18a:
+.line 45
+	new-instance	v0,org/scribe/exceptions/OAuthParametersMissingException
+; v0 : Lorg/scribe/exceptions/OAuthParametersMissingException;
+	invoke-direct	{v0,v2},org/scribe/exceptions/OAuthParametersMissingException/<init>	; <init>(Lorg/scribe/model/OAuthRequest;)V
+; v0 : Lorg/scribe/exceptions/OAuthParametersMissingException; , v2 : Lorg/scribe/model/OAuthRequest;
+	throw	v0
+; v0 : Lorg/scribe/exceptions/OAuthParametersMissingException;
+l14a196:
+.line 47
+	return-void	
+.end method
+
+.method private getSortedAndEncodedParams(Lorg/scribe/model/OAuthRequest;)Ljava/lang/String;
+.limit registers 5
+; this: v3 (Lorg/scribe/extractors/BaseStringExtractorImpl;)
+; parameter[0] : v4 (Lorg/scribe/model/OAuthRequest;)
+.line 32
+	new-instance	v0,org/scribe/model/ParameterList
+; v0 : Lorg/scribe/model/ParameterList;
+	invoke-direct	{v0},org/scribe/model/ParameterList/<init>	; <init>()V
+; v0 : Lorg/scribe/model/ParameterList;
+.line 33
+	invoke-virtual	{v4},org/scribe/model/OAuthRequest/getQueryStringParams	; getQueryStringParams()Lorg/scribe/model/ParameterList;
+; v4 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v1
+; v1 : Lorg/scribe/model/ParameterList;
+	invoke-virtual	{v0,v1},org/scribe/model/ParameterList/addAll	; addAll(Lorg/scribe/model/ParameterList;)V
+; v0 : Lorg/scribe/model/ParameterList; , v1 : Lorg/scribe/model/ParameterList;
+.line 34
+	invoke-virtual	{v4},org/scribe/model/OAuthRequest/getBodyParams	; getBodyParams()Lorg/scribe/model/ParameterList;
+; v4 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v1
+; v1 : Lorg/scribe/model/ParameterList;
+	invoke-virtual	{v0,v1},org/scribe/model/ParameterList/addAll	; addAll(Lorg/scribe/model/ParameterList;)V
+; v0 : Lorg/scribe/model/ParameterList; , v1 : Lorg/scribe/model/ParameterList;
+.line 35
+	new-instance	v1,org/scribe/model/ParameterList
+; v1 : Lorg/scribe/model/ParameterList;
+	invoke-virtual	{v4},org/scribe/model/OAuthRequest/getOauthParameters	; getOauthParameters()Ljava/util/Map;
+; v4 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v2
+; v2 : Ljava/util/Map;
+	invoke-direct	{v1,v2},org/scribe/model/ParameterList/<init>	; <init>(Ljava/util/Map;)V
+; v1 : Lorg/scribe/model/ParameterList; , v2 : Ljava/util/Map;
+	invoke-virtual	{v0,v1},org/scribe/model/ParameterList/addAll	; addAll(Lorg/scribe/model/ParameterList;)V
+; v0 : Lorg/scribe/model/ParameterList; , v1 : Lorg/scribe/model/ParameterList;
+.line 36
+	invoke-virtual	{v0},org/scribe/model/ParameterList/sort	; sort()Lorg/scribe/model/ParameterList;
+; v0 : Lorg/scribe/model/ParameterList;
+	move-result-object	v1
+; v1 : Lorg/scribe/model/ParameterList;
+	invoke-virtual	{v1},org/scribe/model/ParameterList/asOauthBaseString	; asOauthBaseString()Ljava/lang/String;
+; v1 : Lorg/scribe/model/ParameterList;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	return-object	v1
+; v1 : Ljava/lang/String;
+.end method
+
+.method public extract(Lorg/scribe/model/OAuthRequest;)Ljava/lang/String;
+.limit registers 8
+; this: v6 (Lorg/scribe/extractors/BaseStringExtractorImpl;)
+; parameter[0] : v7 (Lorg/scribe/model/OAuthRequest;)
+.line 23
+	invoke-direct	{v6,v7},org/scribe/extractors/BaseStringExtractorImpl/checkPreconditions	; checkPreconditions(Lorg/scribe/model/OAuthRequest;)V
+; v6 : Lorg/scribe/extractors/BaseStringExtractorImpl; , v7 : Lorg/scribe/model/OAuthRequest;
+.line 24
+	invoke-virtual	{v7},org/scribe/model/OAuthRequest/getVerb	; getVerb()Lorg/scribe/model/Verb;
+; v7 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v3
+; v3 : Lorg/scribe/model/Verb;
+	invoke-virtual	{v3},org/scribe/model/Verb/name	; name()Ljava/lang/String;
+; v3 : Lorg/scribe/model/Verb;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-static	{v3},org/scribe/utils/OAuthEncoder/encode	; encode(Ljava/lang/String;)Ljava/lang/String;
+; v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+.line 25
+	invoke-virtual	{v7},org/scribe/model/OAuthRequest/getSanitizedUrl	; getSanitizedUrl()Ljava/lang/String;
+; v7 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-static	{v3},org/scribe/utils/OAuthEncoder/encode	; encode(Ljava/lang/String;)Ljava/lang/String;
+; v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 26
+	invoke-direct	{v6,v7},org/scribe/extractors/BaseStringExtractorImpl/getSortedAndEncodedParams	; getSortedAndEncodedParams(Lorg/scribe/model/OAuthRequest;)Ljava/lang/String;
+; v6 : Lorg/scribe/extractors/BaseStringExtractorImpl; , v7 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 27
+	const-string	v3,"%s&%s&%s"
+; v3 : Ljava/lang/String;
+	const/4	v4,3
+; v4 : single-length
+	new-array	v4,v4,[Ljava/lang/Object;
+; v4 : [Ljava/lang/Object; , v4 : [Ljava/lang/Object;
+	const/4	v5,0
+; v5 : single-length
+	aput-object	v2,v4,v5
+; v2 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,1
+; v5 : single-length
+	aput-object	v1,v4,v5
+; v1 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,2
+; v5 : single-length
+	aput-object	v0,v4,v5
+; v0 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v3,v4},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v3 : Ljava/lang/String; , v4 : [Ljava/lang/Object;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	return-object	v3
+; v3 : Ljava/lang/String;
+.end method
+
+

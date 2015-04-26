@@ -1,0 +1,188 @@
+.class public org/apache/commons/lang3/text/translate/LookupTranslator
+.super org/apache/commons/lang3/text/translate/CharSequenceTranslator
+.source LookupTranslator.java
+
+.field private final longest I
+.field private final lookupMap Ljava/util/HashMap;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/HashMap" , "<" , "Ljava/lang/CharSequence;" , "Ljava/lang/CharSequence;" , ">;" }
+  .end annotation
+.end field
+.field private final shortest I
+
+.method public <init>([[Ljava/lang/CharSequence;)V
+.limit registers 13
+; this: v11 (Lorg/apache/commons/lang3/text/translate/LookupTranslator;)
+; parameter[0] : v12 ([[Ljava/lang/CharSequence;)
+.var 2 is arr$ [[Ljava/lang/CharSequence; from l1434dc to l14351a
+.var 3 is i$ I from l1434e0 to l14351a
+.var 4 is len$ I from l1434de to l14351a
+.var 5 is seq [Ljava/lang/CharSequence; from l1434e8 to l14351a
+.var 6 is sz I from l143508 to l14351a
+	const/4	v10,0
+; v10 : single-length
+.line 40
+	invoke-direct	{v11},org/apache/commons/lang3/text/translate/CharSequenceTranslator/<init>	; <init>()V
+; v11 : Lorg/apache/commons/lang3/text/translate/LookupTranslator;
+.line 41
+	new-instance	v7,java/util/HashMap
+; v7 : Ljava/util/HashMap;
+	invoke-direct	{v7},java/util/HashMap/<init>	; <init>()V
+; v7 : Ljava/util/HashMap;
+	iput-object	v7,v11,org/apache/commons/lang3/text/translate/LookupTranslator.lookupMap Ljava/util/HashMap;
+; v7 : Ljava/util/HashMap; , v11 : Lorg/apache/commons/lang3/text/translate/LookupTranslator;
+.line 42
+	const	v1,2147483647	; 0x7fffffff
+; v1 : single-length
+.line 43
+	const/4	v0,0
+; v0 : single-length
+.line 44
+	if-eqz	v12,l14351a
+; v12 : [[Ljava/lang/CharSequence;
+.line 45
+	move-object	v2,v12
+; v2 : [[Ljava/lang/CharSequence; , v12 : [[Ljava/lang/CharSequence;
+l1434dc:
+	array-length	v4,v2
+; v4 : single-length , v2 : [[Ljava/lang/CharSequence;
+l1434de:
+	const/4	v3,0
+; v3 : single-length
+l1434e0:
+	if-ge	v3,v4,l14351a
+; v3 : single-length , v4 : single-length
+	aget-object	v5,v2,v3
+; v5 : [Ljava/lang/CharSequence; , v2 : [[Ljava/lang/CharSequence; , v3 : single-length
+.line 46
+	iget-object	v7,v11,org/apache/commons/lang3/text/translate/LookupTranslator.lookupMap Ljava/util/HashMap;
+; v7 : Ljava/util/HashMap; , v11 : Lorg/apache/commons/lang3/text/translate/LookupTranslator;
+	aget-object	v8,v5,v10
+; v8 : Ljava/lang/CharSequence; , v5 : [Ljava/lang/CharSequence; , v10 : single-length
+	const/4	v9,1
+; v9 : single-length
+	aget-object	v9,v5,v9
+; v9 : Ljava/lang/CharSequence; , v5 : [Ljava/lang/CharSequence; , v9 : Ljava/lang/CharSequence;
+	invoke-virtual	{v7,v8,v9},java/util/HashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v7 : Ljava/util/HashMap; , v8 : Ljava/lang/CharSequence; , v9 : Ljava/lang/CharSequence;
+.line 47
+	aget-object	v7,v5,v10
+; v7 : Ljava/lang/CharSequence; , v5 : [Ljava/lang/CharSequence; , v10 : single-length
+	invoke-interface	{v7},java/lang/CharSequence/length	; length()I
+; v7 : Ljava/lang/CharSequence;
+	move-result	v6
+; v6 : single-length
+.line 48
+	if-ge	v6,v1,l14350e
+; v6 : single-length , v1 : single-length
+.line 49
+	move	v1,v6
+; v1 : single-length , v6 : single-length
+l14350e:
+.line 51
+	if-le	v6,v0,l143514
+; v6 : single-length , v0 : single-length
+.line 52
+	move	v0,v6
+; v0 : single-length , v6 : single-length
+l143514:
+.line 45
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	l1434e0
+l14351a:
+.line 56
+	iput	v1,v11,org/apache/commons/lang3/text/translate/LookupTranslator.shortest I
+; v1 : single-length , v11 : Lorg/apache/commons/lang3/text/translate/LookupTranslator;
+.line 57
+	iput	v0,v11,org/apache/commons/lang3/text/translate/LookupTranslator.longest I
+; v0 : single-length , v11 : Lorg/apache/commons/lang3/text/translate/LookupTranslator;
+.line 58
+	return-void	
+.end method
+
+.method public translate(Ljava/lang/CharSequence;ILjava/io/Writer;)I
+.throws Ljava/io/IOException;
+.limit registers 10
+; this: v6 (Lorg/apache/commons/lang3/text/translate/LookupTranslator;)
+; parameter[0] : v7 (Ljava/lang/CharSequence;)
+; parameter[1] : v8 (I)
+; parameter[2] : v9 (Ljava/io/Writer;)
+.var 0 is i I from l143558 to l14358e
+.var 2 is result Ljava/lang/CharSequence; from l14357c to l14358e
+.var 3 is subSeq Ljava/lang/CharSequence; from l14356c to l14358e
+.var 2 is result Ljava/lang/CharSequence; from l143590 to l143596
+.var 3 is subSeq Ljava/lang/CharSequence; from l143590 to l143596
+.line 65
+	iget	v1,v6,org/apache/commons/lang3/text/translate/LookupTranslator.longest I
+; v1 : single-length , v6 : Lorg/apache/commons/lang3/text/translate/LookupTranslator;
+.line 66
+	iget	v4,v6,org/apache/commons/lang3/text/translate/LookupTranslator.longest I
+; v4 : single-length , v6 : Lorg/apache/commons/lang3/text/translate/LookupTranslator;
+	add-int/2addr	v4,v8
+; v4 : single-length , v8 : single-length
+	invoke-interface	{v7},java/lang/CharSequence/length	; length()I
+; v7 : Ljava/lang/CharSequence;
+	move-result	v5
+; v5 : single-length
+	if-le	v4,v5,l143556
+; v4 : single-length , v5 : single-length
+.line 67
+	invoke-interface	{v7},java/lang/CharSequence/length	; length()I
+; v7 : Ljava/lang/CharSequence;
+	move-result	v4
+; v4 : single-length
+	sub-int	v1,v4,v8
+; v1 : single-length , v4 : single-length , v8 : single-length
+l143556:
+.line 70
+	move	v0,v1
+; v0 : single-length , v1 : single-length
+l143558:
+	iget	v4,v6,org/apache/commons/lang3/text/translate/LookupTranslator.shortest I
+; v4 : single-length , v6 : Lorg/apache/commons/lang3/text/translate/LookupTranslator;
+	if-lt	v0,v4,l143596
+; v0 : single-length , v4 : single-length
+.line 71
+	add-int	v4,v8,v0
+; v4 : single-length , v8 : single-length , v0 : single-length
+	invoke-interface	{v7,v8,v4},java/lang/CharSequence/subSequence	; subSequence(II)Ljava/lang/CharSequence;
+; v7 : Ljava/lang/CharSequence; , v8 : single-length , v4 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/CharSequence;
+.line 72
+	iget-object	v4,v6,org/apache/commons/lang3/text/translate/LookupTranslator.lookupMap Ljava/util/HashMap;
+; v4 : Ljava/util/HashMap; , v6 : Lorg/apache/commons/lang3/text/translate/LookupTranslator;
+	invoke-virtual	{v4,v3},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v4 : Ljava/util/HashMap; , v3 : Ljava/lang/CharSequence;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/lang/CharSequence
+; v2 : Ljava/lang/CharSequence;
+.line 73
+	if-eqz	v2,l143590
+; v2 : Ljava/lang/CharSequence;
+.line 74
+	invoke-virtual	{v2},java/lang/Object/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/CharSequence;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v9,v4},java/io/Writer/write	; write(Ljava/lang/String;)V
+; v9 : Ljava/io/Writer; , v4 : Ljava/lang/String;
+l14358e:
+.line 78
+	return	v0
+; v0 : single-length
+l143590:
+.line 70
+	add-int/lit8	v0,v0,255
+; v0 : single-length , v0 : single-length
+	goto	l143558
+l143596:
+.line 78
+	const/4	v0,0
+; v0 : single-length
+	goto	l14358e
+.end method
+
+

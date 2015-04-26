@@ -1,0 +1,2367 @@
+.class public com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator
+.super com/actionbarsherlock/internal/nineoldandroids/animation/Animator
+.source ValueAnimator.java
+
+.inner class AnimatorUpdateListener inner com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimatorUpdateListener outer com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator
+.inner class AnimationHandler inner com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler outer com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator
+.field static final ANIMATION_FRAME I = 1	; 0x1
+.field static final ANIMATION_START I = 0	; 0x0
+.field private static final DEFAULT_FRAME_DELAY J = 10	; 0xa
+.field public static final INFINITE I = -1	; 0xffffffff
+.field public static final RESTART I = 1	; 0x1
+.field public static final REVERSE I = 2	; 0x2
+.field static final RUNNING I = 1	; 0x1
+.field static final SEEKED I = 2	; 0x2
+.field static final STOPPED I
+.field private static sAnimationHandler Ljava/lang/ThreadLocal;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/lang/ThreadLocal" , "<" , "Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler;" , ">;" }
+  .end annotation
+.end field
+.field private static final sAnimations Ljava/lang/ThreadLocal;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/lang/ThreadLocal" , "<" , "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;" , ">;>;" }
+  .end annotation
+.end field
+.field private static final sDefaultInterpolator Landroid/view/animation/Interpolator;
+.field private static final sDelayedAnims Ljava/lang/ThreadLocal;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/lang/ThreadLocal" , "<" , "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;" , ">;>;" }
+  .end annotation
+.end field
+.field private static final sEndingAnims Ljava/lang/ThreadLocal;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/lang/ThreadLocal" , "<" , "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;" , ">;>;" }
+  .end annotation
+.end field
+.field private static sFrameDelay J
+.field private static final sPendingAnimations Ljava/lang/ThreadLocal;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/lang/ThreadLocal" , "<" , "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;" , ">;>;" }
+  .end annotation
+.end field
+.field private static final sReadyAnims Ljava/lang/ThreadLocal;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/lang/ThreadLocal" , "<" , "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;" , ">;>;" }
+  .end annotation
+.end field
+.field private mCurrentFraction F
+.field private mCurrentIteration I
+.field private mDelayStartTime J
+.field private mDuration J
+.field mInitialized Z
+.field private mInterpolator Landroid/view/animation/Interpolator;
+.field private mPlayingBackwards Z
+.field mPlayingState I
+.field private mRepeatCount I
+.field private mRepeatMode I
+.field private mRunning Z
+.field mSeekTime J
+.field private mStartDelay J
+.field mStartTime J
+.field private mStarted Z
+.field private mStartedDelay Z
+.field private mUpdateListeners Ljava/util/ArrayList;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimatorUpdateListener;" , ">;" }
+  .end annotation
+.end field
+.field mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.field mValuesMap Ljava/util/HashMap;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/HashMap" , "<" , "Ljava/lang/String;" , "Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;" , ">;" }
+  .end annotation
+.end field
+
+.method static <clinit>()V
+.limit registers 2
+.line 95
+	new-instance	v0,java/lang/ThreadLocal
+; v0 : Ljava/lang/ThreadLocal;
+	invoke-direct	{v0},java/lang/ThreadLocal/<init>	; <init>()V
+; v0 : Ljava/lang/ThreadLocal;
+	sput-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sAnimationHandler Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+.line 99
+	new-instance	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$1
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$1;
+	invoke-direct	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$1/<init>	; <init>()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$1;
+	sput-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sAnimations Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+.line 108
+	new-instance	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$2
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$2;
+	invoke-direct	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$2/<init>	; <init>()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$2;
+	sput-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sPendingAnimations Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+.line 120
+	new-instance	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$3
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$3;
+	invoke-direct	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$3/<init>	; <init>()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$3;
+	sput-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sDelayedAnims Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+.line 128
+	new-instance	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$4
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$4;
+	invoke-direct	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$4/<init>	; <init>()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$4;
+	sput-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sEndingAnims Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+.line 136
+	new-instance	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$5
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$5;
+	invoke-direct	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$5/<init>	; <init>()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$5;
+	sput-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sReadyAnims Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+.line 145
+	new-instance	v0,android/view/animation/AccelerateDecelerateInterpolator
+; v0 : Landroid/view/animation/AccelerateDecelerateInterpolator;
+	invoke-direct	{v0},android/view/animation/AccelerateDecelerateInterpolator/<init>	; <init>()V
+; v0 : Landroid/view/animation/AccelerateDecelerateInterpolator;
+	sput-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sDefaultInterpolator Landroid/view/animation/Interpolator;
+; v0 : Landroid/view/animation/Interpolator;
+.line 223
+	const-wide/16	v0,10
+; v0 : double-length
+	sput-wide	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sFrameDelay J
+; v0 : J
+	return-void	
+.end method
+
+.method public <init>()V
+.limit registers 4
+; this: v3 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+	const/4	v2,0
+; v2 : single-length
+.line 284
+	invoke-direct	{v3},com/actionbarsherlock/internal/nineoldandroids/animation/Animator/<init>	; <init>()V
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 86
+	const-wide/16	v0,65535
+; v0 : double-length
+	iput-wide	v0,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mSeekTime J
+; v0 : double-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 156
+	iput-boolean	v2,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingBackwards Z
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 162
+	iput	v2,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mCurrentIteration I
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 167
+	const/4	v0,0
+; v0 : single-length
+	iput	v0,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mCurrentFraction F
+; v0 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 172
+	iput-boolean	v2,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartedDelay Z
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 188
+	iput	v2,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 198
+	iput-boolean	v2,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRunning Z
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 204
+	iput-boolean	v2,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStarted Z
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 210
+	iput-boolean	v2,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInitialized Z
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 217
+	const-wide/16	v0,300
+; v0 : double-length
+	iput-wide	v0,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mDuration J
+; v0 : double-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 220
+	const-wide/16	v0,0
+; v0 : double-length
+	iput-wide	v0,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartDelay J
+; v0 : double-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 227
+	iput	v2,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRepeatCount I
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 234
+	const/4	v0,1
+; v0 : single-length
+	iput	v0,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRepeatMode I
+; v0 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 241
+	sget-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sDefaultInterpolator Landroid/view/animation/Interpolator;
+; v0 : Landroid/view/animation/Interpolator;
+	iput-object	v0,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInterpolator Landroid/view/animation/Interpolator;
+; v0 : Landroid/view/animation/Interpolator; , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 246
+	const/4	v0,0
+; v0 : single-length
+	iput-object	v0,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v0 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 285
+	return-void	
+.end method
+
+.method static access$000()Ljava/lang/ThreadLocal;
+.limit registers 1
+.line 44
+	sget-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sAnimations Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+	return-object	v0
+; v0 : Ljava/lang/ThreadLocal;
+.end method
+
+.method static access$100()Ljava/lang/ThreadLocal;
+.limit registers 1
+.line 44
+	sget-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sDelayedAnims Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+	return-object	v0
+; v0 : Ljava/lang/ThreadLocal;
+.end method
+
+.method static access$1000()J
+.limit registers 2
+.line 44
+	sget-wide	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sFrameDelay J
+; v0 : double-length
+	return-wide	v0
+; v0 : double-length
+.end method
+
+.method static access$200()Ljava/lang/ThreadLocal;
+.limit registers 1
+.line 44
+	sget-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sPendingAnimations Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+	return-object	v0
+; v0 : Ljava/lang/ThreadLocal;
+.end method
+
+.method static access$300(Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)J
+.limit registers 3
+; parameter[0] : v2 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 44
+	iget-wide	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartDelay J
+; v0 : double-length , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return-wide	v0
+; v0 : double-length
+.end method
+
+.method static access$400(Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)V
+.limit registers 1
+; parameter[0] : v0 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 44
+	invoke-direct	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/startAnimation	; startAnimation()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return-void	
+.end method
+
+.method static access$500()Ljava/lang/ThreadLocal;
+.limit registers 1
+.line 44
+	sget-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sReadyAnims Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+	return-object	v0
+; v0 : Ljava/lang/ThreadLocal;
+.end method
+
+.method static access$600()Ljava/lang/ThreadLocal;
+.limit registers 1
+.line 44
+	sget-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sEndingAnims Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+	return-object	v0
+; v0 : Ljava/lang/ThreadLocal;
+.end method
+
+.method static access$700(Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;J)Z
+.limit registers 4
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[1] : v2 (J)
+.line 44
+	invoke-direct	{v1,v2,v3},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/delayedAnimationFrame	; delayedAnimationFrame(J)Z
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v2 : double-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method static access$802(Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;Z)Z
+.limit registers 2
+; parameter[0] : v0 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[1] : v1 (Z)
+.line 44
+	iput-boolean	v1,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRunning Z
+; v1 : single-length , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return	v1
+; v1 : single-length
+.end method
+
+.method static access$900(Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)V
+.limit registers 1
+; parameter[0] : v0 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 44
+	invoke-direct	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/endAnimation	; endAnimation()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return-void	
+.end method
+
+.method public static clearAllAnimations()V
+.limit registers 1
+.line 1250
+	sget-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sAnimations Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v0},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v0 : Ljava/lang/ThreadLocal;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-virtual	{v0},java/util/ArrayList/clear	; clear()V
+; v0 : Ljava/util/ArrayList;
+.line 1251
+	sget-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sPendingAnimations Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v0},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v0 : Ljava/lang/ThreadLocal;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-virtual	{v0},java/util/ArrayList/clear	; clear()V
+; v0 : Ljava/util/ArrayList;
+.line 1252
+	sget-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sDelayedAnims Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v0},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v0 : Ljava/lang/ThreadLocal;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-virtual	{v0},java/util/ArrayList/clear	; clear()V
+; v0 : Ljava/util/ArrayList;
+.line 1253
+	return-void	
+.end method
+
+.method private delayedAnimationFrame(J)Z
+.limit registers 8
+; this: v5 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v6 (J)
+	const/4	v2,1
+; v2 : single-length
+.line 1072
+	iget-boolean	v3,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartedDelay Z
+; v3 : single-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-nez	v3,l90446
+; v3 : single-length
+.line 1073
+	iput-boolean	v2,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartedDelay Z
+; v2 : single-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1074
+	iput-wide	v6,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mDelayStartTime J
+; v6 : double-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+l90442:
+.line 1085
+	const/4	v2,0
+; v2 : single-length
+l90444:
+	return	v2
+; v2 : single-length
+l90446:
+.line 1076
+	iget-wide	v3,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mDelayStartTime J
+; v3 : double-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	sub-long	v0,v6,v3
+; v0 : double-length , v6 : double-length , v3 : double-length
+.line 1077
+	iget-wide	v3,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartDelay J
+; v3 : double-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	cmp-long	v3,v0,v3
+; v3 : single-length , v0 : double-length , v3 : single-length
+	if-lez	v3,l90442
+; v3 : single-length
+.line 1080
+	iget-wide	v3,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartDelay J
+; v3 : double-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	sub-long	v3,v0,v3
+; v3 : double-length , v0 : double-length , v3 : double-length
+	sub-long	v3,v6,v3
+; v3 : double-length , v6 : double-length , v3 : double-length
+	iput-wide	v3,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartTime J
+; v3 : double-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1081
+	iput	v2,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v2 : single-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	goto	l90444
+.end method
+
+.method private endAnimation()V
+.limit registers 6
+; this: v5 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.var 0 is i I from l904f2 to l9050e
+.var 1 is numListeners I from l904f0 to l9050e
+.var 2 is tmpListeners Ljava/util/ArrayList; from l904e8 to l9050e
+	const/4	v4,0
+; v4 : single-length
+.line 1026
+	sget-object	v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sAnimations Ljava/lang/ThreadLocal;
+; v3 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v3},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v3 : Ljava/lang/ThreadLocal;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,java/util/ArrayList
+; v3 : Ljava/util/ArrayList;
+	invoke-virtual	{v3,v5},java/util/ArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v3 : Ljava/util/ArrayList; , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1027
+	sget-object	v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sPendingAnimations Ljava/lang/ThreadLocal;
+; v3 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v3},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v3 : Ljava/lang/ThreadLocal;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,java/util/ArrayList
+; v3 : Ljava/util/ArrayList;
+	invoke-virtual	{v3,v5},java/util/ArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v3 : Ljava/util/ArrayList; , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1028
+	sget-object	v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sDelayedAnims Ljava/lang/ThreadLocal;
+; v3 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v3},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v3 : Ljava/lang/ThreadLocal;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,java/util/ArrayList
+; v3 : Ljava/util/ArrayList;
+	invoke-virtual	{v3,v5},java/util/ArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v3 : Ljava/util/ArrayList; , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1029
+	iput	v4,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v4 : single-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1030
+	iget-boolean	v3,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRunning Z
+; v3 : single-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v3,l9050e
+; v3 : single-length
+	iget-object	v3,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mListeners Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v3,l9050e
+; v3 : Ljava/util/ArrayList;
+.line 1031
+	iget-object	v3,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mListeners Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v3},java/util/ArrayList/clone	; clone()Ljava/lang/Object;
+; v3 : Ljava/util/ArrayList;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/util/ArrayList
+; v2 : Ljava/util/ArrayList;
+.line 1033
+	invoke-virtual	{v2},java/util/ArrayList/size	; size()I
+; v2 : Ljava/util/ArrayList;
+	move-result	v1
+; v1 : single-length
+.line 1034
+	const/4	v0,0
+; v0 : single-length
+l904f2:
+	if-ge	v0,v1,l9050e
+; v0 : single-length , v1 : single-length
+.line 1035
+	invoke-virtual	{v2,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v2 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,com/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener;
+	invoke-interface	{v3,v5},com/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener/onAnimationEnd	; onAnimationEnd(Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;)V
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener; , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1034
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l904f2
+l9050e:
+.line 1038
+	iput-boolean	v4,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRunning Z
+; v4 : single-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1039
+	iput-boolean	v4,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStarted Z
+; v4 : single-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1040
+	return-void	
+.end method
+
+.method public static getCurrentAnimationsCount()I
+.limit registers 1
+.line 1240
+	sget-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sAnimations Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v0},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v0 : Ljava/lang/ThreadLocal;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-virtual	{v0},java/util/ArrayList/size	; size()I
+; v0 : Ljava/util/ArrayList;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public static getFrameDelay()J
+.limit registers 2
+.line 716
+	sget-wide	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sFrameDelay J
+; v0 : double-length
+	return-wide	v0
+; v0 : double-length
+.end method
+
+.method public static ofFloat([F)Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.limit registers 2
+; parameter[0] : v1 ([F)
+.line 316
+	new-instance	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-direct	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/<init>	; <init>()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 317
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/setFloatValues	; setFloatValues([F)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v1 : [F
+.line 318
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.end method
+
+.method public static ofInt([I)Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.limit registers 2
+; parameter[0] : v1 ([I)
+.line 299
+	new-instance	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-direct	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/<init>	; <init>()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 300
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/setIntValues	; setIntValues([I)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v1 : [I
+.line 301
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.end method
+
+.method public static ofObject(Lcom/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator;[Ljava/lang/Object;)Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.limit registers 3
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator;)
+; parameter[1] : v2 ([Ljava/lang/Object;)
+.line 353
+	new-instance	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-direct	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/<init>	; <init>()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 354
+	invoke-virtual	{v0,v2},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/setObjectValues	; setObjectValues([Ljava/lang/Object;)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v2 : [Ljava/lang/Object;
+.line 355
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/setEvaluator	; setEvaluator(Lcom/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator;)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator;
+.line 356
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.end method
+
+.method public static ofPropertyValuesHolder([Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;)Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.limit registers 2
+; parameter[0] : v1 ([Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;)
+.line 330
+	new-instance	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-direct	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/<init>	; <init>()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 331
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/setValues	; setValues([Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 332
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.end method
+
+.method public static setFrameDelay(J)V
+.limit registers 2
+; parameter[0] : v0 (J)
+.line 729
+	sput-wide	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sFrameDelay J
+; v0 : J
+.line 730
+	return-void	
+.end method
+
+.method private start(Z)V
+.limit registers 12
+; this: v10 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v11 (Z)
+.var 1 is i I from l906aa to l906c6
+.var 2 is numListeners I from l906a8 to l906c6
+.var 3 is tmpListeners Ljava/util/ArrayList; from l906a0 to l906c6
+.var 0 is animationHandler Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler; from l906d6 to l906de
+	const/4	v9,1
+; v9 : single-length
+	const/4	v8,0
+; v8 : single-length
+.line 918
+	invoke-static	{},android/os/Looper/myLooper	; myLooper()Landroid/os/Looper;
+; 
+	nop	
+	move-result-object	v4
+; v4 : Landroid/os/Looper;
+	if-nez	v4,l90638
+; v4 : Landroid/os/Looper;
+.line 919
+	new-instance	v4,android/util/AndroidRuntimeException
+; v4 : Landroid/util/AndroidRuntimeException;
+	const-string	v5,"Animators may only be run on Looper threads"
+; v5 : Ljava/lang/String;
+	invoke-direct	{v4,v5},android/util/AndroidRuntimeException/<init>	; <init>(Ljava/lang/String;)V
+; v4 : Landroid/util/AndroidRuntimeException; , v5 : Ljava/lang/String;
+	throw	v4
+; v4 : Landroid/util/AndroidRuntimeException;
+l90638:
+.line 921
+	iput-boolean	v11,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingBackwards Z
+; v11 : single-length , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 922
+	iput	v8,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mCurrentIteration I
+; v8 : single-length , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 923
+	iput	v8,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v8 : single-length , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 924
+	iput-boolean	v9,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStarted Z
+; v9 : single-length , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 925
+	iput-boolean	v8,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartedDelay Z
+; v8 : single-length , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 926
+	sget-object	v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sPendingAnimations Ljava/lang/ThreadLocal;
+; v4 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v4},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v4 : Ljava/lang/ThreadLocal;
+	move-result-object	v4
+; v4 : Ljava/lang/Object;
+	check-cast	v4,java/util/ArrayList
+; v4 : Ljava/util/ArrayList;
+	invoke-virtual	{v4,v10},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v4 : Ljava/util/ArrayList; , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 927
+	iget-wide	v4,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartDelay J
+; v4 : double-length , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	const-wide/16	v6,0
+; v6 : double-length
+	cmp-long	v4,v4,v6
+; v4 : single-length , v4 : single-length , v6 : double-length
+	if-nez	v4,l906c6
+; v4 : single-length
+.line 929
+	invoke-virtual	{v10},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/getCurrentPlayTime	; getCurrentPlayTime()J
+; v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	move-result-wide	v4
+; v4 : double-length
+	invoke-virtual	{v10,v4,v5},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/setCurrentPlayTime	; setCurrentPlayTime(J)V
+; v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v4 : double-length
+.line 930
+	iput	v8,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v8 : single-length , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 931
+	iput-boolean	v9,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRunning Z
+; v9 : single-length , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 933
+	iget-object	v4,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mListeners Ljava/util/ArrayList;
+; v4 : Ljava/util/ArrayList; , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v4,l906c6
+; v4 : Ljava/util/ArrayList;
+.line 934
+	iget-object	v4,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mListeners Ljava/util/ArrayList;
+; v4 : Ljava/util/ArrayList; , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v4},java/util/ArrayList/clone	; clone()Ljava/lang/Object;
+; v4 : Ljava/util/ArrayList;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,java/util/ArrayList
+; v3 : Ljava/util/ArrayList;
+.line 936
+	invoke-virtual	{v3},java/util/ArrayList/size	; size()I
+; v3 : Ljava/util/ArrayList;
+	move-result	v2
+; v2 : single-length
+.line 937
+	const/4	v1,0
+; v1 : single-length
+l906aa:
+	if-ge	v1,v2,l906c6
+; v1 : single-length , v2 : single-length
+.line 938
+	invoke-virtual	{v3,v1},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v3 : Ljava/util/ArrayList; , v1 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/Object;
+	check-cast	v4,com/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener
+; v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener;
+	invoke-interface	{v4,v10},com/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener/onAnimationStart	; onAnimationStart(Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;)V
+; v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener; , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 937
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	l906aa
+l906c6:
+.line 942
+	sget-object	v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sAnimationHandler Ljava/lang/ThreadLocal;
+; v4 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v4},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v4 : Ljava/lang/ThreadLocal;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler;
+.line 943
+	if-nez	v0,l906f0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler;
+.line 944
+	new-instance	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler;
+l906de:
+	const/4	v4,0
+; v4 : single-length
+	invoke-direct	{v0,v4},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler/<init>	; <init>(Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$1;)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler; , v4 : single-length
+.line 945
+	sget-object	v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sAnimationHandler Ljava/lang/ThreadLocal;
+; v4 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v4,v0},java/lang/ThreadLocal/set	; set(Ljava/lang/Object;)V
+; v4 : Ljava/lang/ThreadLocal; , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler;
+l906f0:
+.line 947
+	invoke-virtual	{v0,v8},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler/sendEmptyMessage	; sendEmptyMessage(I)Z
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimationHandler; , v8 : single-length
+.line 948
+	return-void	
+.end method
+
+.method private startAnimation()V
+.limit registers 8
+; this: v7 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.var 0 is i I from l90756 to l90772
+.var 1 is numListeners I from l90754 to l90772
+.var 2 is tmpListeners Ljava/util/ArrayList; from l9074c to l90772
+.line 1047
+	invoke-virtual	{v7},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/initAnimation	; initAnimation()V
+; v7 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1048
+	sget-object	v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sAnimations Ljava/lang/ThreadLocal;
+; v3 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v3},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v3 : Ljava/lang/ThreadLocal;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,java/util/ArrayList
+; v3 : Ljava/util/ArrayList;
+	invoke-virtual	{v3,v7},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v3 : Ljava/util/ArrayList; , v7 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1049
+	iget-wide	v3,v7,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartDelay J
+; v3 : double-length , v7 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	const-wide/16	v5,0
+; v5 : double-length
+	cmp-long	v3,v3,v5
+; v3 : single-length , v3 : single-length , v5 : double-length
+	if-lez	v3,l90772
+; v3 : single-length
+	iget-object	v3,v7,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mListeners Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v7 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v3,l90772
+; v3 : Ljava/util/ArrayList;
+.line 1052
+	iget-object	v3,v7,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mListeners Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v7 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v3},java/util/ArrayList/clone	; clone()Ljava/lang/Object;
+; v3 : Ljava/util/ArrayList;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/util/ArrayList
+; v2 : Ljava/util/ArrayList;
+.line 1054
+	invoke-virtual	{v2},java/util/ArrayList/size	; size()I
+; v2 : Ljava/util/ArrayList;
+	move-result	v1
+; v1 : single-length
+.line 1055
+	const/4	v0,0
+; v0 : single-length
+l90756:
+	if-ge	v0,v1,l90772
+; v0 : single-length , v1 : single-length
+.line 1056
+	invoke-virtual	{v2,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v2 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,com/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener;
+	invoke-interface	{v3,v7},com/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener/onAnimationStart	; onAnimationStart(Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;)V
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener; , v7 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1055
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l90756
+l90772:
+.line 1059
+	return-void	
+.end method
+
+.method public addUpdateListener(Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimatorUpdateListener;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v2 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimatorUpdateListener;)
+.line 821
+	iget-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-nez	v0,l9079a
+; v0 : Ljava/util/ArrayList;
+.line 822
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+	iput-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+l9079a:
+.line 824
+	iget-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v0,v2},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimatorUpdateListener;
+.line 825
+	return-void	
+.end method
+
+.method animateValue(F)V
+.limit registers 6
+; this: v4 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v5 (F)
+.var 1 is numListeners I from l907fc to l9081e
+.line 1170
+	iget-object	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInterpolator Landroid/view/animation/Interpolator;
+; v3 : Landroid/view/animation/Interpolator; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-interface	{v3,v5},android/view/animation/Interpolator/getInterpolation	; getInterpolation(F)F
+; v3 : Landroid/view/animation/Interpolator; , v5 : single-length
+	move-result	v5
+; v5 : single-length
+.line 1171
+	iput	v5,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mCurrentFraction F
+; v5 : single-length , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1172
+	iget-object	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v3 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	array-length	v2,v3
+; v2 : single-length , v3 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 1173
+	const/4	v0,0
+; v0 : single-length
+l907d0:
+	if-ge	v0,v2,l907e8
+; v0 : single-length , v2 : single-length
+.line 1174
+	iget-object	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v3 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	aget-object	v3,v3,v0
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v0 : single-length
+	invoke-virtual	{v3,v5},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/calculateValue	; calculateValue(F)V
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v5 : single-length
+.line 1173
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l907d0
+l907e8:
+.line 1176
+	iget-object	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v3,l9081e
+; v3 : Ljava/util/ArrayList;
+.line 1177
+	iget-object	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v3},java/util/ArrayList/size	; size()I
+; v3 : Ljava/util/ArrayList;
+	move-result	v1
+; v1 : single-length
+.line 1178
+	const/4	v0,0
+; v0 : single-length
+l907fe:
+	if-ge	v0,v1,l9081e
+; v0 : single-length , v1 : single-length
+.line 1179
+	iget-object	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v3,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v3 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimatorUpdateListener
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimatorUpdateListener;
+	invoke-interface	{v3,v4},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimatorUpdateListener/onAnimationUpdate	; onAnimationUpdate(Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)V
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimatorUpdateListener; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1178
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l907fe
+l9081e:
+.line 1182
+	return-void	
+.end method
+
+.method animationFrame(J)Z
+.limit registers 14
+; this: v11 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v12 (J)
+.var 1 is fraction F from l9089a to l908ee
+.var 2 is i I from l908ce to l908ee
+.var 3 is numListeners I from l908cc to l908ee
+	const-wide/16	v9,0
+; v9 : double-length
+	const/4	v5,1
+; v5 : single-length
+	const/high16	v6,16256
+; v6 : single-length
+.line 1101
+	const/4	v0,0
+; v0 : single-length
+.line 1103
+	iget	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v4 : single-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-nez	v4,l90858
+; v4 : single-length
+.line 1104
+	iput	v5,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v5 : single-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1105
+	iget-wide	v7,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mSeekTime J
+; v7 : double-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	cmp-long	v4,v7,v9
+; v4 : single-length , v7 : double-length , v9 : double-length
+	if-gez	v4,l90864
+; v4 : single-length
+.line 1106
+	iput-wide	v12,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartTime J
+; v12 : double-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+l90858:
+.line 1113
+	iget	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v4 : single-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	packed-switch	v4,1
+		ps9085c_9087a	; case 1
+		ps9085c_9087a	; case 2
+		default: ps9085c_default
+; v4 : single-length
+l90862:
+.line 1144
+	return	v0
+; v0 : single-length
+l90864:
+.line 1108
+	iget-wide	v7,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mSeekTime J
+; v7 : double-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	sub-long	v7,v12,v7
+; v7 : double-length , v12 : double-length , v7 : double-length
+	iput-wide	v7,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartTime J
+; v7 : double-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1110
+	const-wide/16	v7,65535
+; v7 : double-length
+	iput-wide	v7,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mSeekTime J
+; v7 : double-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	goto	l90858
+ps9085c_9087a:
+.line 1116
+	iget-wide	v7,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mDuration J
+; v7 : double-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	cmp-long	v4,v7,v9
+; v4 : single-length , v7 : double-length , v9 : double-length
+	if-lez	v4,l908ee
+; v4 : single-length
+	iget-wide	v7,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartTime J
+; v7 : double-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	sub-long	v7,v12,v7
+; v7 : double-length , v12 : double-length , v7 : double-length
+	long-to-float	v4,v7
+; v4 : single-length , v7 : double-length
+	iget-wide	v7,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mDuration J
+; v7 : double-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	long-to-float	v7,v7
+; v7 : single-length , v7 : single-length
+	div-float	v1,v4,v7
+; v1 : single-length , v4 : single-length , v7 : single-length
+l9089a:
+.line 1117
+	cmpl-float	v4,v1,v6
+; v4 : single-length , v1 : single-length , v6 : single-length
+	if-ltz	v4,l90926
+; v4 : single-length
+.line 1118
+	iget	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mCurrentIteration I
+; v4 : single-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	iget	v7,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRepeatCount I
+; v7 : single-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-lt	v4,v7,l908b8
+; v4 : single-length , v7 : single-length
+	iget	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRepeatCount I
+; v4 : single-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	const/4	v7,15
+; v7 : single-length
+	if-ne	v4,v7,l9093e
+; v4 : single-length , v7 : single-length
+l908b8:
+.line 1120
+	iget-object	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mListeners Ljava/util/ArrayList;
+; v4 : Ljava/util/ArrayList; , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v4,l908f2
+; v4 : Ljava/util/ArrayList;
+.line 1121
+	iget-object	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mListeners Ljava/util/ArrayList;
+; v4 : Ljava/util/ArrayList; , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v4},java/util/ArrayList/size	; size()I
+; v4 : Ljava/util/ArrayList;
+	move-result	v3
+; v3 : single-length
+.line 1122
+	const/4	v2,0
+; v2 : single-length
+l908ce:
+	if-ge	v2,v3,l908f2
+; v2 : single-length , v3 : single-length
+.line 1123
+	iget-object	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mListeners Ljava/util/ArrayList;
+; v4 : Ljava/util/ArrayList; , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v4,v2},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v4 : Ljava/util/ArrayList; , v2 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/Object;
+	check-cast	v4,com/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener
+; v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener;
+	invoke-interface	{v4,v11},com/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener/onAnimationRepeat	; onAnimationRepeat(Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;)V
+; v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener; , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1122
+	add-int/lit8	v2,v2,1
+; v2 : single-length , v2 : single-length
+	goto	l908ce
+l908ee:
+	move	v1,v6
+; v1 : single-length , v6 : single-length
+.line 1116
+	goto	l9089a
+l908f2:
+.line 1126
+	iget	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRepeatMode I
+; v4 : single-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	const/4	v7,2
+; v7 : single-length
+	if-ne	v4,v7,l9090a
+; v4 : single-length , v7 : single-length
+.line 1127
+	iget-boolean	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingBackwards Z
+; v4 : single-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v4,l9093a
+; v4 : single-length
+	const/4	v4,0
+; v4 : single-length
+l90906:
+	iput-boolean	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingBackwards Z
+; v4 : single-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+l9090a:
+.line 1129
+	iget	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mCurrentIteration I
+; v4 : single-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	float-to-int	v5,v1
+; v5 : single-length , v1 : single-length
+	add-int/2addr	v4,v5
+; v4 : single-length , v5 : single-length
+	iput	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mCurrentIteration I
+; v4 : single-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1130
+	rem-float/2addr	v1,v6
+; v1 : single-length , v6 : single-length
+.line 1131
+	iget-wide	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartTime J
+; v4 : double-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	iget-wide	v7,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mDuration J
+; v7 : double-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	add-long/2addr	v4,v7
+; v4 : double-length , v7 : double-length
+	iput-wide	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartTime J
+; v4 : double-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+l90926:
+.line 1137
+	iget-boolean	v4,v11,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingBackwards Z
+; v4 : single-length , v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v4,l90932
+; v4 : single-length
+.line 1138
+	sub-float	v1,v6,v1
+; v1 : single-length , v6 : single-length , v1 : single-length
+l90932:
+.line 1140
+	invoke-virtual	{v11,v1},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/animateValue	; animateValue(F)V
+; v11 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v1 : single-length
+	goto	l90862
+l9093a:
+	move	v4,v5
+; v4 : single-length , v5 : single-length
+.line 1127
+	goto	l90906
+l9093e:
+.line 1133
+	const/4	v0,1
+; v0 : single-length
+.line 1134
+	invoke-static	{v1,v6},java/lang/Math/min	; min(FF)F
+; v1 : single-length , v6 : single-length
+	move-result	v1
+; v1 : single-length
+	goto	l90926
+.line 1113
+l9094a:	data-array
+		0x00, 0x00
+	end data-array
+.end method
+
+.method public cancel()V
+.limit registers 5
+; this: v4 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.var 0 is i$ Ljava/util/Iterator; from l909d4 to l909f4
+.var 1 is listener Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener; from l909ec to l909f4
+.var 2 is tmpListeners Ljava/util/ArrayList; from l909cc to l909f4
+.line 959
+	iget	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v3 : single-length , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-nez	v3,l909ac
+; v3 : single-length
+	sget-object	v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sPendingAnimations Ljava/lang/ThreadLocal;
+; v3 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v3},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v3 : Ljava/lang/ThreadLocal;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,java/util/ArrayList
+; v3 : Ljava/util/ArrayList;
+	invoke-virtual	{v3,v4},java/util/ArrayList/contains	; contains(Ljava/lang/Object;)Z
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	move-result	v3
+; v3 : single-length
+	if-nez	v3,l909ac
+; v3 : single-length
+	sget-object	v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sDelayedAnims Ljava/lang/ThreadLocal;
+; v3 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v3},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v3 : Ljava/lang/ThreadLocal;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,java/util/ArrayList
+; v3 : Ljava/util/ArrayList;
+	invoke-virtual	{v3,v4},java/util/ArrayList/contains	; contains(Ljava/lang/Object;)Z
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l909fa
+; v3 : single-length
+l909ac:
+.line 962
+	iget-boolean	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRunning Z
+; v3 : single-length , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v3,l909f4
+; v3 : single-length
+	iget-object	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mListeners Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v3,l909f4
+; v3 : Ljava/util/ArrayList;
+.line 963
+	iget-object	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mListeners Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v3},java/util/ArrayList/clone	; clone()Ljava/lang/Object;
+; v3 : Ljava/util/ArrayList;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/util/ArrayList
+; v2 : Ljava/util/ArrayList;
+.line 965
+	invoke-virtual	{v2},java/util/ArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v2 : Ljava/util/ArrayList;
+	move-result-object	v0
+; v0 : Ljava/util/Iterator;
+l909d4:
+	invoke-interface	{v0},java/util/Iterator/hasNext	; hasNext()Z
+; v0 : Ljava/util/Iterator;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l909f4
+; v3 : single-length
+	invoke-interface	{v0},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v0 : Ljava/util/Iterator;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener;
+.line 966
+	invoke-interface	{v1,v4},com/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener/onAnimationCancel	; onAnimationCancel(Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;)V
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	goto	l909d4
+l909f4:
+.line 969
+	invoke-direct	{v4},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/endAnimation	; endAnimation()V
+; v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+l909fa:
+.line 971
+	return-void	
+.end method
+
+.method public clone()Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;
+.throws Ljava/lang/CloneNotSupportedException;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 43
+	invoke-virtual	{v1},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/clone	; clone()Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.end method
+
+.method public clone()Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.throws Ljava/lang/CloneNotSupportedException;
+.limit registers 11
+; this: v10 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.var 1 is i I from l90a5a to l90a76
+.var 3 is numListeners I from l90a58 to l90a76
+.var 5 is oldListeners Ljava/util/ArrayList; from l90a42 to l90a76
+.var 1 is i I from l90ab4 to l90ae4
+.var 2 is newValuesHolder Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; from l90ac4 to l90ae4
+.var 4 is numValues I from l90a9c to l90ae4
+	const/4	v9,0
+; v9 : single-length
+.line 1186
+	invoke-super	{v10},com/actionbarsherlock/internal/nineoldandroids/animation/Animator/clone	; clone()Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;
+; v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;
+	check-cast	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1187
+	iget-object	v7,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v7 : Ljava/util/ArrayList; , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v7,l90a76
+; v7 : Ljava/util/ArrayList;
+.line 1188
+	iget-object	v5,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v5 : Ljava/util/ArrayList; , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1189
+	new-instance	v7,java/util/ArrayList
+; v7 : Ljava/util/ArrayList;
+	invoke-direct	{v7},java/util/ArrayList/<init>	; <init>()V
+; v7 : Ljava/util/ArrayList;
+	iput-object	v7,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v7 : Ljava/util/ArrayList; , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1190
+	invoke-virtual	{v5},java/util/ArrayList/size	; size()I
+; v5 : Ljava/util/ArrayList;
+	move-result	v3
+; v3 : single-length
+.line 1191
+	const/4	v1,0
+; v1 : single-length
+l90a5a:
+	if-ge	v1,v3,l90a76
+; v1 : single-length , v3 : single-length
+.line 1192
+	iget-object	v7,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v7 : Ljava/util/ArrayList; , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v5,v1},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v5 : Ljava/util/ArrayList; , v1 : single-length
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	invoke-virtual	{v7,v8},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v7 : Ljava/util/ArrayList; , v8 : Ljava/lang/Object;
+.line 1191
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	l90a5a
+l90a76:
+.line 1195
+	const-wide/16	v7,65535
+; v7 : double-length
+	iput-wide	v7,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mSeekTime J
+; v7 : double-length , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1196
+	iput-boolean	v9,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingBackwards Z
+; v9 : single-length , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1197
+	iput	v9,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mCurrentIteration I
+; v9 : single-length , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1198
+	iput-boolean	v9,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInitialized Z
+; v9 : single-length , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1199
+	iput	v9,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v9 : single-length , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1200
+	iput-boolean	v9,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartedDelay Z
+; v9 : single-length , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1201
+	iget-object	v6,v10,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v6 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v10 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1202
+	if-eqz	v6,l90ae4
+; v6 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 1203
+	array-length	v4,v6
+; v4 : single-length , v6 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 1204
+	new-array	v7,v4,[Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v7 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : single-length
+	iput-object	v7,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v7 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1205
+	new-instance	v7,java/util/HashMap
+; v7 : Ljava/util/HashMap;
+	invoke-direct	{v7,v4},java/util/HashMap/<init>	; <init>(I)V
+; v7 : Ljava/util/HashMap; , v4 : single-length
+	iput-object	v7,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValuesMap Ljava/util/HashMap;
+; v7 : Ljava/util/HashMap; , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1206
+	const/4	v1,0
+; v1 : single-length
+l90ab4:
+	if-ge	v1,v4,l90ae4
+; v1 : single-length , v4 : single-length
+.line 1207
+	aget-object	v7,v6,v1
+; v7 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v6 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : single-length
+	invoke-virtual	{v7},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/clone	; clone()Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v7 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	move-result-object	v2
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 1208
+	iget-object	v7,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v7 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	aput-object	v2,v7,v1
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v7 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : single-length
+.line 1209
+	iget-object	v7,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValuesMap Ljava/util/HashMap;
+; v7 : Ljava/util/HashMap; , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v2},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/getPropertyName	; getPropertyName()Ljava/lang/String;
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	move-result-object	v8
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v7,v8,v2},java/util/HashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v7 : Ljava/util/HashMap; , v8 : Ljava/lang/String; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 1206
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	l90ab4
+l90ae4:
+.line 1212
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.end method
+
+.method public clone()Ljava/lang/Object;
+.throws Ljava/lang/CloneNotSupportedException;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 43
+	invoke-virtual	{v1},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/clone	; clone()Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.end method
+
+.method public end()V
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 975
+	sget-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sAnimations Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v0},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v0 : Ljava/lang/ThreadLocal;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-virtual	{v0,v2},java/util/ArrayList/contains	; contains(Ljava/lang/Object;)Z
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l90b7e
+; v0 : single-length
+	sget-object	v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.sPendingAnimations Ljava/lang/ThreadLocal;
+; v0 : Ljava/lang/ThreadLocal;
+	invoke-virtual	{v0},java/lang/ThreadLocal/get	; get()Ljava/lang/Object;
+; v0 : Ljava/lang/ThreadLocal;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-virtual	{v0,v2},java/util/ArrayList/contains	; contains(Ljava/lang/Object;)Z
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l90b7e
+; v0 : single-length
+.line 977
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartedDelay Z
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 978
+	invoke-direct	{v2},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/startAnimation	; startAnimation()V
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+l90b58:
+.line 984
+	iget	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRepeatCount I
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-lez	v0,l90b8e
+; v0 : single-length
+	iget	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRepeatCount I
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	and-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	const/4	v1,1
+; v1 : single-length
+	if-ne	v0,v1,l90b8e
+; v0 : single-length , v1 : single-length
+.line 985
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v2,v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/animateValue	; animateValue(F)V
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v0 : single-length
+l90b76:
+.line 989
+	invoke-direct	{v2},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/endAnimation	; endAnimation()V
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 990
+	return-void	
+l90b7e:
+.line 979
+	iget-boolean	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInitialized Z
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-nez	v0,l90b58
+; v0 : single-length
+.line 980
+	invoke-virtual	{v2},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/initAnimation	; initAnimation()V
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	goto	l90b58
+l90b8e:
+.line 987
+	const/high16	v0,16256
+; v0 : single-length
+	invoke-virtual	{v2,v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/animateValue	; animateValue(F)V
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v0 : single-length
+	goto	l90b76
+.end method
+
+.method public getAnimatedFraction()F
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 1154
+	iget	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mCurrentFraction F
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getAnimatedValue()Ljava/lang/Object;
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 745
+	iget-object	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v0 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v0,l90bea
+; v0 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	iget-object	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v0 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	array-length	v0,v0
+; v0 : single-length , v0 : single-length
+	if-lez	v0,l90bea
+; v0 : single-length
+.line 746
+	iget-object	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v0 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	const/4	v1,0
+; v1 : single-length
+	aget-object	v0,v0,v1
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : single-length
+	invoke-virtual	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/getAnimatedValue	; getAnimatedValue()Ljava/lang/Object;
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+l90be8:
+.line 749
+	return-object	v0
+; v0 : single-length
+l90bea:
+	const/4	v0,0
+; v0 : single-length
+	goto	l90be8
+.end method
+
+.method public getAnimatedValue(Ljava/lang/String;)Ljava/lang/Object;
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 763
+	iget-object	v1,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValuesMap Ljava/util/HashMap;
+; v1 : Ljava/util/HashMap; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v1,v3},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/HashMap; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 764
+	if-eqz	v0,l90c1e
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 765
+	invoke-virtual	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/getAnimatedValue	; getAnimatedValue()Ljava/lang/Object;
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+l90c1c:
+.line 768
+	return-object	v1
+; v1 : single-length
+l90c1e:
+	const/4	v1,0
+; v1 : single-length
+	goto	l90c1c
+.end method
+
+.method public getCurrentPlayTime()J
+.limit registers 5
+; this: v4 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 557
+	iget-boolean	v0,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInitialized Z
+; v0 : single-length , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v0,l90c44
+; v0 : single-length
+	iget	v0,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v0 : single-length , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-nez	v0,l90c4a
+; v0 : single-length
+l90c44:
+.line 558
+	const-wide/16	v0,0
+; v0 : double-length
+l90c48:
+.line 560
+	return-wide	v0
+; v0 : double-length
+l90c4a:
+	invoke-static	{},android/view/animation/AnimationUtils/currentAnimationTimeMillis	; currentAnimationTimeMillis()J
+; 
+	nop	
+	move-result-wide	v0
+; v0 : double-length
+	iget-wide	v2,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartTime J
+; v2 : double-length , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	sub-long/2addr	v0,v2
+; v0 : double-length , v2 : double-length
+	goto	l90c48
+.end method
+
+.method public getDuration()J
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 525
+	iget-wide	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mDuration J
+; v0 : double-length , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return-wide	v0
+; v0 : double-length
+.end method
+
+.method public getInterpolator()Landroid/view/animation/Interpolator;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 879
+	iget-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInterpolator Landroid/view/animation/Interpolator;
+; v0 : Landroid/view/animation/Interpolator; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return-object	v0
+; v0 : Landroid/view/animation/Interpolator;
+.end method
+
+.method public getRepeatCount()I
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 790
+	iget	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRepeatCount I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getRepeatMode()I
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 810
+	iget	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRepeatMode I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getStartDelay()J
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 693
+	iget-wide	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartDelay J
+; v0 : double-length , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return-wide	v0
+; v0 : double-length
+.end method
+
+.method public getValues()[Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 477
+	iget-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v0 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return-object	v0
+; v0 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.end method
+
+.method initAnimation()V
+.limit registers 4
+; this: v3 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.var 0 is i I from l90d0c to l90d2a
+.var 1 is numValues I from l90d0a to l90d2a
+.line 491
+	iget-boolean	v2,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInitialized Z
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-nez	v2,l90d2a
+; v2 : single-length
+.line 492
+	iget-object	v2,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v2 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	array-length	v1,v2
+; v1 : single-length , v2 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 493
+	const/4	v0,0
+; v0 : single-length
+l90d0c:
+	if-ge	v0,v1,l90d24
+; v0 : single-length , v1 : single-length
+.line 494
+	iget-object	v2,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v2 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	aget-object	v2,v2,v0
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v0 : single-length
+	invoke-virtual	{v2},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/init	; init()V
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 493
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l90d0c
+l90d24:
+.line 496
+	const/4	v2,1
+; v2 : single-length
+	iput-boolean	v2,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInitialized Z
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+l90d2a:
+.line 498
+	return-void	
+.end method
+
+.method public isRunning()Z
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+	const/4	v0,1
+; v0 : single-length
+.line 994
+	iget	v1,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eq	v1,v0,l90d4e
+; v1 : single-length , v0 : single-length
+	iget-boolean	v1,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRunning Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v1,l90d50
+; v1 : single-length
+l90d4e:
+	return	v0
+; v0 : single-length
+l90d50:
+	const/4	v0,0
+; v0 : single-length
+	goto	l90d4e
+.end method
+
+.method public isStarted()Z
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 999
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStarted Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public removeAllUpdateListeners()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 831
+	iget-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-nez	v0,l90d86
+; v0 : Ljava/util/ArrayList;
+l90d84:
+.line 836
+	return-void	
+l90d86:
+.line 834
+	iget-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v0},java/util/ArrayList/clear	; clear()V
+; v0 : Ljava/util/ArrayList;
+.line 835
+	const/4	v0,0
+; v0 : single-length
+	iput-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	goto	l90d84
+.end method
+
+.method public removeUpdateListener(Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimatorUpdateListener;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v2 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimatorUpdateListener;)
+.line 845
+	iget-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-nez	v0,l90db2
+; v0 : Ljava/util/ArrayList;
+l90db0:
+.line 852
+	return-void	
+l90db2:
+.line 848
+	iget-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v0,v2},java/util/ArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator$AnimatorUpdateListener;
+.line 849
+	iget-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v0},java/util/ArrayList/size	; size()I
+; v0 : Ljava/util/ArrayList;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l90db0
+; v0 : single-length
+.line 850
+	const/4	v0,0
+; v0 : single-length
+	iput-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mUpdateListeners Ljava/util/ArrayList;
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	goto	l90db0
+.end method
+
+.method public reverse()V
+.limit registers 9
+; this: v8 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.var 0 is currentPlayTime J from l90e0c to l90e1c
+.var 2 is currentTime J from l90e04 to l90e1c
+.var 4 is timeLeft J from l90e14 to l90e1c
+	const/4	v7,1
+; v7 : single-length
+.line 1010
+	iget-boolean	v6,v8,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingBackwards Z
+; v6 : single-length , v8 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-nez	v6,l90e1e
+; v6 : single-length
+	move	v6,v7
+; v6 : single-length , v7 : single-length
+l90df0:
+	iput-boolean	v6,v8,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingBackwards Z
+; v6 : single-length , v8 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 1011
+	iget	v6,v8,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v6 : single-length , v8 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-ne	v6,v7,l90e22
+; v6 : single-length , v7 : single-length
+.line 1012
+	invoke-static	{},android/view/animation/AnimationUtils/currentAnimationTimeMillis	; currentAnimationTimeMillis()J
+; 
+	nop	
+	move-result-wide	v2
+; v2 : double-length
+.line 1013
+	iget-wide	v6,v8,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartTime J
+; v6 : double-length , v8 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	sub-long	v0,v2,v6
+; v0 : double-length , v2 : double-length , v6 : double-length
+.line 1014
+	iget-wide	v6,v8,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mDuration J
+; v6 : double-length , v8 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	sub-long	v4,v6,v0
+; v4 : double-length , v6 : double-length , v0 : double-length
+.line 1015
+	sub-long	v6,v2,v4
+; v6 : double-length , v2 : double-length , v4 : double-length
+	iput-wide	v6,v8,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartTime J
+; v6 : double-length , v8 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+l90e1c:
+.line 1019
+	return-void	
+l90e1e:
+.line 1010
+	const/4	v6,0
+; v6 : single-length
+	goto	l90df0
+l90e22:
+.line 1017
+	invoke-direct	{v8,v7},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/start	; start(Z)V
+; v8 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v7 : single-length
+	goto	l90e1c
+.end method
+
+.method public setCurrentPlayTime(J)V
+.limit registers 7
+; this: v4 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v5 (J)
+.line 539
+	invoke-virtual	{v4},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/initAnimation	; initAnimation()V
+; v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 540
+	invoke-static	{},android/view/animation/AnimationUtils/currentAnimationTimeMillis	; currentAnimationTimeMillis()J
+; 
+	nop	
+	move-result-wide	v0
+; v0 : double-length
+.line 541
+	iget	v2,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v2 : single-length , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	const/4	v3,1
+; v3 : single-length
+	if-eq	v2,v3,l90e5e
+; v2 : single-length , v3 : single-length
+.line 542
+	iput-wide	v5,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mSeekTime J
+; v5 : double-length , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 543
+	const/4	v2,2
+; v2 : single-length
+	iput	v2,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mPlayingState I
+; v2 : single-length , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+l90e5e:
+.line 545
+	sub-long	v2,v0,v5
+; v2 : double-length , v0 : double-length , v5 : double-length
+	iput-wide	v2,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartTime J
+; v2 : double-length , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 546
+	invoke-virtual	{v4,v0,v1},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/animationFrame	; animationFrame(J)Z
+; v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v0 : double-length
+.line 547
+	return-void	
+.end method
+
+.method public setDuration(J)Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v2 (J)
+.line 43
+	invoke-virtual	{v1,v2,v3},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/setDuration	; setDuration(J)Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v2 : double-length
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.end method
+
+.method public setDuration(J)Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.limit registers 6
+; this: v3 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v4 (J)
+.line 511
+	const-wide/16	v0,0
+; v0 : double-length
+	cmp-long	v0,v4,v0
+; v0 : single-length , v4 : double-length , v0 : single-length
+	if-gez	v0,l90eda
+; v0 : single-length
+.line 512
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"Animators cannot have negative duration: "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1,v4,v5},java/lang/StringBuilder/append	; append(J)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v4 : double-length
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l90eda:
+.line 515
+	iput-wide	v4,v3,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mDuration J
+; v4 : double-length , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 516
+	return-object	v3
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.end method
+
+.method public setEvaluator(Lcom/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator;)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v3 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator;)
+.line 899
+	if-eqz	v3,l90f16
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator;
+	iget-object	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v0 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v0,l90f16
+; v0 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	iget-object	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v0 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	array-length	v0,v0
+; v0 : single-length , v0 : single-length
+	if-lez	v0,l90f16
+; v0 : single-length
+.line 900
+	iget-object	v0,v2,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v0 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	const/4	v1,0
+; v1 : single-length
+	aget-object	v0,v0,v1
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : single-length
+	invoke-virtual	{v0,v3},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/setEvaluator	; setEvaluator(Lcom/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator;)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator;
+l90f16:
+.line 902
+	return-void	
+.end method
+
+.method public setFloatValues([F)V
+.limit registers 6
+; this: v4 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v5 ([F)
+	const/4	v3,0
+; v3 : single-length
+.line 402
+	if-eqz	v5,l90f34
+; v5 : [F
+	array-length	v1,v5
+; v1 : single-length , v5 : [F
+	if-nez	v1,l90f36
+; v1 : single-length
+l90f34:
+.line 413
+	return-void	
+l90f36:
+.line 405
+	iget-object	v1,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v1,l90f48
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	iget-object	v1,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	array-length	v1,v1
+; v1 : single-length , v1 : single-length
+	if-nez	v1,l90f6a
+; v1 : single-length
+l90f48:
+.line 406
+	const/4	v1,1
+; v1 : single-length
+	new-array	v1,v1,[Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	const-string	v2,""
+; v2 : Ljava/lang/String;
+	invoke-static	{v2,v5},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/ofFloat	; ofFloat(Ljava/lang/String;[F)Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v2 : Ljava/lang/String; , v5 : [F
+	move-result-object	v2
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	aput-object	v2,v1,v3
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v3 : single-length
+	invoke-virtual	{v4,v1},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/setValues	; setValues([Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;)V
+; v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+l90f64:
+.line 412
+	iput-boolean	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInitialized Z
+; v3 : single-length , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	goto	l90f34
+l90f6a:
+.line 408
+	iget-object	v1,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	aget-object	v0,v1,v3
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v3 : single-length
+.line 409
+	invoke-virtual	{v0,v5},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/setFloatValues	; setFloatValues([F)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v5 : [F
+	goto	l90f64
+.end method
+
+.method public setIntValues([I)V
+.limit registers 6
+; this: v4 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v5 ([I)
+	const/4	v3,0
+; v3 : single-length
+.line 374
+	if-eqz	v5,l90f98
+; v5 : [I
+	array-length	v1,v5
+; v1 : single-length , v5 : [I
+	if-nez	v1,l90f9a
+; v1 : single-length
+l90f98:
+.line 385
+	return-void	
+l90f9a:
+.line 377
+	iget-object	v1,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v1,l90fac
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	iget-object	v1,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	array-length	v1,v1
+; v1 : single-length , v1 : single-length
+	if-nez	v1,l90fce
+; v1 : single-length
+l90fac:
+.line 378
+	const/4	v1,1
+; v1 : single-length
+	new-array	v1,v1,[Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	const-string	v2,""
+; v2 : Ljava/lang/String;
+	invoke-static	{v2,v5},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/ofInt	; ofInt(Ljava/lang/String;[I)Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v2 : Ljava/lang/String; , v5 : [I
+	move-result-object	v2
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	aput-object	v2,v1,v3
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v3 : single-length
+	invoke-virtual	{v4,v1},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/setValues	; setValues([Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;)V
+; v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+l90fc8:
+.line 384
+	iput-boolean	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInitialized Z
+; v3 : single-length , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	goto	l90f98
+l90fce:
+.line 380
+	iget-object	v1,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	aget-object	v0,v1,v3
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v3 : single-length
+.line 381
+	invoke-virtual	{v0,v5},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/setIntValues	; setIntValues([I)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v5 : [I
+	goto	l90fc8
+.end method
+
+.method public setInterpolator(Landroid/view/animation/Interpolator;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v2 (Landroid/view/animation/Interpolator;)
+.line 866
+	if-eqz	v2,l90ffa
+; v2 : Landroid/view/animation/Interpolator;
+.line 867
+	iput-object	v2,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInterpolator Landroid/view/animation/Interpolator;
+; v2 : Landroid/view/animation/Interpolator; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+l90ff8:
+.line 871
+	return-void	
+l90ffa:
+.line 869
+	new-instance	v0,android/view/animation/LinearInterpolator
+; v0 : Landroid/view/animation/LinearInterpolator;
+	invoke-direct	{v0},android/view/animation/LinearInterpolator/<init>	; <init>()V
+; v0 : Landroid/view/animation/LinearInterpolator;
+	iput-object	v0,v1,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInterpolator Landroid/view/animation/Interpolator;
+; v0 : Landroid/view/animation/LinearInterpolator; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	goto	l90ff8
+.end method
+
+.method public setObjectValues([Ljava/lang/Object;)V
+.limit registers 7
+; this: v5 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v6 ([Ljava/lang/Object;)
+	const/4	v4,0
+; v4 : single-length
+.line 434
+	if-eqz	v6,l91028
+; v6 : [Ljava/lang/Object;
+	array-length	v1,v6
+; v1 : single-length , v6 : [Ljava/lang/Object;
+	if-nez	v1,l9102a
+; v1 : single-length
+l91028:
+.line 446
+	return-void	
+l9102a:
+.line 437
+	iget-object	v1,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v1,l9103c
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	iget-object	v1,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	array-length	v1,v1
+; v1 : single-length , v1 : single-length
+	if-nez	v1,l91064
+; v1 : single-length
+l9103c:
+.line 438
+	const/4	v1,1
+; v1 : single-length
+	new-array	v2,v1,[Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v2 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : single-length
+	const-string	v3,""
+; v3 : Ljava/lang/String;
+	const/4	v1,0
+; v1 : single-length
+	check-cast	v1,com/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator;
+	invoke-static	{v3,v1,v6},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/ofObject	; ofObject(Ljava/lang/String;Lcom/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator;[Ljava/lang/Object;)Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v3 : Ljava/lang/String; , v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/TypeEvaluator; , v6 : [Ljava/lang/Object;
+	move-result-object	v1
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	aput-object	v1,v2,v4
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v2 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : single-length
+	invoke-virtual	{v5,v2},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/setValues	; setValues([Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;)V
+; v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v2 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+l9105e:
+.line 445
+	iput-boolean	v4,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInitialized Z
+; v4 : single-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	goto	l91028
+l91064:
+.line 441
+	iget-object	v1,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	aget-object	v0,v1,v4
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v1 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : single-length
+.line 442
+	invoke-virtual	{v0,v6},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/setObjectValues	; setObjectValues([Ljava/lang/Object;)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v6 : [Ljava/lang/Object;
+	goto	l9105e
+.end method
+
+.method public setRepeatCount(I)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v1 (I)
+.line 781
+	iput	v1,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRepeatCount I
+; v1 : single-length , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 782
+	return-void	
+.end method
+
+.method public setRepeatMode(I)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v1 (I)
+.line 801
+	iput	v1,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mRepeatMode I
+; v1 : single-length , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 802
+	return-void	
+.end method
+
+.method public setStartDelay(J)V
+.limit registers 3
+; this: v0 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v1 (J)
+.line 703
+	iput-wide	v1,v0,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mStartDelay J
+; v1 : double-length , v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 704
+	return-void	
+.end method
+
+.method public setValues([Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;)V
+.limit registers 7
+; this: v5 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+; parameter[0] : v6 ([Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;)
+.var 2 is valuesHolder Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; from l910ea to l91102
+.line 457
+	array-length	v1,v6
+; v1 : single-length , v6 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 458
+	iput-object	v6,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v6 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 459
+	new-instance	v3,java/util/HashMap
+; v3 : Ljava/util/HashMap;
+	invoke-direct	{v3,v1},java/util/HashMap/<init>	; <init>(I)V
+; v3 : Ljava/util/HashMap; , v1 : single-length
+	iput-object	v3,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValuesMap Ljava/util/HashMap;
+; v3 : Ljava/util/HashMap; , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 460
+	const/4	v0,0
+; v0 : single-length
+l910e2:
+	if-ge	v0,v1,l91102
+; v0 : single-length , v1 : single-length
+.line 461
+	aget-object	v2,v6,v0
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v6 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v0 : single-length
+.line 462
+	iget-object	v3,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValuesMap Ljava/util/HashMap;
+; v3 : Ljava/util/HashMap; , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	invoke-virtual	{v2},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/getPropertyName	; getPropertyName()Ljava/lang/String;
+; v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4,v2},java/util/HashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v3 : Ljava/util/HashMap; , v4 : Ljava/lang/String; , v2 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 460
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l910e2
+l91102:
+.line 465
+	const/4	v3,0
+; v3 : single-length
+	iput-boolean	v3,v5,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mInitialized Z
+; v3 : single-length , v5 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+.line 466
+	return-void	
+.end method
+
+.method public start()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.line 952
+	const/4	v0,0
+; v0 : single-length
+	invoke-direct	{v1,v0},com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator/start	; start(Z)V
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator; , v0 : single-length
+.line 953
+	return-void	
+.end method
+
+.method public toString()Ljava/lang/String;
+.limit registers 5
+; this: v4 (Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;)
+.var 0 is i I from l91178 to l911c6
+.line 1257
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"ValueAnimator@"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/Object/hashCode	; hashCode()I
+; v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	move-result	v3
+; v3 : single-length
+	invoke-static	{v3},java/lang/Integer/toHexString	; toHexString(I)Ljava/lang/String;
+; v3 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 1258
+	iget-object	v2,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v2 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	if-eqz	v2,l911c6
+; v2 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+.line 1259
+	const/4	v0,0
+; v0 : single-length
+l91178:
+	iget-object	v2,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v2 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	array-length	v2,v2
+; v2 : single-length , v2 : single-length
+	if-ge	v0,v2,l911c6
+; v0 : single-length , v2 : single-length
+.line 1260
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"
+    "
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	iget-object	v3,v4,com/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator.mValues [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+; v3 : [Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v4 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ValueAnimator;
+	aget-object	v3,v3,v0
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder; , v0 : single-length
+	invoke-virtual	{v3},com/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder/toString	; toString()Ljava/lang/String;
+; v3 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/PropertyValuesHolder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 1259
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l91178
+l911c6:
+.line 1263
+	return-object	v1
+; v1 : Ljava/lang/String;
+.end method
+
+

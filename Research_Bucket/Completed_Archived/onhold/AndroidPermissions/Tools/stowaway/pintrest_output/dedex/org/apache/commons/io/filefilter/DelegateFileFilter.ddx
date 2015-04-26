@@ -1,0 +1,192 @@
+.class public org/apache/commons/io/filefilter/DelegateFileFilter
+.super org/apache/commons/io/filefilter/AbstractFileFilter
+.source DelegateFileFilter.java
+.implements java/io/Serializable
+
+.field private final fileFilter Ljava/io/FileFilter;
+.field private final filenameFilter Ljava/io/FilenameFilter;
+
+.method public <init>(Ljava/io/FileFilter;)V
+.limit registers 4
+; this: v2 (Lorg/apache/commons/io/filefilter/DelegateFileFilter;)
+; parameter[0] : v3 (Ljava/io/FileFilter;)
+.line 59
+	invoke-direct	{v2},org/apache/commons/io/filefilter/AbstractFileFilter/<init>	; <init>()V
+; v2 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+.line 60
+	if-nez	v3,l11845a
+; v3 : Ljava/io/FileFilter;
+.line 61
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"The FileFilter must not be null"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l11845a:
+.line 63
+	iput-object	v3,v2,org/apache/commons/io/filefilter/DelegateFileFilter.fileFilter Ljava/io/FileFilter;
+; v3 : Ljava/io/FileFilter; , v2 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+.line 64
+	const/4	v0,0
+; v0 : single-length
+	iput-object	v0,v2,org/apache/commons/io/filefilter/DelegateFileFilter.filenameFilter Ljava/io/FilenameFilter;
+; v0 : single-length , v2 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+.line 65
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/FilenameFilter;)V
+.limit registers 4
+; this: v2 (Lorg/apache/commons/io/filefilter/DelegateFileFilter;)
+; parameter[0] : v3 (Ljava/io/FilenameFilter;)
+.line 46
+	invoke-direct	{v2},org/apache/commons/io/filefilter/AbstractFileFilter/<init>	; <init>()V
+; v2 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+.line 47
+	if-nez	v3,l118492
+; v3 : Ljava/io/FilenameFilter;
+.line 48
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"The FilenameFilter must not be null"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l118492:
+.line 50
+	iput-object	v3,v2,org/apache/commons/io/filefilter/DelegateFileFilter.filenameFilter Ljava/io/FilenameFilter;
+; v3 : Ljava/io/FilenameFilter; , v2 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+.line 51
+	const/4	v0,0
+; v0 : single-length
+	iput-object	v0,v2,org/apache/commons/io/filefilter/DelegateFileFilter.fileFilter Ljava/io/FileFilter;
+; v0 : single-length , v2 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+.line 52
+	return-void	
+.end method
+
+.method public accept(Ljava/io/File;)Z
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/filefilter/DelegateFileFilter;)
+; parameter[0] : v2 (Ljava/io/File;)
+.line 75
+	iget-object	v0,v1,org/apache/commons/io/filefilter/DelegateFileFilter.fileFilter Ljava/io/FileFilter;
+; v0 : Ljava/io/FileFilter; , v1 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+	if-eqz	v0,l1184c6
+; v0 : Ljava/io/FileFilter;
+.line 76
+	iget-object	v0,v1,org/apache/commons/io/filefilter/DelegateFileFilter.fileFilter Ljava/io/FileFilter;
+; v0 : Ljava/io/FileFilter; , v1 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+	invoke-interface	{v0,v2},java/io/FileFilter/accept	; accept(Ljava/io/File;)Z
+; v0 : Ljava/io/FileFilter; , v2 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+l1184c4:
+.line 78
+	return	v0
+; v0 : single-length
+l1184c6:
+	invoke-super	{v1,v2},org/apache/commons/io/filefilter/AbstractFileFilter/accept	; accept(Ljava/io/File;)Z
+; v1 : Lorg/apache/commons/io/filefilter/DelegateFileFilter; , v2 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+	goto	l1184c4
+.end method
+
+.method public accept(Ljava/io/File;Ljava/lang/String;)Z
+.limit registers 4
+; this: v1 (Lorg/apache/commons/io/filefilter/DelegateFileFilter;)
+; parameter[0] : v2 (Ljava/io/File;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.line 91
+	iget-object	v0,v1,org/apache/commons/io/filefilter/DelegateFileFilter.filenameFilter Ljava/io/FilenameFilter;
+; v0 : Ljava/io/FilenameFilter; , v1 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+	if-eqz	v0,l1184f6
+; v0 : Ljava/io/FilenameFilter;
+.line 92
+	iget-object	v0,v1,org/apache/commons/io/filefilter/DelegateFileFilter.filenameFilter Ljava/io/FilenameFilter;
+; v0 : Ljava/io/FilenameFilter; , v1 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+	invoke-interface	{v0,v2,v3},java/io/FilenameFilter/accept	; accept(Ljava/io/File;Ljava/lang/String;)Z
+; v0 : Ljava/io/FilenameFilter; , v2 : Ljava/io/File; , v3 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+l1184f4:
+.line 94
+	return	v0
+; v0 : single-length
+l1184f6:
+	invoke-super	{v1,v2,v3},org/apache/commons/io/filefilter/AbstractFileFilter/accept	; accept(Ljava/io/File;Ljava/lang/String;)Z
+; v1 : Lorg/apache/commons/io/filefilter/DelegateFileFilter; , v2 : Ljava/io/File; , v3 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	goto	l1184f4
+.end method
+
+.method public toString()Ljava/lang/String;
+.limit registers 4
+; this: v3 (Lorg/apache/commons/io/filefilter/DelegateFileFilter;)
+.var 0 is delegate Ljava/lang/String; from l118524 to l118568
+.line 105
+	iget-object	v1,v3,org/apache/commons/io/filefilter/DelegateFileFilter.fileFilter Ljava/io/FileFilter;
+; v1 : Ljava/io/FileFilter; , v3 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+	if-eqz	v1,l118568
+; v1 : Ljava/io/FileFilter;
+	iget-object	v1,v3,org/apache/commons/io/filefilter/DelegateFileFilter.fileFilter Ljava/io/FileFilter;
+; v1 : Ljava/io/FileFilter; , v3 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+	invoke-virtual	{v1},java/lang/Object/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/io/FileFilter;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+l118524:
+.line 106
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	invoke-super	{v3},org/apache/commons/io/filefilter/AbstractFileFilter/toString	; toString()Ljava/lang/String;
+; v3 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"("
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,")"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	return-object	v1
+; v1 : Ljava/lang/String;
+l118568:
+.line 105
+	iget-object	v1,v3,org/apache/commons/io/filefilter/DelegateFileFilter.filenameFilter Ljava/io/FilenameFilter;
+; v1 : Ljava/io/FilenameFilter; , v3 : Lorg/apache/commons/io/filefilter/DelegateFileFilter;
+	invoke-virtual	{v1},java/lang/Object/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/io/FilenameFilter;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l118524
+.end method
+
+

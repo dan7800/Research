@@ -1,0 +1,136 @@
+.class public com/nineoldandroids/animation/TimeAnimator
+.super com/nineoldandroids/animation/ValueAnimator
+.source TimeAnimator.java
+
+.inner class TimeListener inner com/nineoldandroids/animation/TimeAnimator$TimeListener outer com/nineoldandroids/animation/TimeAnimator
+.field private mListener Lcom/nineoldandroids/animation/TimeAnimator$TimeListener;
+.field private mPreviousTime J
+
+.method public <init>()V
+.limit registers 3
+; this: v2 (Lcom/nineoldandroids/animation/TimeAnimator;)
+.line 12
+	invoke-direct	{v2},com/nineoldandroids/animation/ValueAnimator/<init>	; <init>()V
+; v2 : Lcom/nineoldandroids/animation/TimeAnimator;
+.line 15
+	const-wide/16	v0,65535
+; v0 : double-length
+	iput-wide	v0,v2,com/nineoldandroids/animation/TimeAnimator.mPreviousTime J
+; v0 : double-length , v2 : Lcom/nineoldandroids/animation/TimeAnimator;
+.line 67
+	return-void	
+.end method
+
+.method animateValue(F)V
+.limit registers 2
+; this: v0 (Lcom/nineoldandroids/animation/TimeAnimator;)
+; parameter[0] : v1 (F)
+.line 51
+	return-void	
+.end method
+
+.method animationFrame(J)Z
+.limit registers 9
+; this: v6 (Lcom/nineoldandroids/animation/TimeAnimator;)
+; parameter[0] : v7 (J)
+.var 2 is totalTime J from lcf6f2 to lcf70e
+.var 4 is deltaTime J from lcf6fe to lcf70e
+	const-wide/16	v4,0
+; v4 : double-length
+.line 19
+	iget	v0,v6,com/nineoldandroids/animation/TimeAnimator.mPlayingState I
+; v0 : single-length , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+	if-nez	v0,lcf6e2
+; v0 : single-length
+.line 20
+	const/4	v0,1
+; v0 : single-length
+	iput	v0,v6,com/nineoldandroids/animation/TimeAnimator.mPlayingState I
+; v0 : single-length , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+.line 21
+	iget-wide	v0,v6,com/nineoldandroids/animation/TimeAnimator.mSeekTime J
+; v0 : double-length , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+	cmp-long	v0,v0,v4
+; v0 : single-length , v0 : single-length , v4 : double-length
+	if-gez	v0,lcf712
+; v0 : single-length
+.line 22
+	iput-wide	v7,v6,com/nineoldandroids/animation/TimeAnimator.mStartTime J
+; v7 : double-length , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+lcf6e2:
+.line 29
+	iget-object	v0,v6,com/nineoldandroids/animation/TimeAnimator.mListener Lcom/nineoldandroids/animation/TimeAnimator$TimeListener;
+; v0 : Lcom/nineoldandroids/animation/TimeAnimator$TimeListener; , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+	if-eqz	v0,lcf70e
+; v0 : Lcom/nineoldandroids/animation/TimeAnimator$TimeListener;
+.line 30
+	iget-wide	v0,v6,com/nineoldandroids/animation/TimeAnimator.mStartTime J
+; v0 : double-length , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+	sub-long	v2,v7,v0
+; v2 : double-length , v7 : double-length , v0 : double-length
+.line 31
+	iget-wide	v0,v6,com/nineoldandroids/animation/TimeAnimator.mPreviousTime J
+; v0 : double-length , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+	cmp-long	v0,v0,v4
+; v0 : single-length , v0 : single-length , v4 : double-length
+	if-gez	v0,lcf728
+; v0 : single-length
+lcf6fe:
+.line 32
+	iput-wide	v7,v6,com/nineoldandroids/animation/TimeAnimator.mPreviousTime J
+; v7 : double-length , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+.line 33
+	iget-object	v0,v6,com/nineoldandroids/animation/TimeAnimator.mListener Lcom/nineoldandroids/animation/TimeAnimator$TimeListener;
+; v0 : Lcom/nineoldandroids/animation/TimeAnimator$TimeListener; , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+	move-object	v1,v6
+; v1 : Lcom/nineoldandroids/animation/TimeAnimator; , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+	invoke-interface/range	{v0..v5},com/nineoldandroids/animation/TimeAnimator$TimeListener/onTimeUpdate;	onTimeUpdate(Lcom/nineoldandroids/animation/TimeAnimator;JJ)V
+; v0 : Lcom/nineoldandroids/animation/TimeAnimator$TimeListener; , v1 : Lcom/nineoldandroids/animation/TimeAnimator; , v2 : double-length , v4 : double-length
+lcf70e:
+.line 35
+	const/4	v0,0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+lcf712:
+.line 24
+	iget-wide	v0,v6,com/nineoldandroids/animation/TimeAnimator.mSeekTime J
+; v0 : double-length , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+	sub-long	v0,v7,v0
+; v0 : double-length , v7 : double-length , v0 : double-length
+	iput-wide	v0,v6,com/nineoldandroids/animation/TimeAnimator.mStartTime J
+; v0 : double-length , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+.line 26
+	const-wide/16	v0,65535
+; v0 : double-length
+	iput-wide	v0,v6,com/nineoldandroids/animation/TimeAnimator.mSeekTime J
+; v0 : double-length , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+	goto	lcf6e2
+lcf728:
+.line 31
+	iget-wide	v0,v6,com/nineoldandroids/animation/TimeAnimator.mPreviousTime J
+; v0 : double-length , v6 : Lcom/nineoldandroids/animation/TimeAnimator;
+	sub-long	v4,v7,v0
+; v4 : double-length , v7 : double-length , v0 : double-length
+	goto	lcf6fe
+.end method
+
+.method initAnimation()V
+.limit registers 1
+; this: v0 (Lcom/nineoldandroids/animation/TimeAnimator;)
+.line 56
+	return-void	
+.end method
+
+.method public setTimeListener(Lcom/nineoldandroids/animation/TimeAnimator$TimeListener;)V
+.limit registers 2
+; this: v0 (Lcom/nineoldandroids/animation/TimeAnimator;)
+; parameter[0] : v1 (Lcom/nineoldandroids/animation/TimeAnimator$TimeListener;)
+.line 45
+	iput-object	v1,v0,com/nineoldandroids/animation/TimeAnimator.mListener Lcom/nineoldandroids/animation/TimeAnimator$TimeListener;
+; v1 : Lcom/nineoldandroids/animation/TimeAnimator$TimeListener; , v0 : Lcom/nineoldandroids/animation/TimeAnimator;
+.line 46
+	return-void	
+.end method
+
+

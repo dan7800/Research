@@ -1,0 +1,481 @@
+.class public com/pinterest/adapter/PeopleGridAdapter
+.super com/pinterest/ui/grid/PinterestBaseAdapter
+.source PeopleGridAdapter.java
+
+.inner class PeopleGridHolder inner com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder outer com/pinterest/adapter/PeopleGridAdapter
+.field _measureView Landroid/view/View;
+.field private cachedItemHeights Ljava/util/HashMap;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/HashMap" , "<" , "Ljava/lang/Integer;" , "Ljava/lang/Integer;" , ">;" }
+  .end annotation
+.end field
+.field public dataSource Lcom/pinterest/api/models/UserFeed;
+.field heightMeasureSpec I
+.field holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+.field private onFollowClicked Landroid/view/View$OnClickListener;
+.field public onPersonClicked Landroid/widget/AdapterView$OnItemClickListener;
+.field pinParams Landroid/view/ViewGroup$LayoutParams;
+.field user Lcom/pinterest/api/models/User;
+.field widthMeasureSpec I
+
+.method public <init>(Landroid/app/Activity;Lcom/pinterest/ui/grid/PinterestAdapterView;)V
+.limit registers 4
+; this: v1 (Lcom/pinterest/adapter/PeopleGridAdapter;)
+; parameter[0] : v2 (Landroid/app/Activity;)
+; parameter[1] : v3 (Lcom/pinterest/ui/grid/PinterestAdapterView;)
+.line 35
+	invoke-direct	{v1,v2,v3},com/pinterest/ui/grid/PinterestBaseAdapter/<init>	; <init>(Landroid/app/Activity;Lcom/pinterest/ui/grid/PinterestAdapterView;)V
+; v1 : Lcom/pinterest/adapter/PeopleGridAdapter; , v2 : Landroid/app/Activity; , v3 : Lcom/pinterest/ui/grid/PinterestAdapterView;
+.line 126
+	new-instance	v0,java/util/HashMap
+; v0 : Ljava/util/HashMap;
+	invoke-direct	{v0},java/util/HashMap/<init>	; <init>()V
+; v0 : Ljava/util/HashMap;
+	iput-object	v0,v1,com/pinterest/adapter/PeopleGridAdapter.cachedItemHeights Ljava/util/HashMap;
+; v0 : Ljava/util/HashMap; , v1 : Lcom/pinterest/adapter/PeopleGridAdapter;
+.line 136
+	new-instance	v0,com/pinterest/adapter/PeopleGridAdapter$1
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$1;
+	invoke-direct	{v0,v1},com/pinterest/adapter/PeopleGridAdapter$1/<init>	; <init>(Lcom/pinterest/adapter/PeopleGridAdapter;)V
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$1; , v1 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iput-object	v0,v1,com/pinterest/adapter/PeopleGridAdapter.onFollowClicked Landroid/view/View$OnClickListener;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$1; , v1 : Lcom/pinterest/adapter/PeopleGridAdapter;
+.line 152
+	new-instance	v0,com/pinterest/adapter/PeopleGridAdapter$2
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$2;
+	invoke-direct	{v0,v1},com/pinterest/adapter/PeopleGridAdapter$2/<init>	; <init>(Lcom/pinterest/adapter/PeopleGridAdapter;)V
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$2; , v1 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iput-object	v0,v1,com/pinterest/adapter/PeopleGridAdapter.onPersonClicked Landroid/widget/AdapterView$OnItemClickListener;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$2; , v1 : Lcom/pinterest/adapter/PeopleGridAdapter;
+.line 36
+	return-void	
+.end method
+
+.method public getDataSource()Lcom/pinterest/api/models/Feed;
+.limit registers 2
+; this: v1 (Lcom/pinterest/adapter/PeopleGridAdapter;)
+.line 41
+	iget-object	v0,v1,com/pinterest/adapter/PeopleGridAdapter.dataSource Lcom/pinterest/api/models/UserFeed;
+; v0 : Lcom/pinterest/api/models/UserFeed; , v1 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	return-object	v0
+; v0 : Lcom/pinterest/api/models/UserFeed;
+.end method
+
+.method public getItemHeight(I)I
+.limit registers 6
+; this: v4 (Lcom/pinterest/adapter/PeopleGridAdapter;)
+; parameter[0] : v5 (I)
+	const/high16	v3,16384
+; v3 : single-length
+.line 113
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.cachedItemHeights Ljava/util/HashMap;
+; v0 : Ljava/util/HashMap; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	invoke-static	{v5},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v5 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Integer;
+	invoke-virtual	{v0,v1},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/HashMap; , v1 : Ljava/lang/Integer;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	if-eqz	v0,leb106
+; v0 : Ljava/lang/Object;
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.cachedItemHeights Ljava/util/HashMap;
+; v0 : Ljava/util/HashMap; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	invoke-static	{v5},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v5 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Integer;
+	invoke-virtual	{v0,v1},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/HashMap; , v1 : Ljava/lang/Integer;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/lang/Integer
+; v0 : Ljava/lang/Integer;
+	invoke-virtual	{v0},java/lang/Integer/intValue	; intValue()I
+; v0 : Ljava/lang/Integer;
+	move-result	v0
+; v0 : single-length
+leb104:
+.line 123
+	return	v0
+; v0 : single-length
+leb106:
+.line 115
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter._measureView Landroid/view/View;
+; v0 : Landroid/view/View; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	const/4	v1,0
+; v1 : single-length
+	const/4	v2,1
+; v2 : single-length
+	invoke-virtual	{v4,v5,v0,v1,v2},com/pinterest/adapter/PeopleGridAdapter/getView	; getView(ILandroid/view/View;Landroid/view/ViewGroup;Z)Landroid/view/View;
+; v4 : Lcom/pinterest/adapter/PeopleGridAdapter; , v5 : single-length , v0 : Landroid/view/View; , v1 : single-length , v2 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+	iput-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter._measureView Landroid/view/View;
+; v0 : Landroid/view/View; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+.line 116
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter._measureView Landroid/view/View;
+; v0 : Landroid/view/View; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	invoke-virtual	{v0},android/view/View/getTag	; getTag()Ljava/lang/Object;
+; v0 : Landroid/view/View;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+	iput-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+.line 118
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter._adapterView Lcom/pinterest/ui/grid/PinterestAdapterView;
+; v0 : Lcom/pinterest/ui/grid/PinterestAdapterView; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	invoke-virtual	{v0},com/pinterest/ui/grid/PinterestAdapterView/getColumnWidth	; getColumnWidth()I
+; v0 : Lcom/pinterest/ui/grid/PinterestAdapterView;
+	move-result	v0
+; v0 : single-length
+	invoke-static	{v0,v3},android/view/View$MeasureSpec/makeMeasureSpec	; makeMeasureSpec(II)I
+; v0 : single-length , v3 : single-length
+	move-result	v0
+; v0 : single-length
+	iput	v0,v4,com/pinterest/adapter/PeopleGridAdapter.widthMeasureSpec I
+; v0 : single-length , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+.line 119
+	const/4	v0,14
+; v0 : single-length
+	invoke-static	{v0,v3},android/view/View$MeasureSpec/makeMeasureSpec	; makeMeasureSpec(II)I
+; v0 : single-length , v3 : single-length
+	move-result	v0
+; v0 : single-length
+	iput	v0,v4,com/pinterest/adapter/PeopleGridAdapter.heightMeasureSpec I
+; v0 : single-length , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+.line 120
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter._measureView Landroid/view/View;
+; v0 : Landroid/view/View; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget	v1,v4,com/pinterest/adapter/PeopleGridAdapter.widthMeasureSpec I
+; v1 : single-length , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget	v2,v4,com/pinterest/adapter/PeopleGridAdapter.heightMeasureSpec I
+; v2 : single-length , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	invoke-virtual	{v0,v1,v2},android/view/View/measure	; measure(II)V
+; v0 : Landroid/view/View; , v1 : single-length , v2 : single-length
+.line 122
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.cachedItemHeights Ljava/util/HashMap;
+; v0 : Ljava/util/HashMap; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	invoke-static	{v5},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v5 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Integer;
+	iget-object	v2,v4,com/pinterest/adapter/PeopleGridAdapter._measureView Landroid/view/View;
+; v2 : Landroid/view/View; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	invoke-virtual	{v2},android/view/View/getMeasuredHeight	; getMeasuredHeight()I
+; v2 : Landroid/view/View;
+	move-result	v2
+; v2 : single-length
+	invoke-static	{v2},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v2 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/Integer;
+	invoke-virtual	{v0,v1,v2},java/util/HashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/HashMap; , v1 : Ljava/lang/Integer; , v2 : Ljava/lang/Integer;
+.line 123
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.cachedItemHeights Ljava/util/HashMap;
+; v0 : Ljava/util/HashMap; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	invoke-static	{v5},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v5 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Integer;
+	invoke-virtual	{v0,v1},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/HashMap; , v1 : Ljava/lang/Integer;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/lang/Integer
+; v0 : Ljava/lang/Integer;
+	invoke-virtual	{v0},java/lang/Integer/intValue	; intValue()I
+; v0 : Ljava/lang/Integer;
+	move-result	v0
+; v0 : single-length
+	goto	leb104
+.end method
+
+.method public getView(ILandroid/view/View;Landroid/view/ViewGroup;)Landroid/view/View;
+.limit registers 5
+; this: v1 (Lcom/pinterest/adapter/PeopleGridAdapter;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (Landroid/view/View;)
+; parameter[2] : v4 (Landroid/view/ViewGroup;)
+.line 58
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v1,v2,v3,v4,v0},com/pinterest/adapter/PeopleGridAdapter/getView	; getView(ILandroid/view/View;Landroid/view/ViewGroup;Z)Landroid/view/View;
+; v1 : Lcom/pinterest/adapter/PeopleGridAdapter; , v2 : single-length , v3 : Landroid/view/View; , v4 : Landroid/view/ViewGroup; , v0 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+	return-object	v0
+; v0 : Landroid/view/View;
+.end method
+
+.method public getView(ILandroid/view/View;Landroid/view/ViewGroup;Z)Landroid/view/View;
+.limit registers 9
+; this: v4 (Lcom/pinterest/adapter/PeopleGridAdapter;)
+; parameter[0] : v5 (I)
+; parameter[1] : v6 (Landroid/view/View;)
+; parameter[2] : v7 (Landroid/view/ViewGroup;)
+; parameter[3] : v8 (Z)
+	const/4	v3,0
+; v3 : single-length
+.line 67
+	if-nez	v6,leb2a2
+; v6 : Landroid/view/View;
+.line 69
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter._inflater Landroid/view/LayoutInflater;
+; v0 : Landroid/view/LayoutInflater; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	const	v1,2130903142	; 0x7f030066
+; v1 : single-length
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v0,v1,v2,v3},android/view/LayoutInflater/inflate	; inflate(ILandroid/view/ViewGroup;Z)Landroid/view/View;
+; v0 : Landroid/view/LayoutInflater; , v1 : single-length , v2 : single-length , v3 : single-length
+	move-result-object	v6
+; v6 : Landroid/view/View;
+.line 70
+	new-instance	v0,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+	invoke-direct	{v0},com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder/<init>	; <init>()V
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+	iput-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+.line 71
+	iget-object	v1,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v1 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	const	v0,2131099866	; 0x7f0600da
+; v0 : single-length
+	invoke-virtual	{v6,v0},android/view/View/findViewById	; findViewById(I)Landroid/view/View;
+; v6 : Landroid/view/View; , v0 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+	check-cast	v0,com/pinterest/ui/imageview/PImageView
+; v0 : Lcom/pinterest/ui/imageview/PImageView;
+	iput-object	v0,v1,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder.userIv Lcom/pinterest/ui/imageview/PImageView;
+; v0 : Lcom/pinterest/ui/imageview/PImageView; , v1 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+.line 72
+	iget-object	v1,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v1 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	const	v0,2131099690	; 0x7f06002a
+; v0 : single-length
+	invoke-virtual	{v6,v0},android/view/View/findViewById	; findViewById(I)Landroid/view/View;
+; v6 : Landroid/view/View; , v0 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+	check-cast	v0,android/widget/TextView
+; v0 : Landroid/widget/TextView;
+	iput-object	v0,v1,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder.usernameTv Landroid/widget/TextView;
+; v0 : Landroid/widget/TextView; , v1 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+.line 73
+	iget-object	v1,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v1 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	const	v0,2131099868	; 0x7f0600dc
+; v0 : single-length
+	invoke-virtual	{v6,v0},android/view/View/findViewById	; findViewById(I)Landroid/view/View;
+; v6 : Landroid/view/View; , v0 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+	check-cast	v0,android/widget/TextView
+; v0 : Landroid/widget/TextView;
+	iput-object	v0,v1,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder.userinfoTv Landroid/widget/TextView;
+; v0 : Landroid/widget/TextView; , v1 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+.line 74
+	iget-object	v1,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v1 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	const	v0,2131099863	; 0x7f0600d7
+; v0 : single-length
+	invoke-virtual	{v6,v0},android/view/View/findViewById	; findViewById(I)Landroid/view/View;
+; v6 : Landroid/view/View; , v0 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+	check-cast	v0,android/widget/Button
+; v0 : Landroid/widget/Button;
+	iput-object	v0,v1,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder.followBt Landroid/widget/Button;
+; v0 : Landroid/widget/Button; , v1 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+.line 75
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v0,v0,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder.followBt Landroid/widget/Button;
+; v0 : Landroid/widget/Button; , v0 : Landroid/widget/Button;
+	iget-object	v1,v4,com/pinterest/adapter/PeopleGridAdapter.onFollowClicked Landroid/view/View$OnClickListener;
+; v1 : Landroid/view/View$OnClickListener; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	invoke-virtual	{v0,v1},android/widget/Button/setOnClickListener	; setOnClickListener(Landroid/view/View$OnClickListener;)V
+; v0 : Landroid/widget/Button; , v1 : Landroid/view/View$OnClickListener;
+.line 76
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	invoke-virtual	{v6,v0},android/view/View/setTag	; setTag(Ljava/lang/Object;)V
+; v6 : Landroid/view/View; , v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+leb288:
+.line 82
+	invoke-virtual	{v4,v5},com/pinterest/adapter/PeopleGridAdapter/getItem	; getItem(I)Ljava/lang/Object;
+; v4 : Lcom/pinterest/adapter/PeopleGridAdapter; , v5 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/User
+; v0 : Lcom/pinterest/api/models/User;
+	iput-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.user Lcom/pinterest/api/models/User;
+; v0 : Lcom/pinterest/api/models/User; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+.line 83
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.user Lcom/pinterest/api/models/User;
+; v0 : Lcom/pinterest/api/models/User; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	if-nez	v0,leb2b4
+; v0 : Lcom/pinterest/api/models/User;
+leb2a0:
+.line 106
+	return-object	v6
+; v6 : Landroid/view/View;
+leb2a2:
+.line 79
+	invoke-virtual	{v6},android/view/View/getTag	; getTag()Ljava/lang/Object;
+; v6 : Landroid/view/View;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+	iput-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	goto	leb288
+leb2b4:
+.line 84
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v0,v0,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder.usernameTv Landroid/widget/TextView;
+; v0 : Landroid/widget/TextView; , v0 : Landroid/widget/TextView;
+	iget-object	v1,v4,com/pinterest/adapter/PeopleGridAdapter.user Lcom/pinterest/api/models/User;
+; v1 : Lcom/pinterest/api/models/User; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v1,v1,com/pinterest/api/models/User.fullname Ljava/lang/String;
+; v1 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},android/widget/TextView/setText	; setText(Ljava/lang/CharSequence;)V
+; v0 : Landroid/widget/TextView; , v1 : Ljava/lang/String;
+.line 85
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.user Lcom/pinterest/api/models/User;
+; v0 : Lcom/pinterest/api/models/User; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v1,v4,com/pinterest/adapter/PeopleGridAdapter.user Lcom/pinterest/api/models/User;
+; v1 : Lcom/pinterest/api/models/User; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v1,v1,com/pinterest/api/models/User.location Ljava/lang/String;
+; v1 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},com/pinterest/api/models/User/has	; has(Ljava/lang/String;)Z
+; v0 : Lcom/pinterest/api/models/User; , v1 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,leb366
+; v0 : single-length
+.line 87
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v0,v0,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder.userinfoTv Landroid/widget/TextView;
+; v0 : Landroid/widget/TextView; , v0 : Landroid/widget/TextView;
+	iget-object	v1,v4,com/pinterest/adapter/PeopleGridAdapter.user Lcom/pinterest/api/models/User;
+; v1 : Lcom/pinterest/api/models/User; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v1,v1,com/pinterest/api/models/User.location Ljava/lang/String;
+; v1 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},android/widget/TextView/setText	; setText(Ljava/lang/CharSequence;)V
+; v0 : Landroid/widget/TextView; , v1 : Ljava/lang/String;
+.line 88
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v0,v0,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder.userinfoTv Landroid/widget/TextView;
+; v0 : Landroid/widget/TextView; , v0 : Landroid/widget/TextView;
+	invoke-virtual	{v0,v3},android/widget/TextView/setVisibility	; setVisibility(I)V
+; v0 : Landroid/widget/TextView; , v3 : single-length
+leb306:
+.line 92
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v1,v0,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder.followBt Landroid/widget/Button;
+; v1 : Landroid/widget/Button; , v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.user Lcom/pinterest/api/models/User;
+; v0 : Lcom/pinterest/api/models/User; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-boolean	v0,v0,com/pinterest/api/models/User.isFollowing Z
+; v0 : single-length , v0 : single-length
+	if-eqz	v0,leb37a
+; v0 : single-length
+	const	v0,2131427403	; 0x7f0b004b
+; v0 : single-length
+leb320:
+	invoke-virtual	{v1,v0},android/widget/Button/setText	; setText(I)V
+; v1 : Landroid/widget/Button; , v0 : single-length
+.line 93
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v0,v0,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder.followBt Landroid/widget/Button;
+; v0 : Landroid/widget/Button; , v0 : Landroid/widget/Button;
+	invoke-static	{v5},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v5 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Integer;
+	invoke-virtual	{v0,v1},android/widget/Button/setTag	; setTag(Ljava/lang/Object;)V
+; v0 : Landroid/widget/Button; , v1 : Ljava/lang/Integer;
+.line 96
+	if-nez	v8,leb2a0
+; v8 : single-length
+.line 99
+	invoke-static	{},com/pinterest/kit/network/PImageCache/instance	; instance()Lcom/pinterest/kit/network/PImageCache;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Lcom/pinterest/kit/network/PImageCache;
+	iget-object	v1,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v1 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v1,v1,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder.userIv Lcom/pinterest/ui/imageview/PImageView;
+; v1 : Lcom/pinterest/ui/imageview/PImageView; , v1 : Lcom/pinterest/ui/imageview/PImageView;
+	iget-object	v2,v4,com/pinterest/adapter/PeopleGridAdapter.user Lcom/pinterest/api/models/User;
+; v2 : Lcom/pinterest/api/models/User; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v2,v2,com/pinterest/api/models/User.imageUrl Ljava/lang/String;
+; v2 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v2},com/pinterest/kit/network/PImageCache/loadImage	; loadImage(Lcom/pinterest/kit/network/PImageCachable;Ljava/lang/String;)Z
+; v0 : Lcom/pinterest/kit/network/PImageCache; , v1 : Lcom/pinterest/ui/imageview/PImageView; , v2 : Ljava/lang/String;
+.line 102
+	invoke-virtual	{v4,v5},com/pinterest/adapter/PeopleGridAdapter/loadMore	; loadMore(I)V
+; v4 : Lcom/pinterest/adapter/PeopleGridAdapter; , v5 : single-length
+	goto	leb2a0
+leb366:
+.line 91
+	iget-object	v0,v4,com/pinterest/adapter/PeopleGridAdapter.holder Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder;
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder; , v4 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	iget-object	v0,v0,com/pinterest/adapter/PeopleGridAdapter$PeopleGridHolder.userinfoTv Landroid/widget/TextView;
+; v0 : Landroid/widget/TextView; , v0 : Landroid/widget/TextView;
+	const/16	v1,8
+; v1 : single-length
+	invoke-virtual	{v0,v1},android/widget/TextView/setVisibility	; setVisibility(I)V
+; v0 : Landroid/widget/TextView; , v1 : single-length
+	goto	leb306
+leb37a:
+.line 92
+	const	v0,2131427402	; 0x7f0b004a
+; v0 : single-length
+	goto	leb320
+.end method
+
+.method public resetCachedItemHeights()V
+.limit registers 2
+; this: v1 (Lcom/pinterest/adapter/PeopleGridAdapter;)
+.line 129
+	iget-object	v0,v1,com/pinterest/adapter/PeopleGridAdapter.cachedItemHeights Ljava/util/HashMap;
+; v0 : Ljava/util/HashMap; , v1 : Lcom/pinterest/adapter/PeopleGridAdapter;
+	invoke-virtual	{v0},java/util/HashMap/clear	; clear()V
+; v0 : Ljava/util/HashMap;
+.line 130
+	return-void	
+.end method
+
+.method public setDataSource(Lcom/pinterest/api/models/Feed;)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/adapter/PeopleGridAdapter;)
+; parameter[0] : v1 (Lcom/pinterest/api/models/Feed;)
+.line 47
+	check-cast	v1,com/pinterest/api/models/UserFeed
+; v1 : Lcom/pinterest/api/models/UserFeed;
+	iput-object	v1,v0,com/pinterest/adapter/PeopleGridAdapter.dataSource Lcom/pinterest/api/models/UserFeed;
+; v1 : Lcom/pinterest/api/models/UserFeed; , v0 : Lcom/pinterest/adapter/PeopleGridAdapter;
+.line 48
+	invoke-virtual	{v0},com/pinterest/adapter/PeopleGridAdapter/notifyDataSetChanged	; notifyDataSetChanged()V
+; v0 : Lcom/pinterest/adapter/PeopleGridAdapter;
+.line 49
+	return-void	
+.end method
+
+

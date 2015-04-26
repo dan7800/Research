@@ -1,0 +1,181 @@
+.class public org/apache/commons/io/FileDeleteStrategy
+.super java/lang/Object
+.source FileDeleteStrategy.java
+
+.inner class ForceFileDeleteStrategy inner org/apache/commons/io/FileDeleteStrategy$ForceFileDeleteStrategy outer org/apache/commons/io/FileDeleteStrategy
+.field public static final FORCE Lorg/apache/commons/io/FileDeleteStrategy;
+.field public static final NORMAL Lorg/apache/commons/io/FileDeleteStrategy;
+.field private final name Ljava/lang/String;
+
+.method static <clinit>()V
+.limit registers 2
+.line 41
+	new-instance	v0,org/apache/commons/io/FileDeleteStrategy
+; v0 : Lorg/apache/commons/io/FileDeleteStrategy;
+	const-string	v1,"Normal"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},org/apache/commons/io/FileDeleteStrategy/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/io/FileDeleteStrategy; , v1 : Ljava/lang/String;
+	sput-object	v0,org/apache/commons/io/FileDeleteStrategy.NORMAL Lorg/apache/commons/io/FileDeleteStrategy;
+; v0 : Lorg/apache/commons/io/FileDeleteStrategy;
+.line 46
+	new-instance	v0,org/apache/commons/io/FileDeleteStrategy$ForceFileDeleteStrategy
+; v0 : Lorg/apache/commons/io/FileDeleteStrategy$ForceFileDeleteStrategy;
+	invoke-direct	{v0},org/apache/commons/io/FileDeleteStrategy$ForceFileDeleteStrategy/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/FileDeleteStrategy$ForceFileDeleteStrategy;
+	sput-object	v0,org/apache/commons/io/FileDeleteStrategy.FORCE Lorg/apache/commons/io/FileDeleteStrategy;
+; v0 : Lorg/apache/commons/io/FileDeleteStrategy;
+	return-void	
+.end method
+
+.method protected <init>(Ljava/lang/String;)V
+.limit registers 2
+; this: v0 (Lorg/apache/commons/io/FileDeleteStrategy;)
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 57
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/FileDeleteStrategy;
+.line 58
+	iput-object	v1,v0,org/apache/commons/io/FileDeleteStrategy.name Ljava/lang/String;
+; v1 : Ljava/lang/String; , v0 : Lorg/apache/commons/io/FileDeleteStrategy;
+.line 59
+	return-void	
+.end method
+
+.method public delete(Ljava/io/File;)V
+.throws Ljava/io/IOException;
+.limit registers 5
+; this: v3 (Lorg/apache/commons/io/FileDeleteStrategy;)
+; parameter[0] : v4 (Ljava/io/File;)
+.line 94
+	invoke-virtual	{v4},java/io/File/exists	; exists()Z
+; v4 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l1116ee
+; v0 : single-length
+	invoke-virtual	{v3,v4},org/apache/commons/io/FileDeleteStrategy/doDelete	; doDelete(Ljava/io/File;)Z
+; v3 : Lorg/apache/commons/io/FileDeleteStrategy; , v4 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l1116ee
+; v0 : single-length
+.line 95
+	new-instance	v0,java/io/IOException
+; v0 : Ljava/io/IOException;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"Deletion failed: "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1,v4},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v4 : Ljava/io/File;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/io/IOException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/io/IOException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/io/IOException;
+l1116ee:
+.line 97
+	return-void	
+.end method
+
+.method public deleteQuietly(Ljava/io/File;)Z
+.limit registers 4
+; this: v2 (Lorg/apache/commons/io/FileDeleteStrategy;)
+; parameter[0] : v3 (Ljava/io/File;)
+.catch java/io/IOException from l111714 to l11171a using l11171e
+.line 73
+	if-eqz	v3,l111710
+; v3 : Ljava/io/File;
+	invoke-virtual	{v3},java/io/File/exists	; exists()Z
+; v3 : Ljava/io/File;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l111714
+; v1 : single-length
+l111710:
+.line 74
+	const/4	v1,1
+; v1 : single-length
+l111712:
+.line 79
+	return	v1
+; v1 : single-length
+l111714:
+.line 77
+	invoke-virtual	{v2,v3},org/apache/commons/io/FileDeleteStrategy/doDelete	; doDelete(Ljava/io/File;)Z
+; v2 : Lorg/apache/commons/io/FileDeleteStrategy; , v3 : Ljava/io/File;
+l11171a:
+	move-result	v1
+; v1 : single-length
+	goto	l111712
+l11171e:
+.line 78
+	move-exception	v0
+; v0 : java/io/IOException
+.line 79
+	const/4	v1,0
+; v1 : single-length
+	goto	l111712
+.end method
+
+.method protected doDelete(Ljava/io/File;)Z
+.throws Ljava/io/IOException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/FileDeleteStrategy;)
+; parameter[0] : v2 (Ljava/io/File;)
+.line 116
+	invoke-virtual	{v2},java/io/File/delete	; delete()Z
+; v2 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public toString()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lorg/apache/commons/io/FileDeleteStrategy;)
+.line 127
+	new-instance	v0,java/lang/StringBuilder
+; v0 : Ljava/lang/StringBuilder;
+	invoke-direct	{v0},java/lang/StringBuilder/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,"FileDeleteStrategy["
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	iget-object	v1,v2,org/apache/commons/io/FileDeleteStrategy.name Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lorg/apache/commons/io/FileDeleteStrategy;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,"]"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+

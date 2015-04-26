@@ -1,0 +1,259 @@
+.class public org/apache/commons/io/LineIterator
+.super java/lang/Object
+.source LineIterator.java
+.implements java/util/Iterator
+
+.annotation systemVisibility Ldalvik/annotation/Signature;
+  value [Ljava/lang/String; = { "Ljava/lang/Object;" , "Ljava/util/Iterator" , "<" , "Ljava/lang/String;" , ">;" }
+.end annotation
+
+.field private final bufferedReader Ljava/io/BufferedReader;
+.field private cachedLine Ljava/lang/String;
+.field private finished Z
+
+.method public <init>(Ljava/io/Reader;)V
+.throws Ljava/lang/IllegalArgumentException;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/io/LineIterator;)
+; parameter[0] : v3 (Ljava/io/Reader;)
+.line 69
+	invoke-direct	{v2},java/lang/Object/<init>	; <init>()V
+; v2 : Lorg/apache/commons/io/LineIterator;
+.line 61
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v2,org/apache/commons/io/LineIterator.finished Z
+; v0 : single-length , v2 : Lorg/apache/commons/io/LineIterator;
+.line 70
+	if-nez	v3,l116e88
+; v3 : Ljava/io/Reader;
+.line 71
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"Reader must not be null"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l116e88:
+.line 73
+	instance-of	v0,v3,java/io/BufferedReader
+; v0 : single-length , v3 : Ljava/io/Reader;
+	if-eqz	v0,l116e9a
+; v0 : single-length
+.line 74
+	check-cast	v3,java/io/BufferedReader
+; v3 : Ljava/io/BufferedReader;
+	iput-object	v3,v2,org/apache/commons/io/LineIterator.bufferedReader Ljava/io/BufferedReader;
+; v3 : Ljava/io/BufferedReader; , v2 : Lorg/apache/commons/io/LineIterator;
+l116e98:
+.line 78
+	return-void	
+l116e9a:
+.line 76
+	new-instance	v0,java/io/BufferedReader
+; v0 : Ljava/io/BufferedReader;
+	invoke-direct	{v0,v3},java/io/BufferedReader/<init>	; <init>(Ljava/io/Reader;)V
+; v0 : Ljava/io/BufferedReader; , v3 : Ljava/io/Reader;
+	iput-object	v0,v2,org/apache/commons/io/LineIterator.bufferedReader Ljava/io/BufferedReader;
+; v0 : Ljava/io/BufferedReader; , v2 : Lorg/apache/commons/io/LineIterator;
+	goto	l116e98
+.end method
+
+.method public static closeQuietly(Lorg/apache/commons/io/LineIterator;)V
+.limit registers 1
+; parameter[0] : v0 (Lorg/apache/commons/io/LineIterator;)
+.line 177
+	if-eqz	v0,l116ec6
+; v0 : Lorg/apache/commons/io/LineIterator;
+.line 178
+	invoke-virtual	{v0},org/apache/commons/io/LineIterator/close	; close()V
+; v0 : Lorg/apache/commons/io/LineIterator;
+l116ec6:
+.line 180
+	return-void	
+.end method
+
+.method public close()V
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/LineIterator;)
+.line 156
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v1,org/apache/commons/io/LineIterator.finished Z
+; v0 : single-length , v1 : Lorg/apache/commons/io/LineIterator;
+.line 157
+	iget-object	v0,v1,org/apache/commons/io/LineIterator.bufferedReader Ljava/io/BufferedReader;
+; v0 : Ljava/io/BufferedReader; , v1 : Lorg/apache/commons/io/LineIterator;
+	invoke-static	{v0},org/apache/commons/io/IOUtils/closeQuietly	; closeQuietly(Ljava/io/Reader;)V
+; v0 : Ljava/io/BufferedReader;
+.line 158
+	const/4	v0,0
+; v0 : single-length
+	iput-object	v0,v1,org/apache/commons/io/LineIterator.cachedLine Ljava/lang/String;
+; v0 : single-length , v1 : Lorg/apache/commons/io/LineIterator;
+.line 159
+	return-void	
+.end method
+
+.method public hasNext()Z
+.limit registers 6
+; this: v5 (Lorg/apache/commons/io/LineIterator;)
+.catch java/io/IOException from l116f1a to l116f44 using l116f46
+.var 1 is line Ljava/lang/String; from l116f26 to l116f46
+	const/4	v3,0
+; v3 : single-length
+	const/4	v2,1
+; v2 : single-length
+.line 90
+	iget-object	v4,v5,org/apache/commons/io/LineIterator.cachedLine Ljava/lang/String;
+; v4 : Ljava/lang/String; , v5 : Lorg/apache/commons/io/LineIterator;
+	if-eqz	v4,l116f0e
+; v4 : Ljava/lang/String;
+l116f0c:
+.line 103
+	return	v2
+; v2 : single-length
+l116f0e:
+.line 92
+	iget-boolean	v4,v5,org/apache/commons/io/LineIterator.finished Z
+; v4 : single-length , v5 : Lorg/apache/commons/io/LineIterator;
+	if-eqz	v4,l116f1a
+; v4 : single-length
+	move	v2,v3
+; v2 : single-length , v3 : single-length
+.line 93
+	goto	l116f0c
+l116f1a:
+.line 97
+	iget-object	v4,v5,org/apache/commons/io/LineIterator.bufferedReader Ljava/io/BufferedReader;
+; v4 : Ljava/io/BufferedReader; , v5 : Lorg/apache/commons/io/LineIterator;
+	invoke-virtual	{v4},java/io/BufferedReader/readLine	; readLine()Ljava/lang/String;
+; v4 : Ljava/io/BufferedReader;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 98
+	if-nez	v1,l116f34
+; v1 : Ljava/lang/String;
+.line 99
+	const/4	v2,1
+; v2 : single-length
+	iput-boolean	v2,v5,org/apache/commons/io/LineIterator.finished Z
+; v2 : single-length , v5 : Lorg/apache/commons/io/LineIterator;
+	move	v2,v3
+; v2 : single-length , v3 : single-length
+.line 100
+	goto	l116f0c
+l116f34:
+.line 101
+	invoke-virtual	{v5,v1},org/apache/commons/io/LineIterator/isValidLine	; isValidLine(Ljava/lang/String;)Z
+; v5 : Lorg/apache/commons/io/LineIterator; , v1 : Ljava/lang/String;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l116f1a
+; v4 : single-length
+.line 102
+	iput-object	v1,v5,org/apache/commons/io/LineIterator.cachedLine Ljava/lang/String;
+; v1 : Ljava/lang/String; , v5 : Lorg/apache/commons/io/LineIterator;
+l116f44:
+	goto	l116f0c
+l116f46:
+.line 106
+	move-exception	v0
+; v0 : java/io/IOException
+.line 107
+	invoke-virtual	{v5},org/apache/commons/io/LineIterator/close	; close()V
+; v5 : Lorg/apache/commons/io/LineIterator;
+.line 108
+	new-instance	v2,java/lang/IllegalStateException
+; v2 : Ljava/lang/IllegalStateException;
+	invoke-direct	{v2,v0},java/lang/IllegalStateException/<init>	; <init>(Ljava/lang/Throwable;)V
+; v2 : Ljava/lang/IllegalStateException; , v0 : java/io/IOException
+	throw	v2
+; v2 : Ljava/lang/IllegalStateException;
+.end method
+
+.method protected isValidLine(Ljava/lang/String;)Z
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/LineIterator;)
+; parameter[0] : v2 (Ljava/lang/String;)
+.line 120
+	const/4	v0,1
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public next()Ljava/lang/Object;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/LineIterator;)
+.line 52
+	invoke-virtual	{v1},org/apache/commons/io/LineIterator/next	; next()Ljava/lang/String;
+; v1 : Lorg/apache/commons/io/LineIterator;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public next()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/LineIterator;)
+.line 130
+	invoke-virtual	{v1},org/apache/commons/io/LineIterator/nextLine	; nextLine()Ljava/lang/String;
+; v1 : Lorg/apache/commons/io/LineIterator;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public nextLine()Ljava/lang/String;
+.limit registers 4
+; this: v3 (Lorg/apache/commons/io/LineIterator;)
+.line 140
+	invoke-virtual	{v3},org/apache/commons/io/LineIterator/hasNext	; hasNext()Z
+; v3 : Lorg/apache/commons/io/LineIterator;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l116fe4
+; v1 : single-length
+.line 141
+	new-instance	v1,java/util/NoSuchElementException
+; v1 : Ljava/util/NoSuchElementException;
+	const-string	v2,"No more lines"
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},java/util/NoSuchElementException/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/util/NoSuchElementException; , v2 : Ljava/lang/String;
+	throw	v1
+; v1 : Ljava/util/NoSuchElementException;
+l116fe4:
+.line 143
+	iget-object	v0,v3,org/apache/commons/io/LineIterator.cachedLine Ljava/lang/String;
+; v0 : Ljava/lang/String; , v3 : Lorg/apache/commons/io/LineIterator;
+.line 144
+	const/4	v1,0
+; v1 : single-length
+	iput-object	v1,v3,org/apache/commons/io/LineIterator.cachedLine Ljava/lang/String;
+; v1 : single-length , v3 : Lorg/apache/commons/io/LineIterator;
+.line 145
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public remove()V
+.limit registers 3
+; this: v2 (Lorg/apache/commons/io/LineIterator;)
+.line 167
+	new-instance	v0,java/lang/UnsupportedOperationException
+; v0 : Ljava/lang/UnsupportedOperationException;
+	const-string	v1,"Remove unsupported on LineIterator"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/UnsupportedOperationException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/UnsupportedOperationException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/UnsupportedOperationException;
+.end method
+
+

@@ -1,0 +1,50 @@
+.class public org/apache/commons/lang3/CharEncoding
+.super java/lang/Object
+.source CharEncoding.java
+
+.field public static final ISO_8859_1 Ljava/lang/String; = "ISO-8859-1"
+.field public static final US_ASCII Ljava/lang/String; = "US-ASCII"
+.field public static final UTF_16 Ljava/lang/String; = "UTF-16"
+.field public static final UTF_16BE Ljava/lang/String; = "UTF-16BE"
+.field public static final UTF_16LE Ljava/lang/String; = "UTF-16LE"
+.field public static final UTF_8 Ljava/lang/String; = "UTF-8"
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/lang3/CharEncoding;)
+.line 37
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/lang3/CharEncoding;
+	return-void	
+.end method
+
+.method public static isSupported(Ljava/lang/String;)Z
+.limit registers 3
+; parameter[0] : v2 (Ljava/lang/String;)
+.catch java/nio/charset/IllegalCharsetNameException from l126d00 to l126d06 using l126d0a
+	const/4	v1,0
+; v1 : single-length
+.line 95
+	if-nez	v2,l126d00
+; v2 : Ljava/lang/String;
+l126cfe:
+.line 101
+	return	v1
+; v1 : single-length
+l126d00:
+.line 99
+	invoke-static	{v2},java/nio/charset/Charset/isSupported	; isSupported(Ljava/lang/String;)Z
+; v2 : Ljava/lang/String;
+l126d06:
+	move-result	v1
+; v1 : single-length
+	goto	l126cfe
+l126d0a:
+.line 100
+	move-exception	v0
+; v0 : java/nio/charset/IllegalCharsetNameException
+.line 101
+	goto	l126cfe
+.end method
+
+

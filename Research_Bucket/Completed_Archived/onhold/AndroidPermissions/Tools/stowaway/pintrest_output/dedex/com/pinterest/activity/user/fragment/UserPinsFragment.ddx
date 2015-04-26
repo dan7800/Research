@@ -1,0 +1,204 @@
+.class public com/pinterest/activity/user/fragment/UserPinsFragment
+.super com/pinterest/fragment/PinGridFragment
+.source UserPinsFragment.java
+
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/activity/user/fragment/UserPinsFragment;)
+.line 21
+	invoke-direct	{v0},com/pinterest/fragment/PinGridFragment/<init>	; <init>()V
+; v0 : Lcom/pinterest/activity/user/fragment/UserPinsFragment;
+	return-void	
+.end method
+
+.method private getUser()Lcom/pinterest/api/models/User;
+.limit registers 3
+; this: v2 (Lcom/pinterest/activity/user/fragment/UserPinsFragment;)
+.var 0 is user Lcom/pinterest/api/models/User; from le8c64 to le8c68
+.line 83
+	invoke-virtual	{v2},com/pinterest/activity/user/fragment/UserPinsFragment/getActivity	; getActivity()Landroid/support/v4/app/FragmentActivity;
+; v2 : Lcom/pinterest/activity/user/fragment/UserPinsFragment;
+	move-result-object	v1
+; v1 : Landroid/support/v4/app/FragmentActivity;
+	check-cast	v1,com/pinterest/activity/user/UserActivity
+; v1 : Lcom/pinterest/activity/user/UserActivity;
+	invoke-virtual	{v1},com/pinterest/activity/user/UserActivity/getUser	; getUser()Lcom/pinterest/api/models/User;
+; v1 : Lcom/pinterest/activity/user/UserActivity;
+	move-result-object	v0
+; v0 : Lcom/pinterest/api/models/User;
+.line 84
+	if-eqz	v0,le8c6a
+; v0 : Lcom/pinterest/api/models/User;
+le8c68:
+.line 85
+	return-object	v0
+; v0 : single-length
+le8c6a:
+	const/4	v0,0
+; v0 : single-length
+	goto	le8c68
+.end method
+
+.method protected getEmptyDynamicText()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lcom/pinterest/activity/user/fragment/UserPinsFragment;)
+.line 77
+	invoke-direct	{v1},com/pinterest/activity/user/fragment/UserPinsFragment/getUser	; getUser()Lcom/pinterest/api/models/User;
+; v1 : Lcom/pinterest/activity/user/fragment/UserPinsFragment;
+	move-result-object	v0
+; v0 : Lcom/pinterest/api/models/User;
+	if-eqz	v0,le8c9a
+; v0 : Lcom/pinterest/api/models/User;
+	invoke-direct	{v1},com/pinterest/activity/user/fragment/UserPinsFragment/getUser	; getUser()Lcom/pinterest/api/models/User;
+; v1 : Lcom/pinterest/activity/user/fragment/UserPinsFragment;
+	move-result-object	v0
+; v0 : Lcom/pinterest/api/models/User;
+	iget-object	v0,v0,com/pinterest/api/models/User.fullname Ljava/lang/String;
+; v0 : Ljava/lang/String; , v0 : Ljava/lang/String;
+le8c98:
+.line 78
+	return-object	v0
+; v0 : Ljava/lang/String;
+le8c9a:
+	invoke-super	{v1},com/pinterest/fragment/PinGridFragment/getEmptyDynamicText	; getEmptyDynamicText()Ljava/lang/String;
+; v1 : Lcom/pinterest/activity/user/fragment/UserPinsFragment;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	le8c98
+.end method
+
+.method protected getEmptyIcon()I
+.limit registers 2
+; this: v1 (Lcom/pinterest/activity/user/fragment/UserPinsFragment;)
+.line 62
+	const	v0,2130837648	; 0x7f020090
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method protected getEmptyMessage()I
+.limit registers 2
+; this: v1 (Lcom/pinterest/activity/user/fragment/UserPinsFragment;)
+.line 68
+	invoke-direct	{v1},com/pinterest/activity/user/fragment/UserPinsFragment/getUser	; getUser()Lcom/pinterest/api/models/User;
+; v1 : Lcom/pinterest/activity/user/fragment/UserPinsFragment;
+	move-result-object	v0
+; v0 : Lcom/pinterest/api/models/User;
+	invoke-static	{v0},com/pinterest/base/Application/isUserMe	; isUserMe(Lcom/pinterest/api/models/User;)Z
+; v0 : Lcom/pinterest/api/models/User;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,le8ce8
+; v0 : single-length
+.line 69
+	const	v0,2131427503	; 0x7f0b00af
+; v0 : single-length
+le8ce6:
+.line 71
+	return	v0
+; v0 : single-length
+le8ce8:
+	const	v0,2131427497	; 0x7f0b00a9
+; v0 : single-length
+	goto	le8ce6
+.end method
+
+.method protected getEmptyTitle()I
+.limit registers 2
+; this: v1 (Lcom/pinterest/activity/user/fragment/UserPinsFragment;)
+.line 53
+	invoke-direct	{v1},com/pinterest/activity/user/fragment/UserPinsFragment/getUser	; getUser()Lcom/pinterest/api/models/User;
+; v1 : Lcom/pinterest/activity/user/fragment/UserPinsFragment;
+	move-result-object	v0
+; v0 : Lcom/pinterest/api/models/User;
+	invoke-static	{v0},com/pinterest/base/Application/isUserMe	; isUserMe(Lcom/pinterest/api/models/User;)Z
+; v0 : Lcom/pinterest/api/models/User;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,le8d1c
+; v0 : single-length
+.line 54
+	const	v0,2131427502	; 0x7f0b00ae
+; v0 : single-length
+le8d1a:
+.line 56
+	return	v0
+; v0 : single-length
+le8d1c:
+	const	v0,2131427496	; 0x7f0b00a8
+; v0 : single-length
+	goto	le8d1a
+.end method
+
+.method protected loadData()V
+.limit registers 3
+; this: v2 (Lcom/pinterest/activity/user/fragment/UserPinsFragment;)
+.line 47
+	invoke-virtual	{v2},com/pinterest/activity/user/fragment/UserPinsFragment/getActivity	; getActivity()Landroid/support/v4/app/FragmentActivity;
+; v2 : Lcom/pinterest/activity/user/fragment/UserPinsFragment;
+	move-result-object	v0
+; v0 : Landroid/support/v4/app/FragmentActivity;
+	check-cast	v0,com/pinterest/activity/user/UserActivity
+; v0 : Lcom/pinterest/activity/user/UserActivity;
+	iget-object	v0,v0,com/pinterest/activity/user/UserActivity.username Ljava/lang/String;
+; v0 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	iget-object	v1,v2,com/pinterest/activity/user/fragment/UserPinsFragment.onGridLoad Lcom/pinterest/api/PAPIHttpResponseHandler;
+; v1 : Lcom/pinterest/api/PAPIHttpResponseHandler; , v2 : Lcom/pinterest/activity/user/fragment/UserPinsFragment;
+	invoke-static	{v0,v1},com/pinterest/api/PAPI/loadUserPins	; loadUserPins(Ljava/lang/String;Lcom/loopj/android/http/JsonHttpResponseHandler;)V
+; v0 : Ljava/lang/String; , v1 : Lcom/pinterest/api/PAPIHttpResponseHandler;
+.line 48
+	return-void	
+.end method
+
+.method public onCreate(Landroid/os/Bundle;)V
+.limit registers 3
+; this: v1 (Lcom/pinterest/activity/user/fragment/UserPinsFragment;)
+; parameter[0] : v2 (Landroid/os/Bundle;)
+.line 26
+	const	v0,2130903124	; 0x7f030054
+; v0 : single-length
+	iput	v0,v1,com/pinterest/activity/user/fragment/UserPinsFragment.layoutId I
+; v0 : single-length , v1 : Lcom/pinterest/activity/user/fragment/UserPinsFragment;
+.line 27
+	invoke-super	{v1,v2},com/pinterest/fragment/PinGridFragment/onCreate	; onCreate(Landroid/os/Bundle;)V
+; v1 : Lcom/pinterest/activity/user/fragment/UserPinsFragment; , v2 : Landroid/os/Bundle;
+.line 28
+	return-void	
+.end method
+
+.method public onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;
+.limit registers 7
+; this: v3 (Lcom/pinterest/activity/user/fragment/UserPinsFragment;)
+; parameter[0] : v4 (Landroid/view/LayoutInflater;)
+; parameter[1] : v5 (Landroid/view/ViewGroup;)
+; parameter[2] : v6 (Landroid/os/Bundle;)
+.line 33
+	invoke-super	{v3,v4,v5,v6},com/pinterest/fragment/PinGridFragment/onCreateView	; onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;
+; v3 : Lcom/pinterest/activity/user/fragment/UserPinsFragment; , v4 : Landroid/view/LayoutInflater; , v5 : Landroid/view/ViewGroup; , v6 : Landroid/os/Bundle;
+	move-result-object	v0
+; v0 : Landroid/view/View;
+.line 34
+	iget-object	v1,v3,com/pinterest/activity/user/fragment/UserPinsFragment._adapter Lcom/pinterest/ui/grid/PinterestBaseAdapter;
+; v1 : Lcom/pinterest/ui/grid/PinterestBaseAdapter; , v3 : Lcom/pinterest/activity/user/fragment/UserPinsFragment;
+	check-cast	v1,com/pinterest/adapter/PinGridAdapter
+; v1 : Lcom/pinterest/adapter/PinGridAdapter;
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v1,v2},com/pinterest/adapter/PinGridAdapter/setRenderUser	; setRenderUser(Z)V
+; v1 : Lcom/pinterest/adapter/PinGridAdapter; , v2 : single-length
+.line 35
+	return-object	v0
+; v0 : Landroid/view/View;
+.end method
+
+.method public onGridLoaded(Z)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/activity/user/fragment/UserPinsFragment;)
+; parameter[0] : v1 (Z)
+.line 42
+	return-void	
+.end method
+
+

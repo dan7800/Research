@@ -1,0 +1,943 @@
+.class com/nineoldandroids/animation/KeyframeSet
+.super java/lang/Object
+.source KeyframeSet.java
+
+.field mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+.field mFirstKeyframe Lcom/nineoldandroids/animation/Keyframe;
+.field mInterpolator Landroid/view/animation/Interpolator;
+.field mKeyframes Ljava/util/ArrayList;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/ArrayList" , "<" , "Lcom/nineoldandroids/animation/Keyframe;" , ">;" }
+  .end annotation
+.end field
+.field mLastKeyframe Lcom/nineoldandroids/animation/Keyframe;
+.field mNumKeyframes I
+
+.method public <init>([Lcom/nineoldandroids/animation/Keyframe;)V
+.limit registers 4
+; this: v2 (Lcom/nineoldandroids/animation/KeyframeSet;)
+; parameter[0] : v3 ([Lcom/nineoldandroids/animation/Keyframe;)
+.line 44
+	invoke-direct	{v2},java/lang/Object/<init>	; <init>()V
+; v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+.line 45
+	array-length	v0,v3
+; v0 : single-length , v3 : [Lcom/nineoldandroids/animation/Keyframe;
+	iput	v0,v2,com/nineoldandroids/animation/KeyframeSet.mNumKeyframes I
+; v0 : single-length , v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+.line 46
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+	iput-object	v0,v2,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+.line 47
+	iget-object	v0,v2,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-static	{v3},java/util/Arrays/asList	; asList([Ljava/lang/Object;)Ljava/util/List;
+; v3 : [Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v1
+; v1 : Ljava/util/List;
+	invoke-virtual	{v0,v1},java/util/ArrayList/addAll	; addAll(Ljava/util/Collection;)Z
+; v0 : Ljava/util/ArrayList; , v1 : Ljava/util/List;
+.line 48
+	iget-object	v0,v2,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v0,v1},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v0 : Ljava/util/ArrayList; , v1 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/nineoldandroids/animation/Keyframe
+; v0 : Lcom/nineoldandroids/animation/Keyframe;
+	iput-object	v0,v2,com/nineoldandroids/animation/KeyframeSet.mFirstKeyframe Lcom/nineoldandroids/animation/Keyframe;
+; v0 : Lcom/nineoldandroids/animation/Keyframe; , v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+.line 49
+	iget-object	v0,v2,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+	iget	v1,v2,com/nineoldandroids/animation/KeyframeSet.mNumKeyframes I
+; v1 : single-length , v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+	add-int/lit8	v1,v1,255
+; v1 : single-length , v1 : single-length
+	invoke-virtual	{v0,v1},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v0 : Ljava/util/ArrayList; , v1 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/nineoldandroids/animation/Keyframe
+; v0 : Lcom/nineoldandroids/animation/Keyframe;
+	iput-object	v0,v2,com/nineoldandroids/animation/KeyframeSet.mLastKeyframe Lcom/nineoldandroids/animation/Keyframe;
+; v0 : Lcom/nineoldandroids/animation/Keyframe; , v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+.line 50
+	iget-object	v0,v2,com/nineoldandroids/animation/KeyframeSet.mLastKeyframe Lcom/nineoldandroids/animation/Keyframe;
+; v0 : Lcom/nineoldandroids/animation/Keyframe; , v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v0},com/nineoldandroids/animation/Keyframe/getInterpolator	; getInterpolator()Landroid/view/animation/Interpolator;
+; v0 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v0
+; v0 : Landroid/view/animation/Interpolator;
+	iput-object	v0,v2,com/nineoldandroids/animation/KeyframeSet.mInterpolator Landroid/view/animation/Interpolator;
+; v0 : Landroid/view/animation/Interpolator; , v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+.line 51
+	return-void	
+.end method
+
+.method public static ofFloat([F)Lcom/nineoldandroids/animation/KeyframeSet;
+.limit registers 8
+; parameter[0] : v7 ([F)
+	const/4	v6,1
+; v6 : single-length
+	const/4	v5,0
+; v5 : single-length
+	const/4	v4,0
+; v4 : single-length
+.line 69
+	array-length	v2,v7
+; v2 : single-length , v7 : [F
+.line 70
+	const/4	v3,2
+; v3 : single-length
+	invoke-static	{v2,v3},java/lang/Math/max	; max(II)I
+; v2 : single-length , v3 : single-length
+	move-result	v3
+; v3 : single-length
+	new-array	v1,v3,[Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe;
+; v1 : [Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; , v3 : single-length
+.line 71
+	if-ne	v2,v6,lcaf6a
+; v2 : single-length , v6 : single-length
+.line 72
+	invoke-static	{v5},com/nineoldandroids/animation/Keyframe/ofFloat	; ofFloat(F)Lcom/nineoldandroids/animation/Keyframe;
+; v5 : single-length
+	move-result-object	v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe$FloatKeyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe;
+	aput-object	v3,v1,v4
+; v3 : Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; , v4 : single-length
+.line 73
+	const/high16	v3,16256
+; v3 : single-length
+	aget	v4,v7,v4
+; v4 : single-length , v7 : [F , v4 : single-length
+	invoke-static	{v3,v4},com/nineoldandroids/animation/Keyframe/ofFloat	; ofFloat(FF)Lcom/nineoldandroids/animation/Keyframe;
+; v3 : single-length , v4 : single-length
+	move-result-object	v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe$FloatKeyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe;
+	aput-object	v3,v1,v6
+; v3 : Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; , v6 : single-length
+lcaf5e:
+.line 80
+	new-instance	v3,com/nineoldandroids/animation/FloatKeyframeSet
+; v3 : Lcom/nineoldandroids/animation/FloatKeyframeSet;
+	invoke-direct	{v3,v1},com/nineoldandroids/animation/FloatKeyframeSet/<init>	; <init>([Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe;)V
+; v3 : Lcom/nineoldandroids/animation/FloatKeyframeSet; , v1 : [Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe;
+	return-object	v3
+; v3 : Lcom/nineoldandroids/animation/FloatKeyframeSet;
+lcaf6a:
+.line 75
+	aget	v3,v7,v4
+; v3 : single-length , v7 : [F , v4 : single-length
+	invoke-static	{v5,v3},com/nineoldandroids/animation/Keyframe/ofFloat	; ofFloat(FF)Lcom/nineoldandroids/animation/Keyframe;
+; v5 : single-length , v3 : single-length
+	move-result-object	v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe$FloatKeyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe;
+	aput-object	v3,v1,v4
+; v3 : Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; , v4 : single-length
+.line 76
+	const/4	v0,1
+; v0 : single-length
+lcaf80:
+	if-ge	v0,v2,lcaf5e
+; v0 : single-length , v2 : single-length
+.line 77
+	int-to-float	v3,v0
+; v3 : single-length , v0 : single-length
+	add-int/lit8	v4,v2,255
+; v4 : single-length , v2 : single-length
+	int-to-float	v4,v4
+; v4 : single-length , v4 : single-length
+	div-float/2addr	v3,v4
+; v3 : single-length , v4 : single-length
+	aget	v4,v7,v0
+; v4 : single-length , v7 : [F , v0 : single-length
+	invoke-static	{v3,v4},com/nineoldandroids/animation/Keyframe/ofFloat	; ofFloat(FF)Lcom/nineoldandroids/animation/Keyframe;
+; v3 : single-length , v4 : single-length
+	move-result-object	v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe$FloatKeyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe;
+	aput-object	v3,v1,v0
+; v3 : Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; , v0 : single-length
+.line 76
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	lcaf80
+.end method
+
+.method public static ofInt([I)Lcom/nineoldandroids/animation/KeyframeSet;
+.limit registers 8
+; parameter[0] : v7 ([I)
+	const/4	v6,1
+; v6 : single-length
+	const/4	v5,0
+; v5 : single-length
+	const/4	v4,0
+; v4 : single-length
+.line 54
+	array-length	v2,v7
+; v2 : single-length , v7 : [I
+.line 55
+	const/4	v3,2
+; v3 : single-length
+	invoke-static	{v2,v3},java/lang/Math/max	; max(II)I
+; v2 : single-length , v3 : single-length
+	move-result	v3
+; v3 : single-length
+	new-array	v1,v3,[Lcom/nineoldandroids/animation/Keyframe$IntKeyframe;
+; v1 : [Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; , v3 : single-length
+.line 56
+	if-ne	v2,v6,lcb006
+; v2 : single-length , v6 : single-length
+.line 57
+	invoke-static	{v5},com/nineoldandroids/animation/Keyframe/ofInt	; ofInt(F)Lcom/nineoldandroids/animation/Keyframe;
+; v5 : single-length
+	move-result-object	v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe$IntKeyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe$IntKeyframe;
+	aput-object	v3,v1,v4
+; v3 : Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; , v4 : single-length
+.line 58
+	const/high16	v3,16256
+; v3 : single-length
+	aget	v4,v7,v4
+; v4 : single-length , v7 : [I , v4 : single-length
+	invoke-static	{v3,v4},com/nineoldandroids/animation/Keyframe/ofInt	; ofInt(FI)Lcom/nineoldandroids/animation/Keyframe;
+; v3 : single-length , v4 : single-length
+	move-result-object	v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe$IntKeyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe$IntKeyframe;
+	aput-object	v3,v1,v6
+; v3 : Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; , v6 : single-length
+lcaffa:
+.line 65
+	new-instance	v3,com/nineoldandroids/animation/IntKeyframeSet
+; v3 : Lcom/nineoldandroids/animation/IntKeyframeSet;
+	invoke-direct	{v3,v1},com/nineoldandroids/animation/IntKeyframeSet/<init>	; <init>([Lcom/nineoldandroids/animation/Keyframe$IntKeyframe;)V
+; v3 : Lcom/nineoldandroids/animation/IntKeyframeSet; , v1 : [Lcom/nineoldandroids/animation/Keyframe$IntKeyframe;
+	return-object	v3
+; v3 : Lcom/nineoldandroids/animation/IntKeyframeSet;
+lcb006:
+.line 60
+	aget	v3,v7,v4
+; v3 : single-length , v7 : [I , v4 : single-length
+	invoke-static	{v5,v3},com/nineoldandroids/animation/Keyframe/ofInt	; ofInt(FI)Lcom/nineoldandroids/animation/Keyframe;
+; v5 : single-length , v3 : single-length
+	move-result-object	v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe$IntKeyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe$IntKeyframe;
+	aput-object	v3,v1,v4
+; v3 : Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; , v4 : single-length
+.line 61
+	const/4	v0,1
+; v0 : single-length
+lcb01c:
+	if-ge	v0,v2,lcaffa
+; v0 : single-length , v2 : single-length
+.line 62
+	int-to-float	v3,v0
+; v3 : single-length , v0 : single-length
+	add-int/lit8	v4,v2,255
+; v4 : single-length , v2 : single-length
+	int-to-float	v4,v4
+; v4 : single-length , v4 : single-length
+	div-float/2addr	v3,v4
+; v3 : single-length , v4 : single-length
+	aget	v4,v7,v0
+; v4 : single-length , v7 : [I , v0 : single-length
+	invoke-static	{v3,v4},com/nineoldandroids/animation/Keyframe/ofInt	; ofInt(FI)Lcom/nineoldandroids/animation/Keyframe;
+; v3 : single-length , v4 : single-length
+	move-result-object	v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe$IntKeyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe$IntKeyframe;
+	aput-object	v3,v1,v0
+; v3 : Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; , v0 : single-length
+.line 61
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	lcb01c
+.end method
+
+.method public static ofKeyframe([Lcom/nineoldandroids/animation/Keyframe;)Lcom/nineoldandroids/animation/KeyframeSet;
+.limit registers 9
+; parameter[0] : v8 ([Lcom/nineoldandroids/animation/Keyframe;)
+.var 0 is floatKeyframes [Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; from lcb09a to lcb0bc
+.var 5 is intKeyframes [Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; from lcb0ce to lcb0f2
+.line 85
+	array-length	v6,v8
+; v6 : single-length , v8 : [Lcom/nineoldandroids/animation/Keyframe;
+.line 86
+	const/4	v1,0
+; v1 : single-length
+.line 87
+	const/4	v2,0
+; v2 : single-length
+.line 88
+	const/4	v3,0
+; v3 : single-length
+.line 89
+	const/4	v4,0
+; v4 : single-length
+lcb05e:
+	if-ge	v4,v6,lcb08a
+; v4 : single-length , v6 : single-length
+.line 90
+	aget-object	v7,v8,v4
+; v7 : Lcom/nineoldandroids/animation/Keyframe; , v8 : [Lcom/nineoldandroids/animation/Keyframe; , v4 : single-length
+	instance-of	v7,v7,com/nineoldandroids/animation/Keyframe$FloatKeyframe
+; v7 : single-length , v7 : single-length
+	if-eqz	v7,lcb076
+; v7 : single-length
+.line 91
+	const/4	v1,1
+; v1 : single-length
+lcb070:
+.line 89
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	goto	lcb05e
+lcb076:
+.line 92
+	aget-object	v7,v8,v4
+; v7 : Lcom/nineoldandroids/animation/Keyframe; , v8 : [Lcom/nineoldandroids/animation/Keyframe; , v4 : single-length
+	instance-of	v7,v7,com/nineoldandroids/animation/Keyframe$IntKeyframe
+; v7 : single-length , v7 : single-length
+	if-eqz	v7,lcb086
+; v7 : single-length
+.line 93
+	const/4	v2,1
+; v2 : single-length
+	goto	lcb070
+lcb086:
+.line 95
+	const/4	v3,1
+; v3 : single-length
+	goto	lcb070
+lcb08a:
+.line 98
+	if-eqz	v1,lcb0be
+; v1 : single-length
+	if-nez	v2,lcb0be
+; v2 : single-length
+	if-nez	v3,lcb0be
+; v3 : single-length
+.line 99
+	new-array	v0,v6,[Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe;
+; v0 : [Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; , v6 : single-length
+.line 100
+	const/4	v4,0
+; v4 : single-length
+lcb09c:
+	if-ge	v4,v6,lcb0b2
+; v4 : single-length , v6 : single-length
+.line 101
+	aget-object	v7,v8,v4
+; v7 : Lcom/nineoldandroids/animation/Keyframe; , v8 : [Lcom/nineoldandroids/animation/Keyframe; , v4 : single-length
+	check-cast	v7,com/nineoldandroids/animation/Keyframe$FloatKeyframe
+; v7 : Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe;
+	aput-object	v7,v0,v4
+; v7 : Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; , v0 : [Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe; , v4 : single-length
+.line 100
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	goto	lcb09c
+lcb0b2:
+.line 103
+	new-instance	v7,com/nineoldandroids/animation/FloatKeyframeSet
+; v7 : Lcom/nineoldandroids/animation/FloatKeyframeSet;
+	invoke-direct	{v7,v0},com/nineoldandroids/animation/FloatKeyframeSet/<init>	; <init>([Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe;)V
+; v7 : Lcom/nineoldandroids/animation/FloatKeyframeSet; , v0 : [Lcom/nineoldandroids/animation/Keyframe$FloatKeyframe;
+lcb0bc:
+.line 111
+	return-object	v7
+; v7 : Ljava/lang/Object;
+lcb0be:
+.line 104
+	if-eqz	v2,lcb0f2
+; v2 : single-length
+	if-nez	v1,lcb0f2
+; v1 : single-length
+	if-nez	v3,lcb0f2
+; v3 : single-length
+.line 105
+	new-array	v5,v6,[Lcom/nineoldandroids/animation/Keyframe$IntKeyframe;
+; v5 : [Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; , v6 : single-length
+.line 106
+	const/4	v4,0
+; v4 : single-length
+lcb0d0:
+	if-ge	v4,v6,lcb0e6
+; v4 : single-length , v6 : single-length
+.line 107
+	aget-object	v7,v8,v4
+; v7 : Lcom/nineoldandroids/animation/Keyframe; , v8 : [Lcom/nineoldandroids/animation/Keyframe; , v4 : single-length
+	check-cast	v7,com/nineoldandroids/animation/Keyframe$IntKeyframe
+; v7 : Lcom/nineoldandroids/animation/Keyframe$IntKeyframe;
+	aput-object	v7,v5,v4
+; v7 : Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; , v5 : [Lcom/nineoldandroids/animation/Keyframe$IntKeyframe; , v4 : single-length
+.line 106
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	goto	lcb0d0
+lcb0e6:
+.line 109
+	new-instance	v7,com/nineoldandroids/animation/IntKeyframeSet
+; v7 : Lcom/nineoldandroids/animation/IntKeyframeSet;
+	invoke-direct	{v7,v5},com/nineoldandroids/animation/IntKeyframeSet/<init>	; <init>([Lcom/nineoldandroids/animation/Keyframe$IntKeyframe;)V
+; v7 : Lcom/nineoldandroids/animation/IntKeyframeSet; , v5 : [Lcom/nineoldandroids/animation/Keyframe$IntKeyframe;
+	goto	lcb0bc
+lcb0f2:
+.line 111
+	new-instance	v7,com/nineoldandroids/animation/KeyframeSet
+; v7 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-direct	{v7,v8},com/nineoldandroids/animation/KeyframeSet/<init>	; <init>([Lcom/nineoldandroids/animation/Keyframe;)V
+; v7 : Lcom/nineoldandroids/animation/KeyframeSet; , v8 : [Lcom/nineoldandroids/animation/Keyframe;
+	goto	lcb0bc
+.end method
+
+.method public static ofObject([Ljava/lang/Object;)Lcom/nineoldandroids/animation/KeyframeSet;
+.limit registers 8
+; parameter[0] : v7 ([Ljava/lang/Object;)
+	const/4	v6,1
+; v6 : single-length
+	const/4	v5,0
+; v5 : single-length
+	const/4	v4,0
+; v4 : single-length
+.line 116
+	array-length	v2,v7
+; v2 : single-length , v7 : [Ljava/lang/Object;
+.line 117
+	const/4	v3,2
+; v3 : single-length
+	invoke-static	{v2,v3},java/lang/Math/max	; max(II)I
+; v2 : single-length , v3 : single-length
+	move-result	v3
+; v3 : single-length
+	new-array	v1,v3,[Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe;
+; v1 : [Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe; , v3 : single-length
+.line 118
+	if-ne	v2,v6,lcb15e
+; v2 : single-length , v6 : single-length
+.line 119
+	invoke-static	{v5},com/nineoldandroids/animation/Keyframe/ofObject	; ofObject(F)Lcom/nineoldandroids/animation/Keyframe;
+; v5 : single-length
+	move-result-object	v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe$ObjectKeyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe;
+	aput-object	v3,v1,v4
+; v3 : Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe; , v4 : single-length
+.line 120
+	const/high16	v3,16256
+; v3 : single-length
+	aget-object	v4,v7,v4
+; v4 : Ljava/lang/Object; , v7 : [Ljava/lang/Object; , v4 : Ljava/lang/Object;
+	invoke-static	{v3,v4},com/nineoldandroids/animation/Keyframe/ofObject	; ofObject(FLjava/lang/Object;)Lcom/nineoldandroids/animation/Keyframe;
+; v3 : single-length , v4 : Ljava/lang/Object;
+	move-result-object	v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe$ObjectKeyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe;
+	aput-object	v3,v1,v6
+; v3 : Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe; , v6 : single-length
+lcb152:
+.line 127
+	new-instance	v3,com/nineoldandroids/animation/KeyframeSet
+; v3 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-direct	{v3,v1},com/nineoldandroids/animation/KeyframeSet/<init>	; <init>([Lcom/nineoldandroids/animation/Keyframe;)V
+; v3 : Lcom/nineoldandroids/animation/KeyframeSet; , v1 : [Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe;
+	return-object	v3
+; v3 : Lcom/nineoldandroids/animation/KeyframeSet;
+lcb15e:
+.line 122
+	aget-object	v3,v7,v4
+; v3 : Ljava/lang/Object; , v7 : [Ljava/lang/Object; , v4 : single-length
+	invoke-static	{v5,v3},com/nineoldandroids/animation/Keyframe/ofObject	; ofObject(FLjava/lang/Object;)Lcom/nineoldandroids/animation/Keyframe;
+; v5 : single-length , v3 : Ljava/lang/Object;
+	move-result-object	v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe$ObjectKeyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe;
+	aput-object	v3,v1,v4
+; v3 : Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe; , v4 : single-length
+.line 123
+	const/4	v0,1
+; v0 : single-length
+lcb174:
+	if-ge	v0,v2,lcb152
+; v0 : single-length , v2 : single-length
+.line 124
+	int-to-float	v3,v0
+; v3 : single-length , v0 : single-length
+	add-int/lit8	v4,v2,255
+; v4 : single-length , v2 : single-length
+	int-to-float	v4,v4
+; v4 : single-length , v4 : single-length
+	div-float/2addr	v3,v4
+; v3 : single-length , v4 : single-length
+	aget-object	v4,v7,v0
+; v4 : Ljava/lang/Object; , v7 : [Ljava/lang/Object; , v0 : single-length
+	invoke-static	{v3,v4},com/nineoldandroids/animation/Keyframe/ofObject	; ofObject(FLjava/lang/Object;)Lcom/nineoldandroids/animation/Keyframe;
+; v3 : single-length , v4 : Ljava/lang/Object;
+	move-result-object	v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe$ObjectKeyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe;
+	aput-object	v3,v1,v0
+; v3 : Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe$ObjectKeyframe; , v0 : single-length
+.line 123
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	lcb174
+.end method
+
+.method public clone()Lcom/nineoldandroids/animation/KeyframeSet;
+.throws Ljava/lang/CloneNotSupportedException;
+.limit registers 7
+; this: v6 (Lcom/nineoldandroids/animation/KeyframeSet;)
+.line 144
+	iget-object	v1,v6,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v1 : Ljava/util/ArrayList; , v6 : Lcom/nineoldandroids/animation/KeyframeSet;
+.line 145
+	iget-object	v5,v6,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v5 : Ljava/util/ArrayList; , v6 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v5},java/util/ArrayList/size	; size()I
+; v5 : Ljava/util/ArrayList;
+	move-result	v4
+; v4 : single-length
+.line 146
+	new-array	v2,v4,[Lcom/nineoldandroids/animation/Keyframe;
+; v2 : [Lcom/nineoldandroids/animation/Keyframe; , v4 : single-length
+.line 147
+	const/4	v0,0
+; v0 : single-length
+lcb1c2:
+	if-ge	v0,v4,lcb1e4
+; v0 : single-length , v4 : single-length
+.line 148
+	invoke-virtual	{v1,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v1 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/Object;
+	check-cast	v5,com/nineoldandroids/animation/Keyframe
+; v5 : Lcom/nineoldandroids/animation/Keyframe;
+	invoke-virtual	{v5},com/nineoldandroids/animation/Keyframe/clone	; clone()Lcom/nineoldandroids/animation/Keyframe;
+; v5 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v5
+; v5 : Lcom/nineoldandroids/animation/Keyframe;
+	aput-object	v5,v2,v0
+; v5 : Lcom/nineoldandroids/animation/Keyframe; , v2 : [Lcom/nineoldandroids/animation/Keyframe; , v0 : single-length
+.line 147
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	lcb1c2
+lcb1e4:
+.line 150
+	new-instance	v3,com/nineoldandroids/animation/KeyframeSet
+; v3 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-direct	{v3,v2},com/nineoldandroids/animation/KeyframeSet/<init>	; <init>([Lcom/nineoldandroids/animation/Keyframe;)V
+; v3 : Lcom/nineoldandroids/animation/KeyframeSet; , v2 : [Lcom/nineoldandroids/animation/Keyframe;
+.line 151
+	return-object	v3
+; v3 : Lcom/nineoldandroids/animation/KeyframeSet;
+.end method
+
+.method public clone()Ljava/lang/Object;
+.throws Ljava/lang/CloneNotSupportedException;
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/animation/KeyframeSet;)
+.line 33
+	invoke-virtual	{v1},com/nineoldandroids/animation/KeyframeSet/clone	; clone()Lcom/nineoldandroids/animation/KeyframeSet;
+; v1 : Lcom/nineoldandroids/animation/KeyframeSet;
+	move-result-object	v0
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet;
+	return-object	v0
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet;
+.end method
+
+.method public getValue(F)Ljava/lang/Object;
+.limit registers 11
+; this: v9 (Lcom/nineoldandroids/animation/KeyframeSet;)
+; parameter[0] : v10 (F)
+.var 1 is interpolator Landroid/view/animation/Interpolator; from lcb284 to lcb2d0
+.var 2 is intervalFraction F from lcb2ae to lcb2d0
+.var 3 is nextKeyframe Lcom/nineoldandroids/animation/Keyframe; from lcb27c to lcb2d0
+.var 4 is prevFraction F from lcb29c to lcb2d0
+.var 1 is interpolator Landroid/view/animation/Interpolator; from lcb300 to lcb34c
+.var 2 is intervalFraction F from lcb32a to lcb34c
+.var 4 is prevFraction F from lcb314 to lcb34c
+.var 5 is prevKeyframe Lcom/nineoldandroids/animation/Keyframe; from lcb2f4 to lcb34c
+.var 1 is interpolator Landroid/view/animation/Interpolator; from lcb382 to lcb3c8
+.var 2 is intervalFraction F from lcb3a8 to lcb3c8
+.var 4 is prevFraction F from lcb396 to lcb3c8
+.var 3 is nextKeyframe Lcom/nineoldandroids/animation/Keyframe; from lcb36a to lcb3d0
+.line 169
+	iget	v6,v9,com/nineoldandroids/animation/KeyframeSet.mNumKeyframes I
+; v6 : single-length , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	const/4	v7,2
+; v7 : single-length
+	if-ne	v6,v7,lcb260
+; v6 : single-length , v7 : single-length
+.line 170
+	iget-object	v6,v9,com/nineoldandroids/animation/KeyframeSet.mInterpolator Landroid/view/animation/Interpolator;
+; v6 : Landroid/view/animation/Interpolator; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	if-eqz	v6,lcb23a
+; v6 : Landroid/view/animation/Interpolator;
+.line 171
+	iget-object	v6,v9,com/nineoldandroids/animation/KeyframeSet.mInterpolator Landroid/view/animation/Interpolator;
+; v6 : Landroid/view/animation/Interpolator; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-interface	{v6,v10},android/view/animation/Interpolator/getInterpolation	; getInterpolation(F)F
+; v6 : Landroid/view/animation/Interpolator; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+lcb23a:
+.line 173
+	iget-object	v6,v9,com/nineoldandroids/animation/KeyframeSet.mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v6 : Lcom/nineoldandroids/animation/TypeEvaluator; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	iget-object	v7,v9,com/nineoldandroids/animation/KeyframeSet.mFirstKeyframe Lcom/nineoldandroids/animation/Keyframe;
+; v7 : Lcom/nineoldandroids/animation/Keyframe; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v7},com/nineoldandroids/animation/Keyframe/getValue	; getValue()Ljava/lang/Object;
+; v7 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v7
+; v7 : Ljava/lang/Object;
+	iget-object	v8,v9,com/nineoldandroids/animation/KeyframeSet.mLastKeyframe Lcom/nineoldandroids/animation/Keyframe;
+; v8 : Lcom/nineoldandroids/animation/Keyframe; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v8},com/nineoldandroids/animation/Keyframe/getValue	; getValue()Ljava/lang/Object;
+; v8 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	invoke-interface	{v6,v10,v7,v8},com/nineoldandroids/animation/TypeEvaluator/evaluate	; evaluate(FLjava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v6 : Lcom/nineoldandroids/animation/TypeEvaluator; , v10 : single-length , v7 : Ljava/lang/Object; , v8 : Ljava/lang/Object;
+	move-result-object	v6
+; v6 : Ljava/lang/Object;
+lcb25e:
+.line 216
+	return-object	v6
+; v6 : Ljava/lang/Object;
+lcb260:
+.line 176
+	const/4	v6,0
+; v6 : single-length
+	cmpg-float	v6,v10,v6
+; v6 : single-length , v10 : single-length , v6 : single-length
+	if-gtz	v6,lcb2d0
+; v6 : single-length
+.line 177
+	iget-object	v6,v9,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v6 : Ljava/util/ArrayList; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	const/4	v7,1
+; v7 : single-length
+	invoke-virtual	{v6,v7},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v6 : Ljava/util/ArrayList; , v7 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+.line 178
+	invoke-virtual	{v3},com/nineoldandroids/animation/Keyframe/getInterpolator	; getInterpolator()Landroid/view/animation/Interpolator;
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v1
+; v1 : Landroid/view/animation/Interpolator;
+.line 179
+	if-eqz	v1,lcb290
+; v1 : Landroid/view/animation/Interpolator;
+.line 180
+	invoke-interface	{v1,v10},android/view/animation/Interpolator/getInterpolation	; getInterpolation(F)F
+; v1 : Landroid/view/animation/Interpolator; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+lcb290:
+.line 182
+	iget-object	v6,v9,com/nineoldandroids/animation/KeyframeSet.mFirstKeyframe Lcom/nineoldandroids/animation/Keyframe;
+; v6 : Lcom/nineoldandroids/animation/Keyframe; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v6},com/nineoldandroids/animation/Keyframe/getFraction	; getFraction()F
+; v6 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result	v4
+; v4 : single-length
+.line 183
+	sub-float	v6,v10,v4
+; v6 : single-length , v10 : single-length , v4 : single-length
+	invoke-virtual	{v3},com/nineoldandroids/animation/Keyframe/getFraction	; getFraction()F
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result	v7
+; v7 : single-length
+	sub-float/2addr	v7,v4
+; v7 : single-length , v4 : single-length
+	div-float	v2,v6,v7
+; v2 : single-length , v6 : single-length , v7 : single-length
+.line 185
+	iget-object	v6,v9,com/nineoldandroids/animation/KeyframeSet.mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v6 : Lcom/nineoldandroids/animation/TypeEvaluator; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	iget-object	v7,v9,com/nineoldandroids/animation/KeyframeSet.mFirstKeyframe Lcom/nineoldandroids/animation/Keyframe;
+; v7 : Lcom/nineoldandroids/animation/Keyframe; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v7},com/nineoldandroids/animation/Keyframe/getValue	; getValue()Ljava/lang/Object;
+; v7 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v7
+; v7 : Ljava/lang/Object;
+	invoke-virtual	{v3},com/nineoldandroids/animation/Keyframe/getValue	; getValue()Ljava/lang/Object;
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	invoke-interface	{v6,v2,v7,v8},com/nineoldandroids/animation/TypeEvaluator/evaluate	; evaluate(FLjava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v6 : Lcom/nineoldandroids/animation/TypeEvaluator; , v2 : single-length , v7 : Ljava/lang/Object; , v8 : Ljava/lang/Object;
+	move-result-object	v6
+; v6 : Ljava/lang/Object;
+	goto	lcb25e
+lcb2d0:
+.line 187
+	const/high16	v6,16256
+; v6 : single-length
+	cmpl-float	v6,v10,v6
+; v6 : single-length , v10 : single-length , v6 : single-length
+	if-ltz	v6,lcb34c
+; v6 : single-length
+.line 188
+	iget-object	v6,v9,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v6 : Ljava/util/ArrayList; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	iget	v7,v9,com/nineoldandroids/animation/KeyframeSet.mNumKeyframes I
+; v7 : single-length , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	add-int/lit8	v7,v7,254
+; v7 : single-length , v7 : single-length
+	invoke-virtual	{v6,v7},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v6 : Ljava/util/ArrayList; , v7 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/Object;
+	check-cast	v5,com/nineoldandroids/animation/Keyframe
+; v5 : Lcom/nineoldandroids/animation/Keyframe;
+.line 189
+	iget-object	v6,v9,com/nineoldandroids/animation/KeyframeSet.mLastKeyframe Lcom/nineoldandroids/animation/Keyframe;
+; v6 : Lcom/nineoldandroids/animation/Keyframe; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v6},com/nineoldandroids/animation/Keyframe/getInterpolator	; getInterpolator()Landroid/view/animation/Interpolator;
+; v6 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v1
+; v1 : Landroid/view/animation/Interpolator;
+.line 190
+	if-eqz	v1,lcb30c
+; v1 : Landroid/view/animation/Interpolator;
+.line 191
+	invoke-interface	{v1,v10},android/view/animation/Interpolator/getInterpolation	; getInterpolation(F)F
+; v1 : Landroid/view/animation/Interpolator; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+lcb30c:
+.line 193
+	invoke-virtual	{v5},com/nineoldandroids/animation/Keyframe/getFraction	; getFraction()F
+; v5 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result	v4
+; v4 : single-length
+.line 194
+	sub-float	v6,v10,v4
+; v6 : single-length , v10 : single-length , v4 : single-length
+	iget-object	v7,v9,com/nineoldandroids/animation/KeyframeSet.mLastKeyframe Lcom/nineoldandroids/animation/Keyframe;
+; v7 : Lcom/nineoldandroids/animation/Keyframe; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v7},com/nineoldandroids/animation/Keyframe/getFraction	; getFraction()F
+; v7 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result	v7
+; v7 : single-length
+	sub-float/2addr	v7,v4
+; v7 : single-length , v4 : single-length
+	div-float	v2,v6,v7
+; v2 : single-length , v6 : single-length , v7 : single-length
+.line 196
+	iget-object	v6,v9,com/nineoldandroids/animation/KeyframeSet.mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v6 : Lcom/nineoldandroids/animation/TypeEvaluator; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v5},com/nineoldandroids/animation/Keyframe/getValue	; getValue()Ljava/lang/Object;
+; v5 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v7
+; v7 : Ljava/lang/Object;
+	iget-object	v8,v9,com/nineoldandroids/animation/KeyframeSet.mLastKeyframe Lcom/nineoldandroids/animation/Keyframe;
+; v8 : Lcom/nineoldandroids/animation/Keyframe; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v8},com/nineoldandroids/animation/Keyframe/getValue	; getValue()Ljava/lang/Object;
+; v8 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	invoke-interface	{v6,v2,v7,v8},com/nineoldandroids/animation/TypeEvaluator/evaluate	; evaluate(FLjava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v6 : Lcom/nineoldandroids/animation/TypeEvaluator; , v2 : single-length , v7 : Ljava/lang/Object; , v8 : Ljava/lang/Object;
+	move-result-object	v6
+; v6 : Ljava/lang/Object;
+	goto	lcb25e
+lcb34c:
+.line 199
+	iget-object	v5,v9,com/nineoldandroids/animation/KeyframeSet.mFirstKeyframe Lcom/nineoldandroids/animation/Keyframe;
+; v5 : Lcom/nineoldandroids/animation/Keyframe; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+.line 200
+	const/4	v0,1
+; v0 : single-length
+lcb352:
+	iget	v6,v9,com/nineoldandroids/animation/KeyframeSet.mNumKeyframes I
+; v6 : single-length , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	if-ge	v0,v6,lcb3d0
+; v0 : single-length , v6 : single-length
+.line 201
+	iget-object	v6,v9,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v6 : Ljava/util/ArrayList; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v6,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v6 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,com/nineoldandroids/animation/Keyframe
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+.line 202
+	invoke-virtual	{v3},com/nineoldandroids/animation/Keyframe/getFraction	; getFraction()F
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result	v6
+; v6 : single-length
+	cmpg-float	v6,v10,v6
+; v6 : single-length , v10 : single-length , v6 : single-length
+	if-gez	v6,lcb3c8
+; v6 : single-length
+.line 203
+	invoke-virtual	{v3},com/nineoldandroids/animation/Keyframe/getInterpolator	; getInterpolator()Landroid/view/animation/Interpolator;
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v1
+; v1 : Landroid/view/animation/Interpolator;
+.line 204
+	if-eqz	v1,lcb38e
+; v1 : Landroid/view/animation/Interpolator;
+.line 205
+	invoke-interface	{v1,v10},android/view/animation/Interpolator/getInterpolation	; getInterpolation(F)F
+; v1 : Landroid/view/animation/Interpolator; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+lcb38e:
+.line 207
+	invoke-virtual	{v5},com/nineoldandroids/animation/Keyframe/getFraction	; getFraction()F
+; v5 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result	v4
+; v4 : single-length
+.line 208
+	sub-float	v6,v10,v4
+; v6 : single-length , v10 : single-length , v4 : single-length
+	invoke-virtual	{v3},com/nineoldandroids/animation/Keyframe/getFraction	; getFraction()F
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result	v7
+; v7 : single-length
+	sub-float/2addr	v7,v4
+; v7 : single-length , v4 : single-length
+	div-float	v2,v6,v7
+; v2 : single-length , v6 : single-length , v7 : single-length
+.line 210
+	iget-object	v6,v9,com/nineoldandroids/animation/KeyframeSet.mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v6 : Lcom/nineoldandroids/animation/TypeEvaluator; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v5},com/nineoldandroids/animation/Keyframe/getValue	; getValue()Ljava/lang/Object;
+; v5 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v7
+; v7 : Ljava/lang/Object;
+	invoke-virtual	{v3},com/nineoldandroids/animation/Keyframe/getValue	; getValue()Ljava/lang/Object;
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	invoke-interface	{v6,v2,v7,v8},com/nineoldandroids/animation/TypeEvaluator/evaluate	; evaluate(FLjava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v6 : Lcom/nineoldandroids/animation/TypeEvaluator; , v2 : single-length , v7 : Ljava/lang/Object; , v8 : Ljava/lang/Object;
+	move-result-object	v6
+; v6 : Ljava/lang/Object;
+	goto/16	lcb25e
+lcb3c8:
+.line 213
+	move-object	v5,v3
+; v5 : Lcom/nineoldandroids/animation/Keyframe; , v3 : Lcom/nineoldandroids/animation/Keyframe;
+.line 200
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	lcb352
+lcb3d0:
+.line 216
+	iget-object	v6,v9,com/nineoldandroids/animation/KeyframeSet.mLastKeyframe Lcom/nineoldandroids/animation/Keyframe;
+; v6 : Lcom/nineoldandroids/animation/Keyframe; , v9 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v6},com/nineoldandroids/animation/Keyframe/getValue	; getValue()Ljava/lang/Object;
+; v6 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v6
+; v6 : Ljava/lang/Object;
+	goto/16	lcb25e
+.end method
+
+.method public setEvaluator(Lcom/nineoldandroids/animation/TypeEvaluator;)V
+.limit registers 2
+; this: v0 (Lcom/nineoldandroids/animation/KeyframeSet;)
+; parameter[0] : v1 (Lcom/nineoldandroids/animation/TypeEvaluator;)
+.line 139
+	iput-object	v1,v0,com/nineoldandroids/animation/KeyframeSet.mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v1 : Lcom/nineoldandroids/animation/TypeEvaluator; , v0 : Lcom/nineoldandroids/animation/KeyframeSet;
+.line 140
+	return-void	
+.end method
+
+.method public toString()Ljava/lang/String;
+.limit registers 5
+; this: v4 (Lcom/nineoldandroids/animation/KeyframeSet;)
+.line 221
+	const-string	v1," "
+; v1 : Ljava/lang/String;
+.line 222
+	const/4	v0,0
+; v0 : single-length
+lcb40e:
+	iget	v2,v4,com/nineoldandroids/animation/KeyframeSet.mNumKeyframes I
+; v2 : single-length , v4 : Lcom/nineoldandroids/animation/KeyframeSet;
+	if-ge	v0,v2,lcb462
+; v0 : single-length , v2 : single-length
+.line 223
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	iget-object	v2,v4,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v2 : Ljava/util/ArrayList; , v4 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-virtual	{v2,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v2 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,com/nineoldandroids/animation/Keyframe
+; v2 : Lcom/nineoldandroids/animation/Keyframe;
+	invoke-virtual	{v2},com/nineoldandroids/animation/Keyframe/getValue	; getValue()Ljava/lang/Object;
+; v2 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	invoke-virtual	{v3,v2},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/Object;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"  "
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 222
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	lcb40e
+lcb462:
+.line 225
+	return-object	v1
+; v1 : Ljava/lang/String;
+.end method
+
+

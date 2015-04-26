@@ -1,0 +1,368 @@
+.class public org/scribe/model/OAuthRequest
+.super org/scribe/model/Request
+.source OAuthRequest.java
+
+.field private static final OAUTH_PREFIX Ljava/lang/String; = "oauth_"
+.field private oauthParameters Ljava/util/Map;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "Ljava/lang/String;" , ">;" }
+  .end annotation
+.end field
+
+.method public <init>(Lorg/scribe/model/Verb;Ljava/lang/String;)V
+.limit registers 4
+; this: v1 (Lorg/scribe/model/OAuthRequest;)
+; parameter[0] : v2 (Lorg/scribe/model/Verb;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.line 25
+	invoke-direct	{v1,v2,v3},org/scribe/model/Request/<init>	; <init>(Lorg/scribe/model/Verb;Ljava/lang/String;)V
+; v1 : Lorg/scribe/model/OAuthRequest; , v2 : Lorg/scribe/model/Verb; , v3 : Ljava/lang/String;
+.line 26
+	new-instance	v0,java/util/HashMap
+; v0 : Ljava/util/HashMap;
+	invoke-direct	{v0},java/util/HashMap/<init>	; <init>()V
+; v0 : Ljava/util/HashMap;
+	iput-object	v0,v1,org/scribe/model/OAuthRequest.oauthParameters Ljava/util/Map;
+; v0 : Ljava/util/HashMap; , v1 : Lorg/scribe/model/OAuthRequest;
+.line 27
+	return-void	
+.end method
+
+.method private checkKey(Ljava/lang/String;)Ljava/lang/String;
+.limit registers 7
+; this: v5 (Lorg/scribe/model/OAuthRequest;)
+; parameter[0] : v6 (Ljava/lang/String;)
+.line 44
+	const-string	v0,"oauth_"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v6,v0},java/lang/String/startsWith	; startsWith(Ljava/lang/String;)Z
+; v6 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l14ae1c
+; v0 : single-length
+	const-string	v0,"scope"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v6,v0},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v6 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l14ae1e
+; v0 : single-length
+l14ae1c:
+.line 46
+	return-object	v6
+; v6 : Ljava/lang/String;
+l14ae1e:
+.line 50
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"OAuth parameters must either be '%s' or start with '%s'"
+; v1 : Ljava/lang/String;
+	const/4	v2,2
+; v2 : single-length
+	new-array	v2,v2,[Ljava/lang/Object;
+; v2 : [Ljava/lang/Object; , v2 : [Ljava/lang/Object;
+	const/4	v3,0
+; v3 : single-length
+	const-string	v4,"scope"
+; v4 : Ljava/lang/String;
+	aput-object	v4,v2,v3
+; v4 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v3 : single-length
+	const/4	v3,1
+; v3 : single-length
+	const-string	v4,"oauth_"
+; v4 : Ljava/lang/String;
+	aput-object	v4,v2,v3
+; v4 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v3 : single-length
+	invoke-static	{v1,v2},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : [Ljava/lang/Object;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+.end method
+
+.method public addBodyParameter(Ljava/lang/String;Ljava/lang/String;)V
+.limit registers 3
+; this: v0 (Lorg/scribe/model/OAuthRequest;)
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (Ljava/lang/String;)
+.line 12
+	invoke-super	{v0,v1,v2},org/scribe/model/Request/addBodyParameter	; addBodyParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/OAuthRequest; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	return-void	
+.end method
+
+.method public addHeader(Ljava/lang/String;Ljava/lang/String;)V
+.limit registers 3
+; this: v0 (Lorg/scribe/model/OAuthRequest;)
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (Ljava/lang/String;)
+.line 12
+	invoke-super	{v0,v1,v2},org/scribe/model/Request/addHeader	; addHeader(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/OAuthRequest; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	return-void	
+.end method
+
+.method public addOAuthParameter(Ljava/lang/String;Ljava/lang/String;)V
+.limit registers 5
+; this: v2 (Lorg/scribe/model/OAuthRequest;)
+; parameter[0] : v3 (Ljava/lang/String;)
+; parameter[1] : v4 (Ljava/lang/String;)
+.line 39
+	iget-object	v0,v2,org/scribe/model/OAuthRequest.oauthParameters Ljava/util/Map;
+; v0 : Ljava/util/Map; , v2 : Lorg/scribe/model/OAuthRequest;
+	invoke-direct	{v2,v3},org/scribe/model/OAuthRequest/checkKey	; checkKey(Ljava/lang/String;)Ljava/lang/String;
+; v2 : Lorg/scribe/model/OAuthRequest; , v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-interface	{v0,v1,v4},java/util/Map/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String; , v4 : Ljava/lang/String;
+.line 40
+	return-void	
+.end method
+
+.method public addPayload(Ljava/lang/String;)V
+.limit registers 2
+; this: v0 (Lorg/scribe/model/OAuthRequest;)
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 12
+	invoke-super	{v0,v1},org/scribe/model/Request/addPayload	; addPayload(Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/OAuthRequest; , v1 : Ljava/lang/String;
+	return-void	
+.end method
+
+.method public addPayload([B)V
+.limit registers 2
+; this: v0 (Lorg/scribe/model/OAuthRequest;)
+; parameter[0] : v1 ([B)
+.line 12
+	invoke-super	{v0,v1},org/scribe/model/Request/addPayload	; addPayload([B)V
+; v0 : Lorg/scribe/model/OAuthRequest; , v1 : [B
+	return-void	
+.end method
+
+.method public addQuerystringParameter(Ljava/lang/String;Ljava/lang/String;)V
+.limit registers 3
+; this: v0 (Lorg/scribe/model/OAuthRequest;)
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (Ljava/lang/String;)
+.line 12
+	invoke-super	{v0,v1,v2},org/scribe/model/Request/addQuerystringParameter	; addQuerystringParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/OAuthRequest; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	return-void	
+.end method
+
+.method public getBodyContents()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/OAuthRequest;)
+.line 12
+	invoke-super	{v1},org/scribe/model/Request/getBodyContents	; getBodyContents()Ljava/lang/String;
+; v1 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getBodyParams()Lorg/scribe/model/ParameterList;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/OAuthRequest;)
+.line 12
+	invoke-super	{v1},org/scribe/model/Request/getBodyParams	; getBodyParams()Lorg/scribe/model/ParameterList;
+; v1 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Lorg/scribe/model/ParameterList;
+	return-object	v0
+; v0 : Lorg/scribe/model/ParameterList;
+.end method
+
+.method public getCharset()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/OAuthRequest;)
+.line 12
+	invoke-super	{v1},org/scribe/model/Request/getCharset	; getCharset()Ljava/lang/String;
+; v1 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getCompleteUrl()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/OAuthRequest;)
+.line 12
+	invoke-super	{v1},org/scribe/model/Request/getCompleteUrl	; getCompleteUrl()Ljava/lang/String;
+; v1 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getHeaders()Ljava/util/Map;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/OAuthRequest;)
+.line 12
+	invoke-super	{v1},org/scribe/model/Request/getHeaders	; getHeaders()Ljava/util/Map;
+; v1 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Ljava/util/Map;
+	return-object	v0
+; v0 : Ljava/util/Map;
+.end method
+
+.method public getOauthParameters()Ljava/util/Map;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "()" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "Ljava/lang/String;" , ">;" }
+.end annotation
+.limit registers 2
+; this: v1 (Lorg/scribe/model/OAuthRequest;)
+.line 61
+	iget-object	v0,v1,org/scribe/model/OAuthRequest.oauthParameters Ljava/util/Map;
+; v0 : Ljava/util/Map; , v1 : Lorg/scribe/model/OAuthRequest;
+	return-object	v0
+; v0 : Ljava/util/Map;
+.end method
+
+.method public getQueryStringParams()Lorg/scribe/model/ParameterList;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/OAuthRequest;)
+.line 12
+	invoke-super	{v1},org/scribe/model/Request/getQueryStringParams	; getQueryStringParams()Lorg/scribe/model/ParameterList;
+; v1 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Lorg/scribe/model/ParameterList;
+	return-object	v0
+; v0 : Lorg/scribe/model/ParameterList;
+.end method
+
+.method public getSanitizedUrl()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/OAuthRequest;)
+.line 12
+	invoke-super	{v1},org/scribe/model/Request/getSanitizedUrl	; getSanitizedUrl()Ljava/lang/String;
+; v1 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getUrl()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/OAuthRequest;)
+.line 12
+	invoke-super	{v1},org/scribe/model/Request/getUrl	; getUrl()Ljava/lang/String;
+; v1 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getVerb()Lorg/scribe/model/Verb;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/OAuthRequest;)
+.line 12
+	invoke-super	{v1},org/scribe/model/Request/getVerb	; getVerb()Lorg/scribe/model/Verb;
+; v1 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Lorg/scribe/model/Verb;
+	return-object	v0
+; v0 : Lorg/scribe/model/Verb;
+.end method
+
+.method public send()Lorg/scribe/model/Response;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/OAuthRequest;)
+.line 12
+	invoke-super	{v1},org/scribe/model/Request/send	; send()Lorg/scribe/model/Response;
+; v1 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Lorg/scribe/model/Response;
+	return-object	v0
+; v0 : Lorg/scribe/model/Response;
+.end method
+
+.method public setCharset(Ljava/lang/String;)V
+.limit registers 2
+; this: v0 (Lorg/scribe/model/OAuthRequest;)
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 12
+	invoke-super	{v0,v1},org/scribe/model/Request/setCharset	; setCharset(Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/OAuthRequest; , v1 : Ljava/lang/String;
+	return-void	
+.end method
+
+.method public setConnectTimeout(ILjava/util/concurrent/TimeUnit;)V
+.limit registers 3
+; this: v0 (Lorg/scribe/model/OAuthRequest;)
+; parameter[0] : v1 (I)
+; parameter[1] : v2 (Ljava/util/concurrent/TimeUnit;)
+.line 12
+	invoke-super	{v0,v1,v2},org/scribe/model/Request/setConnectTimeout	; setConnectTimeout(ILjava/util/concurrent/TimeUnit;)V
+; v0 : Lorg/scribe/model/OAuthRequest; , v1 : single-length , v2 : Ljava/util/concurrent/TimeUnit;
+	return-void	
+.end method
+
+.method public setConnectionKeepAlive(Z)V
+.limit registers 2
+; this: v0 (Lorg/scribe/model/OAuthRequest;)
+; parameter[0] : v1 (Z)
+.line 12
+	invoke-super	{v0,v1},org/scribe/model/Request/setConnectionKeepAlive	; setConnectionKeepAlive(Z)V
+; v0 : Lorg/scribe/model/OAuthRequest; , v1 : single-length
+	return-void	
+.end method
+
+.method public setReadTimeout(ILjava/util/concurrent/TimeUnit;)V
+.limit registers 3
+; this: v0 (Lorg/scribe/model/OAuthRequest;)
+; parameter[0] : v1 (I)
+; parameter[1] : v2 (Ljava/util/concurrent/TimeUnit;)
+.line 12
+	invoke-super	{v0,v1,v2},org/scribe/model/Request/setReadTimeout	; setReadTimeout(ILjava/util/concurrent/TimeUnit;)V
+; v0 : Lorg/scribe/model/OAuthRequest; , v1 : single-length , v2 : Ljava/util/concurrent/TimeUnit;
+	return-void	
+.end method
+
+.method public toString()Ljava/lang/String;
+.limit registers 5
+; this: v4 (Lorg/scribe/model/OAuthRequest;)
+.line 67
+	const-string	v0,"@OAuthRequest(%s, %s)"
+; v0 : Ljava/lang/String;
+	const/4	v1,2
+; v1 : single-length
+	new-array	v1,v1,[Ljava/lang/Object;
+; v1 : [Ljava/lang/Object; , v1 : [Ljava/lang/Object;
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v4},org/scribe/model/OAuthRequest/getVerb	; getVerb()Lorg/scribe/model/Verb;
+; v4 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v3
+; v3 : Lorg/scribe/model/Verb;
+	aput-object	v3,v1,v2
+; v3 : Lorg/scribe/model/Verb; , v1 : [Ljava/lang/Object; , v2 : single-length
+	const/4	v2,1
+; v2 : single-length
+	invoke-virtual	{v4},org/scribe/model/OAuthRequest/getUrl	; getUrl()Ljava/lang/String;
+; v4 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	aput-object	v3,v1,v2
+; v3 : Ljava/lang/String; , v1 : [Ljava/lang/Object; , v2 : single-length
+	invoke-static	{v0,v1},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+

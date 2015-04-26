@@ -1,0 +1,1438 @@
+.class public com/facebook/android/Facebook
+.super java/lang/Object
+.source Facebook.java
+
+.inner class ServiceListener inner com/facebook/android/Facebook$ServiceListener outer com/facebook/android/Facebook
+.inner class DialogListener inner com/facebook/android/Facebook$DialogListener outer com/facebook/android/Facebook
+.inner class TokenRefreshServiceConnection inner com/facebook/android/Facebook$TokenRefreshServiceConnection outer com/facebook/android/Facebook
+.field public static final CANCEL_URI Ljava/lang/String; = "fbconnect://cancel"
+.field private static final DEFAULT_AUTH_ACTIVITY_CODE I = 32665	; 0x7f99
+.field protected static DIALOG_BASE_URL Ljava/lang/String; = null
+.field public static final EXPIRES Ljava/lang/String; = "expires_in"
+.field public static final FB_APP_SIGNATURE Ljava/lang/String; = "	30820268308201d102044a9c4610300d06092a864886f70d0101040500307a310b3009060355040613025553310b3009060355040813024341311230100603550407130950616c6f20416c746f31183016060355040a130f46616365626f6f6b204d6f62696c653111300f0"
+.field public static final FORCE_DIALOG_AUTH I = -1	; 0xffffffff
+.field protected static GRAPH_BASE_URL Ljava/lang/String; = null
+.field private static final LOGIN Ljava/lang/String; = "oauth"
+.field public static final REDIRECT_URI Ljava/lang/String; = "fbconnect://success"
+.field protected static RESTSERVER_URL Ljava/lang/String; = null
+.field public static final SINGLE_SIGN_ON_DISABLED Ljava/lang/String; = "service_disabled"
+.field public static final TOKEN Ljava/lang/String; = "access_token"
+.field private final REFRESH_TOKEN_BARRIER J
+.field private mAccessExpires J
+.field private mAccessToken Ljava/lang/String;
+.field private mAppId Ljava/lang/String;
+.field private mAuthActivity Landroid/app/Activity;
+.field private mAuthActivityCode I
+.field private mAuthDialogListener Lcom/facebook/android/Facebook$DialogListener;
+.field private mAuthPermissions [Ljava/lang/String;
+.field private mLastAccessUpdate J
+
+.method static <clinit>()V
+.limit registers 1
+.line 71
+	const-string	v0,"https://m.facebook.com/dialog/"
+; v0 : Ljava/lang/String;
+	sput-object	v0,com/facebook/android/Facebook.DIALOG_BASE_URL Ljava/lang/String;
+; v0 : Ljava/lang/String;
+.line 73
+	const-string	v0,"https://graph.facebook.com/"
+; v0 : Ljava/lang/String;
+	sput-object	v0,com/facebook/android/Facebook.GRAPH_BASE_URL Ljava/lang/String;
+; v0 : Ljava/lang/String;
+.line 75
+	const-string	v0,"https://api.facebook.com/restserver.php"
+; v0 : Ljava/lang/String;
+	sput-object	v0,com/facebook/android/Facebook.RESTSERVER_URL Ljava/lang/String;
+; v0 : Ljava/lang/String;
+	return-void	
+.end method
+
+.method public <init>(Ljava/lang/String;)V
+.limit registers 5
+; this: v3 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v4 (Ljava/lang/String;)
+	const-wide/16	v1,0
+; v1 : double-length
+.line 99
+	invoke-direct	{v3},java/lang/Object/<init>	; <init>()V
+; v3 : Lcom/facebook/android/Facebook;
+.line 78
+	const/4	v0,0
+; v0 : single-length
+	iput-object	v0,v3,com/facebook/android/Facebook.mAccessToken Ljava/lang/String;
+; v0 : single-length , v3 : Lcom/facebook/android/Facebook;
+.line 79
+	iput-wide	v1,v3,com/facebook/android/Facebook.mLastAccessUpdate J
+; v1 : double-length , v3 : Lcom/facebook/android/Facebook;
+.line 80
+	iput-wide	v1,v3,com/facebook/android/Facebook.mAccessExpires J
+; v1 : double-length , v3 : Lcom/facebook/android/Facebook;
+.line 90
+	const-wide/32	v0,86400000	; 0x5265c00
+; v0 : double-length
+	iput-wide	v0,v3,com/facebook/android/Facebook.REFRESH_TOKEN_BARRIER J
+; v0 : double-length , v3 : Lcom/facebook/android/Facebook;
+.line 100
+	if-nez	v4,ladec6
+; v4 : Ljava/lang/String;
+.line 101
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"You must specify your application ID when instantiating a Facebook object. See README for details."
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+ladec6:
+.line 105
+	iput-object	v4,v3,com/facebook/android/Facebook.mAppId Ljava/lang/String;
+; v4 : Ljava/lang/String; , v3 : Lcom/facebook/android/Facebook;
+.line 106
+	return-void	
+.end method
+
+.method static access$000(Lcom/facebook/android/Facebook;)Lcom/facebook/android/Facebook$DialogListener;
+.limit registers 2
+; parameter[0] : v1 (Lcom/facebook/android/Facebook;)
+.line 54
+	iget-object	v0,v1,com/facebook/android/Facebook.mAuthDialogListener Lcom/facebook/android/Facebook$DialogListener;
+; v0 : Lcom/facebook/android/Facebook$DialogListener; , v1 : Lcom/facebook/android/Facebook;
+	return-object	v0
+; v0 : Lcom/facebook/android/Facebook$DialogListener;
+.end method
+
+.method static access$100(Lcom/facebook/android/Facebook;)Ljava/lang/String;
+.limit registers 2
+; parameter[0] : v1 (Lcom/facebook/android/Facebook;)
+.line 54
+	iget-object	v0,v1,com/facebook/android/Facebook.mAccessToken Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lcom/facebook/android/Facebook;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method private startDialogAuth(Landroid/app/Activity;[Ljava/lang/String;)V
+.limit registers 6
+; this: v3 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v4 (Landroid/app/Activity;)
+; parameter[1] : v5 ([Ljava/lang/String;)
+.line 338
+	new-instance	v0,android/os/Bundle
+; v0 : Landroid/os/Bundle;
+	invoke-direct	{v0},android/os/Bundle/<init>	; <init>()V
+; v0 : Landroid/os/Bundle;
+.line 339
+	array-length	v1,v5
+; v1 : single-length , v5 : [Ljava/lang/String;
+	if-lez	v1,ladf32
+; v1 : single-length
+.line 340
+	const-string	v1,"scope"
+; v1 : Ljava/lang/String;
+	const-string	v2,","
+; v2 : Ljava/lang/String;
+	invoke-static	{v2,v5},android/text/TextUtils/join	; join(Ljava/lang/CharSequence;[Ljava/lang/Object;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v5 : [Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v2},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Landroid/os/Bundle; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+ladf32:
+.line 342
+	invoke-static	{v4},android/webkit/CookieSyncManager/createInstance	; createInstance(Landroid/content/Context;)Landroid/webkit/CookieSyncManager;
+; v4 : Landroid/app/Activity;
+.line 343
+	const-string	v1,"oauth"
+; v1 : Ljava/lang/String;
+	new-instance	v2,com/facebook/android/Facebook$1
+; v2 : Lcom/facebook/android/Facebook$1;
+	invoke-direct	{v2,v3},com/facebook/android/Facebook$1/<init>	; <init>(Lcom/facebook/android/Facebook;)V
+; v2 : Lcom/facebook/android/Facebook$1; , v3 : Lcom/facebook/android/Facebook;
+	invoke-virtual	{v3,v4,v1,v0,v2},com/facebook/android/Facebook/dialog	; dialog(Landroid/content/Context;Ljava/lang/String;Landroid/os/Bundle;Lcom/facebook/android/Facebook$DialogListener;)V
+; v3 : Lcom/facebook/android/Facebook; , v4 : Landroid/app/Activity; , v1 : Ljava/lang/String; , v0 : Landroid/os/Bundle; , v2 : Lcom/facebook/android/Facebook$1;
+.line 376
+	return-void	
+.end method
+
+.method private startSingleSignOn(Landroid/app/Activity;Ljava/lang/String;[Ljava/lang/String;I)Z
+.limit registers 10
+; this: v5 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v6 (Landroid/app/Activity;)
+; parameter[1] : v7 (Ljava/lang/String;)
+; parameter[2] : v8 ([Ljava/lang/String;)
+; parameter[3] : v9 (I)
+.catch android/content/ActivityNotFoundException from ladfbc to ladfc2 using ladfc6
+.line 226
+	const/4	v0,1
+; v0 : single-length
+.line 227
+	new-instance	v2,android/content/Intent
+; v2 : Landroid/content/Intent;
+	invoke-direct	{v2},android/content/Intent/<init>	; <init>()V
+; v2 : Landroid/content/Intent;
+.line 229
+	const-string	v3,"com.facebook.katana"
+; v3 : Ljava/lang/String;
+	const-string	v4,"com.facebook.katana.ProxyAuth"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v2,v3,v4},android/content/Intent/setClassName	; setClassName(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+; v2 : Landroid/content/Intent; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+.line 231
+	const-string	v3,"client_id"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3,v7},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+; v2 : Landroid/content/Intent; , v3 : Ljava/lang/String; , v7 : Ljava/lang/String;
+.line 232
+	array-length	v3,v8
+; v3 : single-length , v8 : [Ljava/lang/String;
+	if-lez	v3,ladfa0
+; v3 : single-length
+.line 233
+	const-string	v3,"scope"
+; v3 : Ljava/lang/String;
+	const-string	v4,","
+; v4 : Ljava/lang/String;
+	invoke-static	{v4,v8},android/text/TextUtils/join	; join(Ljava/lang/CharSequence;[Ljava/lang/Object;)Ljava/lang/String;
+; v4 : Ljava/lang/String; , v8 : [Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v2,v3,v4},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+; v2 : Landroid/content/Intent; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+ladfa0:
+.line 239
+	invoke-direct	{v5,v6,v2},com/facebook/android/Facebook/validateActivityIntent	; validateActivityIntent(Landroid/content/Context;Landroid/content/Intent;)Z
+; v5 : Lcom/facebook/android/Facebook; , v6 : Landroid/app/Activity; , v2 : Landroid/content/Intent;
+	move-result	v3
+; v3 : single-length
+	if-nez	v3,ladfb0
+; v3 : single-length
+.line 240
+	const/4	v3,0
+; v3 : single-length
+ladfae:
+.line 252
+	return	v3
+; v3 : single-length
+ladfb0:
+.line 243
+	iput-object	v6,v5,com/facebook/android/Facebook.mAuthActivity Landroid/app/Activity;
+; v6 : Landroid/app/Activity; , v5 : Lcom/facebook/android/Facebook;
+.line 244
+	iput-object	v8,v5,com/facebook/android/Facebook.mAuthPermissions [Ljava/lang/String;
+; v8 : [Ljava/lang/String; , v5 : Lcom/facebook/android/Facebook;
+.line 245
+	iput	v9,v5,com/facebook/android/Facebook.mAuthActivityCode I
+; v9 : single-length , v5 : Lcom/facebook/android/Facebook;
+ladfbc:
+.line 247
+	invoke-virtual	{v6,v2,v9},android/app/Activity/startActivityForResult	; startActivityForResult(Landroid/content/Intent;I)V
+; v6 : Landroid/app/Activity; , v2 : Landroid/content/Intent; , v9 : single-length
+ladfc2:
+	move	v3,v0
+; v3 : single-length , v0 : single-length
+.line 252
+	goto	ladfae
+ladfc6:
+.line 248
+	move-exception	v1
+; v1 : android/content/ActivityNotFoundException
+.line 249
+	const/4	v0,0
+; v0 : single-length
+	goto	ladfc2
+.end method
+
+.method private validateActivityIntent(Landroid/content/Context;Landroid/content/Intent;)Z
+.limit registers 6
+; this: v3 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v4 (Landroid/content/Context;)
+; parameter[1] : v5 (Landroid/content/Intent;)
+	const/4	v1,0
+; v1 : single-length
+.line 265
+	invoke-virtual	{v4},android/content/Context/getPackageManager	; getPackageManager()Landroid/content/pm/PackageManager;
+; v4 : Landroid/content/Context;
+	move-result-object	v2
+; v2 : Landroid/content/pm/PackageManager;
+	invoke-virtual	{v2,v5,v1},android/content/pm/PackageManager/resolveActivity	; resolveActivity(Landroid/content/Intent;I)Landroid/content/pm/ResolveInfo;
+; v2 : Landroid/content/pm/PackageManager; , v5 : Landroid/content/Intent; , v1 : single-length
+	move-result-object	v0
+; v0 : Landroid/content/pm/ResolveInfo;
+.line 267
+	if-nez	v0,lae000
+; v0 : Landroid/content/pm/ResolveInfo;
+ladffe:
+.line 271
+	return	v1
+; v1 : single-length
+lae000:
+	iget-object	v1,v0,android/content/pm/ResolveInfo.activityInfo Landroid/content/pm/ActivityInfo;
+; v1 : Landroid/content/pm/ActivityInfo; , v0 : Landroid/content/pm/ResolveInfo;
+	iget-object	v1,v1,android/content/pm/ActivityInfo.packageName Ljava/lang/String;
+; v1 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	invoke-direct	{v3,v4,v1},com/facebook/android/Facebook/validateAppSignatureForPackage	; validateAppSignatureForPackage(Landroid/content/Context;Ljava/lang/String;)Z
+; v3 : Lcom/facebook/android/Facebook; , v4 : Landroid/content/Context; , v1 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	goto	ladffe
+.end method
+
+.method private validateAppSignatureForPackage(Landroid/content/Context;Ljava/lang/String;)Z
+.limit registers 12
+; this: v9 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v10 (Landroid/content/Context;)
+; parameter[1] : v11 (Ljava/lang/String;)
+.catch android/content/pm/PackageManager$NameNotFoundException from lae026 to lae038 using lae066
+.var 0 is arr$ [Landroid/content/pm/Signature; from lae03e to lae064
+.var 2 is i$ I from lae042 to lae064
+.var 3 is len$ I from lae040 to lae064
+.var 4 is packageInfo Landroid/content/pm/PackageInfo; from lae03a to lae064
+.var 5 is signature Landroid/content/pm/Signature; from lae04a to lae064
+.var 1 is e Landroid/content/pm/PackageManager$NameNotFoundException; from lae068 to lae06a
+	const/4	v6,0
+; v6 : single-length
+lae026:
+.line 311
+	invoke-virtual	{v10},android/content/Context/getPackageManager	; getPackageManager()Landroid/content/pm/PackageManager;
+; v10 : Landroid/content/Context;
+	move-result-object	v7
+; v7 : Landroid/content/pm/PackageManager;
+	const/16	v8,64
+; v8 : single-length
+	invoke-virtual	{v7,v11,v8},android/content/pm/PackageManager/getPackageInfo	; getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
+; v7 : Landroid/content/pm/PackageManager; , v11 : Ljava/lang/String; , v8 : single-length
+lae038:
+	move-result-object	v4
+; v4 : Landroid/content/pm/PackageInfo;
+.line 317
+	iget-object	v0,v4,android/content/pm/PackageInfo.signatures [Landroid/content/pm/Signature;
+; v0 : [Landroid/content/pm/Signature; , v4 : Landroid/content/pm/PackageInfo;
+lae03e:
+	array-length	v3,v0
+; v3 : single-length , v0 : [Landroid/content/pm/Signature;
+lae040:
+	const/4	v2,0
+; v2 : single-length
+lae042:
+	if-ge	v2,v3,lae064
+; v2 : single-length , v3 : single-length
+	aget-object	v5,v0,v2
+; v5 : Landroid/content/pm/Signature; , v0 : [Landroid/content/pm/Signature; , v2 : single-length
+.line 318
+	invoke-virtual	{v5},android/content/pm/Signature/toCharsString	; toCharsString()Ljava/lang/String;
+; v5 : Landroid/content/pm/Signature;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	const-string	v8,"	30820268308201d102044a9c4610300d06092a864886f70d0101040500307a310b3009060355040613025553310b3009060355040813024341311230100603550407130950616c6f20416c746f31183016060355040a130f46616365626f6f6b204d6f62696c653111300f0"
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v7,v8},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v7 : Ljava/lang/String; , v8 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,lae06a
+; v7 : single-length
+.line 319
+	const/4	v6,1
+; v6 : single-length
+lae064:
+.line 322
+	return	v6
+; v6 : single-length
+lae066:
+.line 313
+	move-exception	v1
+; v1 : android/content/pm/PackageManager$NameNotFoundException
+.line 314
+	goto	lae064
+lae06a:
+.line 317
+	add-int/lit8	v2,v2,1
+; v2 : single-length , v2 : single-length
+	goto	lae042
+.end method
+
+.method private validateServiceIntent(Landroid/content/Context;Landroid/content/Intent;)Z
+.limit registers 6
+; this: v3 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v4 (Landroid/content/Context;)
+; parameter[1] : v5 (Landroid/content/Intent;)
+	const/4	v1,0
+; v1 : single-length
+.line 287
+	invoke-virtual	{v4},android/content/Context/getPackageManager	; getPackageManager()Landroid/content/pm/PackageManager;
+; v4 : Landroid/content/Context;
+	move-result-object	v2
+; v2 : Landroid/content/pm/PackageManager;
+	invoke-virtual	{v2,v5,v1},android/content/pm/PackageManager/resolveService	; resolveService(Landroid/content/Intent;I)Landroid/content/pm/ResolveInfo;
+; v2 : Landroid/content/pm/PackageManager; , v5 : Landroid/content/Intent; , v1 : single-length
+	move-result-object	v0
+; v0 : Landroid/content/pm/ResolveInfo;
+.line 289
+	if-nez	v0,lae0a4
+; v0 : Landroid/content/pm/ResolveInfo;
+lae0a2:
+.line 293
+	return	v1
+; v1 : single-length
+lae0a4:
+	iget-object	v1,v0,android/content/pm/ResolveInfo.serviceInfo Landroid/content/pm/ServiceInfo;
+; v1 : Landroid/content/pm/ServiceInfo; , v0 : Landroid/content/pm/ResolveInfo;
+	iget-object	v1,v1,android/content/pm/ServiceInfo.packageName Ljava/lang/String;
+; v1 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	invoke-direct	{v3,v4,v1},com/facebook/android/Facebook/validateAppSignatureForPackage	; validateAppSignatureForPackage(Landroid/content/Context;Ljava/lang/String;)Z
+; v3 : Lcom/facebook/android/Facebook; , v4 : Landroid/content/Context; , v1 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	goto	lae0a2
+.end method
+
+.method public authorize(Landroid/app/Activity;Lcom/facebook/android/Facebook$DialogListener;)V
+.limit registers 5
+; this: v2 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v3 (Landroid/app/Activity;)
+; parameter[1] : v4 (Lcom/facebook/android/Facebook$DialogListener;)
+.line 114
+	const/4	v0,0
+; v0 : single-length
+	new-array	v0,v0,[Ljava/lang/String;
+; v0 : [Ljava/lang/String; , v0 : [Ljava/lang/String;
+	const/16	v1,32665
+; v1 : single-length
+	invoke-virtual	{v2,v3,v0,v1,v4},com/facebook/android/Facebook/authorize	; authorize(Landroid/app/Activity;[Ljava/lang/String;ILcom/facebook/android/Facebook$DialogListener;)V
+; v2 : Lcom/facebook/android/Facebook; , v3 : Landroid/app/Activity; , v0 : [Ljava/lang/String; , v1 : single-length , v4 : Lcom/facebook/android/Facebook$DialogListener;
+.line 116
+	return-void	
+.end method
+
+.method public authorize(Landroid/app/Activity;[Ljava/lang/String;ILcom/facebook/android/Facebook$DialogListener;)V
+.limit registers 7
+; this: v2 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v3 (Landroid/app/Activity;)
+; parameter[1] : v4 ([Ljava/lang/String;)
+; parameter[2] : v5 (I)
+; parameter[3] : v6 (Lcom/facebook/android/Facebook$DialogListener;)
+.line 195
+	const/4	v0,0
+; v0 : single-length
+.line 197
+	iput-object	v6,v2,com/facebook/android/Facebook.mAuthDialogListener Lcom/facebook/android/Facebook$DialogListener;
+; v6 : Lcom/facebook/android/Facebook$DialogListener; , v2 : Lcom/facebook/android/Facebook;
+.line 200
+	if-ltz	v5,lae102
+; v5 : single-length
+.line 201
+	iget-object	v1,v2,com/facebook/android/Facebook.mAppId Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/facebook/android/Facebook;
+	invoke-direct	{v2,v3,v1,v4,v5},com/facebook/android/Facebook/startSingleSignOn	; startSingleSignOn(Landroid/app/Activity;Ljava/lang/String;[Ljava/lang/String;I)Z
+; v2 : Lcom/facebook/android/Facebook; , v3 : Landroid/app/Activity; , v1 : Ljava/lang/String; , v4 : [Ljava/lang/String; , v5 : single-length
+	move-result	v0
+; v0 : single-length
+lae102:
+.line 205
+	if-nez	v0,lae10c
+; v0 : single-length
+.line 206
+	invoke-direct	{v2,v3,v4},com/facebook/android/Facebook/startDialogAuth	; startDialogAuth(Landroid/app/Activity;[Ljava/lang/String;)V
+; v2 : Lcom/facebook/android/Facebook; , v3 : Landroid/app/Activity; , v4 : [Ljava/lang/String;
+lae10c:
+.line 208
+	return-void	
+.end method
+
+.method public authorize(Landroid/app/Activity;[Ljava/lang/String;Lcom/facebook/android/Facebook$DialogListener;)V
+.limit registers 5
+; this: v1 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v2 (Landroid/app/Activity;)
+; parameter[1] : v3 ([Ljava/lang/String;)
+; parameter[2] : v4 (Lcom/facebook/android/Facebook$DialogListener;)
+.line 125
+	const/16	v0,32665
+; v0 : single-length
+	invoke-virtual	{v1,v2,v3,v0,v4},com/facebook/android/Facebook/authorize	; authorize(Landroid/app/Activity;[Ljava/lang/String;ILcom/facebook/android/Facebook$DialogListener;)V
+; v1 : Lcom/facebook/android/Facebook; , v2 : Landroid/app/Activity; , v3 : [Ljava/lang/String; , v0 : single-length , v4 : Lcom/facebook/android/Facebook$DialogListener;
+.line 126
+	return-void	
+.end method
+
+.method public authorizeCallback(IILandroid/content/Intent;)V
+.limit registers 12
+; this: v8 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v9 (I)
+; parameter[1] : v10 (I)
+; parameter[2] : v11 (Landroid/content/Intent;)
+.var 1 is error Ljava/lang/String; from lae158 to lae1a8
+.var 0 is description Ljava/lang/String; from lae1f0 to lae268
+.var 1 is error Ljava/lang/String; from lae1aa to lae324
+	const/4	v7,0
+; v7 : single-length
+	const/4	v6,15
+; v6 : single-length
+.line 392
+	iget	v2,v8,com/facebook/android/Facebook.mAuthActivityCode I
+; v2 : single-length , v8 : Lcom/facebook/android/Facebook;
+	if-ne	v9,v2,lae1a8
+; v9 : single-length , v2 : single-length
+.line 395
+	if-ne	v10,v6,lae324
+; v10 : single-length , v6 : single-length
+.line 398
+	const-string	v2,"error"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v11,v2},android/content/Intent/getStringExtra	; getStringExtra(Ljava/lang/String;)Ljava/lang/String;
+; v11 : Landroid/content/Intent; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 399
+	if-nez	v1,lae168
+; v1 : Ljava/lang/String;
+.line 400
+	const-string	v2,"error_type"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v11,v2},android/content/Intent/getStringExtra	; getStringExtra(Ljava/lang/String;)Ljava/lang/String;
+; v11 : Landroid/content/Intent; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+lae168:
+.line 404
+	if-eqz	v1,lae268
+; v1 : Ljava/lang/String;
+.line 405
+	const-string	v2,"service_disabled"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-nez	v2,lae18c
+; v2 : single-length
+	const-string	v2,"AndroidAuthKillSwitchException"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lae1aa
+; v2 : single-length
+lae18c:
+.line 407
+	const-string	v2,"Facebook-authorize"
+; v2 : Ljava/lang/String;
+	const-string	v3,"Hosted auth currently disabled. Retrying dialog auth..."
+; v3 : Ljava/lang/String;
+	invoke-static	{v2,v3},com/facebook/android/Util/logd	; logd(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 409
+	iget-object	v2,v8,com/facebook/android/Facebook.mAuthActivity Landroid/app/Activity;
+; v2 : Landroid/app/Activity; , v8 : Lcom/facebook/android/Facebook;
+	iget-object	v3,v8,com/facebook/android/Facebook.mAuthPermissions [Ljava/lang/String;
+; v3 : [Ljava/lang/String; , v8 : Lcom/facebook/android/Facebook;
+	invoke-direct	{v8,v2,v3},com/facebook/android/Facebook/startDialogAuth	; startDialogAuth(Landroid/app/Activity;[Ljava/lang/String;)V
+; v8 : Lcom/facebook/android/Facebook; , v2 : Landroid/app/Activity; , v3 : [Ljava/lang/String;
+lae1a8:
+.line 462
+	return-void	
+lae1aa:
+.line 410
+	const-string	v2,"access_denied"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-nez	v2,lae1ca
+; v2 : single-length
+	const-string	v2,"OAuthAccessDeniedException"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lae1e4
+; v2 : single-length
+lae1ca:
+.line 412
+	const-string	v2,"Facebook-authorize"
+; v2 : Ljava/lang/String;
+	const-string	v3,"Login canceled by user."
+; v3 : Ljava/lang/String;
+	invoke-static	{v2,v3},com/facebook/android/Util/logd	; logd(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 413
+	iget-object	v2,v8,com/facebook/android/Facebook.mAuthDialogListener Lcom/facebook/android/Facebook$DialogListener;
+; v2 : Lcom/facebook/android/Facebook$DialogListener; , v8 : Lcom/facebook/android/Facebook;
+	invoke-interface	{v2},com/facebook/android/Facebook$DialogListener/onCancel	; onCancel()V
+; v2 : Lcom/facebook/android/Facebook$DialogListener;
+	goto	lae1a8
+lae1e4:
+.line 415
+	const-string	v2,"error_description"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v11,v2},android/content/Intent/getStringExtra	; getStringExtra(Ljava/lang/String;)Ljava/lang/String;
+; v11 : Landroid/content/Intent; , v2 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 416
+	if-eqz	v0,lae222
+; v0 : Ljava/lang/String;
+.line 417
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,":"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+lae222:
+.line 419
+	const-string	v2,"Facebook-authorize"
+; v2 : Ljava/lang/String;
+	new-instance	v3,java/lang/StringBuilder
+; v3 : Ljava/lang/StringBuilder;
+	invoke-direct	{v3},java/lang/StringBuilder/<init>	; <init>()V
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"Login failed: "
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-static	{v2,v3},com/facebook/android/Util/logd	; logd(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 420
+	iget-object	v2,v8,com/facebook/android/Facebook.mAuthDialogListener Lcom/facebook/android/Facebook$DialogListener;
+; v2 : Lcom/facebook/android/Facebook$DialogListener; , v8 : Lcom/facebook/android/Facebook;
+	new-instance	v3,com/facebook/android/FacebookError
+; v3 : Lcom/facebook/android/FacebookError;
+	invoke-direct	{v3,v1},com/facebook/android/FacebookError/<init>	; <init>(Ljava/lang/String;)V
+; v3 : Lcom/facebook/android/FacebookError; , v1 : Ljava/lang/String;
+	invoke-interface	{v2,v3},com/facebook/android/Facebook$DialogListener/onFacebookError	; onFacebookError(Lcom/facebook/android/FacebookError;)V
+; v2 : Lcom/facebook/android/Facebook$DialogListener; , v3 : Lcom/facebook/android/FacebookError;
+	goto	lae1a8
+lae268:
+.line 426
+	const-string	v2,"access_token"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v11,v2},android/content/Intent/getStringExtra	; getStringExtra(Ljava/lang/String;)Ljava/lang/String;
+; v11 : Landroid/content/Intent; , v2 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v8,v2},com/facebook/android/Facebook/setAccessToken	; setAccessToken(Ljava/lang/String;)V
+; v8 : Lcom/facebook/android/Facebook; , v2 : Ljava/lang/String;
+.line 427
+	const-string	v2,"expires_in"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v11,v2},android/content/Intent/getStringExtra	; getStringExtra(Ljava/lang/String;)Ljava/lang/String;
+; v11 : Landroid/content/Intent; , v2 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v8,v2},com/facebook/android/Facebook/setAccessExpiresIn	; setAccessExpiresIn(Ljava/lang/String;)V
+; v8 : Lcom/facebook/android/Facebook; , v2 : Ljava/lang/String;
+.line 428
+	invoke-virtual	{v8},com/facebook/android/Facebook/isSessionValid	; isSessionValid()Z
+; v8 : Lcom/facebook/android/Facebook;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lae30a
+; v2 : single-length
+.line 429
+	const-string	v2,"Facebook-authorize"
+; v2 : Ljava/lang/String;
+	new-instance	v3,java/lang/StringBuilder
+; v3 : Ljava/lang/StringBuilder;
+	invoke-direct	{v3},java/lang/StringBuilder/<init>	; <init>()V
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"Login Success! access_token="
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v8},com/facebook/android/Facebook/getAccessToken	; getAccessToken()Ljava/lang/String;
+; v8 : Lcom/facebook/android/Facebook;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4," expires="
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v8},com/facebook/android/Facebook/getAccessExpires	; getAccessExpires()J
+; v8 : Lcom/facebook/android/Facebook;
+	move-result-wide	v4
+; v4 : double-length
+	invoke-virtual	{v3,v4,v5},java/lang/StringBuilder/append	; append(J)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : double-length
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-static	{v2,v3},com/facebook/android/Util/logd	; logd(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 433
+	iget-object	v2,v8,com/facebook/android/Facebook.mAuthDialogListener Lcom/facebook/android/Facebook$DialogListener;
+; v2 : Lcom/facebook/android/Facebook$DialogListener; , v8 : Lcom/facebook/android/Facebook;
+	invoke-virtual	{v11},android/content/Intent/getExtras	; getExtras()Landroid/os/Bundle;
+; v11 : Landroid/content/Intent;
+	move-result-object	v3
+; v3 : Landroid/os/Bundle;
+	invoke-interface	{v2,v3},com/facebook/android/Facebook$DialogListener/onComplete	; onComplete(Landroid/os/Bundle;)V
+; v2 : Lcom/facebook/android/Facebook$DialogListener; , v3 : Landroid/os/Bundle;
+lae2fe:
+.line 438
+	iput-object	v7,v8,com/facebook/android/Facebook.mAuthActivity Landroid/app/Activity;
+; v7 : single-length , v8 : Lcom/facebook/android/Facebook;
+.line 439
+	iput-object	v7,v8,com/facebook/android/Facebook.mAuthDialogListener Lcom/facebook/android/Facebook$DialogListener;
+; v7 : single-length , v8 : Lcom/facebook/android/Facebook;
+	goto/16	lae1a8
+lae30a:
+.line 435
+	iget-object	v2,v8,com/facebook/android/Facebook.mAuthDialogListener Lcom/facebook/android/Facebook$DialogListener;
+; v2 : Lcom/facebook/android/Facebook$DialogListener; , v8 : Lcom/facebook/android/Facebook;
+	new-instance	v3,com/facebook/android/FacebookError
+; v3 : Lcom/facebook/android/FacebookError;
+	const-string	v4,"Failed to receive access token."
+; v4 : Ljava/lang/String;
+	invoke-direct	{v3,v4},com/facebook/android/FacebookError/<init>	; <init>(Ljava/lang/String;)V
+; v3 : Lcom/facebook/android/FacebookError; , v4 : Ljava/lang/String;
+	invoke-interface	{v2,v3},com/facebook/android/Facebook$DialogListener/onFacebookError	; onFacebookError(Lcom/facebook/android/FacebookError;)V
+; v2 : Lcom/facebook/android/Facebook$DialogListener; , v3 : Lcom/facebook/android/FacebookError;
+	goto	lae2fe
+lae324:
+.line 443
+	if-nez	v10,lae1a8
+; v10 : single-length
+.line 446
+	if-eqz	v11,lae3a4
+; v11 : Landroid/content/Intent;
+.line 447
+	const-string	v2,"Facebook-authorize"
+; v2 : Ljava/lang/String;
+	new-instance	v3,java/lang/StringBuilder
+; v3 : Ljava/lang/StringBuilder;
+	invoke-direct	{v3},java/lang/StringBuilder/<init>	; <init>()V
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"Login failed: "
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"error"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v11,v4},android/content/Intent/getStringExtra	; getStringExtra(Ljava/lang/String;)Ljava/lang/String;
+; v11 : Landroid/content/Intent; , v4 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-static	{v2,v3},com/facebook/android/Util/logd	; logd(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 449
+	iget-object	v2,v8,com/facebook/android/Facebook.mAuthDialogListener Lcom/facebook/android/Facebook$DialogListener;
+; v2 : Lcom/facebook/android/Facebook$DialogListener; , v8 : Lcom/facebook/android/Facebook;
+	new-instance	v3,com/facebook/android/DialogError
+; v3 : Lcom/facebook/android/DialogError;
+	const-string	v4,"error"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v11,v4},android/content/Intent/getStringExtra	; getStringExtra(Ljava/lang/String;)Ljava/lang/String;
+; v11 : Landroid/content/Intent; , v4 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	const-string	v5,"error_code"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v11,v5,v6},android/content/Intent/getIntExtra	; getIntExtra(Ljava/lang/String;I)I
+; v11 : Landroid/content/Intent; , v5 : Ljava/lang/String; , v6 : single-length
+	move-result	v5
+; v5 : single-length
+	const-string	v6,"failing_url"
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v11,v6},android/content/Intent/getStringExtra	; getStringExtra(Ljava/lang/String;)Ljava/lang/String;
+; v11 : Landroid/content/Intent; , v6 : Ljava/lang/String;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-direct	{v3,v4,v5,v6},com/facebook/android/DialogError/<init>	; <init>(Ljava/lang/String;ILjava/lang/String;)V
+; v3 : Lcom/facebook/android/DialogError; , v4 : Ljava/lang/String; , v5 : single-length , v6 : Ljava/lang/String;
+	invoke-interface	{v2,v3},com/facebook/android/Facebook$DialogListener/onError	; onError(Lcom/facebook/android/DialogError;)V
+; v2 : Lcom/facebook/android/Facebook$DialogListener; , v3 : Lcom/facebook/android/DialogError;
+	goto/16	lae1a8
+lae3a4:
+.line 457
+	const-string	v2,"Facebook-authorize"
+; v2 : Ljava/lang/String;
+	const-string	v3,"Login canceled by user."
+; v3 : Ljava/lang/String;
+	invoke-static	{v2,v3},com/facebook/android/Util/logd	; logd(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 458
+	iget-object	v2,v8,com/facebook/android/Facebook.mAuthDialogListener Lcom/facebook/android/Facebook$DialogListener;
+; v2 : Lcom/facebook/android/Facebook$DialogListener; , v8 : Lcom/facebook/android/Facebook;
+	invoke-interface	{v2},com/facebook/android/Facebook$DialogListener/onCancel	; onCancel()V
+; v2 : Lcom/facebook/android/Facebook$DialogListener;
+	goto/16	lae1a8
+.end method
+
+.method public dialog(Landroid/content/Context;Ljava/lang/String;Landroid/os/Bundle;Lcom/facebook/android/Facebook$DialogListener;)V
+.limit registers 9
+; this: v4 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v5 (Landroid/content/Context;)
+; parameter[1] : v6 (Ljava/lang/String;)
+; parameter[2] : v7 (Landroid/os/Bundle;)
+; parameter[3] : v8 (Lcom/facebook/android/Facebook$DialogListener;)
+.var 1 is url Ljava/lang/String; from lae492 to lae4b2
+.line 796
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	sget-object	v3,com/facebook/android/Facebook.DIALOG_BASE_URL Ljava/lang/String;
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 797
+	const-string	v2,"display"
+; v2 : Ljava/lang/String;
+	const-string	v3,"touch"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v7,v2,v3},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v7 : Landroid/os/Bundle; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 798
+	const-string	v2,"redirect_uri"
+; v2 : Ljava/lang/String;
+	const-string	v3,"fbconnect://success"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v7,v2,v3},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v7 : Landroid/os/Bundle; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 800
+	const-string	v2,"oauth"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v6,v2},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v6 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lae4b2
+; v2 : single-length
+.line 801
+	const-string	v2,"type"
+; v2 : Ljava/lang/String;
+	const-string	v3,"user_agent"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v7,v2,v3},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v7 : Landroid/os/Bundle; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 802
+	const-string	v2,"client_id"
+; v2 : Ljava/lang/String;
+	iget-object	v3,v4,com/facebook/android/Facebook.mAppId Ljava/lang/String;
+; v3 : Ljava/lang/String; , v4 : Lcom/facebook/android/Facebook;
+	invoke-virtual	{v7,v2,v3},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v7 : Landroid/os/Bundle; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+lae43e:
+.line 807
+	invoke-virtual	{v4},com/facebook/android/Facebook/isSessionValid	; isSessionValid()Z
+; v4 : Lcom/facebook/android/Facebook;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lae45c
+; v2 : single-length
+.line 808
+	const-string	v2,"access_token"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v4},com/facebook/android/Facebook/getAccessToken	; getAccessToken()Ljava/lang/String;
+; v4 : Lcom/facebook/android/Facebook;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v7,v2,v3},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v7 : Landroid/os/Bundle; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+lae45c:
+.line 810
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"?"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-static	{v7},com/facebook/android/Util/encodeUrl	; encodeUrl(Landroid/os/Bundle;)Ljava/lang/String;
+; v7 : Landroid/os/Bundle;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 811
+	const-string	v2,"android.permission.INTERNET"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v5,v2},android/content/Context/checkCallingOrSelfPermission	; checkCallingOrSelfPermission(Ljava/lang/String;)I
+; v5 : Landroid/content/Context; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lae4c2
+; v2 : single-length
+.line 813
+	const-string	v2,"Error"
+; v2 : Ljava/lang/String;
+	const-string	v3,"Application requires permission to access the Internet"
+; v3 : Ljava/lang/String;
+	invoke-static	{v5,v2,v3},com/facebook/android/Util/showAlert	; showAlert(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V
+; v5 : Landroid/content/Context; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+lae4b0:
+.line 818
+	return-void	
+lae4b2:
+.line 804
+	const-string	v2,"app_id"
+; v2 : Ljava/lang/String;
+	iget-object	v3,v4,com/facebook/android/Facebook.mAppId Ljava/lang/String;
+; v3 : Ljava/lang/String; , v4 : Lcom/facebook/android/Facebook;
+	invoke-virtual	{v7,v2,v3},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v7 : Landroid/os/Bundle; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	goto	lae43e
+lae4c2:
+.line 816
+	new-instance	v2,com/facebook/android/FbDialog
+; v2 : Lcom/facebook/android/FbDialog;
+	invoke-direct	{v2,v5,v1,v8},com/facebook/android/FbDialog/<init>	; <init>(Landroid/content/Context;Ljava/lang/String;Lcom/facebook/android/Facebook$DialogListener;)V
+; v2 : Lcom/facebook/android/FbDialog; , v5 : Landroid/content/Context; , v1 : Ljava/lang/String; , v8 : Lcom/facebook/android/Facebook$DialogListener;
+	invoke-virtual	{v2},com/facebook/android/FbDialog/show	; show()V
+; v2 : Lcom/facebook/android/FbDialog;
+	goto	lae4b0
+.end method
+
+.method public dialog(Landroid/content/Context;Ljava/lang/String;Lcom/facebook/android/Facebook$DialogListener;)V
+.limit registers 5
+; this: v1 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v2 (Landroid/content/Context;)
+; parameter[1] : v3 (Ljava/lang/String;)
+; parameter[2] : v4 (Lcom/facebook/android/Facebook$DialogListener;)
+.line 773
+	new-instance	v0,android/os/Bundle
+; v0 : Landroid/os/Bundle;
+	invoke-direct	{v0},android/os/Bundle/<init>	; <init>()V
+; v0 : Landroid/os/Bundle;
+	invoke-virtual	{v1,v2,v3,v0,v4},com/facebook/android/Facebook/dialog	; dialog(Landroid/content/Context;Ljava/lang/String;Landroid/os/Bundle;Lcom/facebook/android/Facebook$DialogListener;)V
+; v1 : Lcom/facebook/android/Facebook; , v2 : Landroid/content/Context; , v3 : Ljava/lang/String; , v0 : Landroid/os/Bundle; , v4 : Lcom/facebook/android/Facebook$DialogListener;
+.line 774
+	return-void	
+.end method
+
+.method public extendAccessToken(Landroid/content/Context;Lcom/facebook/android/Facebook$ServiceListener;)Z
+.limit registers 6
+; this: v3 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v4 (Landroid/content/Context;)
+; parameter[1] : v5 (Lcom/facebook/android/Facebook$ServiceListener;)
+.line 484
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	invoke-direct	{v0},android/content/Intent/<init>	; <init>()V
+; v0 : Landroid/content/Intent;
+.line 486
+	const-string	v1,"com.facebook.katana"
+; v1 : Ljava/lang/String;
+	const-string	v2,"com.facebook.katana.platform.TokenRefreshService"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v2},android/content/Intent/setClassName	; setClassName(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+.line 492
+	invoke-direct	{v3,v4,v0},com/facebook/android/Facebook/validateServiceIntent	; validateServiceIntent(Landroid/content/Context;Landroid/content/Intent;)Z
+; v3 : Lcom/facebook/android/Facebook; , v4 : Landroid/content/Context; , v0 : Landroid/content/Intent;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,lae530
+; v1 : single-length
+.line 493
+	const/4	v1,0
+; v1 : single-length
+lae52e:
+.line 496
+	return	v1
+; v1 : single-length
+lae530:
+	new-instance	v1,com/facebook/android/Facebook$TokenRefreshServiceConnection
+; v1 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+	invoke-direct	{v1,v3,v4,v5},com/facebook/android/Facebook$TokenRefreshServiceConnection/<init>	; <init>(Lcom/facebook/android/Facebook;Landroid/content/Context;Lcom/facebook/android/Facebook$ServiceListener;)V
+; v1 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection; , v3 : Lcom/facebook/android/Facebook; , v4 : Landroid/content/Context; , v5 : Lcom/facebook/android/Facebook$ServiceListener;
+	const/4	v2,1
+; v2 : single-length
+	invoke-virtual	{v4,v0,v1,v2},android/content/Context/bindService	; bindService(Landroid/content/Intent;Landroid/content/ServiceConnection;I)Z
+; v4 : Landroid/content/Context; , v0 : Landroid/content/Intent; , v1 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection; , v2 : single-length
+	move-result	v1
+; v1 : single-length
+	goto	lae52e
+.end method
+
+.method public extendAccessTokenIfNeeded(Landroid/content/Context;Lcom/facebook/android/Facebook$ServiceListener;)Z
+.limit registers 4
+; this: v1 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v2 (Landroid/content/Context;)
+; parameter[1] : v3 (Lcom/facebook/android/Facebook$ServiceListener;)
+.line 508
+	invoke-virtual	{v1},com/facebook/android/Facebook/shouldExtendAccessToken	; shouldExtendAccessToken()Z
+; v1 : Lcom/facebook/android/Facebook;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,lae56e
+; v0 : single-length
+.line 509
+	invoke-virtual	{v1,v2,v3},com/facebook/android/Facebook/extendAccessToken	; extendAccessToken(Landroid/content/Context;Lcom/facebook/android/Facebook$ServiceListener;)Z
+; v1 : Lcom/facebook/android/Facebook; , v2 : Landroid/content/Context; , v3 : Lcom/facebook/android/Facebook$ServiceListener;
+	move-result	v0
+; v0 : single-length
+lae56c:
+.line 511
+	return	v0
+; v0 : single-length
+lae56e:
+	const/4	v0,1
+; v0 : single-length
+	goto	lae56c
+.end method
+
+.method public getAccessExpires()J
+.limit registers 3
+; this: v2 (Lcom/facebook/android/Facebook;)
+.line 846
+	iget-wide	v0,v2,com/facebook/android/Facebook.mAccessExpires J
+; v0 : double-length , v2 : Lcom/facebook/android/Facebook;
+	return-wide	v0
+; v0 : double-length
+.end method
+
+.method public getAccessToken()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lcom/facebook/android/Facebook;)
+.line 836
+	iget-object	v0,v1,com/facebook/android/Facebook.mAccessToken Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lcom/facebook/android/Facebook;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getAppId()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lcom/facebook/android/Facebook;)
+.line 886
+	iget-object	v0,v1,com/facebook/android/Facebook.mAppId Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lcom/facebook/android/Facebook;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public isSessionValid()Z
+.limit registers 5
+; this: v4 (Lcom/facebook/android/Facebook;)
+.line 824
+	invoke-virtual	{v4},com/facebook/android/Facebook/getAccessToken	; getAccessToken()Ljava/lang/String;
+; v4 : Lcom/facebook/android/Facebook;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	if-eqz	v0,lae608
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v4},com/facebook/android/Facebook/getAccessExpires	; getAccessExpires()J
+; v4 : Lcom/facebook/android/Facebook;
+	move-result-wide	v0
+; v0 : double-length
+	const-wide/16	v2,0
+; v2 : double-length
+	cmp-long	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : double-length
+	if-eqz	v0,lae604
+; v0 : single-length
+	invoke-static	{},java/lang/System/currentTimeMillis	; currentTimeMillis()J
+; 
+	nop	
+	move-result-wide	v0
+; v0 : double-length
+	invoke-virtual	{v4},com/facebook/android/Facebook/getAccessExpires	; getAccessExpires()J
+; v4 : Lcom/facebook/android/Facebook;
+	move-result-wide	v2
+; v2 : double-length
+	cmp-long	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : double-length
+	if-gez	v0,lae608
+; v0 : single-length
+lae604:
+	const/4	v0,1
+; v0 : single-length
+lae606:
+	return	v0
+; v0 : single-length
+lae608:
+	const/4	v0,0
+; v0 : single-length
+	goto	lae606
+.end method
+
+.method public logout(Landroid/content/Context;)Ljava/lang/String;
+.throws Ljava/net/MalformedURLException;
+.throws Ljava/io/IOException;
+.limit registers 6
+; this: v4 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v5 (Landroid/content/Context;)
+.line 625
+	invoke-static	{v5},com/facebook/android/Util/clearCookies	; clearCookies(Landroid/content/Context;)V
+; v5 : Landroid/content/Context;
+.line 626
+	new-instance	v0,android/os/Bundle
+; v0 : Landroid/os/Bundle;
+	invoke-direct	{v0},android/os/Bundle/<init>	; <init>()V
+; v0 : Landroid/os/Bundle;
+.line 627
+	const-string	v2,"method"
+; v2 : Ljava/lang/String;
+	const-string	v3,"auth.expireSession"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v0,v2,v3},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Landroid/os/Bundle; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 628
+	invoke-virtual	{v4,v0},com/facebook/android/Facebook/request	; request(Landroid/os/Bundle;)Ljava/lang/String;
+; v4 : Lcom/facebook/android/Facebook; , v0 : Landroid/os/Bundle;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 629
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v4,v2},com/facebook/android/Facebook/setAccessToken	; setAccessToken(Ljava/lang/String;)V
+; v4 : Lcom/facebook/android/Facebook; , v2 : single-length
+.line 630
+	const-wide/16	v2,0
+; v2 : double-length
+	invoke-virtual	{v4,v2,v3},com/facebook/android/Facebook/setAccessExpires	; setAccessExpires(J)V
+; v4 : Lcom/facebook/android/Facebook; , v2 : double-length
+.line 631
+	return-object	v1
+; v1 : Ljava/lang/String;
+.end method
+
+.method public request(Landroid/os/Bundle;)Ljava/lang/String;
+.throws Ljava/io/FileNotFoundException;
+.throws Ljava/net/MalformedURLException;
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v2 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v3 (Landroid/os/Bundle;)
+.line 664
+	const-string	v0,"method"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v3,v0},android/os/Bundle/containsKey	; containsKey(Ljava/lang/String;)Z
+; v3 : Landroid/os/Bundle; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,lae688
+; v0 : single-length
+.line 665
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"API method must be specified. (parameters must contain key "method" and value). See http://developers.facebook.com/docs/reference/rest"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+lae688:
+.line 669
+	const/4	v0,0
+; v0 : single-length
+	const-string	v1,"GET"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v2,v0,v3,v1},com/facebook/android/Facebook/request	; request(Ljava/lang/String;Landroid/os/Bundle;Ljava/lang/String;)Ljava/lang/String;
+; v2 : Lcom/facebook/android/Facebook; , v0 : single-length , v3 : Landroid/os/Bundle; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public request(Ljava/lang/String;)Ljava/lang/String;
+.throws Ljava/io/FileNotFoundException;
+.throws Ljava/net/MalformedURLException;
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v2 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 690
+	new-instance	v0,android/os/Bundle
+; v0 : Landroid/os/Bundle;
+	invoke-direct	{v0},android/os/Bundle/<init>	; <init>()V
+; v0 : Landroid/os/Bundle;
+	const-string	v1,"GET"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v2,v3,v0,v1},com/facebook/android/Facebook/request	; request(Ljava/lang/String;Landroid/os/Bundle;Ljava/lang/String;)Ljava/lang/String;
+; v2 : Lcom/facebook/android/Facebook; , v3 : Ljava/lang/String; , v0 : Landroid/os/Bundle; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public request(Ljava/lang/String;Landroid/os/Bundle;)Ljava/lang/String;
+.throws Ljava/io/FileNotFoundException;
+.throws Ljava/net/MalformedURLException;
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v1 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v2 (Ljava/lang/String;)
+; parameter[1] : v3 (Landroid/os/Bundle;)
+.line 717
+	const-string	v0,"GET"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v2,v3,v0},com/facebook/android/Facebook/request	; request(Ljava/lang/String;Landroid/os/Bundle;Ljava/lang/String;)Ljava/lang/String;
+; v1 : Lcom/facebook/android/Facebook; , v2 : Ljava/lang/String; , v3 : Landroid/os/Bundle; , v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public request(Ljava/lang/String;Landroid/os/Bundle;Ljava/lang/String;)Ljava/lang/String;
+.throws Ljava/io/FileNotFoundException;
+.throws Ljava/net/MalformedURLException;
+.throws Ljava/io/IOException;
+.limit registers 7
+; this: v3 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v4 (Ljava/lang/String;)
+; parameter[1] : v5 (Landroid/os/Bundle;)
+; parameter[2] : v6 (Ljava/lang/String;)
+.var 0 is url Ljava/lang/String; from lae746 to lae750
+.line 747
+	const-string	v1,"format"
+; v1 : Ljava/lang/String;
+	const-string	v2,"json"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v5,v1,v2},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v5 : Landroid/os/Bundle; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+.line 748
+	invoke-virtual	{v3},com/facebook/android/Facebook/isSessionValid	; isSessionValid()Z
+; v3 : Lcom/facebook/android/Facebook;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,lae71c
+; v1 : single-length
+.line 749
+	const-string	v1,"access_token"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v3},com/facebook/android/Facebook/getAccessToken	; getAccessToken()Ljava/lang/String;
+; v3 : Lcom/facebook/android/Facebook;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v5,v1,v2},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v5 : Landroid/os/Bundle; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+lae71c:
+.line 751
+	if-eqz	v4,lae750
+; v4 : Ljava/lang/String;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	sget-object	v2,com/facebook/android/Facebook.GRAPH_BASE_URL Ljava/lang/String;
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+lae746:
+.line 753
+	invoke-static	{v0,v6,v5},com/facebook/android/Util/openUrl	; openUrl(Ljava/lang/String;Ljava/lang/String;Landroid/os/Bundle;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v6 : Ljava/lang/String; , v5 : Landroid/os/Bundle;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	return-object	v1
+; v1 : Ljava/lang/String;
+lae750:
+.line 751
+	sget-object	v0,com/facebook/android/Facebook.RESTSERVER_URL Ljava/lang/String;
+; v0 : Ljava/lang/String;
+	goto	lae746
+.end method
+
+.method public setAccessExpires(J)V
+.limit registers 3
+; this: v0 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v1 (J)
+.line 866
+	iput-wide	v1,v0,com/facebook/android/Facebook.mAccessExpires J
+; v1 : double-length , v0 : Lcom/facebook/android/Facebook;
+.line 867
+	return-void	
+.end method
+
+.method public setAccessExpiresIn(Ljava/lang/String;)V
+.limit registers 10
+; this: v8 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v9 (Ljava/lang/String;)
+.var 0 is expires J from lae798 to lae79e
+.line 877
+	if-eqz	v9,lae79e
+; v9 : Ljava/lang/String;
+.line 878
+	const-string	v2,"0"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v9,v2},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v9 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lae7a0
+; v2 : single-length
+	const-wide/16	v0,0
+; v0 : double-length
+lae798:
+.line 881
+	invoke-virtual	{v8,v0,v1},com/facebook/android/Facebook/setAccessExpires	; setAccessExpires(J)V
+; v8 : Lcom/facebook/android/Facebook; , v0 : double-length
+lae79e:
+.line 883
+	return-void	
+lae7a0:
+.line 878
+	invoke-static	{},java/lang/System/currentTimeMillis	; currentTimeMillis()J
+; 
+	nop	
+	move-result-wide	v2
+; v2 : double-length
+	invoke-static	{v9},java/lang/Long/parseLong	; parseLong(Ljava/lang/String;)J
+; v9 : Ljava/lang/String;
+	move-result-wide	v4
+; v4 : double-length
+	const-wide/16	v6,1000
+; v6 : double-length
+	mul-long/2addr	v4,v6
+; v4 : double-length , v6 : double-length
+	add-long	v0,v2,v4
+; v0 : double-length , v2 : double-length , v4 : double-length
+	goto	lae798
+.end method
+
+.method public setAccessToken(Ljava/lang/String;)V
+.limit registers 4
+; this: v2 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 855
+	iput-object	v3,v2,com/facebook/android/Facebook.mAccessToken Ljava/lang/String;
+; v3 : Ljava/lang/String; , v2 : Lcom/facebook/android/Facebook;
+.line 856
+	invoke-static	{},java/lang/System/currentTimeMillis	; currentTimeMillis()J
+; 
+	nop	
+	move-result-wide	v0
+; v0 : double-length
+	iput-wide	v0,v2,com/facebook/android/Facebook.mLastAccessUpdate J
+; v0 : double-length , v2 : Lcom/facebook/android/Facebook;
+.line 857
+	return-void	
+.end method
+
+.method public setAppId(Ljava/lang/String;)V
+.limit registers 2
+; this: v0 (Lcom/facebook/android/Facebook;)
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 890
+	iput-object	v1,v0,com/facebook/android/Facebook.mAppId Ljava/lang/String;
+; v1 : Ljava/lang/String; , v0 : Lcom/facebook/android/Facebook;
+.line 891
+	return-void	
+.end method
+
+.method public shouldExtendAccessToken()Z
+.limit registers 5
+; this: v4 (Lcom/facebook/android/Facebook;)
+.line 520
+	invoke-virtual	{v4},com/facebook/android/Facebook/isSessionValid	; isSessionValid()Z
+; v4 : Lcom/facebook/android/Facebook;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,lae834
+; v0 : single-length
+	invoke-static	{},java/lang/System/currentTimeMillis	; currentTimeMillis()J
+; 
+	nop	
+	move-result-wide	v0
+; v0 : double-length
+	iget-wide	v2,v4,com/facebook/android/Facebook.mLastAccessUpdate J
+; v2 : double-length , v4 : Lcom/facebook/android/Facebook;
+	sub-long/2addr	v0,v2
+; v0 : double-length , v2 : double-length
+	const-wide/32	v2,86400000	; 0x5265c00
+; v2 : double-length
+	cmp-long	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : double-length
+	if-ltz	v0,lae834
+; v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+lae832:
+	return	v0
+; v0 : single-length
+lae834:
+	const/4	v0,0
+; v0 : single-length
+	goto	lae832
+.end method
+
+

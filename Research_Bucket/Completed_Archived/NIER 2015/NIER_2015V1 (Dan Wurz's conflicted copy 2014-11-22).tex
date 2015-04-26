@@ -1,0 +1,226 @@
+
+\documentclass[conference]{IEEEtran}
+
+
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{array}
+\usepackage{color}
+\usepackage{verbatim}
+\usepackage{subfigure}
+\usepackage{bigstrut}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{comment}
+
+
+
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{listings}
+%\usepackage{pxfonts}
+\usepackage{times}
+%\usepackage{xspace}
+\usepackage{booktabs}
+\usepackage{fancybox}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{url}
+\urlstyle{same}
+%\usepackage{xcolor}
+%\usepackage{pgfplots}
+%\usepackage{tikz}
+%\usepackage{caption}
+%\usetikzlibrary{shapes,arrows, positioning}
+%\usetikzlibrary{patterns}
+%\usepackage[numbers]{natbib} % Used to fix formatting issue.
+%\usepackage{soul} % Needed for wrapping of highlighted text
+\usepackage{balance} % Used to balance out the columns
+
+
+
+\usepackage{cite}
+\usepackage{color}
+\usepackage{courier}
+\usepackage{listings}
+\usepackage{url}
+%\usepackage{balance} % Add this back in. Probably needed during camera ready.
+%\usepackage{listings} % Not sure this does anything here
+\usepackage{tikz} % Need for all tikz material
+\usetikzlibrary{shapes,arrows, positioning} %  Need for all tikz material
+%\usepackage{balance}
+
+\usepackage{times} % Used for formatting formatting url footnotes
+\urlstyle{same} % Used for formatting formatting url footnotes
+\usepackage{caption} % Used for formatting formatting url footnotes
+\usepackage{graphicx}
+%\usepackage{subcaption}
+
+
+
+
+
+\lstset{ %
+language=C,                % choose the language of the code
+%xleftmargin=100pt,xrightmargin=100pt
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+%numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it is 1 each line will be numbered
+numbersep=3pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=none,           % adds a frame around the code
+tabsize=2,          % sets default tabsize to 2 spaces
+captionpos=t,           % sets the caption-position to bottom
+%captionpos=b,           % sets the caption-position to bottom
+breaklines=true,        % sets automatic line breaking
+breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)}          % if you want to add a comment within your code
+}
+
+\setlength{\abovecaptionskip}{6pt plus 3pt minus 2pt} % Space over captions
+%\setlength{\belowcaptionskip}{6pt plus 3pt minus 2pt} % Space under captions
+
+
+
+\lstdefinestyle{ConcolicOutput}{
+   % language={SQL},basicstyle=\ttfamily,
+    moredelim=**[is][\btHL]{`}{`},
+   % moredelim=**[is][{\btHL[fill=green!30,draw=red,dashed,thin]}]{@}{@},
+}
+
+
+
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{Architectural Clones: A Step Toward Recommending Tactical Codes}
+
+\author{\IEEEauthorblockN{Mehdi Mirakhorli and Daniel E. Krutz, }
+\IEEEauthorblockA{
+Rochester Institute of Technology,
+Rochester, NY, USA\\
+\{mxmvse,dxkvse\}@rit.edu}
+}
+
+
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+
+\begin{abstract}
+%\boldmath
+
+Architectural tactics are building blocks of software architecture. They describe solutions for addressing specific quality concerns, and are prevalent across many software systems. Once a decision is made to utilize a tactic, the developer must generate a concrete plan for implementing the tactic in the code. Unfortunately, this a non-trivial task for many inexperienced developers. Developers often use code search engines, crowd-sourcing websites, or discussion forums to find sample code snippets. A robust tactic recommender system can replace this manual internet based search process and assist developers to reuse successful architectural knowledge, as well as implementation of tactics and patterns  from a wide range of open source systems. In this paper we study several implementations of architectural choices in the open source community and identify the foundation of building a practical tactic recommender system. As a result of this study we introduce the concept of~\emph{tactical-clones} and use that as a basic element to develop our recommender system. While this NIER paper does not present the details of our recommender engine instead it proposes the notion which we will base our architecture recommender system upon.
+
+\end{abstract}
+% IEEEtran.cls defaults to using nonbold math in the Abstract.
+% This preserves the distinction between vectors and scalars. However,
+% if the conference you are submitting to favors bold math in the abstract,
+% then you can use LaTeX's standard command \boldmath at the very start
+% of the abstract to achieve this. Many IEEE journals/conferences frown on
+% math in the abstract anyway.
+
+% no keywords
+
+
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Introduction}
+The success of any complex software-intensive system is dependent on how that system addresses stakeholders' quality attribute concerns such as security, usability, availability, interoperability, performance, etc. Designing a system to satisfy such concerns involves devising and comparing alternate solutions, understanding their trade-offs, and ultimately making a series of design choices. These architectural decisions typically begin with design primitives such as architectural tactics and patterns.
+
+Tactics are the building blocks of architectural design \cite{bass:arch12}, reflecting the fundamental choices that an architect makes to address a  quality attribute concern. Because they are building blocks, tactics are composed together to form patterns. Architectural tactics come in many different shapes and sizes and describe solutions for a wide range of quality concerns.  They are particularly prevalent across high-performance and/or fault tolerant software systems.  For example, reliability tactics such as \emph{redundancy with voting}, \emph{heartbeat}, and \emph{check pointing} provide solutions for fault mitigation, detection, and recovery; while performance tactics such as \emph{resource pooling} and \emph{scheduling} help optimize response time and latency .
+
+
+The importance of implementing architectural tactics rigorously and robustly was highlighted by a small study we conducted as a precursor to this work.  We investigated tactic implementations in Hadoop  and OFBiz and evaluated their degree of stability during the maintenance process.  For each of these projects we retrieved a list of bug fixes from the change logs (Nov. 2008 - Nov. 2011 for Hadoop, and Jan. 2009 - Nov. 2011 for OFBiz). Our analysis showed that tactics-related classes incurred 2.8 times as many bugs in Hadoop, and 2.0 times as many bugs in OFBiz as non-tactics related classes, suggesting that tactic implementations, if not developed correctly, are likely to contribute towards the well-documented problem of architectural degradation \cite{Erosion} and hence development of security architecture weaknesses.
+
+Less experienced developers sometimes find this challenging, primarily because of the variability points that exist in a tactic, and the numerous design decisions that need to be made in order to implement a tactic in a robust and effective way. We found many examples of such questions.
+
+In another detailed investigation we observed that even when the architectural tactics are chosen upfront, developers\textemdash especially less experienced ones\textemdash often face difficulties implementing these design choices. We found evidence of what we refer to as \emph{rudimentary implementations}, where architectural tactics are implemented incompletely or incorrectly. Our investigation of rudimentary implementation of tactics in Hadoop and OFBiz projects showed that such immature implementations  incurred 2.8 times as many bugs in Hadoop, and 2.0 times as many bugs in OFBiz as non-tactic related classes, suggesting that tactic implementations, if not developed correctly, are likely to contribute towards the well-documented problem of architectural degradation \cite{Erosion}. In another preliminary work, we studied the implementation of security tactics in Chromium Browser and we observed that 10\% of tactic implementations resulted in reported  vulnerabilities in terms of CVEs.
+
+A robust tactic recommender system that shares sample code snippets from successful implementation of tactics in open source community can provide valuable support for the developers. This papers discuss the foundation of such recommender system.
+
+\section{Tactic's Implementation: Seen and Unseen}
+ This section reports the results of our studies containing over 50 open source systems.
+ 
+ 
+\noindent \textbf{$\bullet$ No Single Solution.}
+There is no single way to implement an architectural tactic. From one system to another system a tactic can be implemented entirely differently according to the context and constraints of each project. For example, studies the source code of more than 25 applications which implemented \emph{heartbeat} tactic. We observed the heartbeat tactic being implemented using (i) direct communication between the emitter and receiver roles \emph{(found in Chat3 and Smartfrog systems)}, (ii) the observer pattern in which the receiver is registered as a listener to the emitter \emph{found in the Amalgam system}, (iii) the decorator pattern in which the heartbeat functionality was added as a wrapper to a core service \emph{(found in Rossume and jworkosgi systems)}, and finally (iv) numerous proprietary implementations which did not follow any documented design notion.
+
+\noindent \textbf{$\bullet$ While structure is not a key, it can impact quality.}
+Unlike design patterns, which tend to be described in terms of classes and their associations , tactics are described in terms of roles and interactions \cite{bass:arch12}.  This means a tactic is not dependent upon a specific {\em structural} format. While a single tactic might be implemented using a variety of design notions or proprietary designs, the structural properties of tactical files can have significant on the quality of the tactic. For example flaws such as cyclic dependences, improper inheritance, unstable interfaces, and modularity violations are strongly correlated to increased bug rates and increased costs of maintaining the software. There are several reports of inappropriate usage of \emph{inheritance} relationship in implementation of \emph{sandbox} tactic where a process outside sandbox had inheritance relationship with a process inside sandbox resulting in a breach into secure zones in a project.
+
+\noindent \textbf{$\bullet$ Reusable Clones.}
+While the implementation of tactics are different form one system to another systems, the nuances (intrinsic characteristics) of tactics are maintained across different projects. We call these tactical clones. Based on our observation, tactical clones are the right level of granularity for recommending tactic implementations.
+In 25 systems that we manually investigated the implementation of Heartbeat tactic in, we found that even for a simple tactic like heartbeat the implementation would result in a large number of interrelated files, each playing different roles such as heartbeat emitter, heartbeat receiver, configuration files to set heartbeat intervals, supporting classes and interfaces to implement each  tactical role and so on. The lack of structure, and a concrete micro-level design which can be recovered across multiple projects indicates that method level clones are the right level of granularity.
+
+
+
+
+\noindent \textbf{$\bullet$ Tactics are misused.} The state of tactic adoption in open source community indicates that many times architectural tactics are adopted in situations while the developers have not been fully aware of the consequences, driving forces and variability points \cite{FSE2012} associated with each tactic.
+Heartblead issue us a good example of such misuse. Heartbeat functionality in OpenSSL is an optional feature, while many developers could have easily disabled it in configuration files they fully ignored that. Furthermore, the implementation of heartbeat functionality did not followed solid software engineering practices. While separation of concerns and having heartbeat tactic independent from underling functions could have prevented heartblead issue. We found examples of heartbeat tactic implemented using decorator pattern which could have prevented this issue.
+Moreover we found examples in Hadoop project where the developers widely used the term Heartbeat for referring to a function which was close to implementation of ping/echo. These two tactics although are similar have different driving requirements.
+In our analysis of Bug reports in tactical fragments of Hadoop project we found that simply  (89\%) buggy implementation of tactics where due to problems such as  unhandled exception, type mismatch, or missing values in a configuration file. While  (11\%) of reports where due to wrong implementation. These bugs involved misconceptions in the use of the tactic, so that the tactic failed to adequately accomplish its architectural task.  These kinds of bugs caused the system to crash under certain circumstances.  For example, in one case a replication decision with a complex synchronization mechanism was misunderstood for different types of replica failure.
+Another example was a scheduling tactic which resulted in deadlock problem. This investigation shows that systems are exposed to new risks during implementation of the tactical decisions. A good tactic recommendation needs to take into account tactical code qualities, the context in which the tactics are adopted and the historical bug fixes and refactoring activities on candidate clone for recommendation.
+
+
+\noindent \textbf{$\bullet$ Object Oriented Metric are not Indicator of Tactical Code Quality.}
+Our initial analysis of Chidamber and Kemerer's OO metrics~\cite{CK} and tactical code snippets in Apache Hadoop and Apache OfBiz systems indicates that tactical code snippets tend to relatively a have higher code complexity compared to non-tactical code snippets.
+Therefore metrics such as  \emph{WMC (Weighted Methods per Class)} measures the complexity of an individual class by summing the weighted methods, \emph{DIT (Depth of Inheritance Tree)} computes the number of ancestors of a class.\emph{RFC (Response For a Class)} computes the number of methods which can be directly or indirectly executed in response to a message to an object of that class,\emph{NOC (Number Of Children)} is the number of direct descendants for each class.\emph{CBO (Coupling Between Object classes)} shows the number of classes to which a given class is coupled, can not solely be a good indicator of a better tactical code snippets. A good tactic recommender system needs to take into account new and novel code metrics to filter good implementations from potentially buggy ones.
+
+
+
+
+
+
+
+\input{Study}
+
+
+
+
+% conference papers do not normally have an appendix
+
+
+\bibliographystyle{IEEEtran}
+
+
+
+\balance
+\bibliography{neir_2015}
+
+
+
+
+
+% that's all folks
+\end{document}
+
+

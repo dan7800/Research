@@ -1,0 +1,47 @@
+.class com/loopj/android/http/AsyncHttpClient$InflatingEntity
+.super org/apache/http/entity/HttpEntityWrapper
+.source AsyncHttpClient.java
+
+.inner class InflatingEntity inner com/loopj/android/http/AsyncHttpClient$InflatingEntity outer com/loopj/android/http/AsyncHttpClient
+
+.method public <init>(Lorg/apache/http/HttpEntity;)V
+.limit registers 2
+; this: v0 (Lcom/loopj/android/http/AsyncHttpClient$InflatingEntity;)
+; parameter[0] : v1 (Lorg/apache/http/HttpEntity;)
+.line 546
+	invoke-direct	{v0,v1},org/apache/http/entity/HttpEntityWrapper/<init>	; <init>(Lorg/apache/http/HttpEntity;)V
+; v0 : Lcom/loopj/android/http/AsyncHttpClient$InflatingEntity; , v1 : Lorg/apache/http/HttpEntity;
+.line 547
+	return-void	
+.end method
+
+.method public getContent()Ljava/io/InputStream;
+.throws Ljava/io/IOException;
+.limit registers 3
+; this: v2 (Lcom/loopj/android/http/AsyncHttpClient$InflatingEntity;)
+.line 551
+	new-instance	v0,java/util/zip/GZIPInputStream
+; v0 : Ljava/util/zip/GZIPInputStream;
+	iget-object	v1,v2,com/loopj/android/http/AsyncHttpClient$InflatingEntity.wrappedEntity Lorg/apache/http/HttpEntity;
+; v1 : Lorg/apache/http/HttpEntity; , v2 : Lcom/loopj/android/http/AsyncHttpClient$InflatingEntity;
+	invoke-interface	{v1},org/apache/http/HttpEntity/getContent	; getContent()Ljava/io/InputStream;
+; v1 : Lorg/apache/http/HttpEntity;
+	move-result-object	v1
+; v1 : Ljava/io/InputStream;
+	invoke-direct	{v0,v1},java/util/zip/GZIPInputStream/<init>	; <init>(Ljava/io/InputStream;)V
+; v0 : Ljava/util/zip/GZIPInputStream; , v1 : Ljava/io/InputStream;
+	return-object	v0
+; v0 : Ljava/util/zip/GZIPInputStream;
+.end method
+
+.method public getContentLength()J
+.limit registers 3
+; this: v2 (Lcom/loopj/android/http/AsyncHttpClient$InflatingEntity;)
+.line 556
+	const-wide/16	v0,65535
+; v0 : double-length
+	return-wide	v0
+; v0 : double-length
+.end method
+
+

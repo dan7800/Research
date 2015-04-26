@@ -1,0 +1,80 @@
+.class final com/crittercism/app/Crittercism$1
+.super android/os/Handler
+
+.inner class 1 inner com/crittercism/app/Crittercism$1 outer com/crittercism/app/Crittercism
+.field final a Lcom/crittercism/app/Crittercism;
+
+.method <init>(Lcom/crittercism/app/Crittercism;)V
+.limit registers 2
+; this: v0 (Lcom/crittercism/app/Crittercism$1;)
+; parameter[0] : v1 (Lcom/crittercism/app/Crittercism;)
+	iput-object	v1,v0,com/crittercism/app/Crittercism$1.a Lcom/crittercism/app/Crittercism;
+; v1 : Lcom/crittercism/app/Crittercism; , v0 : Lcom/crittercism/app/Crittercism$1;
+	invoke-direct	{v0},android/os/Handler/<init>	; <init>()V
+; v0 : Lcom/crittercism/app/Crittercism$1;
+	return-void	
+.end method
+
+.method public final handleMessage(Landroid/os/Message;)V
+.limit registers 6
+; this: v4 (Lcom/crittercism/app/Crittercism$1;)
+; parameter[0] : v5 (Landroid/os/Message;)
+.catch java/lang/Exception from laab1a to laab66 using laab68
+	invoke-super	{v4,v5},android/os/Handler/handleMessage	; handleMessage(Landroid/os/Message;)V
+; v4 : Lcom/crittercism/app/Crittercism$1; , v5 : Landroid/os/Message;
+	invoke-virtual	{v5},android/os/Message/getData	; getData()Landroid/os/Bundle;
+; v5 : Landroid/os/Message;
+	move-result-object	v0
+; v0 : Landroid/os/Bundle;
+	const-string	v1,"notification"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},android/os/Bundle/containsKey	; containsKey(Ljava/lang/String;)Z
+; v0 : Landroid/os/Bundle; , v1 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,laab66
+; v1 : single-length
+laab1a:
+	new-instance	v1,android/content/Intent
+; v1 : Landroid/content/Intent;
+	iget-object	v2,v4,com/crittercism/app/Crittercism$1.a Lcom/crittercism/app/Crittercism;
+; v2 : Lcom/crittercism/app/Crittercism; , v4 : Lcom/crittercism/app/Crittercism$1;
+	invoke-static	{v2},com/crittercism/app/Crittercism/a	; a(Lcom/crittercism/app/Crittercism;)Landroid/content/Context;
+; v2 : Lcom/crittercism/app/Crittercism;
+	move-result-object	v2
+; v2 : Landroid/content/Context;
+	const-class	v3,com/crittercism/NotificationActivity
+; v3 : Ljava/lang/Class;
+	invoke-direct	{v1,v2,v3},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v1 : Landroid/content/Intent; , v2 : Landroid/content/Context; , v3 : Ljava/lang/Class;
+	const/high16	v2,4160
+; v2 : single-length
+	invoke-virtual	{v1,v2},android/content/Intent/setFlags	; setFlags(I)Landroid/content/Intent;
+; v1 : Landroid/content/Intent; , v2 : single-length
+	const-string	v2,"com.crittercism.notification"
+; v2 : Ljava/lang/String;
+	const-string	v3,"notification"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v0,v3},android/os/Bundle/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v0 : Landroid/os/Bundle; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v2,v0},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+; v1 : Landroid/content/Intent; , v2 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	iget-object	v0,v4,com/crittercism/app/Crittercism$1.a Lcom/crittercism/app/Crittercism;
+; v0 : Lcom/crittercism/app/Crittercism; , v4 : Lcom/crittercism/app/Crittercism$1;
+	invoke-static	{v0},com/crittercism/app/Crittercism/a	; a(Lcom/crittercism/app/Crittercism;)Landroid/content/Context;
+; v0 : Lcom/crittercism/app/Crittercism;
+	move-result-object	v0
+; v0 : Landroid/content/Context;
+	invoke-virtual	{v0,v1},android/content/Context/startActivity	; startActivity(Landroid/content/Intent;)V
+; v0 : Landroid/content/Context; , v1 : Landroid/content/Intent;
+laab66:
+	return-void	
+laab68:
+	move-exception	v0
+; v0 : java/lang/Exception
+	goto	laab66
+.end method
+
+

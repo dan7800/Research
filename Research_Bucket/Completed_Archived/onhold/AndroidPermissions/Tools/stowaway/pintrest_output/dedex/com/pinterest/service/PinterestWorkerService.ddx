@@ -1,0 +1,598 @@
+.class public com/pinterest/service/PinterestWorkerService
+.super android/app/Service
+.source PinterestWorkerService.java
+
+.field private _handler Landroid/os/Handler;
+.field private _locationTimer Ljava/util/Timer;
+.field private _notificationManager Landroid/app/NotificationManager;
+.field private _running Z
+.field private _uploadFileObserver Landroid/os/FileObserver;
+.field private _uploadHardRetry I
+.field private _uploadInProgress Z
+.field private _uploadPendingFiles Ljava/util/List;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/List" , "<" , "Ljava/io/File;" , ">;" }
+  .end annotation
+.end field
+.field private _uploadSoftyRetry I
+.field private _uploadThread Ljava/lang/Thread;
+.field private onPinUpload Lcom/pinterest/api/PAPIHttpResponseHandler;
+
+.method public <init>()V
+.limit registers 3
+; this: v2 (Lcom/pinterest/service/PinterestWorkerService;)
+	const/4	v0,0
+; v0 : single-length
+.line 36
+	invoke-direct	{v2},android/app/Service/<init>	; <init>()V
+; v2 : Lcom/pinterest/service/PinterestWorkerService;
+.line 277
+	iput-boolean	v0,v2,com/pinterest/service/PinterestWorkerService._uploadInProgress Z
+; v0 : single-length , v2 : Lcom/pinterest/service/PinterestWorkerService;
+.line 278
+	iput	v0,v2,com/pinterest/service/PinterestWorkerService._uploadSoftyRetry I
+; v0 : single-length , v2 : Lcom/pinterest/service/PinterestWorkerService;
+.line 279
+	iput	v0,v2,com/pinterest/service/PinterestWorkerService._uploadHardRetry I
+; v0 : single-length , v2 : Lcom/pinterest/service/PinterestWorkerService;
+.line 312
+	new-instance	v0,com/pinterest/service/PinterestWorkerService$1
+; v0 : Lcom/pinterest/service/PinterestWorkerService$1;
+	invoke-static	{},com/pinterest/service/PinterestWorkerService/getPendingJSONFolder	; getPendingJSONFolder()Ljava/lang/String;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v2,v1},com/pinterest/service/PinterestWorkerService$1/<init>	; <init>(Lcom/pinterest/service/PinterestWorkerService;Ljava/lang/String;)V
+; v0 : Lcom/pinterest/service/PinterestWorkerService$1; , v2 : Lcom/pinterest/service/PinterestWorkerService; , v1 : Ljava/lang/String;
+	iput-object	v0,v2,com/pinterest/service/PinterestWorkerService._uploadFileObserver Landroid/os/FileObserver;
+; v0 : Lcom/pinterest/service/PinterestWorkerService$1; , v2 : Lcom/pinterest/service/PinterestWorkerService;
+.line 334
+	new-instance	v0,java/lang/Thread
+; v0 : Ljava/lang/Thread;
+	new-instance	v1,com/pinterest/service/PinterestWorkerService$2
+; v1 : Lcom/pinterest/service/PinterestWorkerService$2;
+	invoke-direct	{v1,v2},com/pinterest/service/PinterestWorkerService$2/<init>	; <init>(Lcom/pinterest/service/PinterestWorkerService;)V
+; v1 : Lcom/pinterest/service/PinterestWorkerService$2; , v2 : Lcom/pinterest/service/PinterestWorkerService;
+	invoke-direct	{v0,v1},java/lang/Thread/<init>	; <init>(Ljava/lang/Runnable;)V
+; v0 : Ljava/lang/Thread; , v1 : Lcom/pinterest/service/PinterestWorkerService$2;
+	iput-object	v0,v2,com/pinterest/service/PinterestWorkerService._uploadThread Ljava/lang/Thread;
+; v0 : Ljava/lang/Thread; , v2 : Lcom/pinterest/service/PinterestWorkerService;
+.line 370
+	new-instance	v0,com/pinterest/service/PinterestWorkerService$3
+; v0 : Lcom/pinterest/service/PinterestWorkerService$3;
+	invoke-direct	{v0,v2},com/pinterest/service/PinterestWorkerService$3/<init>	; <init>(Lcom/pinterest/service/PinterestWorkerService;)V
+; v0 : Lcom/pinterest/service/PinterestWorkerService$3; , v2 : Lcom/pinterest/service/PinterestWorkerService;
+	iput-object	v0,v2,com/pinterest/service/PinterestWorkerService.onPinUpload Lcom/pinterest/api/PAPIHttpResponseHandler;
+; v0 : Lcom/pinterest/service/PinterestWorkerService$3; , v2 : Lcom/pinterest/service/PinterestWorkerService;
+	return-void	
+.end method
+
+.method static access$000(Lcom/pinterest/service/PinterestWorkerService;)V
+.limit registers 1
+; parameter[0] : v0 (Lcom/pinterest/service/PinterestWorkerService;)
+.line 36
+	invoke-direct	{v0},com/pinterest/service/PinterestWorkerService/checkForPendingUploads	; checkForPendingUploads()V
+; v0 : Lcom/pinterest/service/PinterestWorkerService;
+	return-void	
+.end method
+
+.method static access$100(Lcom/pinterest/service/PinterestWorkerService;)Ljava/util/List;
+.limit registers 2
+; parameter[0] : v1 (Lcom/pinterest/service/PinterestWorkerService;)
+.line 36
+	iget-object	v0,v1,com/pinterest/service/PinterestWorkerService._uploadPendingFiles Ljava/util/List;
+; v0 : Ljava/util/List; , v1 : Lcom/pinterest/service/PinterestWorkerService;
+	return-object	v0
+; v0 : Ljava/util/List;
+.end method
+
+.method static access$200(Lcom/pinterest/service/PinterestWorkerService;)Z
+.limit registers 2
+; parameter[0] : v1 (Lcom/pinterest/service/PinterestWorkerService;)
+.line 36
+	iget-boolean	v0,v1,com/pinterest/service/PinterestWorkerService._uploadInProgress Z
+; v0 : single-length , v1 : Lcom/pinterest/service/PinterestWorkerService;
+	return	v0
+; v0 : single-length
+.end method
+
+.method static access$202(Lcom/pinterest/service/PinterestWorkerService;Z)Z
+.limit registers 2
+; parameter[0] : v0 (Lcom/pinterest/service/PinterestWorkerService;)
+; parameter[1] : v1 (Z)
+.line 36
+	iput-boolean	v1,v0,com/pinterest/service/PinterestWorkerService._uploadInProgress Z
+; v1 : single-length , v0 : Lcom/pinterest/service/PinterestWorkerService;
+	return	v1
+; v1 : single-length
+.end method
+
+.method static access$300(Lcom/pinterest/service/PinterestWorkerService;)Lcom/pinterest/api/PAPIHttpResponseHandler;
+.limit registers 2
+; parameter[0] : v1 (Lcom/pinterest/service/PinterestWorkerService;)
+.line 36
+	iget-object	v0,v1,com/pinterest/service/PinterestWorkerService.onPinUpload Lcom/pinterest/api/PAPIHttpResponseHandler;
+; v0 : Lcom/pinterest/api/PAPIHttpResponseHandler; , v1 : Lcom/pinterest/service/PinterestWorkerService;
+	return-object	v0
+; v0 : Lcom/pinterest/api/PAPIHttpResponseHandler;
+.end method
+
+.method static access$400(Lcom/pinterest/service/PinterestWorkerService;)Landroid/app/NotificationManager;
+.limit registers 2
+; parameter[0] : v1 (Lcom/pinterest/service/PinterestWorkerService;)
+.line 36
+	iget-object	v0,v1,com/pinterest/service/PinterestWorkerService._notificationManager Landroid/app/NotificationManager;
+; v0 : Landroid/app/NotificationManager; , v1 : Lcom/pinterest/service/PinterestWorkerService;
+	return-object	v0
+; v0 : Landroid/app/NotificationManager;
+.end method
+
+.method static access$500(Lcom/pinterest/service/PinterestWorkerService;)V
+.limit registers 1
+; parameter[0] : v0 (Lcom/pinterest/service/PinterestWorkerService;)
+.line 36
+	invoke-direct	{v0},com/pinterest/service/PinterestWorkerService/invalidateCurrentUpload	; invalidateCurrentUpload()V
+; v0 : Lcom/pinterest/service/PinterestWorkerService;
+	return-void	
+.end method
+
+.method static access$600(Lcom/pinterest/service/PinterestWorkerService;)I
+.limit registers 2
+; parameter[0] : v1 (Lcom/pinterest/service/PinterestWorkerService;)
+.line 36
+	iget	v0,v1,com/pinterest/service/PinterestWorkerService._uploadSoftyRetry I
+; v0 : single-length , v1 : Lcom/pinterest/service/PinterestWorkerService;
+	return	v0
+; v0 : single-length
+.end method
+
+.method static access$602(Lcom/pinterest/service/PinterestWorkerService;I)I
+.limit registers 2
+; parameter[0] : v0 (Lcom/pinterest/service/PinterestWorkerService;)
+; parameter[1] : v1 (I)
+.line 36
+	iput	v1,v0,com/pinterest/service/PinterestWorkerService._uploadSoftyRetry I
+; v1 : single-length , v0 : Lcom/pinterest/service/PinterestWorkerService;
+	return	v1
+; v1 : single-length
+.end method
+
+.method static access$608(Lcom/pinterest/service/PinterestWorkerService;)I
+.limit registers 3
+; parameter[0] : v2 (Lcom/pinterest/service/PinterestWorkerService;)
+.line 36
+	iget	v0,v2,com/pinterest/service/PinterestWorkerService._uploadSoftyRetry I
+; v0 : single-length , v2 : Lcom/pinterest/service/PinterestWorkerService;
+	add-int/lit8	v1,v0,1
+; v1 : single-length , v0 : single-length
+	iput	v1,v2,com/pinterest/service/PinterestWorkerService._uploadSoftyRetry I
+; v1 : single-length , v2 : Lcom/pinterest/service/PinterestWorkerService;
+	return	v0
+; v0 : single-length
+.end method
+
+.method static access$700(Lcom/pinterest/service/PinterestWorkerService;)I
+.limit registers 2
+; parameter[0] : v1 (Lcom/pinterest/service/PinterestWorkerService;)
+.line 36
+	iget	v0,v1,com/pinterest/service/PinterestWorkerService._uploadHardRetry I
+; v0 : single-length , v1 : Lcom/pinterest/service/PinterestWorkerService;
+	return	v0
+; v0 : single-length
+.end method
+
+.method static access$708(Lcom/pinterest/service/PinterestWorkerService;)I
+.limit registers 3
+; parameter[0] : v2 (Lcom/pinterest/service/PinterestWorkerService;)
+.line 36
+	iget	v0,v2,com/pinterest/service/PinterestWorkerService._uploadHardRetry I
+; v0 : single-length , v2 : Lcom/pinterest/service/PinterestWorkerService;
+	add-int/lit8	v1,v0,1
+; v1 : single-length , v0 : single-length
+	iput	v1,v2,com/pinterest/service/PinterestWorkerService._uploadHardRetry I
+; v1 : single-length , v2 : Lcom/pinterest/service/PinterestWorkerService;
+	return	v0
+; v0 : single-length
+.end method
+
+.method private checkForPendingUploads()V
+.limit registers 6
+; this: v5 (Lcom/pinterest/service/PinterestWorkerService;)
+.catch java/lang/Exception from lfaa10 to lfaa12 using lfaa0e
+.catch java/lang/Exception from lfa9bc to lfa9ee using lfaa0e
+.var 0 is files [Ljava/io/File; from lfa982 to lfa9ee
+.var 2 is set Ljava/util/Set; from lfa99e to lfa9ee
+.line 287
+	new-instance	v1,java/io/File
+; v1 : Ljava/io/File;
+	invoke-static	{},com/pinterest/service/PinterestWorkerService/getPendingJSONFolder	; getPendingJSONFolder()Ljava/lang/String;
+; 
+	nop	
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-direct	{v1,v3},java/io/File/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/io/File; , v3 : Ljava/lang/String;
+.line 288
+	invoke-virtual	{v1},java/io/File/exists	; exists()Z
+; v1 : Ljava/io/File;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,lfa9ee
+; v3 : single-length
+.line 290
+	invoke-virtual	{v1},java/io/File/listFiles	; listFiles()[Ljava/io/File;
+; v1 : Ljava/io/File;
+	move-result-object	v0
+; v0 : [Ljava/io/File;
+.line 291
+	new-instance	v2,java/util/LinkedHashSet
+; v2 : Ljava/util/LinkedHashSet;
+	new-instance	v3,java/util/ArrayList
+; v3 : Ljava/util/ArrayList;
+	invoke-static	{v0},java/util/Arrays/asList	; asList([Ljava/lang/Object;)Ljava/util/List;
+; v0 : [Ljava/io/File;
+	move-result-object	v4
+; v4 : Ljava/util/List;
+	invoke-direct	{v3,v4},java/util/ArrayList/<init>	; <init>(Ljava/util/Collection;)V
+; v3 : Ljava/util/ArrayList; , v4 : Ljava/util/List;
+	invoke-direct	{v2,v3},java/util/LinkedHashSet/<init>	; <init>(Ljava/util/Collection;)V
+; v2 : Ljava/util/LinkedHashSet; , v3 : Ljava/util/ArrayList;
+.line 292
+	invoke-interface	{v2},java/util/Set/size	; size()I
+; v2 : Ljava/util/LinkedHashSet;
+	move-result	v3
+; v3 : single-length
+	if-nez	v3,lfa9b0
+; v3 : single-length
+	invoke-virtual	{v5},com/pinterest/service/PinterestWorkerService/stopSelf	; stopSelf()V
+; v5 : Lcom/pinterest/service/PinterestWorkerService;
+lfa9b0:
+.line 293
+	const/4	v3,0
+; v3 : single-length
+	new-array	v0,v3,[Ljava/io/File;
+; v0 : [Ljava/io/File; , v3 : single-length
+.line 294
+	iget-object	v4,v5,com/pinterest/service/PinterestWorkerService._uploadPendingFiles Ljava/util/List;
+; v4 : Ljava/util/List; , v5 : Lcom/pinterest/service/PinterestWorkerService;
+	monitor-enter	v4
+; v4 : Ljava/util/List;
+lfa9bc:
+.line 296
+	iget-object	v3,v5,com/pinterest/service/PinterestWorkerService._uploadPendingFiles Ljava/util/List;
+; v3 : Ljava/util/List; , v5 : Lcom/pinterest/service/PinterestWorkerService;
+	invoke-interface	{v3},java/util/List/clear	; clear()V
+; v3 : Ljava/util/List;
+.line 297
+	iget-object	v3,v5,com/pinterest/service/PinterestWorkerService._uploadPendingFiles Ljava/util/List;
+; v3 : Ljava/util/List; , v5 : Lcom/pinterest/service/PinterestWorkerService;
+	invoke-interface	{v3,v2},java/util/List/addAll	; addAll(Ljava/util/Collection;)Z
+; v3 : Ljava/util/List; , v2 : Ljava/util/LinkedHashSet;
+.line 298
+	invoke-interface	{v2},java/util/Set/clear	; clear()V
+; v2 : Ljava/util/LinkedHashSet;
+	const/4	v2,0
+; v2 : single-length
+.line 299
+	iget-object	v3,v5,com/pinterest/service/PinterestWorkerService._uploadPendingFiles Ljava/util/List;
+; v3 : Ljava/util/List; , v5 : Lcom/pinterest/service/PinterestWorkerService;
+	invoke-static	{v3},java/util/Collections/reverse	; reverse(Ljava/util/List;)V
+; v3 : Ljava/util/List;
+.line 300
+	iget-object	v3,v5,com/pinterest/service/PinterestWorkerService._uploadPendingFiles Ljava/util/List;
+; v3 : Ljava/util/List; , v5 : Lcom/pinterest/service/PinterestWorkerService;
+	invoke-virtual	{v3},java/lang/Object/notifyAll	; notifyAll()V
+; v3 : Ljava/util/List;
+.line 301
+	monitor-exit	v4
+; v4 : Ljava/util/List;
+lfa9ee:
+.line 304
+	iget-object	v3,v5,com/pinterest/service/PinterestWorkerService._uploadThread Ljava/lang/Thread;
+; v3 : Ljava/lang/Thread; , v5 : Lcom/pinterest/service/PinterestWorkerService;
+	invoke-virtual	{v3},java/lang/Thread/getState	; getState()Ljava/lang/Thread$State;
+; v3 : Ljava/lang/Thread;
+	move-result-object	v3
+; v3 : Ljava/lang/Thread$State;
+	sget-object	v4,java/lang/Thread$State.NEW Ljava/lang/Thread$State;
+; v4 : Ljava/lang/Thread$State;
+	if-ne	v3,v4,lfaa0c
+; v3 : Ljava/lang/Thread$State; , v4 : Ljava/lang/Thread$State;
+.line 305
+	iget-object	v3,v5,com/pinterest/service/PinterestWorkerService._uploadThread Ljava/lang/Thread;
+; v3 : Ljava/lang/Thread; , v5 : Lcom/pinterest/service/PinterestWorkerService;
+	invoke-virtual	{v3},java/lang/Thread/start	; start()V
+; v3 : Ljava/lang/Thread;
+lfaa0c:
+.line 306
+	return-void	
+lfaa0e:
+.line 301
+	move-exception	v3
+; v3 : java/lang/Exception
+lfaa10:
+	monitor-exit	v4
+; v4 : Ljava/util/List;
+lfaa12:
+	throw	v3
+; v3 : java/lang/Exception
+.end method
+
+.method public static getPendingJSONFolder()Ljava/lang/String;
+.limit registers 3
+.line 510
+	new-instance	v0,java/io/File
+; v0 : Ljava/io/File;
+	invoke-static	{},com/pinterest/kit/application/PApplication/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Lcom/pinterest/kit/application/PApplication;
+	invoke-virtual	{v1},com/pinterest/kit/application/PApplication/getFilesDir	; getFilesDir()Ljava/io/File;
+; v1 : Lcom/pinterest/kit/application/PApplication;
+	move-result-object	v1
+; v1 : Ljava/io/File;
+	const-string	v2,"pending"
+; v2 : Ljava/lang/String;
+	invoke-direct	{v0,v1,v2},java/io/File/<init>	; <init>(Ljava/io/File;Ljava/lang/String;)V
+; v0 : Ljava/io/File; , v1 : Ljava/io/File; , v2 : Ljava/lang/String;
+.line 511
+	invoke-virtual	{v0},java/io/File/exists	; exists()Z
+; v0 : Ljava/io/File;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,lfaa68
+; v1 : single-length
+	invoke-virtual	{v0},java/io/File/mkdir	; mkdir()Z
+; v0 : Ljava/io/File;
+lfaa68:
+.line 512
+	invoke-virtual	{v0},java/io/File/getPath	; getPath()Ljava/lang/String;
+; v0 : Ljava/io/File;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	return-object	v1
+; v1 : Ljava/lang/String;
+.end method
+
+.method public static getPendingJSONPath()Ljava/lang/String;
+.limit registers 9
+.catch java/io/IOException from lfaad6 to lfaadc using lfaade
+.line 495
+	const-string	v2,"%s/%d"
+; v2 : Ljava/lang/String;
+	const/4	v3,2
+; v3 : single-length
+	new-array	v3,v3,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v3 : [Ljava/lang/Object;
+	const/4	v4,0
+; v4 : single-length
+	invoke-static	{},com/pinterest/service/PinterestWorkerService/getPendingJSONFolder	; getPendingJSONFolder()Ljava/lang/String;
+; 
+	nop	
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	aput-object	v5,v3,v4
+; v5 : Ljava/lang/String; , v3 : [Ljava/lang/Object; , v4 : single-length
+	const/4	v4,1
+; v4 : single-length
+	invoke-static	{},java/lang/System/currentTimeMillis	; currentTimeMillis()J
+; 
+	nop	
+	move-result-wide	v5
+; v5 : double-length
+	const-wide/16	v7,1000
+; v7 : double-length
+	div-long/2addr	v5,v7
+; v5 : double-length , v7 : double-length
+	invoke-static	{v5,v6},java/lang/Long/valueOf	; valueOf(J)Ljava/lang/Long;
+; v5 : double-length
+	move-result-object	v5
+; v5 : Ljava/lang/Long;
+	aput-object	v5,v3,v4
+; v5 : Ljava/lang/Long; , v3 : [Ljava/lang/Object; , v4 : single-length
+	invoke-static	{v2,v3},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : [Ljava/lang/Object;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 496
+	new-instance	v0,java/io/File
+; v0 : Ljava/io/File;
+	invoke-direct	{v0,v1},java/io/File/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/io/File; , v1 : Ljava/lang/String;
+.line 497
+	invoke-virtual	{v0},java/io/File/exists	; exists()Z
+; v0 : Ljava/io/File;
+	move-result	v2
+; v2 : single-length
+	if-nez	v2,lfaadc
+; v2 : single-length
+lfaad6:
+.line 499
+	invoke-virtual	{v0},java/io/File/createNewFile	; createNewFile()Z
+; v0 : Ljava/io/File;
+lfaadc:
+.line 502
+	return-object	v1
+; v1 : Ljava/lang/String;
+lfaade:
+.line 501
+	move-exception	v2
+; v2 : java/io/IOException
+	goto	lfaadc
+.end method
+
+.method private final invalidateCurrentUpload()V
+.limit registers 6
+; this: v5 (Lcom/pinterest/service/PinterestWorkerService;)
+.catch java/lang/Exception from lfab0a to lfab66 using lfab62
+.line 481
+	iget-object	v1,v5,com/pinterest/service/PinterestWorkerService._uploadPendingFiles Ljava/util/List;
+; v1 : Ljava/util/List; , v5 : Lcom/pinterest/service/PinterestWorkerService;
+	monitor-enter	v1
+; v1 : Ljava/util/List;
+lfab0a:
+.line 482
+	iget-object	v0,v5,com/pinterest/service/PinterestWorkerService._uploadPendingFiles Ljava/util/List;
+; v0 : Ljava/util/List; , v5 : Lcom/pinterest/service/PinterestWorkerService;
+	const/4	v2,0
+; v2 : single-length
+	invoke-interface	{v0,v2},java/util/List/get	; get(I)Ljava/lang/Object;
+; v0 : Ljava/util/List; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/io/File
+; v0 : Ljava/io/File;
+	invoke-virtual	{v0},java/io/File/delete	; delete()Z
+; v0 : Ljava/io/File;
+.line 483
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v5,com/pinterest/service/PinterestWorkerService._uploadInProgress Z
+; v0 : single-length , v5 : Lcom/pinterest/service/PinterestWorkerService;
+.line 484
+	invoke-direct	{v5},com/pinterest/service/PinterestWorkerService/checkForPendingUploads	; checkForPendingUploads()V
+; v5 : Lcom/pinterest/service/PinterestWorkerService;
+.line 485
+	iget-object	v0,v5,com/pinterest/service/PinterestWorkerService._notificationManager Landroid/app/NotificationManager;
+; v0 : Landroid/app/NotificationManager; , v5 : Lcom/pinterest/service/PinterestWorkerService;
+	const/4	v2,0
+; v2 : single-length
+	const	v3,2131427375	; 0x7f0b002f
+; v3 : single-length
+	invoke-virtual	{v5,v3},com/pinterest/service/PinterestWorkerService/getString	; getString(I)Ljava/lang/String;
+; v5 : Lcom/pinterest/service/PinterestWorkerService; , v3 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	const	v4,2131427546	; 0x7f0b00da
+; v4 : single-length
+	invoke-virtual	{v5,v4},com/pinterest/service/PinterestWorkerService/getString	; getString(I)Ljava/lang/String;
+; v5 : Lcom/pinterest/service/PinterestWorkerService; , v4 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-static	{v3,v4},com/pinterest/kit/notification/PNotification/getNotification	; getNotification(Ljava/lang/String;Ljava/lang/String;)Landroid/app/Notification;
+; v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Landroid/app/Notification;
+	invoke-virtual	{v0,v2,v3},android/app/NotificationManager/notify	; notify(ILandroid/app/Notification;)V
+; v0 : Landroid/app/NotificationManager; , v2 : single-length , v3 : Landroid/app/Notification;
+.line 486
+	monitor-exit	v1
+; v1 : Ljava/util/List;
+.line 487
+	return-void	
+lfab62:
+.line 486
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/util/List;
+lfab66:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public onBind(Landroid/content/Intent;)Landroid/os/IBinder;
+.limit registers 3
+; this: v1 (Lcom/pinterest/service/PinterestWorkerService;)
+; parameter[0] : v2 (Landroid/content/Intent;)
+.line 48
+	const/4	v0,0
+; v0 : single-length
+	return-object	v0
+; v0 : single-length
+.end method
+
+.method public onCreate()V
+.limit registers 3
+; this: v2 (Lcom/pinterest/service/PinterestWorkerService;)
+.line 54
+	new-instance	v0,android/os/Handler
+; v0 : Landroid/os/Handler;
+	invoke-virtual	{v2},com/pinterest/service/PinterestWorkerService/getMainLooper	; getMainLooper()Landroid/os/Looper;
+; v2 : Lcom/pinterest/service/PinterestWorkerService;
+	move-result-object	v1
+; v1 : Landroid/os/Looper;
+	invoke-direct	{v0,v1},android/os/Handler/<init>	; <init>(Landroid/os/Looper;)V
+; v0 : Landroid/os/Handler; , v1 : Landroid/os/Looper;
+	iput-object	v0,v2,com/pinterest/service/PinterestWorkerService._handler Landroid/os/Handler;
+; v0 : Landroid/os/Handler; , v2 : Lcom/pinterest/service/PinterestWorkerService;
+.line 55
+	const-string	v0,"notification"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v2,v0},com/pinterest/service/PinterestWorkerService/getSystemService	; getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+; v2 : Lcom/pinterest/service/PinterestWorkerService; , v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/app/NotificationManager
+; v0 : Landroid/app/NotificationManager;
+	iput-object	v0,v2,com/pinterest/service/PinterestWorkerService._notificationManager Landroid/app/NotificationManager;
+; v0 : Landroid/app/NotificationManager; , v2 : Lcom/pinterest/service/PinterestWorkerService;
+.line 70
+	invoke-static	{},com/pinterest/kit/network/PImageCache/clearDiskCache	; clearDiskCache()V
+; 
+	nop	
+.line 73
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+	iput-object	v0,v2,com/pinterest/service/PinterestWorkerService._uploadPendingFiles Ljava/util/List;
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/pinterest/service/PinterestWorkerService;
+.line 74
+	iget-object	v0,v2,com/pinterest/service/PinterestWorkerService._uploadThread Ljava/lang/Thread;
+; v0 : Ljava/lang/Thread; , v2 : Lcom/pinterest/service/PinterestWorkerService;
+	const/4	v1,4
+; v1 : single-length
+	invoke-virtual	{v0,v1},java/lang/Thread/setPriority	; setPriority(I)V
+; v0 : Ljava/lang/Thread; , v1 : single-length
+.line 75
+	invoke-direct	{v2},com/pinterest/service/PinterestWorkerService/checkForPendingUploads	; checkForPendingUploads()V
+; v2 : Lcom/pinterest/service/PinterestWorkerService;
+.line 76
+	return-void	
+.end method
+
+.method public onDestroy()V
+.limit registers 2
+; this: v1 (Lcom/pinterest/service/PinterestWorkerService;)
+.line 91
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v1,com/pinterest/service/PinterestWorkerService._running Z
+; v0 : single-length , v1 : Lcom/pinterest/service/PinterestWorkerService;
+.line 98
+	invoke-super	{v1},android/app/Service/onDestroy	; onDestroy()V
+; v1 : Lcom/pinterest/service/PinterestWorkerService;
+.line 99
+	return-void	
+.end method
+
+.method public onStartCommand(Landroid/content/Intent;II)I
+.limit registers 6
+; this: v2 (Lcom/pinterest/service/PinterestWorkerService;)
+; parameter[0] : v3 (Landroid/content/Intent;)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (I)
+	const/4	v1,2
+; v1 : single-length
+.line 81
+	iget-boolean	v0,v2,com/pinterest/service/PinterestWorkerService._running Z
+; v0 : single-length , v2 : Lcom/pinterest/service/PinterestWorkerService;
+	if-eqz	v0,lfac28
+; v0 : single-length
+lfac26:
+.line 85
+	return	v1
+; v1 : single-length
+lfac28:
+.line 82
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v2,com/pinterest/service/PinterestWorkerService._running Z
+; v0 : single-length , v2 : Lcom/pinterest/service/PinterestWorkerService;
+	goto	lfac26
+.end method
+
+

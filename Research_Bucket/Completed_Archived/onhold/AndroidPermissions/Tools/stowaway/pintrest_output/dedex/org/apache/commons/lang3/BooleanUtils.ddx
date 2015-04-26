@@ -1,0 +1,1708 @@
+.class public org/apache/commons/lang3/BooleanUtils
+.super java/lang/Object
+.source BooleanUtils.java
+
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/lang3/BooleanUtils;)
+.line 42
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/lang3/BooleanUtils;
+.line 43
+	return-void	
+.end method
+
+.method public static and([Ljava/lang/Boolean;)Ljava/lang/Boolean;
+.limit registers 5
+; parameter[0] : v4 ([Ljava/lang/Boolean;)
+.catch java/lang/NullPointerException from l126266 to l126284 using l126286
+.var 1 is primitive [Z from l12626e to l126286
+.line 925
+	if-nez	v4,l126250
+; v4 : [Ljava/lang/Boolean;
+.line 926
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	const-string	v3,"The Array must not be null"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+l126250:
+.line 928
+	array-length	v2,v4
+; v2 : single-length , v4 : [Ljava/lang/Boolean;
+	if-nez	v2,l126266
+; v2 : single-length
+.line 929
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	const-string	v3,"Array is empty"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+l126266:
+.line 932
+	invoke-static	{v4},org/apache/commons/lang3/ArrayUtils/toPrimitive	; toPrimitive([Ljava/lang/Boolean;)[Z
+; v4 : [Ljava/lang/Boolean;
+	move-result-object	v1
+; v1 : [Z
+.line 933
+	invoke-static	{v1},org/apache/commons/lang3/BooleanUtils/and	; and([Z)Z
+; v1 : [Z
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,l126280
+; v2 : single-length
+	sget-object	v2,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v2 : Ljava/lang/Boolean;
+l12627e:
+	return-object	v2
+; v2 : Ljava/lang/Boolean;
+l126280:
+	sget-object	v2,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v2 : Ljava/lang/Boolean;
+l126284:
+	goto	l12627e
+l126286:
+.line 934
+	move-exception	v0
+; v0 : java/lang/NullPointerException
+.line 935
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	const-string	v3,"The array must not contain any null elements"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+.end method
+
+.method public static and([Z)Z
+.limit registers 7
+; parameter[0] : v6 ([Z)
+.var 1 is element Z from l1262f0 to l1262f6
+.var 1 is element Z from l1262f8 to l1262fe
+.line 891
+	if-nez	v6,l1262cc
+; v6 : [Z
+.line 892
+	new-instance	v4,java/lang/IllegalArgumentException
+; v4 : Ljava/lang/IllegalArgumentException;
+	const-string	v5,"The Array must not be null"
+; v5 : Ljava/lang/String;
+	invoke-direct	{v4,v5},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v4 : Ljava/lang/IllegalArgumentException; , v5 : Ljava/lang/String;
+	throw	v4
+; v4 : Ljava/lang/IllegalArgumentException;
+l1262cc:
+.line 894
+	array-length	v4,v6
+; v4 : single-length , v6 : [Z
+	if-nez	v4,l1262e2
+; v4 : single-length
+.line 895
+	new-instance	v4,java/lang/IllegalArgumentException
+; v4 : Ljava/lang/IllegalArgumentException;
+	const-string	v5,"Array is empty"
+; v5 : Ljava/lang/String;
+	invoke-direct	{v4,v5},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v4 : Ljava/lang/IllegalArgumentException; , v5 : Ljava/lang/String;
+	throw	v4
+; v4 : Ljava/lang/IllegalArgumentException;
+l1262e2:
+.line 897
+	move-object	v0,v6
+; v0 : [Z , v6 : [Z
+	array-length	v3,v0
+; v3 : single-length , v0 : [Z
+	const/4	v2,0
+; v2 : single-length
+l1262e8:
+	if-ge	v2,v3,l1262fe
+; v2 : single-length , v3 : single-length
+	aget-boolean	v1,v0,v2
+; v1 : single-length , v0 : [Z , v2 : single-length
+.line 898
+	if-nez	v1,l1262f8
+; v1 : single-length
+.line 899
+	const/4	v4,0
+; v4 : single-length
+l1262f6:
+.line 902
+	return	v4
+; v4 : single-length
+l1262f8:
+.line 897
+	add-int/lit8	v2,v2,1
+; v2 : single-length , v2 : single-length
+	goto	l1262e8
+l1262fe:
+.line 902
+	const/4	v4,1
+; v4 : single-length
+	goto	l1262f6
+.end method
+
+.method public static isFalse(Ljava/lang/Boolean;)Z
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/Boolean;)
+.line 123
+	sget-object	v0,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	invoke-virtual	{v0,v1},java/lang/Boolean/equals	; equals(Ljava/lang/Object;)Z
+; v0 : Ljava/lang/Boolean; , v1 : Ljava/lang/Boolean;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public static isNotFalse(Ljava/lang/Boolean;)Z
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/Boolean;)
+.line 141
+	invoke-static	{v1},org/apache/commons/lang3/BooleanUtils/isFalse	; isFalse(Ljava/lang/Boolean;)Z
+; v1 : Ljava/lang/Boolean;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l126344
+; v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l126342:
+	return	v0
+; v0 : single-length
+l126344:
+	const/4	v0,0
+; v0 : single-length
+	goto	l126342
+.end method
+
+.method public static isNotTrue(Ljava/lang/Boolean;)Z
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/Boolean;)
+.line 105
+	invoke-static	{v1},org/apache/commons/lang3/BooleanUtils/isTrue	; isTrue(Ljava/lang/Boolean;)Z
+; v1 : Ljava/lang/Boolean;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l126368
+; v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l126366:
+	return	v0
+; v0 : single-length
+l126368:
+	const/4	v0,0
+; v0 : single-length
+	goto	l126366
+.end method
+
+.method public static isTrue(Ljava/lang/Boolean;)Z
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/Boolean;)
+.line 87
+	sget-object	v0,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	invoke-virtual	{v0,v1},java/lang/Boolean/equals	; equals(Ljava/lang/Object;)Z
+; v0 : Ljava/lang/Boolean; , v1 : Ljava/lang/Boolean;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public static negate(Ljava/lang/Boolean;)Ljava/lang/Boolean;
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/Boolean;)
+.line 64
+	if-nez	v1,l1263a4
+; v1 : Ljava/lang/Boolean;
+.line 65
+	const/4	v0,0
+; v0 : single-length
+l1263a2:
+.line 67
+	return-object	v0
+; v0 : Ljava/lang/Boolean;
+l1263a4:
+	invoke-virtual	{v1},java/lang/Boolean/booleanValue	; booleanValue()Z
+; v1 : Ljava/lang/Boolean;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l1263b6
+; v0 : single-length
+	sget-object	v0,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	goto	l1263a2
+l1263b6:
+	sget-object	v0,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	goto	l1263a2
+.end method
+
+.method public static or([Ljava/lang/Boolean;)Ljava/lang/Boolean;
+.limit registers 5
+; parameter[0] : v4 ([Ljava/lang/Boolean;)
+.catch java/lang/NullPointerException from l1263f6 to l126414 using l126416
+.var 1 is primitive [Z from l1263fe to l126416
+.line 994
+	if-nez	v4,l1263e0
+; v4 : [Ljava/lang/Boolean;
+.line 995
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	const-string	v3,"The Array must not be null"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+l1263e0:
+.line 997
+	array-length	v2,v4
+; v2 : single-length , v4 : [Ljava/lang/Boolean;
+	if-nez	v2,l1263f6
+; v2 : single-length
+.line 998
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	const-string	v3,"Array is empty"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+l1263f6:
+.line 1001
+	invoke-static	{v4},org/apache/commons/lang3/ArrayUtils/toPrimitive	; toPrimitive([Ljava/lang/Boolean;)[Z
+; v4 : [Ljava/lang/Boolean;
+	move-result-object	v1
+; v1 : [Z
+.line 1002
+	invoke-static	{v1},org/apache/commons/lang3/BooleanUtils/or	; or([Z)Z
+; v1 : [Z
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,l126410
+; v2 : single-length
+	sget-object	v2,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v2 : Ljava/lang/Boolean;
+l12640e:
+	return-object	v2
+; v2 : Ljava/lang/Boolean;
+l126410:
+	sget-object	v2,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v2 : Ljava/lang/Boolean;
+l126414:
+	goto	l12640e
+l126416:
+.line 1003
+	move-exception	v0
+; v0 : java/lang/NullPointerException
+.line 1004
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	const-string	v3,"The array must not contain any null elements"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+.end method
+
+.method public static or([Z)Z
+.limit registers 7
+; parameter[0] : v6 ([Z)
+.var 1 is element Z from l126480 to l126486
+.var 1 is element Z from l126488 to l12648e
+.line 959
+	if-nez	v6,l12645c
+; v6 : [Z
+.line 960
+	new-instance	v4,java/lang/IllegalArgumentException
+; v4 : Ljava/lang/IllegalArgumentException;
+	const-string	v5,"The Array must not be null"
+; v5 : Ljava/lang/String;
+	invoke-direct	{v4,v5},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v4 : Ljava/lang/IllegalArgumentException; , v5 : Ljava/lang/String;
+	throw	v4
+; v4 : Ljava/lang/IllegalArgumentException;
+l12645c:
+.line 962
+	array-length	v4,v6
+; v4 : single-length , v6 : [Z
+	if-nez	v4,l126472
+; v4 : single-length
+.line 963
+	new-instance	v4,java/lang/IllegalArgumentException
+; v4 : Ljava/lang/IllegalArgumentException;
+	const-string	v5,"Array is empty"
+; v5 : Ljava/lang/String;
+	invoke-direct	{v4,v5},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v4 : Ljava/lang/IllegalArgumentException; , v5 : Ljava/lang/String;
+	throw	v4
+; v4 : Ljava/lang/IllegalArgumentException;
+l126472:
+.line 965
+	move-object	v0,v6
+; v0 : [Z , v6 : [Z
+	array-length	v3,v0
+; v3 : single-length , v0 : [Z
+	const/4	v2,0
+; v2 : single-length
+l126478:
+	if-ge	v2,v3,l12648e
+; v2 : single-length , v3 : single-length
+	aget-boolean	v1,v0,v2
+; v1 : single-length , v0 : [Z , v2 : single-length
+.line 966
+	if-eqz	v1,l126488
+; v1 : single-length
+.line 967
+	const/4	v4,1
+; v4 : single-length
+l126486:
+.line 970
+	return	v4
+; v4 : single-length
+l126488:
+.line 965
+	add-int/lit8	v2,v2,1
+; v2 : single-length , v2 : single-length
+	goto	l126478
+l12648e:
+.line 970
+	const/4	v4,0
+; v4 : single-length
+	goto	l126486
+.end method
+
+.method public static toBoolean(I)Z
+.limit registers 2
+; parameter[0] : v1 (I)
+.line 199
+	if-eqz	v1,l1264ac
+; v1 : single-length
+	const/4	v0,1
+; v0 : single-length
+l1264aa:
+	return	v0
+; v0 : single-length
+l1264ac:
+	const/4	v0,0
+; v0 : single-length
+	goto	l1264aa
+.end method
+
+.method public static toBoolean(III)Z
+.limit registers 5
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+.line 262
+	if-ne	v2,v3,l1264c8
+; v2 : single-length , v3 : single-length
+.line 263
+	const/4	v0,1
+; v0 : single-length
+l1264c6:
+.line 266
+	return	v0
+; v0 : single-length
+l1264c8:
+.line 265
+	if-ne	v2,v4,l1264d0
+; v2 : single-length , v4 : single-length
+.line 266
+	const/4	v0,0
+; v0 : single-length
+	goto	l1264c6
+l1264d0:
+.line 269
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"The Integer did not match either specified value"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+.end method
+
+.method public static toBoolean(Ljava/lang/Boolean;)Z
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/Boolean;)
+.line 159
+	if-eqz	v1,l126504
+; v1 : Ljava/lang/Boolean;
+	invoke-virtual	{v1},java/lang/Boolean/booleanValue	; booleanValue()Z
+; v1 : Ljava/lang/Boolean;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l126504
+; v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l126502:
+	return	v0
+; v0 : single-length
+l126504:
+	const/4	v0,0
+; v0 : single-length
+	goto	l126502
+.end method
+
+.method public static toBoolean(Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;)Z
+.limit registers 6
+; parameter[0] : v3 (Ljava/lang/Integer;)
+; parameter[1] : v4 (Ljava/lang/Integer;)
+; parameter[2] : v5 (Ljava/lang/Integer;)
+	const/4	v0,1
+; v0 : single-length
+	const/4	v1,0
+; v1 : single-length
+.line 290
+	if-nez	v3,l12652e
+; v3 : Ljava/lang/Integer;
+.line 291
+	if-nez	v4,l126526
+; v4 : Ljava/lang/Integer;
+l126524:
+.line 300
+	return	v0
+; v0 : single-length
+l126526:
+.line 294
+	if-nez	v5,l12654a
+; v5 : Ljava/lang/Integer;
+	move	v0,v1
+; v0 : single-length , v1 : single-length
+.line 295
+	goto	l126524
+l12652e:
+.line 297
+	invoke-virtual	{v3,v4},java/lang/Integer/equals	; equals(Ljava/lang/Object;)Z
+; v3 : Ljava/lang/Integer; , v4 : Ljava/lang/Integer;
+	move-result	v2
+; v2 : single-length
+	if-nez	v2,l126524
+; v2 : single-length
+.line 299
+	invoke-virtual	{v3,v5},java/lang/Integer/equals	; equals(Ljava/lang/Object;)Z
+; v3 : Ljava/lang/Integer; , v5 : Ljava/lang/Integer;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l12654a
+; v0 : single-length
+	move	v0,v1
+; v0 : single-length , v1 : single-length
+.line 300
+	goto	l126524
+l12654a:
+.line 303
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"The Integer did not match either specified value"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+.end method
+
+.method public static toBoolean(Ljava/lang/String;)Z
+.limit registers 3
+; parameter[0] : v2 (Ljava/lang/String;)
+.line 695
+	invoke-static	{v2},org/apache/commons/lang3/BooleanUtils/toBooleanObject	; toBooleanObject(Ljava/lang/String;)Ljava/lang/Boolean;
+; v2 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Boolean;
+	sget-object	v1,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v1 : Ljava/lang/Boolean;
+	if-ne	v0,v1,l126580
+; v0 : Ljava/lang/Boolean; , v1 : Ljava/lang/Boolean;
+	const/4	v0,1
+; v0 : single-length
+l12657e:
+	return	v0
+; v0 : single-length
+l126580:
+	const/4	v0,0
+; v0 : single-length
+	goto	l12657e
+.end method
+
+.method public static toBoolean(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z
+.limit registers 6
+; parameter[0] : v3 (Ljava/lang/String;)
+; parameter[1] : v4 (Ljava/lang/String;)
+; parameter[2] : v5 (Ljava/lang/String;)
+	const/4	v0,1
+; v0 : single-length
+	const/4	v1,0
+; v1 : single-length
+.line 713
+	if-ne	v3,v4,l12659e
+; v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+l12659c:
+.line 721
+	return	v0
+; v0 : single-length
+l12659e:
+.line 715
+	if-ne	v3,v5,l1265a6
+; v3 : Ljava/lang/String; , v5 : Ljava/lang/String;
+	move	v0,v1
+; v0 : single-length , v1 : single-length
+.line 716
+	goto	l12659c
+l1265a6:
+.line 717
+	if-eqz	v3,l1265c6
+; v3 : Ljava/lang/String;
+.line 718
+	invoke-virtual	{v3,v4},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-nez	v2,l12659c
+; v2 : single-length
+.line 720
+	invoke-virtual	{v3,v5},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v3 : Ljava/lang/String; , v5 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l1265c6
+; v0 : single-length
+	move	v0,v1
+; v0 : single-length , v1 : single-length
+.line 721
+	goto	l12659c
+l1265c6:
+.line 725
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"The String did not match either specified value"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+.end method
+
+.method public static toBooleanDefaultIfNull(Ljava/lang/Boolean;Z)Z
+.limit registers 2
+; parameter[0] : v0 (Ljava/lang/Boolean;)
+; parameter[1] : v1 (Z)
+.line 176
+	if-nez	v0,l1265ee
+; v0 : Ljava/lang/Boolean;
+l1265ec:
+.line 179
+	return	v1
+; v1 : single-length
+l1265ee:
+	invoke-virtual	{v0},java/lang/Boolean/booleanValue	; booleanValue()Z
+; v0 : Ljava/lang/Boolean;
+	move-result	v1
+; v1 : single-length
+	goto	l1265ec
+.end method
+
+.method public static toBooleanObject(I)Ljava/lang/Boolean;
+.limit registers 2
+; parameter[0] : v1 (I)
+.line 217
+	if-nez	v1,l126612
+; v1 : single-length
+	sget-object	v0,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+l126610:
+	return-object	v0
+; v0 : Ljava/lang/Boolean;
+l126612:
+	sget-object	v0,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	goto	l126610
+.end method
+
+.method public static toBooleanObject(IIII)Ljava/lang/Boolean;
+.limit registers 6
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+; parameter[3] : v5 (I)
+.line 325
+	if-ne	v2,v3,l126632
+; v2 : single-length , v3 : single-length
+.line 326
+	sget-object	v0,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+l126630:
+.line 332
+	return-object	v0
+; v0 : Ljava/lang/Boolean;
+l126632:
+.line 328
+	if-ne	v2,v4,l12663c
+; v2 : single-length , v4 : single-length
+.line 329
+	sget-object	v0,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	goto	l126630
+l12663c:
+.line 331
+	if-ne	v2,v5,l126644
+; v2 : single-length , v5 : single-length
+.line 332
+	const/4	v0,0
+; v0 : single-length
+	goto	l126630
+l126644:
+.line 335
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"The Integer did not match any specified value"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+.end method
+
+.method public static toBooleanObject(Ljava/lang/Integer;)Ljava/lang/Boolean;
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/Integer;)
+.line 239
+	if-nez	v1,l12666c
+; v1 : Ljava/lang/Integer;
+.line 240
+	const/4	v0,0
+; v0 : single-length
+l12666a:
+.line 242
+	return-object	v0
+; v0 : Ljava/lang/Boolean;
+l12666c:
+	invoke-virtual	{v1},java/lang/Integer/intValue	; intValue()I
+; v1 : Ljava/lang/Integer;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l12667e
+; v0 : single-length
+	sget-object	v0,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	goto	l12666a
+l12667e:
+	sget-object	v0,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	goto	l12666a
+.end method
+
+.method public static toBooleanObject(Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;)Ljava/lang/Boolean;
+.limit registers 6
+; parameter[0] : v2 (Ljava/lang/Integer;)
+; parameter[1] : v3 (Ljava/lang/Integer;)
+; parameter[2] : v4 (Ljava/lang/Integer;)
+; parameter[3] : v5 (Ljava/lang/Integer;)
+	const/4	v0,0
+; v0 : single-length
+.line 357
+	if-nez	v2,l1266c2
+; v2 : Ljava/lang/Integer;
+.line 358
+	if-nez	v3,l1266a4
+; v3 : Ljava/lang/Integer;
+.line 359
+	sget-object	v0,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+l1266a2:
+.line 372
+	return-object	v0
+; v0 : Ljava/lang/Boolean;
+l1266a4:
+.line 361
+	if-nez	v4,l1266ae
+; v4 : Ljava/lang/Integer;
+.line 362
+	sget-object	v0,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	goto	l1266a2
+l1266ae:
+.line 364
+	if-eqz	v5,l1266a2
+; v5 : Ljava/lang/Integer;
+l1266b2:
+.line 375
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"The Integer did not match any specified value"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l1266c2:
+.line 367
+	invoke-virtual	{v2,v3},java/lang/Integer/equals	; equals(Ljava/lang/Object;)Z
+; v2 : Ljava/lang/Integer; , v3 : Ljava/lang/Integer;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l1266d4
+; v1 : single-length
+.line 368
+	sget-object	v0,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	goto	l1266a2
+l1266d4:
+.line 369
+	invoke-virtual	{v2,v4},java/lang/Integer/equals	; equals(Ljava/lang/Object;)Z
+; v2 : Ljava/lang/Integer; , v4 : Ljava/lang/Integer;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l1266e6
+; v1 : single-length
+.line 370
+	sget-object	v0,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	goto	l1266a2
+l1266e6:
+.line 371
+	invoke-virtual	{v2,v5},java/lang/Integer/equals	; equals(Ljava/lang/Object;)Z
+; v2 : Ljava/lang/Integer; , v5 : Ljava/lang/Integer;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l1266b2
+; v1 : single-length
+	goto	l1266a2
+.end method
+
+.method public static toBooleanObject(Ljava/lang/String;)Ljava/lang/Boolean;
+.limit registers 12
+; parameter[0] : v11 (Ljava/lang/String;)
+.var 0 is ch0 C from l126742 to l126786
+.var 0 is ch0 C from l12678e to l1267e2
+.var 1 is ch1 C from l126796 to l1267e2
+.var 0 is ch0 C from l1267ea to l12685a
+.var 1 is ch1 C from l1267f2 to l12685a
+.var 2 is ch2 C from l1267fa to l12685a
+.var 0 is ch0 C from l126862 to l1268c4
+.var 1 is ch1 C from l12686a to l1268c4
+.var 2 is ch2 C from l126872 to l1268c4
+.var 3 is ch3 C from l12687c to l1268c4
+	const/4	v10,2
+; v10 : single-length
+	const/16	v9,102
+; v9 : single-length
+	const/16	v8,70
+; v8 : single-length
+	const/4	v7,1
+; v7 : single-length
+	const/4	v6,0
+; v6 : single-length
+.line 545
+	const-string	v5,"true"
+; v5 : Ljava/lang/String;
+	if-ne	v11,v5,l126720
+; v11 : Ljava/lang/String; , v5 : Ljava/lang/String;
+.line 546
+	sget-object	v5,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v5 : Ljava/lang/Boolean;
+l12671e:
+.line 623
+	return-object	v5
+; v5 : Ljava/lang/Boolean;
+l126720:
+.line 548
+	if-nez	v11,l126728
+; v11 : Ljava/lang/String;
+.line 549
+	const/4	v5,0
+; v5 : single-length
+	goto	l12671e
+l126728:
+.line 551
+	invoke-virtual	{v11},java/lang/String/length	; length()I
+; v11 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	packed-switch	v5,1
+		ps126730_12673a	; case 1
+		ps126730_126786	; case 2
+		ps126730_1267e2	; case 3
+		ps126730_12685a	; case 4
+		ps126730_1268c4	; case 5
+		default: ps126730_default
+; v5 : single-length
+l126736:
+.line 623
+	const/4	v5,0
+; v5 : single-length
+	goto	l12671e
+ps126730_12673a:
+.line 553
+	invoke-virtual	{v11,v6},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v6 : single-length
+	move-result	v0
+; v0 : single-length
+.line 554
+	const/16	v5,121
+; v5 : single-length
+	if-eq	v0,v5,l126762
+; v0 : single-length , v5 : single-length
+	const/16	v5,89
+; v5 : single-length
+	if-eq	v0,v5,l126762
+; v0 : single-length , v5 : single-length
+	const/16	v5,116
+; v5 : single-length
+	if-eq	v0,v5,l126762
+; v0 : single-length , v5 : single-length
+	const/16	v5,84
+; v5 : single-length
+	if-ne	v0,v5,l126768
+; v0 : single-length , v5 : single-length
+l126762:
+.line 556
+	sget-object	v5,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v5 : Ljava/lang/Boolean;
+	goto	l12671e
+l126768:
+.line 558
+	const/16	v5,110
+; v5 : single-length
+	if-eq	v0,v5,l126780
+; v0 : single-length , v5 : single-length
+	const/16	v5,78
+; v5 : single-length
+	if-eq	v0,v5,l126780
+; v0 : single-length , v5 : single-length
+	if-eq	v0,v9,l126780
+; v0 : single-length , v9 : single-length
+	if-ne	v0,v8,l126736
+; v0 : single-length , v8 : single-length
+l126780:
+.line 560
+	sget-object	v5,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v5 : Ljava/lang/Boolean;
+	goto	l12671e
+ps126730_126786:
+.line 565
+	invoke-virtual	{v11,v6},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v6 : single-length
+	move-result	v0
+; v0 : single-length
+.line 566
+	invoke-virtual	{v11,v7},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v7 : single-length
+	move-result	v1
+; v1 : single-length
+.line 567
+	const/16	v5,111
+; v5 : single-length
+	if-eq	v0,v5,l1267a6
+; v0 : single-length , v5 : single-length
+	const/16	v5,79
+; v5 : single-length
+	if-ne	v0,v5,l1267bc
+; v0 : single-length , v5 : single-length
+l1267a6:
+	const/16	v5,110
+; v5 : single-length
+	if-eq	v1,v5,l1267b6
+; v1 : single-length , v5 : single-length
+	const/16	v5,78
+; v5 : single-length
+	if-ne	v1,v5,l1267bc
+; v1 : single-length , v5 : single-length
+l1267b6:
+.line 569
+	sget-object	v5,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v5 : Ljava/lang/Boolean;
+	goto	l12671e
+l1267bc:
+.line 571
+	const/16	v5,110
+; v5 : single-length
+	if-eq	v0,v5,l1267cc
+; v0 : single-length , v5 : single-length
+	const/16	v5,78
+; v5 : single-length
+	if-ne	v0,v5,l126736
+; v0 : single-length , v5 : single-length
+l1267cc:
+	const/16	v5,111
+; v5 : single-length
+	if-eq	v1,v5,l1267dc
+; v1 : single-length , v5 : single-length
+	const/16	v5,79
+; v5 : single-length
+	if-ne	v1,v5,l126736
+; v1 : single-length , v5 : single-length
+l1267dc:
+.line 573
+	sget-object	v5,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v5 : Ljava/lang/Boolean;
+	goto	l12671e
+ps126730_1267e2:
+.line 578
+	invoke-virtual	{v11,v6},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v6 : single-length
+	move-result	v0
+; v0 : single-length
+.line 579
+	invoke-virtual	{v11,v7},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v7 : single-length
+	move-result	v1
+; v1 : single-length
+.line 580
+	invoke-virtual	{v11,v10},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v10 : single-length
+	move-result	v2
+; v2 : single-length
+.line 581
+	const/16	v5,121
+; v5 : single-length
+	if-eq	v0,v5,l12680a
+; v0 : single-length , v5 : single-length
+	const/16	v5,89
+; v5 : single-length
+	if-ne	v0,v5,l126832
+; v0 : single-length , v5 : single-length
+l12680a:
+	const/16	v5,101
+; v5 : single-length
+	if-eq	v1,v5,l12681a
+; v1 : single-length , v5 : single-length
+	const/16	v5,69
+; v5 : single-length
+	if-ne	v1,v5,l126832
+; v1 : single-length , v5 : single-length
+l12681a:
+	const/16	v5,115
+; v5 : single-length
+	if-eq	v2,v5,l12682a
+; v2 : single-length , v5 : single-length
+	const/16	v5,83
+; v5 : single-length
+	if-ne	v2,v5,l126832
+; v2 : single-length , v5 : single-length
+l12682a:
+.line 584
+	sget-object	v5,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v5 : Ljava/lang/Boolean;
+	goto/16	l12671e
+l126832:
+.line 586
+	const/16	v5,111
+; v5 : single-length
+	if-eq	v0,v5,l126842
+; v0 : single-length , v5 : single-length
+	const/16	v5,79
+; v5 : single-length
+	if-ne	v0,v5,l126736
+; v0 : single-length , v5 : single-length
+l126842:
+	if-eq	v1,v9,l12684a
+; v1 : single-length , v9 : single-length
+	if-ne	v1,v8,l126736
+; v1 : single-length , v8 : single-length
+l12684a:
+	if-eq	v2,v9,l126852
+; v2 : single-length , v9 : single-length
+	if-ne	v2,v8,l126736
+; v2 : single-length , v8 : single-length
+l126852:
+.line 589
+	sget-object	v5,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v5 : Ljava/lang/Boolean;
+	goto/16	l12671e
+ps126730_12685a:
+.line 594
+	invoke-virtual	{v11,v6},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v6 : single-length
+	move-result	v0
+; v0 : single-length
+.line 595
+	invoke-virtual	{v11,v7},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v7 : single-length
+	move-result	v1
+; v1 : single-length
+.line 596
+	invoke-virtual	{v11,v10},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v10 : single-length
+	move-result	v2
+; v2 : single-length
+.line 597
+	const/4	v5,3
+; v5 : single-length
+	invoke-virtual	{v11,v5},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v5 : single-length
+	move-result	v3
+; v3 : single-length
+.line 598
+	const/16	v5,116
+; v5 : single-length
+	if-eq	v0,v5,l12688c
+; v0 : single-length , v5 : single-length
+	const/16	v5,84
+; v5 : single-length
+	if-ne	v0,v5,l126736
+; v0 : single-length , v5 : single-length
+l12688c:
+	const/16	v5,114
+; v5 : single-length
+	if-eq	v1,v5,l12689c
+; v1 : single-length , v5 : single-length
+	const/16	v5,82
+; v5 : single-length
+	if-ne	v1,v5,l126736
+; v1 : single-length , v5 : single-length
+l12689c:
+	const/16	v5,117
+; v5 : single-length
+	if-eq	v2,v5,l1268ac
+; v2 : single-length , v5 : single-length
+	const/16	v5,85
+; v5 : single-length
+	if-ne	v2,v5,l126736
+; v2 : single-length , v5 : single-length
+l1268ac:
+	const/16	v5,101
+; v5 : single-length
+	if-eq	v3,v5,l1268bc
+; v3 : single-length , v5 : single-length
+	const/16	v5,69
+; v5 : single-length
+	if-ne	v3,v5,l126736
+; v3 : single-length , v5 : single-length
+l1268bc:
+.line 602
+	sget-object	v5,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v5 : Ljava/lang/Boolean;
+	goto/16	l12671e
+ps126730_1268c4:
+.line 607
+	invoke-virtual	{v11,v6},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v6 : single-length
+	move-result	v0
+; v0 : single-length
+.line 608
+	invoke-virtual	{v11,v7},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v7 : single-length
+	move-result	v1
+; v1 : single-length
+.line 609
+	invoke-virtual	{v11,v10},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v10 : single-length
+	move-result	v2
+; v2 : single-length
+.line 610
+	const/4	v5,3
+; v5 : single-length
+	invoke-virtual	{v11,v5},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v5 : single-length
+	move-result	v3
+; v3 : single-length
+.line 611
+	const/4	v5,4
+; v5 : single-length
+	invoke-virtual	{v11,v5},java/lang/String/charAt	; charAt(I)C
+; v11 : Ljava/lang/String; , v5 : single-length
+	move-result	v4
+; v4 : single-length
+.line 612
+	if-eq	v0,v9,l1268f8
+; v0 : single-length , v9 : single-length
+	if-ne	v0,v8,l126736
+; v0 : single-length , v8 : single-length
+l1268f8:
+	const/16	v5,97
+; v5 : single-length
+	if-eq	v1,v5,l126908
+; v1 : single-length , v5 : single-length
+	const/16	v5,65
+; v5 : single-length
+	if-ne	v1,v5,l126736
+; v1 : single-length , v5 : single-length
+l126908:
+	const/16	v5,108
+; v5 : single-length
+	if-eq	v2,v5,l126918
+; v2 : single-length , v5 : single-length
+	const/16	v5,76
+; v5 : single-length
+	if-ne	v2,v5,l126736
+; v2 : single-length , v5 : single-length
+l126918:
+	const/16	v5,115
+; v5 : single-length
+	if-eq	v3,v5,l126928
+; v3 : single-length , v5 : single-length
+	const/16	v5,83
+; v5 : single-length
+	if-ne	v3,v5,l126736
+; v3 : single-length , v5 : single-length
+l126928:
+	const/16	v5,101
+; v5 : single-length
+	if-eq	v4,v5,l126938
+; v4 : single-length , v5 : single-length
+	const/16	v5,69
+; v5 : single-length
+	if-ne	v4,v5,l126736
+; v4 : single-length , v5 : single-length
+l126938:
+.line 617
+	sget-object	v5,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v5 : Ljava/lang/Boolean;
+	goto/16	l12671e
+.line 551
+.end method
+
+.method public static toBooleanObject(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Boolean;
+.limit registers 6
+; parameter[0] : v2 (Ljava/lang/String;)
+; parameter[1] : v3 (Ljava/lang/String;)
+; parameter[2] : v4 (Ljava/lang/String;)
+; parameter[3] : v5 (Ljava/lang/String;)
+	const/4	v0,0
+; v0 : single-length
+.line 646
+	if-nez	v2,l12699a
+; v2 : Ljava/lang/String;
+.line 647
+	if-nez	v3,l12697c
+; v3 : Ljava/lang/String;
+.line 648
+	sget-object	v0,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+l12697a:
+.line 661
+	return-object	v0
+; v0 : Ljava/lang/Boolean;
+l12697c:
+.line 650
+	if-nez	v4,l126986
+; v4 : Ljava/lang/String;
+.line 651
+	sget-object	v0,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	goto	l12697a
+l126986:
+.line 653
+	if-eqz	v5,l12697a
+; v5 : Ljava/lang/String;
+l12698a:
+.line 664
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"The String did not match any specified value"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l12699a:
+.line 656
+	invoke-virtual	{v2,v3},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l1269ac
+; v1 : single-length
+.line 657
+	sget-object	v0,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	goto	l12697a
+l1269ac:
+.line 658
+	invoke-virtual	{v2,v4},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v2 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l1269be
+; v1 : single-length
+.line 659
+	sget-object	v0,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v0 : Ljava/lang/Boolean;
+	goto	l12697a
+l1269be:
+.line 660
+	invoke-virtual	{v2,v5},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v2 : Ljava/lang/String; , v5 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l12698a
+; v1 : single-length
+	goto	l12697a
+.end method
+
+.method public static toInteger(Ljava/lang/Boolean;III)I
+.limit registers 5
+; parameter[0] : v1 (Ljava/lang/Boolean;)
+; parameter[1] : v2 (I)
+; parameter[2] : v3 (I)
+; parameter[3] : v4 (I)
+.line 466
+	if-nez	v1,l1269e2
+; v1 : Ljava/lang/Boolean;
+l1269e0:
+.line 469
+	return	v4
+; v4 : single-length
+l1269e2:
+	invoke-virtual	{v1},java/lang/Boolean/booleanValue	; booleanValue()Z
+; v1 : Ljava/lang/Boolean;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l1269f2
+; v0 : single-length
+l1269ee:
+	move	v4,v2
+; v4 : single-length , v2 : single-length
+	goto	l1269e0
+l1269f2:
+	move	v2,v3
+; v2 : single-length , v3 : single-length
+	goto	l1269ee
+.end method
+
+.method public static toInteger(Z)I
+.limit registers 2
+; parameter[0] : v1 (Z)
+.line 393
+	if-eqz	v1,l126a10
+; v1 : single-length
+	const/4	v0,1
+; v0 : single-length
+l126a0e:
+	return	v0
+; v0 : single-length
+l126a10:
+	const/4	v0,0
+; v0 : single-length
+	goto	l126a0e
+.end method
+
+.method public static toInteger(ZII)I
+.limit registers 3
+; parameter[0] : v0 (Z)
+; parameter[1] : v1 (I)
+; parameter[2] : v2 (I)
+.line 447
+	if-eqz	v0,l126a2a
+; v0 : single-length
+l126a28:
+	return	v1
+; v1 : single-length
+l126a2a:
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+	goto	l126a28
+.end method
+
+.method public static toIntegerObject(Ljava/lang/Boolean;)Ljava/lang/Integer;
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/Boolean;)
+.line 427
+	if-nez	v1,l126a48
+; v1 : Ljava/lang/Boolean;
+.line 428
+	const/4	v0,0
+; v0 : single-length
+l126a46:
+.line 430
+	return-object	v0
+; v0 : Ljava/lang/Integer;
+l126a48:
+	invoke-virtual	{v1},java/lang/Boolean/booleanValue	; booleanValue()Z
+; v1 : Ljava/lang/Boolean;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l126a5a
+; v0 : single-length
+	sget-object	v0,org/apache/commons/lang3/math/NumberUtils.INTEGER_ONE Ljava/lang/Integer;
+; v0 : Ljava/lang/Integer;
+	goto	l126a46
+l126a5a:
+	sget-object	v0,org/apache/commons/lang3/math/NumberUtils.INTEGER_ZERO Ljava/lang/Integer;
+; v0 : Ljava/lang/Integer;
+	goto	l126a46
+.end method
+
+.method public static toIntegerObject(Ljava/lang/Boolean;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;)Ljava/lang/Integer;
+.limit registers 5
+; parameter[0] : v1 (Ljava/lang/Boolean;)
+; parameter[1] : v2 (Ljava/lang/Integer;)
+; parameter[2] : v3 (Ljava/lang/Integer;)
+; parameter[3] : v4 (Ljava/lang/Integer;)
+.line 505
+	if-nez	v1,l126a76
+; v1 : Ljava/lang/Boolean;
+l126a74:
+.line 508
+	return-object	v4
+; v4 : Ljava/lang/Integer;
+l126a76:
+	invoke-virtual	{v1},java/lang/Boolean/booleanValue	; booleanValue()Z
+; v1 : Ljava/lang/Boolean;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l126a86
+; v0 : single-length
+l126a82:
+	move-object	v4,v2
+; v4 : Ljava/lang/Integer; , v2 : Ljava/lang/Integer;
+	goto	l126a74
+l126a86:
+	move-object	v2,v3
+; v2 : Ljava/lang/Integer; , v3 : Ljava/lang/Integer;
+	goto	l126a82
+.end method
+
+.method public static toIntegerObject(Z)Ljava/lang/Integer;
+.limit registers 2
+; parameter[0] : v1 (Z)
+.line 409
+	if-eqz	v1,l126aa6
+; v1 : single-length
+	sget-object	v0,org/apache/commons/lang3/math/NumberUtils.INTEGER_ONE Ljava/lang/Integer;
+; v0 : Ljava/lang/Integer;
+l126aa4:
+	return-object	v0
+; v0 : Ljava/lang/Integer;
+l126aa6:
+	sget-object	v0,org/apache/commons/lang3/math/NumberUtils.INTEGER_ZERO Ljava/lang/Integer;
+; v0 : Ljava/lang/Integer;
+	goto	l126aa4
+.end method
+
+.method public static toIntegerObject(ZLjava/lang/Integer;Ljava/lang/Integer;)Ljava/lang/Integer;
+.limit registers 3
+; parameter[0] : v0 (Z)
+; parameter[1] : v1 (Ljava/lang/Integer;)
+; parameter[2] : v2 (Ljava/lang/Integer;)
+.line 486
+	if-eqz	v0,l126ac2
+; v0 : single-length
+l126ac0:
+	return-object	v1
+; v1 : Ljava/lang/Integer;
+l126ac2:
+	move-object	v1,v2
+; v1 : Ljava/lang/Integer; , v2 : Ljava/lang/Integer;
+	goto	l126ac0
+.end method
+
+.method public static toString(Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+.limit registers 5
+; parameter[0] : v1 (Ljava/lang/Boolean;)
+; parameter[1] : v2 (Ljava/lang/String;)
+; parameter[2] : v3 (Ljava/lang/String;)
+; parameter[3] : v4 (Ljava/lang/String;)
+.line 797
+	if-nez	v1,l126ade
+; v1 : Ljava/lang/Boolean;
+l126adc:
+.line 800
+	return-object	v4
+; v4 : Ljava/lang/String;
+l126ade:
+	invoke-virtual	{v1},java/lang/Boolean/booleanValue	; booleanValue()Z
+; v1 : Ljava/lang/Boolean;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l126aee
+; v0 : single-length
+l126aea:
+	move-object	v4,v2
+; v4 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	goto	l126adc
+l126aee:
+	move-object	v2,v3
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	goto	l126aea
+.end method
+
+.method public static toString(ZLjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+.limit registers 3
+; parameter[0] : v0 (Z)
+; parameter[1] : v1 (Ljava/lang/String;)
+; parameter[2] : v2 (Ljava/lang/String;)
+.line 867
+	if-eqz	v0,l126b0a
+; v0 : single-length
+l126b08:
+	return-object	v1
+; v1 : Ljava/lang/String;
+l126b0a:
+	move-object	v1,v2
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	goto	l126b08
+.end method
+
+.method public static toStringOnOff(Ljava/lang/Boolean;)Ljava/lang/String;
+.limit registers 4
+; parameter[0] : v3 (Ljava/lang/Boolean;)
+.line 761
+	const-string	v0,"on"
+; v0 : Ljava/lang/String;
+	const-string	v1,"off"
+; v1 : Ljava/lang/String;
+	const/4	v2,0
+; v2 : single-length
+	invoke-static	{v3,v0,v1,v2},org/apache/commons/lang3/BooleanUtils/toString	; toString(Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v3 : Ljava/lang/Boolean; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static toStringOnOff(Z)Ljava/lang/String;
+.limit registers 3
+; parameter[0] : v2 (Z)
+.line 834
+	const-string	v0,"on"
+; v0 : Ljava/lang/String;
+	const-string	v1,"off"
+; v1 : Ljava/lang/String;
+	invoke-static	{v2,v0,v1},org/apache/commons/lang3/BooleanUtils/toString	; toString(ZLjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v2 : single-length , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static toStringTrueFalse(Ljava/lang/Boolean;)Ljava/lang/String;
+.limit registers 4
+; parameter[0] : v3 (Ljava/lang/Boolean;)
+.line 744
+	const-string	v0,"true"
+; v0 : Ljava/lang/String;
+	const-string	v1,"false"
+; v1 : Ljava/lang/String;
+	const/4	v2,0
+; v2 : single-length
+	invoke-static	{v3,v0,v1,v2},org/apache/commons/lang3/BooleanUtils/toString	; toString(Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v3 : Ljava/lang/Boolean; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static toStringTrueFalse(Z)Ljava/lang/String;
+.limit registers 3
+; parameter[0] : v2 (Z)
+.line 818
+	const-string	v0,"true"
+; v0 : Ljava/lang/String;
+	const-string	v1,"false"
+; v1 : Ljava/lang/String;
+	invoke-static	{v2,v0,v1},org/apache/commons/lang3/BooleanUtils/toString	; toString(ZLjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v2 : single-length , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static toStringYesNo(Ljava/lang/Boolean;)Ljava/lang/String;
+.limit registers 4
+; parameter[0] : v3 (Ljava/lang/Boolean;)
+.line 778
+	const-string	v0,"yes"
+; v0 : Ljava/lang/String;
+	const-string	v1,"no"
+; v1 : Ljava/lang/String;
+	const/4	v2,0
+; v2 : single-length
+	invoke-static	{v3,v0,v1,v2},org/apache/commons/lang3/BooleanUtils/toString	; toString(Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v3 : Ljava/lang/Boolean; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static toStringYesNo(Z)Ljava/lang/String;
+.limit registers 3
+; parameter[0] : v2 (Z)
+.line 850
+	const-string	v0,"yes"
+; v0 : Ljava/lang/String;
+	const-string	v1,"no"
+; v1 : Ljava/lang/String;
+	invoke-static	{v2,v0,v1},org/apache/commons/lang3/BooleanUtils/toString	; toString(ZLjava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v2 : single-length , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static xor([Ljava/lang/Boolean;)Ljava/lang/Boolean;
+.limit registers 5
+; parameter[0] : v4 ([Ljava/lang/Boolean;)
+.catch java/lang/NullPointerException from l126c22 to l126c40 using l126c42
+.var 1 is primitive [Z from l126c2a to l126c42
+.line 1068
+	if-nez	v4,l126c0c
+; v4 : [Ljava/lang/Boolean;
+.line 1069
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	const-string	v3,"The Array must not be null"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+l126c0c:
+.line 1071
+	array-length	v2,v4
+; v2 : single-length , v4 : [Ljava/lang/Boolean;
+	if-nez	v2,l126c22
+; v2 : single-length
+.line 1072
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	const-string	v3,"Array is empty"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+l126c22:
+.line 1075
+	invoke-static	{v4},org/apache/commons/lang3/ArrayUtils/toPrimitive	; toPrimitive([Ljava/lang/Boolean;)[Z
+; v4 : [Ljava/lang/Boolean;
+	move-result-object	v1
+; v1 : [Z
+.line 1076
+	invoke-static	{v1},org/apache/commons/lang3/BooleanUtils/xor	; xor([Z)Z
+; v1 : [Z
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,l126c3c
+; v2 : single-length
+	sget-object	v2,java/lang/Boolean.TRUE Ljava/lang/Boolean;
+; v2 : Ljava/lang/Boolean;
+l126c3a:
+	return-object	v2
+; v2 : Ljava/lang/Boolean;
+l126c3c:
+	sget-object	v2,java/lang/Boolean.FALSE Ljava/lang/Boolean;
+; v2 : Ljava/lang/Boolean;
+l126c40:
+	goto	l126c3a
+l126c42:
+.line 1077
+	move-exception	v0
+; v0 : java/lang/NullPointerException
+.line 1078
+	new-instance	v2,java/lang/IllegalArgumentException
+; v2 : Ljava/lang/IllegalArgumentException;
+	const-string	v3,"The array must not contain any null elements"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalArgumentException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalArgumentException;
+.end method
+
+.method public static xor([Z)Z
+.limit registers 9
+; parameter[0] : v8 ([Z)
+.var 1 is element Z from l126cb2 to l126cc4
+	const/4	v6,0
+; v6 : single-length
+	const/4	v5,1
+; v5 : single-length
+.line 1027
+	if-nez	v8,l126c8c
+; v8 : [Z
+.line 1028
+	new-instance	v5,java/lang/IllegalArgumentException
+; v5 : Ljava/lang/IllegalArgumentException;
+	const-string	v6,"The Array must not be null"
+; v6 : Ljava/lang/String;
+	invoke-direct	{v5,v6},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v5 : Ljava/lang/IllegalArgumentException; , v6 : Ljava/lang/String;
+	throw	v5
+; v5 : Ljava/lang/IllegalArgumentException;
+l126c8c:
+.line 1030
+	array-length	v7,v8
+; v7 : single-length , v8 : [Z
+	if-nez	v7,l126ca2
+; v7 : single-length
+.line 1031
+	new-instance	v5,java/lang/IllegalArgumentException
+; v5 : Ljava/lang/IllegalArgumentException;
+	const-string	v6,"Array is empty"
+; v6 : Ljava/lang/String;
+	invoke-direct	{v5,v6},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v5 : Ljava/lang/IllegalArgumentException; , v6 : Ljava/lang/String;
+	throw	v5
+; v5 : Ljava/lang/IllegalArgumentException;
+l126ca2:
+.line 1035
+	const/4	v4,0
+; v4 : single-length
+.line 1036
+	move-object	v0,v8
+; v0 : [Z , v8 : [Z
+	array-length	v3,v0
+; v3 : single-length , v0 : [Z
+	const/4	v2,0
+; v2 : single-length
+l126caa:
+	if-ge	v2,v3,l126cc4
+; v2 : single-length , v3 : single-length
+	aget-boolean	v1,v0,v2
+; v1 : single-length , v0 : [Z , v2 : single-length
+.line 1039
+	if-eqz	v1,l126cbe
+; v1 : single-length
+.line 1040
+	if-ge	v4,v5,l126cca
+; v4 : single-length , v5 : single-length
+.line 1041
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+l126cbe:
+.line 1036
+	add-int/lit8	v2,v2,1
+; v2 : single-length , v2 : single-length
+	goto	l126caa
+l126cc4:
+.line 1049
+	if-ne	v4,v5,l126ccc
+; v4 : single-length , v5 : single-length
+l126cc8:
+	move	v6,v5
+; v6 : single-length , v5 : single-length
+l126cca:
+	return	v6
+; v6 : single-length
+l126ccc:
+	move	v5,v6
+; v5 : single-length , v6 : single-length
+	goto	l126cc8
+.end method
+
+

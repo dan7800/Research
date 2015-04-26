@@ -1,0 +1,134 @@
+.class com/facebook/android/AsyncFacebookRunner$1
+.super java/lang/Thread
+.source AsyncFacebookRunner.java
+
+.enclosing method com/logout(Landroid/content/Context;Lcom/facebook/android/AsyncFacebookRunner$RequestListener;Ljava/lang/Object;)V
+.field final this$0 Lcom/facebook/android/AsyncFacebookRunner;
+.field final val$context Landroid/content/Context;
+.field final val$listener Lcom/facebook/android/AsyncFacebookRunner$RequestListener;
+.field final val$state Ljava/lang/Object;
+
+.method <init>(Lcom/facebook/android/AsyncFacebookRunner;Landroid/content/Context;Lcom/facebook/android/AsyncFacebookRunner$RequestListener;Ljava/lang/Object;)V
+.limit registers 5
+; this: v0 (Lcom/facebook/android/AsyncFacebookRunner$1;)
+; parameter[0] : v1 (Lcom/facebook/android/AsyncFacebookRunner;)
+; parameter[1] : v2 (Landroid/content/Context;)
+; parameter[2] : v3 (Lcom/facebook/android/AsyncFacebookRunner$RequestListener;)
+; parameter[3] : v4 (Ljava/lang/Object;)
+.line 80
+	iput-object	v1,v0,com/facebook/android/AsyncFacebookRunner$1.this$0 Lcom/facebook/android/AsyncFacebookRunner;
+; v1 : Lcom/facebook/android/AsyncFacebookRunner; , v0 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	iput-object	v2,v0,com/facebook/android/AsyncFacebookRunner$1.val$context Landroid/content/Context;
+; v2 : Landroid/content/Context; , v0 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	iput-object	v3,v0,com/facebook/android/AsyncFacebookRunner$1.val$listener Lcom/facebook/android/AsyncFacebookRunner$RequestListener;
+; v3 : Lcom/facebook/android/AsyncFacebookRunner$RequestListener; , v0 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	iput-object	v4,v0,com/facebook/android/AsyncFacebookRunner$1.val$state Ljava/lang/Object;
+; v4 : Ljava/lang/Object; , v0 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	invoke-direct	{v0},java/lang/Thread/<init>	; <init>()V
+; v0 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	return-void	
+.end method
+
+.method public run()V
+.limit registers 6
+; this: v5 (Lcom/facebook/android/AsyncFacebookRunner$1;)
+.catch java/io/FileNotFoundException from lad6a8 to lad704 using lad706
+.catch java/net/MalformedURLException from lad6a8 to lad704 using lad718
+.catch java/io/IOException from lad6a8 to lad704 using lad72a
+.var 1 is response Ljava/lang/String; from lad6bc to lad6f4
+.var 1 is response Ljava/lang/String; from lad6f6 to lad706
+.var 0 is e Ljava/io/FileNotFoundException; from lad708 to lad718
+.var 0 is e Ljava/net/MalformedURLException; from lad71a to lad72a
+lad6a8:
+.line 83
+	iget-object	v2,v5,com/facebook/android/AsyncFacebookRunner$1.this$0 Lcom/facebook/android/AsyncFacebookRunner;
+; v2 : Lcom/facebook/android/AsyncFacebookRunner; , v5 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	iget-object	v2,v2,com/facebook/android/AsyncFacebookRunner.fb Lcom/facebook/android/Facebook;
+; v2 : Lcom/facebook/android/Facebook; , v2 : Lcom/facebook/android/Facebook;
+	iget-object	v3,v5,com/facebook/android/AsyncFacebookRunner$1.val$context Landroid/content/Context;
+; v3 : Landroid/content/Context; , v5 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	invoke-virtual	{v2,v3},com/facebook/android/Facebook/logout	; logout(Landroid/content/Context;)Ljava/lang/String;
+; v2 : Lcom/facebook/android/Facebook; , v3 : Landroid/content/Context;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 84
+	invoke-virtual	{v1},java/lang/String/length	; length()I
+; v1 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lad6d8
+; v2 : single-length
+	const-string	v2,"false"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lad6f6
+; v2 : single-length
+lad6d8:
+.line 85
+	iget-object	v2,v5,com/facebook/android/AsyncFacebookRunner$1.val$listener Lcom/facebook/android/AsyncFacebookRunner$RequestListener;
+; v2 : Lcom/facebook/android/AsyncFacebookRunner$RequestListener; , v5 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	new-instance	v3,com/facebook/android/FacebookError
+; v3 : Lcom/facebook/android/FacebookError;
+	const-string	v4,"auth.expireSession failed"
+; v4 : Ljava/lang/String;
+	invoke-direct	{v3,v4},com/facebook/android/FacebookError/<init>	; <init>(Ljava/lang/String;)V
+; v3 : Lcom/facebook/android/FacebookError; , v4 : Ljava/lang/String;
+	iget-object	v4,v5,com/facebook/android/AsyncFacebookRunner$1.val$state Ljava/lang/Object;
+; v4 : Ljava/lang/Object; , v5 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	invoke-interface	{v2,v3,v4},com/facebook/android/AsyncFacebookRunner$RequestListener/onFacebookError	; onFacebookError(Lcom/facebook/android/FacebookError;Ljava/lang/Object;)V
+; v2 : Lcom/facebook/android/AsyncFacebookRunner$RequestListener; , v3 : Lcom/facebook/android/FacebookError; , v4 : Ljava/lang/Object;
+lad6f4:
+.line 97
+	return-void	
+lad6f6:
+.line 89
+	iget-object	v2,v5,com/facebook/android/AsyncFacebookRunner$1.val$listener Lcom/facebook/android/AsyncFacebookRunner$RequestListener;
+; v2 : Lcom/facebook/android/AsyncFacebookRunner$RequestListener; , v5 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	iget-object	v3,v5,com/facebook/android/AsyncFacebookRunner$1.val$state Ljava/lang/Object;
+; v3 : Ljava/lang/Object; , v5 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	invoke-interface	{v2,v1,v3},com/facebook/android/AsyncFacebookRunner$RequestListener/onComplete	; onComplete(Ljava/lang/String;Ljava/lang/Object;)V
+; v2 : Lcom/facebook/android/AsyncFacebookRunner$RequestListener; , v1 : Ljava/lang/String; , v3 : Ljava/lang/Object;
+lad704:
+	goto	lad6f4
+lad706:
+.line 90
+	move-exception	v0
+; v0 : java/io/FileNotFoundException
+.line 91
+	iget-object	v2,v5,com/facebook/android/AsyncFacebookRunner$1.val$listener Lcom/facebook/android/AsyncFacebookRunner$RequestListener;
+; v2 : Lcom/facebook/android/AsyncFacebookRunner$RequestListener; , v5 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	iget-object	v3,v5,com/facebook/android/AsyncFacebookRunner$1.val$state Ljava/lang/Object;
+; v3 : Ljava/lang/Object; , v5 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	invoke-interface	{v2,v0,v3},com/facebook/android/AsyncFacebookRunner$RequestListener/onFileNotFoundException	; onFileNotFoundException(Ljava/io/FileNotFoundException;Ljava/lang/Object;)V
+; v2 : Lcom/facebook/android/AsyncFacebookRunner$RequestListener; , v0 : java/io/FileNotFoundException , v3 : Ljava/lang/Object;
+	goto	lad6f4
+lad718:
+.line 92
+	move-exception	v0
+; v0 : java/net/MalformedURLException
+.line 93
+	iget-object	v2,v5,com/facebook/android/AsyncFacebookRunner$1.val$listener Lcom/facebook/android/AsyncFacebookRunner$RequestListener;
+; v2 : Lcom/facebook/android/AsyncFacebookRunner$RequestListener; , v5 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	iget-object	v3,v5,com/facebook/android/AsyncFacebookRunner$1.val$state Ljava/lang/Object;
+; v3 : Ljava/lang/Object; , v5 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	invoke-interface	{v2,v0,v3},com/facebook/android/AsyncFacebookRunner$RequestListener/onMalformedURLException	; onMalformedURLException(Ljava/net/MalformedURLException;Ljava/lang/Object;)V
+; v2 : Lcom/facebook/android/AsyncFacebookRunner$RequestListener; , v0 : java/net/MalformedURLException , v3 : Ljava/lang/Object;
+	goto	lad6f4
+lad72a:
+.line 94
+	move-exception	v0
+; v0 : java/io/IOException
+.line 95
+	iget-object	v2,v5,com/facebook/android/AsyncFacebookRunner$1.val$listener Lcom/facebook/android/AsyncFacebookRunner$RequestListener;
+; v2 : Lcom/facebook/android/AsyncFacebookRunner$RequestListener; , v5 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	iget-object	v3,v5,com/facebook/android/AsyncFacebookRunner$1.val$state Ljava/lang/Object;
+; v3 : Ljava/lang/Object; , v5 : Lcom/facebook/android/AsyncFacebookRunner$1;
+	invoke-interface	{v2,v0,v3},com/facebook/android/AsyncFacebookRunner$RequestListener/onIOException	; onIOException(Ljava/io/IOException;Ljava/lang/Object;)V
+; v2 : Lcom/facebook/android/AsyncFacebookRunner$RequestListener; , v0 : java/io/IOException , v3 : Ljava/lang/Object;
+	goto	lad6f4
+.end method
+
+

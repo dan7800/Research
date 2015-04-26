@@ -1,0 +1,172 @@
+.class final com/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter
+.super java/lang/Object
+.source ActivityChooserModel.java
+.implements com/actionbarsherlock/widget/ActivityChooserModel$ActivitySorter
+
+.inner class DefaultSorter inner com/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter outer com/actionbarsherlock/widget/ActivityChooserModel
+.field private static final WEIGHT_DECAY_COEFFICIENT F = 0.95
+.field private final mPackageNameToActivityMap Ljava/util/Map;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;" , ">;" }
+  .end annotation
+.end field
+.field final this$0 Lcom/actionbarsherlock/widget/ActivityChooserModel;
+
+.method private <init>(Lcom/actionbarsherlock/widget/ActivityChooserModel;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter;)
+; parameter[0] : v2 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+.line 912
+	iput-object	v2,v1,com/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter.this$0 Lcom/actionbarsherlock/widget/ActivityChooserModel;
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel; , v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter;
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter;
+.line 915
+	new-instance	v0,java/util/HashMap
+; v0 : Ljava/util/HashMap;
+	invoke-direct	{v0},java/util/HashMap/<init>	; <init>()V
+; v0 : Ljava/util/HashMap;
+	iput-object	v0,v1,com/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter.mPackageNameToActivityMap Ljava/util/Map;
+; v0 : Ljava/util/HashMap; , v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter;
+	return-void	
+.end method
+
+.method <init>(Lcom/actionbarsherlock/widget/ActivityChooserModel;Lcom/actionbarsherlock/widget/ActivityChooserModel$1;)V
+.limit registers 3
+; this: v0 (Lcom/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter;)
+; parameter[0] : v1 (Lcom/actionbarsherlock/widget/ActivityChooserModel;)
+; parameter[1] : v2 (Lcom/actionbarsherlock/widget/ActivityChooserModel$1;)
+.line 912
+	invoke-direct	{v0,v1},com/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter/<init>	; <init>(Lcom/actionbarsherlock/widget/ActivityChooserModel;)V
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter; , v1 : Lcom/actionbarsherlock/widget/ActivityChooserModel;
+	return-void	
+.end method
+
+.method public sort(Landroid/content/Intent;Ljava/util/List;Ljava/util/List;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Landroid/content/Intent;" , "Ljava/util/List" , "<" , "Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;" , ">;" , "Ljava/util/List" , "<" , "Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;" , ">;)V" }
+.end annotation
+.limit registers 14
+; this: v10 (Lcom/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter;)
+; parameter[0] : v11 (Landroid/content/Intent;)
+; parameter[1] : v12 (Ljava/util/List;)
+; parameter[2] : v13 (Ljava/util/List;)
+.var 0 is activity Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo; from la6858 to la6876
+.var 6 is packageName Ljava/lang/String; from la686a to la6876
+.var 0 is activity Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo; from la68b0 to la68d2
+.var 2 is historicalRecord Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord; from la6898 to la68d2
+.var 6 is packageName Ljava/lang/String; from la68a4 to la68d2
+.line 920
+	iget-object	v7,v10,com/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter.mPackageNameToActivityMap Ljava/util/Map;
+; v7 : Ljava/util/Map; , v10 : Lcom/actionbarsherlock/widget/ActivityChooserModel$DefaultSorter;
+.line 922
+	invoke-interface	{v7},java/util/Map/clear	; clear()V
+; v7 : Ljava/util/Map;
+.line 924
+	invoke-interface	{v12},java/util/List/size	; size()I
+; v12 : Ljava/util/List;
+	move-result	v1
+; v1 : single-length
+.line 925
+	const/4	v3,0
+; v3 : single-length
+la6848:
+	if-ge	v3,v1,la6876
+; v3 : single-length , v1 : single-length
+.line 926
+	invoke-interface	{v12,v3},java/util/List/get	; get(I)Ljava/lang/Object;
+; v12 : Ljava/util/List; , v3 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+.line 927
+	const/4	v8,0
+; v8 : single-length
+	iput	v8,v0,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.weight F
+; v8 : single-length , v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+.line 928
+	iget-object	v8,v0,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.resolveInfo Landroid/content/pm/ResolveInfo;
+; v8 : Landroid/content/pm/ResolveInfo; , v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+	iget-object	v8,v8,android/content/pm/ResolveInfo.activityInfo Landroid/content/pm/ActivityInfo;
+; v8 : Landroid/content/pm/ActivityInfo; , v8 : Landroid/content/pm/ActivityInfo;
+	iget-object	v6,v8,android/content/pm/ActivityInfo.packageName Ljava/lang/String;
+; v6 : Ljava/lang/String; , v8 : Landroid/content/pm/ActivityInfo;
+.line 929
+	invoke-interface	{v7,v6,v0},java/util/Map/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v7 : Ljava/util/Map; , v6 : Ljava/lang/String; , v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+.line 925
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	la6848
+la6876:
+.line 932
+	invoke-interface	{v13},java/util/List/size	; size()I
+; v13 : Ljava/util/List;
+	move-result	v8
+; v8 : single-length
+	add-int/lit8	v4,v8,255
+; v4 : single-length , v8 : single-length
+.line 933
+	const/high16	v5,16256
+; v5 : single-length
+.line 934
+	move	v3,v4
+; v3 : single-length , v4 : single-length
+la6888:
+	if-ltz	v3,la68d2
+; v3 : single-length
+.line 935
+	invoke-interface	{v13,v3},java/util/List/get	; get(I)Ljava/lang/Object;
+; v13 : Ljava/util/List; , v3 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,com/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord
+; v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;
+.line 936
+	iget-object	v8,v2,com/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord.activity Landroid/content/ComponentName;
+; v8 : Landroid/content/ComponentName; , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;
+	invoke-virtual	{v8},android/content/ComponentName/getPackageName	; getPackageName()Ljava/lang/String;
+; v8 : Landroid/content/ComponentName;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+.line 937
+	invoke-interface	{v7,v6},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v7 : Ljava/util/Map; , v6 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+.line 938
+	if-eqz	v0,la68cc
+; v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+.line 939
+	iget	v8,v0,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.weight F
+; v8 : single-length , v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+	iget	v9,v2,com/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord.weight F
+; v9 : single-length , v2 : Lcom/actionbarsherlock/widget/ActivityChooserModel$HistoricalRecord;
+	mul-float/2addr	v9,v5
+; v9 : single-length , v5 : single-length
+	add-float/2addr	v8,v9
+; v8 : single-length , v9 : single-length
+	iput	v8,v0,com/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo.weight F
+; v8 : single-length , v0 : Lcom/actionbarsherlock/widget/ActivityChooserModel$ActivityResolveInfo;
+.line 940
+	const	v8,1064514355	; 0x3f733333
+; v8 : single-length
+	mul-float/2addr	v5,v8
+; v5 : single-length , v8 : single-length
+la68cc:
+.line 934
+	add-int/lit8	v3,v3,255
+; v3 : single-length , v3 : single-length
+	goto	la6888
+la68d2:
+.line 944
+	invoke-static	{v12},java/util/Collections/sort	; sort(Ljava/util/List;)V
+; v12 : Ljava/util/List;
+.line 951
+	return-void	
+.end method
+
+

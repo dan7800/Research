@@ -1,0 +1,391 @@
+.class public org/apache/commons/lang3/EnumUtils
+.super java/lang/Object
+.source EnumUtils.java
+
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/lang3/EnumUtils;)
+.line 40
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/lang3/EnumUtils;
+.line 41
+	return-void	
+.end method
+
+.method private static checkBitVectorable(Ljava/lang/Class;)Ljava/lang/Class;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<E:" , "Ljava/lang/Enum" , "<TE;>;>(" , "Ljava/lang/Class" , "<TE;>;)" , "Ljava/lang/Class" , "<TE;>;" }
+.end annotation
+.limit registers 9
+; parameter[0] : v8 (Ljava/lang/Class;)
+	const/16	v7,64
+; v7 : single-length
+	const/4	v2,1
+; v2 : single-length
+	const/4	v3,0
+; v3 : single-length
+.line 199
+	const-string	v1,"EnumClass must be defined."
+; v1 : Ljava/lang/String;
+	new-array	v4,v3,[Ljava/lang/Object;
+; v4 : [Ljava/lang/Object; , v3 : single-length
+	invoke-static	{v8,v1,v4},org/apache/commons/lang3/Validate/notNull	; notNull(Ljava/lang/Object;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/Object;
+; v8 : Ljava/lang/Class; , v1 : Ljava/lang/String; , v4 : [Ljava/lang/Object;
+.line 201
+	invoke-virtual	{v8},java/lang/Class/getEnumConstants	; getEnumConstants()[Ljava/lang/Object;
+; v8 : Ljava/lang/Class;
+	move-result-object	v0
+; v0 : [Ljava/lang/Object;
+	check-cast	v0,[Ljava/lang/Enum
+; v0 : [Ljava/lang/Enum
+.line 202
+	if-eqz	v0,l129090
+; v0 : [Ljava/lang/Enum
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+l12903c:
+	const-string	v4,"%s does not seem to be an Enum type"
+; v4 : Ljava/lang/String;
+	new-array	v5,v2,[Ljava/lang/Object;
+; v5 : [Ljava/lang/Object; , v2 : single-length
+	aput-object	v8,v5,v3
+; v8 : Ljava/lang/Class; , v5 : [Ljava/lang/Object; , v3 : single-length
+	invoke-static	{v1,v4,v5},org/apache/commons/lang3/Validate/isTrue	; isTrue(ZLjava/lang/String;[Ljava/lang/Object;)V
+; v1 : single-length , v4 : Ljava/lang/String; , v5 : [Ljava/lang/Object;
+.line 203
+	array-length	v1,v0
+; v1 : single-length , v0 : [Ljava/lang/Enum
+	if-gt	v1,v7,l129094
+; v1 : single-length , v7 : single-length
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+l129056:
+	const-string	v4,"Cannot store %s %s values in %s bits"
+; v4 : Ljava/lang/String;
+	const/4	v5,3
+; v5 : single-length
+	new-array	v5,v5,[Ljava/lang/Object;
+; v5 : [Ljava/lang/Object; , v5 : [Ljava/lang/Object;
+	array-length	v6,v0
+; v6 : single-length , v0 : [Ljava/lang/Enum
+	invoke-static	{v6},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v6 : single-length
+	move-result-object	v6
+; v6 : Ljava/lang/Integer;
+	aput-object	v6,v5,v3
+; v6 : Ljava/lang/Integer; , v5 : [Ljava/lang/Object; , v3 : single-length
+	invoke-virtual	{v8},java/lang/Class/getSimpleName	; getSimpleName()Ljava/lang/String;
+; v8 : Ljava/lang/Class;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	aput-object	v3,v5,v2
+; v3 : Ljava/lang/String; , v5 : [Ljava/lang/Object; , v2 : single-length
+	const/4	v2,2
+; v2 : single-length
+	invoke-static	{v7},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v7 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/Integer;
+	aput-object	v3,v5,v2
+; v3 : Ljava/lang/Integer; , v5 : [Ljava/lang/Object; , v2 : single-length
+	invoke-static	{v1,v4,v5},org/apache/commons/lang3/Validate/isTrue	; isTrue(ZLjava/lang/String;[Ljava/lang/Object;)V
+; v1 : single-length , v4 : Ljava/lang/String; , v5 : [Ljava/lang/Object;
+.line 206
+	return-object	v8
+; v8 : Ljava/lang/Class;
+l129090:
+	move	v1,v3
+; v1 : single-length , v3 : single-length
+.line 202
+	goto	l12903c
+l129094:
+	move	v1,v3
+; v1 : single-length , v3 : single-length
+.line 203
+	goto	l129056
+.end method
+
+.method public static generateBitVector(Ljava/lang/Class;Ljava/lang/Iterable;)J
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<E:" , "Ljava/lang/Enum" , "<TE;>;>(" , "Ljava/lang/Class" , "<TE;>;[TE;)J" }
+.end annotation
+.limit registers 8
+; parameter[0] : v6 (Ljava/lang/Class;)
+; parameter[1] : v7 (Ljava/lang/Iterable;)
+.var 0 is constant Ljava/lang/Enum; from l1290d8 to l1290ea
+.line 135
+	invoke-static	{v6},org/apache/commons/lang3/EnumUtils/checkBitVectorable	; checkBitVectorable(Ljava/lang/Class;)Ljava/lang/Class;
+; v6 : Ljava/lang/Class;
+.line 136
+	invoke-static	{v7},org/apache/commons/lang3/Validate/notNull	; notNull(Ljava/lang/Object;)Ljava/lang/Object;
+; v7 : Ljava/lang/Iterable;
+.line 137
+	const-wide/16	v2,0
+; v2 : double-length
+.line 138
+	invoke-interface	{v7},java/lang/Iterable/iterator	; iterator()Ljava/util/Iterator;
+; v7 : Ljava/lang/Iterable;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+l1290c0:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l1290ea
+; v4 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/lang/Enum
+; v0 : Ljava/lang/Enum;
+.line 139
+	const/4	v4,1
+; v4 : single-length
+	invoke-virtual	{v0},java/lang/Enum/ordinal	; ordinal()I
+; v0 : Ljava/lang/Enum;
+	move-result	v5
+; v5 : single-length
+	shl-int/2addr	v4,v5
+; v4 : single-length , v5 : single-length
+	int-to-long	v4,v4
+; v4 : double-length , v4 : double-length
+	or-long/2addr	v2,v4
+; v2 : double-length , v4 : double-length
+	goto	l1290c0
+l1290ea:
+.line 141
+	return-wide	v2
+; v2 : double-length
+.end method
+
+.method public static generateBitVector(Ljava/lang/Class;[Ljava/lang/Enum;)J
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<E:" , "Ljava/lang/Enum" , "<TE;>;>(" , "Ljava/lang/Class" , "<TE;>;[TE;)J" }
+.end annotation
+.limit registers 4
+; parameter[0] : v2 (Ljava/lang/Class;)
+; parameter[1] : v3 ([Ljava/lang/Enum;)
+.line 161
+	invoke-static	{v3},org/apache/commons/lang3/Validate/noNullElements	; noNullElements([Ljava/lang/Object;)[Ljava/lang/Object;
+; v3 : [Ljava/lang/Enum;
+.line 162
+	invoke-static	{v3},java/util/Arrays/asList	; asList([Ljava/lang/Object;)Ljava/util/List;
+; v3 : [Ljava/lang/Enum;
+	move-result-object	v0
+; v0 : Ljava/util/List;
+	invoke-static	{v2,v0},org/apache/commons/lang3/EnumUtils/generateBitVector	; generateBitVector(Ljava/lang/Class;Ljava/lang/Iterable;)J
+; v2 : Ljava/lang/Class; , v0 : Ljava/util/List;
+	move-result-wide	v0
+; v0 : double-length
+	return-wide	v0
+; v0 : double-length
+.end method
+
+.method public static getEnum(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<E:" , "Ljava/lang/Enum" , "<TE;>;>(" , "Ljava/lang/Class" , "<TE;>;" , "Ljava/lang/String;" , ")TE;" }
+.end annotation
+.limit registers 4
+; parameter[0] : v2 (Ljava/lang/Class;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.catch java/lang/IllegalArgumentException from l12912c to l129132 using l129136
+	const/4	v1,0
+; v1 : single-length
+.line 108
+	if-nez	v3,l12912c
+; v3 : Ljava/lang/String;
+l12912a:
+.line 114
+	return-object	v1
+; v1 : Ljava/lang/Enum;
+l12912c:
+.line 112
+	invoke-static	{v2,v3},java/lang/Enum/valueOf	; valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;
+; v2 : Ljava/lang/Class; , v3 : Ljava/lang/String;
+l129132:
+	move-result-object	v1
+; v1 : Ljava/lang/Enum;
+	goto	l12912a
+l129136:
+.line 113
+	move-exception	v0
+; v0 : java/lang/IllegalArgumentException
+.line 114
+	goto	l12912a
+.end method
+
+.method public static getEnumList(Ljava/lang/Class;)Ljava/util/List;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<E:" , "Ljava/lang/Enum" , "<TE;>;>(" , "Ljava/lang/Class" , "<TE;>;)" , "Ljava/util/List" , "<TE;>;" }
+.end annotation
+.limit registers 3
+; parameter[0] : v2 (Ljava/lang/Class;)
+.line 70
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-virtual	{v2},java/lang/Class/getEnumConstants	; getEnumConstants()[Ljava/lang/Object;
+; v2 : Ljava/lang/Class;
+	move-result-object	v1
+; v1 : [Ljava/lang/Object;
+	invoke-static	{v1},java/util/Arrays/asList	; asList([Ljava/lang/Object;)Ljava/util/List;
+; v1 : [Ljava/lang/Object;
+	move-result-object	v1
+; v1 : Ljava/util/List;
+	invoke-direct	{v0,v1},java/util/ArrayList/<init>	; <init>(Ljava/util/Collection;)V
+; v0 : Ljava/util/ArrayList; , v1 : Ljava/util/List;
+	return-object	v0
+; v0 : Ljava/util/ArrayList;
+.end method
+
+.method public static getEnumMap(Ljava/lang/Class;)Ljava/util/Map;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<E:" , "Ljava/lang/Enum" , "<TE;>;>(" , "Ljava/lang/Class" , "<TE;>;)" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TE;>;" }
+.end annotation
+.limit registers 7
+; parameter[0] : v6 (Ljava/lang/Class;)
+.var 1 is e Ljava/lang/Enum; from l1291aa to l1291be
+.line 53
+	new-instance	v4,java/util/LinkedHashMap
+; v4 : Ljava/util/LinkedHashMap;
+	invoke-direct	{v4},java/util/LinkedHashMap/<init>	; <init>()V
+; v4 : Ljava/util/LinkedHashMap;
+.line 54
+	invoke-virtual	{v6},java/lang/Class/getEnumConstants	; getEnumConstants()[Ljava/lang/Object;
+; v6 : Ljava/lang/Class;
+	move-result-object	v0
+; v0 : [Ljava/lang/Object;
+	check-cast	v0,[Ljava/lang/Enum
+; v0 : [Ljava/lang/Enum
+	array-length	v3,v0
+; v3 : single-length , v0 : [Ljava/lang/Enum
+	const/4	v2,0
+; v2 : single-length
+l1291a2:
+	if-ge	v2,v3,l1291be
+; v2 : single-length , v3 : single-length
+	aget-object	v1,v0,v2
+; v1 : Ljava/lang/Enum , v0 : [Ljava/lang/Enum , v2 : single-length
+.line 55
+	invoke-virtual	{v1},java/lang/Enum/name	; name()Ljava/lang/String;
+; v1 : Ljava/lang/Enum
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-interface	{v4,v5,v1},java/util/Map/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v4 : Ljava/util/LinkedHashMap; , v5 : Ljava/lang/String; , v1 : Ljava/lang/Enum
+.line 54
+	add-int/lit8	v2,v2,1
+; v2 : single-length , v2 : single-length
+	goto	l1291a2
+l1291be:
+.line 57
+	return-object	v4
+; v4 : Ljava/util/LinkedHashMap;
+.end method
+
+.method public static isValidEnum(Ljava/lang/Class;Ljava/lang/String;)Z
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<E:" , "Ljava/lang/Enum" , "<TE;>;>(" , "Ljava/lang/Class" , "<TE;>;" , "Ljava/lang/String;" , ")Z" }
+.end annotation
+.limit registers 4
+; parameter[0] : v2 (Ljava/lang/Class;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.catch java/lang/IllegalArgumentException from l1291d8 to l1291de using l1291e2
+	const/4	v1,0
+; v1 : single-length
+.line 85
+	if-nez	v3,l1291d8
+; v3 : Ljava/lang/String;
+l1291d6:
+.line 92
+	return	v1
+; v1 : single-length
+l1291d8:
+.line 89
+	invoke-static	{v2,v3},java/lang/Enum/valueOf	; valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;
+; v2 : Ljava/lang/Class; , v3 : Ljava/lang/String;
+l1291de:
+.line 90
+	const/4	v1,1
+; v1 : single-length
+	goto	l1291d6
+l1291e2:
+.line 91
+	move-exception	v0
+; v0 : java/lang/IllegalArgumentException
+.line 92
+	goto	l1291d6
+.end method
+
+.method public static processBitVector(Ljava/lang/Class;J)Ljava/util/EnumSet;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<E:" , "Ljava/lang/Enum" , "<TE;>;>(" , "Ljava/lang/Class" , "<TE;>;J)" , "Ljava/util/EnumSet" , "<TE;>;" }
+.end annotation
+.limit registers 13
+; parameter[0] : v10 (Ljava/lang/Class;)
+; parameter[1] : v11 (J)
+.var 1 is constant Ljava/lang/Enum; from l129232 to l12925a
+.line 179
+	invoke-static	{v10},org/apache/commons/lang3/EnumUtils/checkBitVectorable	; checkBitVectorable(Ljava/lang/Class;)Ljava/lang/Class;
+; v10 : Ljava/lang/Class;
+	move-result-object	v6
+; v6 : Ljava/lang/Class;
+	invoke-virtual	{v6},java/lang/Class/getEnumConstants	; getEnumConstants()[Ljava/lang/Object;
+; v6 : Ljava/lang/Class;
+	move-result-object	v2
+; v2 : [Ljava/lang/Object;
+	check-cast	v2,[Ljava/lang/Enum
+; v2 : [Ljava/lang/Enum
+.line 180
+	invoke-static	{v10},java/util/EnumSet/noneOf	; noneOf(Ljava/lang/Class;)Ljava/util/EnumSet;
+; v10 : Ljava/lang/Class;
+	move-result-object	v5
+; v5 : Ljava/util/EnumSet;
+.line 181
+	move-object	v0,v2
+; v0 : [Ljava/lang/Enum , v2 : [Ljava/lang/Enum
+	array-length	v4,v0
+; v4 : single-length , v0 : [Ljava/lang/Enum
+	const/4	v3,0
+; v3 : single-length
+l12922a:
+	if-ge	v3,v4,l12925a
+; v3 : single-length , v4 : single-length
+	aget-object	v1,v0,v3
+; v1 : Ljava/lang/Enum , v0 : [Ljava/lang/Enum , v3 : single-length
+.line 182
+	const/4	v6,1
+; v6 : single-length
+	invoke-virtual	{v1},java/lang/Enum/ordinal	; ordinal()I
+; v1 : Ljava/lang/Enum
+	move-result	v7
+; v7 : single-length
+	shl-int/2addr	v6,v7
+; v6 : single-length , v7 : single-length
+	int-to-long	v6,v6
+; v6 : double-length , v6 : double-length
+	and-long/2addr	v6,v11
+; v6 : double-length , v11 : double-length
+	const-wide/16	v8,0
+; v8 : double-length
+	cmp-long	v6,v6,v8
+; v6 : single-length , v6 : single-length , v8 : double-length
+	if-eqz	v6,l129254
+; v6 : single-length
+.line 183
+	invoke-virtual	{v5,v1},java/util/EnumSet/add	; add(Ljava/lang/Object;)Z
+; v5 : Ljava/util/EnumSet; , v1 : Ljava/lang/Enum
+l129254:
+.line 181
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	l12922a
+l12925a:
+.line 186
+	return-object	v5
+; v5 : Ljava/util/EnumSet;
+.end method
+
+

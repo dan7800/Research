@@ -1,0 +1,405 @@
+.class public org/apache/commons/io/output/WriterOutputStream
+.super java/io/OutputStream
+.source WriterOutputStream.java
+
+.field private static final DEFAULT_BUFFER_SIZE I = 1024	; 0x400
+.field private final decoder Ljava/nio/charset/CharsetDecoder;
+.field private final decoderIn Ljava/nio/ByteBuffer;
+.field private final decoderOut Ljava/nio/CharBuffer;
+.field private final writeImmediately Z
+.field private final writer Ljava/io/Writer;
+
+.method public <init>(Ljava/io/Writer;)V
+.limit registers 5
+; this: v3 (Lorg/apache/commons/io/output/WriterOutputStream;)
+; parameter[0] : v4 (Ljava/io/Writer;)
+.line 198
+	invoke-static	{},java/nio/charset/Charset/defaultCharset	; defaultCharset()Ljava/nio/charset/Charset;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Ljava/nio/charset/Charset;
+	const/16	v1,1024
+; v1 : single-length
+	const/4	v2,0
+; v2 : single-length
+	invoke-direct	{v3,v4,v0,v1,v2},org/apache/commons/io/output/WriterOutputStream/<init>	; <init>(Ljava/io/Writer;Ljava/nio/charset/Charset;IZ)V
+; v3 : Lorg/apache/commons/io/output/WriterOutputStream; , v4 : Ljava/io/Writer; , v0 : Ljava/nio/charset/Charset; , v1 : single-length , v2 : single-length
+.line 199
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/Writer;Ljava/lang/String;)V
+.limit registers 5
+; this: v2 (Lorg/apache/commons/io/output/WriterOutputStream;)
+; parameter[0] : v3 (Ljava/io/Writer;)
+; parameter[1] : v4 (Ljava/lang/String;)
+.line 187
+	const/16	v0,1024
+; v0 : single-length
+	const/4	v1,0
+; v1 : single-length
+	invoke-direct	{v2,v3,v4,v0,v1},org/apache/commons/io/output/WriterOutputStream/<init>	; <init>(Ljava/io/Writer;Ljava/lang/String;IZ)V
+; v2 : Lorg/apache/commons/io/output/WriterOutputStream; , v3 : Ljava/io/Writer; , v4 : Ljava/lang/String; , v0 : single-length , v1 : single-length
+.line 188
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/Writer;Ljava/lang/String;IZ)V
+.limit registers 6
+; this: v1 (Lorg/apache/commons/io/output/WriterOutputStream;)
+; parameter[0] : v2 (Ljava/io/Writer;)
+; parameter[1] : v3 (Ljava/lang/String;)
+; parameter[2] : v4 (I)
+; parameter[3] : v5 (Z)
+.line 175
+	invoke-static	{v3},java/nio/charset/Charset/forName	; forName(Ljava/lang/String;)Ljava/nio/charset/Charset;
+; v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/nio/charset/Charset;
+	invoke-direct	{v1,v2,v0,v4,v5},org/apache/commons/io/output/WriterOutputStream/<init>	; <init>(Ljava/io/Writer;Ljava/nio/charset/Charset;IZ)V
+; v1 : Lorg/apache/commons/io/output/WriterOutputStream; , v2 : Ljava/io/Writer; , v0 : Ljava/nio/charset/Charset; , v4 : single-length , v5 : single-length
+.line 176
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/Writer;Ljava/nio/charset/Charset;)V
+.limit registers 5
+; this: v2 (Lorg/apache/commons/io/output/WriterOutputStream;)
+; parameter[0] : v3 (Ljava/io/Writer;)
+; parameter[1] : v4 (Ljava/nio/charset/Charset;)
+.line 159
+	const/16	v0,1024
+; v0 : single-length
+	const/4	v1,0
+; v1 : single-length
+	invoke-direct	{v2,v3,v4,v0,v1},org/apache/commons/io/output/WriterOutputStream/<init>	; <init>(Ljava/io/Writer;Ljava/nio/charset/Charset;IZ)V
+; v2 : Lorg/apache/commons/io/output/WriterOutputStream; , v3 : Ljava/io/Writer; , v4 : Ljava/nio/charset/Charset; , v0 : single-length , v1 : single-length
+.line 160
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/Writer;Ljava/nio/charset/Charset;IZ)V
+.limit registers 7
+; this: v2 (Lorg/apache/commons/io/output/WriterOutputStream;)
+; parameter[0] : v3 (Ljava/io/Writer;)
+; parameter[1] : v4 (Ljava/nio/charset/Charset;)
+; parameter[2] : v5 (I)
+; parameter[3] : v6 (Z)
+.line 141
+	invoke-virtual	{v4},java/nio/charset/Charset/newDecoder	; newDecoder()Ljava/nio/charset/CharsetDecoder;
+; v4 : Ljava/nio/charset/Charset;
+	move-result-object	v0
+; v0 : Ljava/nio/charset/CharsetDecoder;
+	sget-object	v1,java/nio/charset/CodingErrorAction.REPLACE Ljava/nio/charset/CodingErrorAction;
+; v1 : Ljava/nio/charset/CodingErrorAction;
+	invoke-virtual	{v0,v1},java/nio/charset/CharsetDecoder/onMalformedInput	; onMalformedInput(Ljava/nio/charset/CodingErrorAction;)Ljava/nio/charset/CharsetDecoder;
+; v0 : Ljava/nio/charset/CharsetDecoder; , v1 : Ljava/nio/charset/CodingErrorAction;
+	move-result-object	v0
+; v0 : Ljava/nio/charset/CharsetDecoder;
+	sget-object	v1,java/nio/charset/CodingErrorAction.REPLACE Ljava/nio/charset/CodingErrorAction;
+; v1 : Ljava/nio/charset/CodingErrorAction;
+	invoke-virtual	{v0,v1},java/nio/charset/CharsetDecoder/onUnmappableCharacter	; onUnmappableCharacter(Ljava/nio/charset/CodingErrorAction;)Ljava/nio/charset/CharsetDecoder;
+; v0 : Ljava/nio/charset/CharsetDecoder; , v1 : Ljava/nio/charset/CodingErrorAction;
+	move-result-object	v0
+; v0 : Ljava/nio/charset/CharsetDecoder;
+	const-string	v1,"?"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/nio/charset/CharsetDecoder/replaceWith	; replaceWith(Ljava/lang/String;)Ljava/nio/charset/CharsetDecoder;
+; v0 : Ljava/nio/charset/CharsetDecoder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/nio/charset/CharsetDecoder;
+	invoke-direct	{v2,v3,v0,v5,v6},org/apache/commons/io/output/WriterOutputStream/<init>	; <init>(Ljava/io/Writer;Ljava/nio/charset/CharsetDecoder;IZ)V
+; v2 : Lorg/apache/commons/io/output/WriterOutputStream; , v3 : Ljava/io/Writer; , v0 : Ljava/nio/charset/CharsetDecoder; , v5 : single-length , v6 : single-length
+.line 148
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/Writer;Ljava/nio/charset/CharsetDecoder;)V
+.limit registers 5
+; this: v2 (Lorg/apache/commons/io/output/WriterOutputStream;)
+; parameter[0] : v3 (Ljava/io/Writer;)
+; parameter[1] : v4 (Ljava/nio/charset/CharsetDecoder;)
+.line 105
+	const/16	v0,1024
+; v0 : single-length
+	const/4	v1,0
+; v1 : single-length
+	invoke-direct	{v2,v3,v4,v0,v1},org/apache/commons/io/output/WriterOutputStream/<init>	; <init>(Ljava/io/Writer;Ljava/nio/charset/CharsetDecoder;IZ)V
+; v2 : Lorg/apache/commons/io/output/WriterOutputStream; , v3 : Ljava/io/Writer; , v4 : Ljava/nio/charset/CharsetDecoder; , v0 : single-length , v1 : single-length
+.line 106
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/Writer;Ljava/nio/charset/CharsetDecoder;IZ)V
+.limit registers 6
+; this: v1 (Lorg/apache/commons/io/output/WriterOutputStream;)
+; parameter[0] : v2 (Ljava/io/Writer;)
+; parameter[1] : v3 (Ljava/nio/charset/CharsetDecoder;)
+; parameter[2] : v4 (I)
+; parameter[3] : v5 (Z)
+.line 121
+	invoke-direct	{v1},java/io/OutputStream/<init>	; <init>()V
+; v1 : Lorg/apache/commons/io/output/WriterOutputStream;
+.line 86
+	const/16	v0,128
+; v0 : single-length
+	invoke-static	{v0},java/nio/ByteBuffer/allocate	; allocate(I)Ljava/nio/ByteBuffer;
+; v0 : single-length
+	move-result-object	v0
+; v0 : Ljava/nio/ByteBuffer;
+	iput-object	v0,v1,org/apache/commons/io/output/WriterOutputStream.decoderIn Ljava/nio/ByteBuffer;
+; v0 : Ljava/nio/ByteBuffer; , v1 : Lorg/apache/commons/io/output/WriterOutputStream;
+.line 122
+	iput-object	v2,v1,org/apache/commons/io/output/WriterOutputStream.writer Ljava/io/Writer;
+; v2 : Ljava/io/Writer; , v1 : Lorg/apache/commons/io/output/WriterOutputStream;
+.line 123
+	iput-object	v3,v1,org/apache/commons/io/output/WriterOutputStream.decoder Ljava/nio/charset/CharsetDecoder;
+; v3 : Ljava/nio/charset/CharsetDecoder; , v1 : Lorg/apache/commons/io/output/WriterOutputStream;
+.line 124
+	iput-boolean	v5,v1,org/apache/commons/io/output/WriterOutputStream.writeImmediately Z
+; v5 : single-length , v1 : Lorg/apache/commons/io/output/WriterOutputStream;
+.line 125
+	invoke-static	{v4},java/nio/CharBuffer/allocate	; allocate(I)Ljava/nio/CharBuffer;
+; v4 : single-length
+	move-result-object	v0
+; v0 : Ljava/nio/CharBuffer;
+	iput-object	v0,v1,org/apache/commons/io/output/WriterOutputStream.decoderOut Ljava/nio/CharBuffer;
+; v0 : Ljava/nio/CharBuffer; , v1 : Lorg/apache/commons/io/output/WriterOutputStream;
+.line 126
+	return-void	
+.end method
+
+.method private flushOutput()V
+.throws Ljava/io/IOException;
+.limit registers 5
+; this: v4 (Lorg/apache/commons/io/output/WriterOutputStream;)
+.line 302
+	iget-object	v0,v4,org/apache/commons/io/output/WriterOutputStream.decoderOut Ljava/nio/CharBuffer;
+; v0 : Ljava/nio/CharBuffer; , v4 : Lorg/apache/commons/io/output/WriterOutputStream;
+	invoke-virtual	{v0},java/nio/CharBuffer/position	; position()I
+; v0 : Ljava/nio/CharBuffer;
+	move-result	v0
+; v0 : single-length
+	if-lez	v0,l120302
+; v0 : single-length
+.line 303
+	iget-object	v0,v4,org/apache/commons/io/output/WriterOutputStream.writer Ljava/io/Writer;
+; v0 : Ljava/io/Writer; , v4 : Lorg/apache/commons/io/output/WriterOutputStream;
+	iget-object	v1,v4,org/apache/commons/io/output/WriterOutputStream.decoderOut Ljava/nio/CharBuffer;
+; v1 : Ljava/nio/CharBuffer; , v4 : Lorg/apache/commons/io/output/WriterOutputStream;
+	invoke-virtual	{v1},java/nio/CharBuffer/array	; array()[C
+; v1 : Ljava/nio/CharBuffer;
+	move-result-object	v1
+; v1 : [C
+	const/4	v2,0
+; v2 : single-length
+	iget-object	v3,v4,org/apache/commons/io/output/WriterOutputStream.decoderOut Ljava/nio/CharBuffer;
+; v3 : Ljava/nio/CharBuffer; , v4 : Lorg/apache/commons/io/output/WriterOutputStream;
+	invoke-virtual	{v3},java/nio/CharBuffer/position	; position()I
+; v3 : Ljava/nio/CharBuffer;
+	move-result	v3
+; v3 : single-length
+	invoke-virtual	{v0,v1,v2,v3},java/io/Writer/write	; write([CII)V
+; v0 : Ljava/io/Writer; , v1 : [C , v2 : single-length , v3 : single-length
+.line 304
+	iget-object	v0,v4,org/apache/commons/io/output/WriterOutputStream.decoderOut Ljava/nio/CharBuffer;
+; v0 : Ljava/nio/CharBuffer; , v4 : Lorg/apache/commons/io/output/WriterOutputStream;
+	invoke-virtual	{v0},java/nio/CharBuffer/rewind	; rewind()Ljava/nio/Buffer;
+; v0 : Ljava/nio/CharBuffer;
+l120302:
+.line 306
+	return-void	
+.end method
+
+.method private processInput(Z)V
+.throws Ljava/io/IOException;
+.limit registers 6
+; this: v4 (Lorg/apache/commons/io/output/WriterOutputStream;)
+; parameter[0] : v5 (Z)
+.line 278
+	iget-object	v1,v4,org/apache/commons/io/output/WriterOutputStream.decoderIn Ljava/nio/ByteBuffer;
+; v1 : Ljava/nio/ByteBuffer; , v4 : Lorg/apache/commons/io/output/WriterOutputStream;
+	invoke-virtual	{v1},java/nio/ByteBuffer/flip	; flip()Ljava/nio/Buffer;
+; v1 : Ljava/nio/ByteBuffer;
+l12031e:
+.line 281
+	iget-object	v1,v4,org/apache/commons/io/output/WriterOutputStream.decoder Ljava/nio/charset/CharsetDecoder;
+; v1 : Ljava/nio/charset/CharsetDecoder; , v4 : Lorg/apache/commons/io/output/WriterOutputStream;
+	iget-object	v2,v4,org/apache/commons/io/output/WriterOutputStream.decoderIn Ljava/nio/ByteBuffer;
+; v2 : Ljava/nio/ByteBuffer; , v4 : Lorg/apache/commons/io/output/WriterOutputStream;
+	iget-object	v3,v4,org/apache/commons/io/output/WriterOutputStream.decoderOut Ljava/nio/CharBuffer;
+; v3 : Ljava/nio/CharBuffer; , v4 : Lorg/apache/commons/io/output/WriterOutputStream;
+	invoke-virtual	{v1,v2,v3,v5},java/nio/charset/CharsetDecoder/decode	; decode(Ljava/nio/ByteBuffer;Ljava/nio/CharBuffer;Z)Ljava/nio/charset/CoderResult;
+; v1 : Ljava/nio/charset/CharsetDecoder; , v2 : Ljava/nio/ByteBuffer; , v3 : Ljava/nio/CharBuffer; , v5 : single-length
+	move-result-object	v0
+; v0 : Ljava/nio/charset/CoderResult;
+.line 282
+	invoke-virtual	{v0},java/nio/charset/CoderResult/isOverflow	; isOverflow()Z
+; v0 : Ljava/nio/charset/CoderResult;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l120346
+; v1 : single-length
+.line 283
+	invoke-direct	{v4},org/apache/commons/io/output/WriterOutputStream/flushOutput	; flushOutput()V
+; v4 : Lorg/apache/commons/io/output/WriterOutputStream;
+	goto	l12031e
+l120346:
+.line 284
+	invoke-virtual	{v0},java/nio/charset/CoderResult/isUnderflow	; isUnderflow()Z
+; v0 : Ljava/nio/charset/CoderResult;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l12035e
+; v1 : single-length
+.line 293
+	iget-object	v1,v4,org/apache/commons/io/output/WriterOutputStream.decoderIn Ljava/nio/ByteBuffer;
+; v1 : Ljava/nio/ByteBuffer; , v4 : Lorg/apache/commons/io/output/WriterOutputStream;
+	invoke-virtual	{v1},java/nio/ByteBuffer/compact	; compact()Ljava/nio/ByteBuffer;
+; v1 : Ljava/nio/ByteBuffer;
+.line 294
+	return-void	
+l12035e:
+.line 289
+	new-instance	v1,java/io/IOException
+; v1 : Ljava/io/IOException;
+	const-string	v2,"Unexpected coder result"
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},java/io/IOException/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/io/IOException; , v2 : Ljava/lang/String;
+	throw	v1
+; v1 : Ljava/io/IOException;
+.end method
+
+.method public close()V
+.throws Ljava/io/IOException;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/output/WriterOutputStream;)
+.line 265
+	const/4	v0,1
+; v0 : single-length
+	invoke-direct	{v1,v0},org/apache/commons/io/output/WriterOutputStream/processInput	; processInput(Z)V
+; v1 : Lorg/apache/commons/io/output/WriterOutputStream; , v0 : single-length
+.line 266
+	invoke-direct	{v1},org/apache/commons/io/output/WriterOutputStream/flushOutput	; flushOutput()V
+; v1 : Lorg/apache/commons/io/output/WriterOutputStream;
+.line 267
+	iget-object	v0,v1,org/apache/commons/io/output/WriterOutputStream.writer Ljava/io/Writer;
+; v0 : Ljava/io/Writer; , v1 : Lorg/apache/commons/io/output/WriterOutputStream;
+	invoke-virtual	{v0},java/io/Writer/close	; close()V
+; v0 : Ljava/io/Writer;
+.line 268
+	return-void	
+.end method
+
+.method public flush()V
+.throws Ljava/io/IOException;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/output/WriterOutputStream;)
+.line 253
+	invoke-direct	{v1},org/apache/commons/io/output/WriterOutputStream/flushOutput	; flushOutput()V
+; v1 : Lorg/apache/commons/io/output/WriterOutputStream;
+.line 254
+	iget-object	v0,v1,org/apache/commons/io/output/WriterOutputStream.writer Ljava/io/Writer;
+; v0 : Ljava/io/Writer; , v1 : Lorg/apache/commons/io/output/WriterOutputStream;
+	invoke-virtual	{v0},java/io/Writer/flush	; flush()V
+; v0 : Ljava/io/Writer;
+.line 255
+	return-void	
+.end method
+
+.method public write(I)V
+.throws Ljava/io/IOException;
+.limit registers 6
+; this: v4 (Lorg/apache/commons/io/output/WriterOutputStream;)
+; parameter[0] : v5 (I)
+	const/4	v3,1
+; v3 : single-length
+	const/4	v2,0
+; v2 : single-length
+.line 242
+	new-array	v0,v3,[B
+; v0 : [B , v3 : single-length
+	int-to-byte	v1,v5
+; v1 : single-length , v5 : single-length
+	aput-byte	v1,v0,v2
+; v1 : single-length , v0 : [B , v2 : single-length
+	invoke-virtual	{v4,v0,v2,v3},org/apache/commons/io/output/WriterOutputStream/write	; write([BII)V
+; v4 : Lorg/apache/commons/io/output/WriterOutputStream; , v0 : [B , v2 : single-length , v3 : single-length
+.line 243
+	return-void	
+.end method
+
+.method public write([B)V
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/io/output/WriterOutputStream;)
+; parameter[0] : v3 ([B)
+.line 231
+	const/4	v0,0
+; v0 : single-length
+	array-length	v1,v3
+; v1 : single-length , v3 : [B
+	invoke-virtual	{v2,v3,v0,v1},org/apache/commons/io/output/WriterOutputStream/write	; write([BII)V
+; v2 : Lorg/apache/commons/io/output/WriterOutputStream; , v3 : [B , v0 : single-length , v1 : single-length
+.line 232
+	return-void	
+.end method
+
+.method public write([BII)V
+.throws Ljava/io/IOException;
+.limit registers 6
+; this: v2 (Lorg/apache/commons/io/output/WriterOutputStream;)
+; parameter[0] : v3 ([B)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (I)
+.var 0 is c I from l12042c to l120444
+l120414:
+.line 211
+	if-lez	v5,l120444
+; v5 : single-length
+.line 212
+	iget-object	v1,v2,org/apache/commons/io/output/WriterOutputStream.decoderIn Ljava/nio/ByteBuffer;
+; v1 : Ljava/nio/ByteBuffer; , v2 : Lorg/apache/commons/io/output/WriterOutputStream;
+	invoke-virtual	{v1},java/nio/ByteBuffer/remaining	; remaining()I
+; v1 : Ljava/nio/ByteBuffer;
+	move-result	v1
+; v1 : single-length
+	invoke-static	{v5,v1},java/lang/Math/min	; min(II)I
+; v5 : single-length , v1 : single-length
+	move-result	v0
+; v0 : single-length
+.line 213
+	iget-object	v1,v2,org/apache/commons/io/output/WriterOutputStream.decoderIn Ljava/nio/ByteBuffer;
+; v1 : Ljava/nio/ByteBuffer; , v2 : Lorg/apache/commons/io/output/WriterOutputStream;
+	invoke-virtual	{v1,v3,v4,v0},java/nio/ByteBuffer/put	; put([BII)Ljava/nio/ByteBuffer;
+; v1 : Ljava/nio/ByteBuffer; , v3 : [B , v4 : single-length , v0 : single-length
+.line 214
+	const/4	v1,0
+; v1 : single-length
+	invoke-direct	{v2,v1},org/apache/commons/io/output/WriterOutputStream/processInput	; processInput(Z)V
+; v2 : Lorg/apache/commons/io/output/WriterOutputStream; , v1 : single-length
+.line 215
+	sub-int/2addr	v5,v0
+; v5 : single-length , v0 : single-length
+.line 216
+	add-int/2addr	v4,v0
+; v4 : single-length , v0 : single-length
+.line 217
+	goto	l120414
+l120444:
+.line 218
+	iget-boolean	v1,v2,org/apache/commons/io/output/WriterOutputStream.writeImmediately Z
+; v1 : single-length , v2 : Lorg/apache/commons/io/output/WriterOutputStream;
+	if-eqz	v1,l120452
+; v1 : single-length
+.line 219
+	invoke-direct	{v2},org/apache/commons/io/output/WriterOutputStream/flushOutput	; flushOutput()V
+; v2 : Lorg/apache/commons/io/output/WriterOutputStream;
+l120452:
+.line 221
+	return-void	
+.end method
+
+

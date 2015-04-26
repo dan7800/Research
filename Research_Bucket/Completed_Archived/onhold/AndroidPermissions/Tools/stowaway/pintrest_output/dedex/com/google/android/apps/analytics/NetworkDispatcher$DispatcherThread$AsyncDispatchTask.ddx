@@ -1,0 +1,633 @@
+.class com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask
+.super java/lang/Object
+.implements java/lang/Runnable
+
+.inner class AsyncDispatchTask inner com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask outer com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread
+.field private final hits Ljava/util/LinkedList;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/LinkedList" , "<" , "Lcom/google/android/apps/analytics/Hit;" , ">;" }
+  .end annotation
+.end field
+.field final this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+
+.method public <init>(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;[Lcom/google/android/apps/analytics/Hit;)V
+.limit registers 4
+; this: v1 (Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;)
+; parameter[0] : v2 (Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)
+; parameter[1] : v3 ([Lcom/google/android/apps/analytics/Hit;)
+	iput-object	v2,v1,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v2 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v1 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	new-instance	v0,java/util/LinkedList
+; v0 : Ljava/util/LinkedList;
+	invoke-direct	{v0},java/util/LinkedList/<init>	; <init>()V
+; v0 : Ljava/util/LinkedList;
+	iput-object	v0,v1,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.hits Ljava/util/LinkedList;
+; v0 : Ljava/util/LinkedList; , v1 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	iget-object	v0,v1,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.hits Ljava/util/LinkedList;
+; v0 : Ljava/util/LinkedList; , v1 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v0,v3},java/util/Collections/addAll	; addAll(Ljava/util/Collection;[Ljava/lang/Object;)Z
+; v0 : Ljava/util/LinkedList; , v3 : [Lcom/google/android/apps/analytics/Hit;
+	return-void	
+.end method
+
+.method private dispatchSomePendingHits(Z)V
+.throws Ljava/io/IOException;
+.throws Lorg/apache/http/ParseException;
+.throws Lorg/apache/http/HttpException;
+.limit registers 13
+; this: v11 (Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;)
+; parameter[0] : v12 (Z)
+	const/4	v2,0
+; v2 : single-length
+	invoke-static	{},com/google/android/apps/analytics/GoogleAnalyticsTracker/getInstance	; getInstance()Lcom/google/android/apps/analytics/GoogleAnalyticsTracker;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Lcom/google/android/apps/analytics/GoogleAnalyticsTracker;
+	invoke-virtual	{v0},com/google/android/apps/analytics/GoogleAnalyticsTracker/getDebug	; getDebug()Z
+; v0 : Lcom/google/android/apps/analytics/GoogleAnalyticsTracker;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,lbf9f4
+; v0 : single-length
+	if-eqz	v12,lbf9f4
+; v12 : single-length
+	const-string	v0,"GoogleAnalyticsTracker"
+; v0 : Ljava/lang/String;
+	const-string	v1,"dispatching hits in dry run mode"
+; v1 : Ljava/lang/String;
+	invoke-static	{v0,v1},android/util/Log/v	; v(Ljava/lang/String;Ljava/lang/String;)I
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+lbf9f4:
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+lbf9f6:
+	iget-object	v0,v11,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.hits Ljava/util/LinkedList;
+; v0 : Ljava/util/LinkedList; , v11 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-virtual	{v0},java/util/LinkedList/size	; size()I
+; v0 : Ljava/util/LinkedList;
+	move-result	v0
+; v0 : single-length
+	if-ge	v1,v0,lbfcbc
+; v1 : single-length , v0 : single-length
+	iget-object	v0,v11,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v11 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v0},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$1000	; access$1000(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)I
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result	v0
+; v0 : single-length
+	if-ge	v1,v0,lbfcbc
+; v1 : single-length , v0 : single-length
+	iget-object	v0,v11,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.hits Ljava/util/LinkedList;
+; v0 : Ljava/util/LinkedList; , v11 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-virtual	{v0,v1},java/util/LinkedList/get	; get(I)Ljava/lang/Object;
+; v0 : Ljava/util/LinkedList; , v1 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/google/android/apps/analytics/Hit
+; v0 : Lcom/google/android/apps/analytics/Hit;
+	iget-object	v0,v0,com/google/android/apps/analytics/Hit.hitString Ljava/lang/String;
+; v0 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	invoke-static	{},java/lang/System/currentTimeMillis	; currentTimeMillis()J
+; 
+	nop	
+	move-result-wide	v3
+; v3 : double-length
+	invoke-static	{v0,v3,v4},com/google/android/apps/analytics/Utils/addQueueTimeParameter	; addQueueTimeParameter(Ljava/lang/String;J)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v3 : double-length
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	const/16	v0,63
+; v0 : single-length
+	invoke-virtual	{v4,v0},java/lang/String/indexOf	; indexOf(I)I
+; v4 : Ljava/lang/String; , v0 : single-length
+	move-result	v3
+; v3 : single-length
+	if-gez	v3,lbfb6a
+; v3 : single-length
+	const-string	v0,""
+; v0 : Ljava/lang/String;
+	move-object	v3,v4
+; v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+lbfa50:
+	invoke-virtual	{v0},java/lang/String/length	; length()I
+; v0 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	const/16	v6,2036
+; v6 : single-length
+	if-ge	v5,v6,lbfbb0
+; v5 : single-length , v6 : single-length
+	new-instance	v3,org/apache/http/message/BasicHttpEntityEnclosingRequest
+; v3 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest;
+	const-string	v5,"GET"
+; v5 : Ljava/lang/String;
+	invoke-direct	{v3,v5,v4},org/apache/http/message/BasicHttpEntityEnclosingRequest/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;)V
+; v3 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest; , v5 : Ljava/lang/String; , v4 : Ljava/lang/String;
+lbfa6e:
+	iget-object	v4,v11,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v4 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v11 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v4},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$700	; access$700(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)Lcom/google/android/apps/analytics/NetworkDispatcher;
+; v4 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-object	v4
+; v4 : Lcom/google/android/apps/analytics/NetworkDispatcher;
+	invoke-static	{v4},com/google/android/apps/analytics/NetworkDispatcher/access$200	; access$200(Lcom/google/android/apps/analytics/NetworkDispatcher;)Lorg/apache/http/HttpHost;
+; v4 : Lcom/google/android/apps/analytics/NetworkDispatcher;
+	move-result-object	v4
+; v4 : Lorg/apache/http/HttpHost;
+	invoke-virtual	{v4},org/apache/http/HttpHost/getHostName	; getHostName()Ljava/lang/String;
+; v4 : Lorg/apache/http/HttpHost;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	iget-object	v5,v11,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v5 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v11 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v5},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$700	; access$700(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)Lcom/google/android/apps/analytics/NetworkDispatcher;
+; v5 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-object	v5
+; v5 : Lcom/google/android/apps/analytics/NetworkDispatcher;
+	invoke-static	{v5},com/google/android/apps/analytics/NetworkDispatcher/access$200	; access$200(Lcom/google/android/apps/analytics/NetworkDispatcher;)Lorg/apache/http/HttpHost;
+; v5 : Lcom/google/android/apps/analytics/NetworkDispatcher;
+	move-result-object	v5
+; v5 : Lorg/apache/http/HttpHost;
+	invoke-virtual	{v5},org/apache/http/HttpHost/getPort	; getPort()I
+; v5 : Lorg/apache/http/HttpHost;
+	move-result	v5
+; v5 : single-length
+	const/16	v6,80
+; v6 : single-length
+	if-eq	v5,v6,lbfaf8
+; v5 : single-length , v6 : single-length
+	new-instance	v5,java/lang/StringBuilder
+; v5 : Ljava/lang/StringBuilder;
+	invoke-direct	{v5},java/lang/StringBuilder/<init>	; <init>()V
+; v5 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v5,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v5 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,":"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	iget-object	v5,v11,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v5 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v11 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v5},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$700	; access$700(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)Lcom/google/android/apps/analytics/NetworkDispatcher;
+; v5 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-object	v5
+; v5 : Lcom/google/android/apps/analytics/NetworkDispatcher;
+	invoke-static	{v5},com/google/android/apps/analytics/NetworkDispatcher/access$200	; access$200(Lcom/google/android/apps/analytics/NetworkDispatcher;)Lorg/apache/http/HttpHost;
+; v5 : Lcom/google/android/apps/analytics/NetworkDispatcher;
+	move-result-object	v5
+; v5 : Lorg/apache/http/HttpHost;
+	invoke-virtual	{v5},org/apache/http/HttpHost/getPort	; getPort()I
+; v5 : Lorg/apache/http/HttpHost;
+	move-result	v5
+; v5 : single-length
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(I)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v4 : Ljava/lang/StringBuilder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+lbfaf8:
+	const-string	v5,"Host"
+; v5 : Ljava/lang/String;
+	invoke-interface	{v3,v5,v4},org/apache/http/HttpEntityEnclosingRequest/addHeader	; addHeader(Ljava/lang/String;Ljava/lang/String;)V
+; v3 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest; , v5 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	const-string	v4,"User-Agent"
+; v4 : Ljava/lang/String;
+	iget-object	v5,v11,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v5 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v11 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v5},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$1100	; access$1100(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)Ljava/lang/String;
+; v5 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-interface	{v3,v4,v5},org/apache/http/HttpEntityEnclosingRequest/addHeader	; addHeader(Ljava/lang/String;Ljava/lang/String;)V
+; v3 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest; , v4 : Ljava/lang/String; , v5 : Ljava/lang/String;
+	invoke-static	{},com/google/android/apps/analytics/GoogleAnalyticsTracker/getInstance	; getInstance()Lcom/google/android/apps/analytics/GoogleAnalyticsTracker;
+; 
+	nop	
+	move-result-object	v4
+; v4 : Lcom/google/android/apps/analytics/GoogleAnalyticsTracker;
+	invoke-virtual	{v4},com/google/android/apps/analytics/GoogleAnalyticsTracker/getDebug	; getDebug()Z
+; v4 : Lcom/google/android/apps/analytics/GoogleAnalyticsTracker;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,lbfc56
+; v4 : single-length
+	new-instance	v5,java/lang/StringBuffer
+; v5 : Ljava/lang/StringBuffer;
+	invoke-direct	{v5},java/lang/StringBuffer/<init>	; <init>()V
+; v5 : Ljava/lang/StringBuffer;
+	invoke-interface	{v3},org/apache/http/HttpEntityEnclosingRequest/getAllHeaders	; getAllHeaders()[Lorg/apache/http/Header;
+; v3 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest;
+	move-result-object	v6
+; v6 : [Lorg/apache/http/Header;
+	array-length	v7,v6
+; v7 : single-length , v6 : [Lorg/apache/http/Header;
+	move	v4,v2
+; v4 : single-length , v2 : single-length
+lbfb42:
+	if-ge	v4,v7,lbfc22
+; v4 : single-length , v7 : single-length
+	aget-object	v8,v6,v4
+; v8 : Lorg/apache/http/Header; , v6 : [Lorg/apache/http/Header; , v4 : single-length
+	invoke-virtual	{v8},java/lang/Object/toString	; toString()Ljava/lang/String;
+; v8 : Lorg/apache/http/Header;
+	move-result-object	v8
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v5,v8},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v5 : Ljava/lang/StringBuffer; , v8 : Ljava/lang/String;
+	move-result-object	v8
+; v8 : Ljava/lang/StringBuffer;
+	const-string	v9,"
+"
+; v9 : Ljava/lang/String;
+	invoke-virtual	{v8,v9},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v8 : Ljava/lang/StringBuffer; , v9 : Ljava/lang/String;
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	goto	lbfb42
+lbfb6a:
+	if-lez	v3,lbfb9c
+; v3 : single-length
+	invoke-virtual	{v4,v2,v3},java/lang/String/substring	; substring(II)Ljava/lang/String;
+; v4 : Ljava/lang/String; , v2 : single-length , v3 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+lbfb76:
+	invoke-virtual	{v4},java/lang/String/length	; length()I
+; v4 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	add-int/lit8	v5,v5,254
+; v5 : single-length , v5 : single-length
+	if-ge	v3,v5,lbfba2
+; v3 : single-length , v5 : single-length
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	invoke-virtual	{v4,v3},java/lang/String/substring	; substring(I)Ljava/lang/String;
+; v4 : Ljava/lang/String; , v3 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	move-object	v10,v3
+; v10 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-object	v3,v0
+; v3 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-object	v0,v10
+; v0 : Ljava/lang/String; , v10 : Ljava/lang/String;
+	goto/16	lbfa50
+lbfb9c:
+	const-string	v0,""
+; v0 : Ljava/lang/String;
+	goto	lbfb76
+lbfba2:
+	const-string	v3,""
+; v3 : Ljava/lang/String;
+	move-object	v10,v3
+; v10 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-object	v3,v0
+; v3 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-object	v0,v10
+; v0 : Ljava/lang/String; , v10 : Ljava/lang/String;
+	goto/16	lbfa50
+lbfbb0:
+	new-instance	v4,org/apache/http/message/BasicHttpEntityEnclosingRequest
+; v4 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest;
+	const-string	v5,"POST"
+; v5 : Ljava/lang/String;
+	new-instance	v6,java/lang/StringBuilder
+; v6 : Ljava/lang/StringBuilder;
+	invoke-direct	{v6},java/lang/StringBuilder/<init>	; <init>()V
+; v6 : Ljava/lang/StringBuilder;
+	const-string	v7,"/p"
+; v7 : Ljava/lang/String;
+	invoke-virtual	{v6,v7},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v6 : Ljava/lang/StringBuilder; , v7 : Ljava/lang/String;
+	move-result-object	v6
+; v6 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v6,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v6 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-direct	{v4,v5,v3},org/apache/http/message/BasicHttpEntityEnclosingRequest/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;)V
+; v4 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest; , v5 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	const-string	v3,"Content-Length"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v0},java/lang/String/length	; length()I
+; v0 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	invoke-static	{v5},java/lang/Integer/toString	; toString(I)Ljava/lang/String;
+; v5 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-interface	{v4,v3,v5},org/apache/http/HttpEntityEnclosingRequest/addHeader	; addHeader(Ljava/lang/String;Ljava/lang/String;)V
+; v4 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest; , v3 : Ljava/lang/String; , v5 : Ljava/lang/String;
+	const-string	v3,"Content-Type"
+; v3 : Ljava/lang/String;
+	const-string	v5,"text/plain"
+; v5 : Ljava/lang/String;
+	invoke-interface	{v4,v3,v5},org/apache/http/HttpEntityEnclosingRequest/addHeader	; addHeader(Ljava/lang/String;Ljava/lang/String;)V
+; v4 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest; , v3 : Ljava/lang/String; , v5 : Ljava/lang/String;
+	new-instance	v3,org/apache/http/entity/StringEntity
+; v3 : Lorg/apache/http/entity/StringEntity;
+	invoke-direct	{v3,v0},org/apache/http/entity/StringEntity/<init>	; <init>(Ljava/lang/String;)V
+; v3 : Lorg/apache/http/entity/StringEntity; , v0 : Ljava/lang/String;
+	invoke-interface	{v4,v3},org/apache/http/HttpEntityEnclosingRequest/setEntity	; setEntity(Lorg/apache/http/HttpEntity;)V
+; v4 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest; , v3 : Lorg/apache/http/entity/StringEntity;
+	move-object	v3,v4
+; v3 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest; , v4 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest;
+	goto/16	lbfa6e
+lbfc22:
+	invoke-interface	{v3},org/apache/http/HttpEntityEnclosingRequest/getRequestLine	; getRequestLine()Lorg/apache/http/RequestLine;
+; v3 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest;
+	move-result-object	v4
+; v4 : Lorg/apache/http/RequestLine;
+	invoke-virtual	{v4},java/lang/Object/toString	; toString()Ljava/lang/String;
+; v4 : Lorg/apache/http/RequestLine;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v5,v4},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v5 : Ljava/lang/StringBuffer; , v4 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuffer;
+	const-string	v6,"
+"
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v4,v6},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v4 : Ljava/lang/StringBuffer; , v6 : Ljava/lang/String;
+	const-string	v4,"GoogleAnalyticsTracker"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v5},java/lang/StringBuffer/toString	; toString()Ljava/lang/String;
+; v5 : Ljava/lang/StringBuffer;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-static	{v4,v5},android/util/Log/i	; i(Ljava/lang/String;Ljava/lang/String;)I
+; v4 : Ljava/lang/String; , v5 : Ljava/lang/String;
+lbfc56:
+	invoke-virtual	{v0},java/lang/String/length	; length()I
+; v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	const/16	v4,8192
+; v4 : single-length
+	if-le	v0,v4,lbfc90
+; v0 : single-length , v4 : single-length
+	const-string	v0,"GoogleAnalyticsTracker"
+; v0 : Ljava/lang/String;
+	const-string	v3,"Hit too long (> 8192 bytes)--not sent"
+; v3 : Ljava/lang/String;
+	invoke-static	{v0,v3},android/util/Log/w	; w(Ljava/lang/String;Ljava/lang/String;)I
+; v0 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	iget-object	v0,v11,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v11 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v0},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$1200	; access$1200(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$RequesterCallbacks;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-object	v0
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$RequesterCallbacks;
+	invoke-virtual	{v0},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$RequesterCallbacks/requestSent	; requestSent()V
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$RequesterCallbacks;
+lbfc86:
+	add-int/lit8	v0,v1,1
+; v0 : single-length , v1 : single-length
+	move	v1,v0
+; v1 : single-length , v0 : single-length
+	goto/16	lbf9f6
+lbfc90:
+	if-eqz	v12,lbfca8
+; v12 : single-length
+	iget-object	v0,v11,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v11 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v0},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$1200	; access$1200(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$RequesterCallbacks;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-object	v0
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$RequesterCallbacks;
+	invoke-virtual	{v0},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$RequesterCallbacks/requestSent	; requestSent()V
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$RequesterCallbacks;
+	goto	lbfc86
+lbfca8:
+	iget-object	v0,v11,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v11 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v0},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$800	; access$800(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)Lcom/google/android/apps/analytics/PipelinedRequester;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-object	v0
+; v0 : Lcom/google/android/apps/analytics/PipelinedRequester;
+	invoke-virtual	{v0,v3},com/google/android/apps/analytics/PipelinedRequester/addRequest	; addRequest(Lorg/apache/http/HttpEntityEnclosingRequest;)V
+; v0 : Lcom/google/android/apps/analytics/PipelinedRequester; , v3 : Lorg/apache/http/message/BasicHttpEntityEnclosingRequest;
+	goto	lbfc86
+lbfcbc:
+	if-nez	v12,lbfcd2
+; v12 : single-length
+	iget-object	v0,v11,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v11 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v0},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$800	; access$800(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)Lcom/google/android/apps/analytics/PipelinedRequester;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-object	v0
+; v0 : Lcom/google/android/apps/analytics/PipelinedRequester;
+	invoke-virtual	{v0},com/google/android/apps/analytics/PipelinedRequester/sendRequests	; sendRequests()V
+; v0 : Lcom/google/android/apps/analytics/PipelinedRequester;
+lbfcd2:
+	return-void	
+.end method
+
+.method public removeNextHit()Lcom/google/android/apps/analytics/Hit;
+.limit registers 2
+; this: v1 (Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;)
+	iget-object	v0,v1,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.hits Ljava/util/LinkedList;
+; v0 : Ljava/util/LinkedList; , v1 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-virtual	{v0},java/util/LinkedList/poll	; poll()Ljava/lang/Object;
+; v0 : Ljava/util/LinkedList;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/google/android/apps/analytics/Hit
+; v0 : Lcom/google/android/apps/analytics/Hit;
+	return-object	v0
+; v0 : Lcom/google/android/apps/analytics/Hit;
+.end method
+
+.method public run()V
+.limit registers 8
+; this: v7 (Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;)
+.catch java/lang/InterruptedException from lbfd30 to lbfdd4 using lbfdd6
+.catch java/io/IOException from lbfd30 to lbfdd4 using lbfe18
+.catch org/apache/http/HttpException from lbfd30 to lbfdd4 using lbfe2a
+	iget-object	v0,v7,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v0,v7},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$402	; access$402(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;)Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	const/4	v0,0
+; v0 : single-length
+	move	v2,v0
+; v2 : single-length , v0 : single-length
+lbfd16:
+	const/4	v0,5
+; v0 : single-length
+	if-ge	v2,v0,lbfde6
+; v2 : single-length , v0 : single-length
+	iget-object	v0,v7,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.hits Ljava/util/LinkedList;
+; v0 : Ljava/util/LinkedList; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-virtual	{v0},java/util/LinkedList/size	; size()I
+; v0 : Ljava/util/LinkedList;
+	move-result	v0
+; v0 : single-length
+	if-lez	v0,lbfde6
+; v0 : single-length
+	const-wide/16	v0,0
+; v0 : double-length
+lbfd30:
+	iget-object	v3,v7,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v3 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v3},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$500	; access$500(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)I
+; v3 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result	v3
+; v3 : single-length
+	const/16	v4,500
+; v4 : single-length
+	if-eq	v3,v4,lbfd58
+; v3 : single-length , v4 : single-length
+	iget-object	v3,v7,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v3 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v3},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$500	; access$500(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)I
+; v3 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result	v3
+; v3 : single-length
+	const/16	v4,503
+; v4 : single-length
+	if-ne	v3,v4,lbfdc6
+; v3 : single-length , v4 : single-length
+lbfd58:
+	invoke-static	{},java/lang/Math/random	; random()D
+; 
+	nop	
+	move-result-wide	v0
+; v0 : double-length
+	iget-object	v3,v7,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v3 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v3},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$600	; access$600(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)J
+; v3 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-wide	v3
+; v3 : double-length
+	long-to-double	v3,v3
+; v3 : double-length , v3 : double-length
+	mul-double/2addr	v0,v3
+; v0 : double-length , v3 : double-length
+	double-to-long	v0,v0
+; v0 : double-length , v0 : double-length
+	iget-object	v3,v7,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v3 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v3},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$600	; access$600(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)J
+; v3 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-wide	v3
+; v3 : double-length
+	const-wide/16	v5,256
+; v5 : double-length
+	cmp-long	v3,v3,v5
+; v3 : single-length , v3 : single-length , v5 : double-length
+	if-gez	v3,lbfd98
+; v3 : single-length
+	iget-object	v3,v7,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v3 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	const-wide/16	v4,2
+; v4 : double-length
+	invoke-static	{v3,v4,v5},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$630	; access$630(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;J)J
+; v3 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v4 : double-length
+lbfd98:
+	const-wide/16	v3,1000
+; v3 : double-length
+	mul-long/2addr	v0,v3
+; v0 : double-length , v3 : double-length
+	invoke-static	{v0,v1},java/lang/Thread/sleep	; sleep(J)V
+; v0 : double-length
+	iget-object	v0,v7,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v0},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$700	; access$700(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)Lcom/google/android/apps/analytics/NetworkDispatcher;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-object	v0
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher;
+	invoke-virtual	{v0},com/google/android/apps/analytics/NetworkDispatcher/isDryRun	; isDryRun()Z
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher;
+	move-result	v0
+; v0 : single-length
+	invoke-direct	{v7,v0},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask/dispatchSomePendingHits	; dispatchSomePendingHits(Z)V
+; v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask; , v0 : single-length
+	add-int/lit8	v0,v2,1
+; v0 : single-length , v2 : single-length
+	move	v2,v0
+; v2 : single-length , v0 : single-length
+	goto	lbfd16
+lbfdc6:
+	iget-object	v3,v7,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v3 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	const-wide/16	v4,2
+; v4 : double-length
+	invoke-static	{v3,v4,v5},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$602	; access$602(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;J)J
+; v3 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v4 : double-length
+lbfdd4:
+	goto	lbfd98
+lbfdd6:
+	move-exception	v0
+; v0 : java/lang/InterruptedException
+	const-string	v1,"GoogleAnalyticsTracker"
+; v1 : Ljava/lang/String;
+	const-string	v2,"Couldn't sleep."
+; v2 : Ljava/lang/String;
+	invoke-static	{v1,v2,v0},android/util/Log/w	; w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v0 : java/lang/InterruptedException
+lbfde6:
+	iget-object	v0,v7,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v0},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$800	; access$800(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)Lcom/google/android/apps/analytics/PipelinedRequester;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-object	v0
+; v0 : Lcom/google/android/apps/analytics/PipelinedRequester;
+	invoke-virtual	{v0},com/google/android/apps/analytics/PipelinedRequester/finishedCurrentRequests	; finishedCurrentRequests()V
+; v0 : Lcom/google/android/apps/analytics/PipelinedRequester;
+	iget-object	v0,v7,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	invoke-static	{v0},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$900	; access$900(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;)Lcom/google/android/apps/analytics/Dispatcher$Callbacks;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+	move-result-object	v0
+; v0 : Lcom/google/android/apps/analytics/Dispatcher$Callbacks;
+	invoke-interface	{v0},com/google/android/apps/analytics/Dispatcher$Callbacks/dispatchFinished	; dispatchFinished()V
+; v0 : Lcom/google/android/apps/analytics/Dispatcher$Callbacks;
+	iget-object	v0,v7,com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask.this$0 Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v7 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+	const/4	v1,0
+; v1 : single-length
+	invoke-static	{v0,v1},com/google/android/apps/analytics/NetworkDispatcher$DispatcherThread/access$402	; access$402(Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread;Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;)Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread$AsyncDispatchTask;
+; v0 : Lcom/google/android/apps/analytics/NetworkDispatcher$DispatcherThread; , v1 : single-length
+	return-void	
+lbfe18:
+	move-exception	v0
+; v0 : java/io/IOException
+	const-string	v1,"GoogleAnalyticsTracker"
+; v1 : Ljava/lang/String;
+	const-string	v2,"Problem with socket or streams."
+; v2 : Ljava/lang/String;
+	invoke-static	{v1,v2,v0},android/util/Log/w	; w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v0 : java/io/IOException
+	goto	lbfde6
+lbfe2a:
+	move-exception	v0
+; v0 : org/apache/http/HttpException
+	const-string	v1,"GoogleAnalyticsTracker"
+; v1 : Ljava/lang/String;
+	const-string	v2,"Problem with http streams."
+; v2 : Ljava/lang/String;
+	invoke-static	{v1,v2,v0},android/util/Log/w	; w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v0 : org/apache/http/HttpException
+	goto	lbfde6
+.end method
+
+

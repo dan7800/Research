@@ -1,0 +1,228 @@
+.class public org/apache/commons/lang3/text/translate/UnicodeUnescaper
+.super org/apache/commons/lang3/text/translate/CharSequenceTranslator
+.source UnicodeUnescaper.java
+
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/lang3/text/translate/UnicodeUnescaper;)
+.line 30
+	invoke-direct	{v0},org/apache/commons/lang3/text/translate/CharSequenceTranslator/<init>	; <init>()V
+; v0 : Lorg/apache/commons/lang3/text/translate/UnicodeUnescaper;
+	return-void	
+.end method
+
+.method public translate(Ljava/lang/CharSequence;ILjava/io/Writer;)I
+.throws Ljava/io/IOException;
+.limit registers 11
+; this: v7 (Lorg/apache/commons/lang3/text/translate/UnicodeUnescaper;)
+; parameter[0] : v8 (Ljava/lang/CharSequence;)
+; parameter[1] : v9 (I)
+; parameter[2] : v10 (Ljava/io/Writer;)
+.catch java/lang/NumberFormatException from l143e0c to l143e28 using l143e2e
+.var 0 is i I from l143d96 to l143e2c
+.var 2 is unicode Ljava/lang/CharSequence; from l143e0c to l143e2c
+.var 3 is value I from l143e20 to l143e2c
+.var 1 is nfe Ljava/lang/NumberFormatException; from l143e30 to l143e62
+.var 2 is unicode Ljava/lang/CharSequence; from l143e2e to l143e62
+.var 0 is i I from l143e2e to l143eb0
+	const/16	v6,117
+; v6 : single-length
+.line 37
+	invoke-interface	{v8,v9},java/lang/CharSequence/charAt	; charAt(I)C
+; v8 : Ljava/lang/CharSequence; , v9 : single-length
+	move-result	v4
+; v4 : single-length
+	const/16	v5,92
+; v5 : single-length
+	if-ne	v4,v5,l143eb0
+; v4 : single-length , v5 : single-length
+	add-int/lit8	v4,v9,1
+; v4 : single-length , v9 : single-length
+	invoke-interface	{v8},java/lang/CharSequence/length	; length()I
+; v8 : Ljava/lang/CharSequence;
+	move-result	v5
+; v5 : single-length
+	if-ge	v4,v5,l143eb0
+; v4 : single-length , v5 : single-length
+	add-int/lit8	v4,v9,1
+; v4 : single-length , v9 : single-length
+	invoke-interface	{v8,v4},java/lang/CharSequence/charAt	; charAt(I)C
+; v8 : Ljava/lang/CharSequence; , v4 : single-length
+	move-result	v4
+; v4 : single-length
+	if-ne	v4,v6,l143eb0
+; v4 : single-length , v6 : single-length
+.line 39
+	const/4	v0,2
+; v0 : single-length
+l143d96:
+.line 40
+	add-int	v4,v9,v0
+; v4 : single-length , v9 : single-length , v0 : single-length
+	invoke-interface	{v8},java/lang/CharSequence/length	; length()I
+; v8 : Ljava/lang/CharSequence;
+	move-result	v5
+; v5 : single-length
+	if-ge	v4,v5,l143dbc
+; v4 : single-length , v5 : single-length
+	add-int	v4,v9,v0
+; v4 : single-length , v9 : single-length , v0 : single-length
+	invoke-interface	{v8,v4},java/lang/CharSequence/charAt	; charAt(I)C
+; v8 : Ljava/lang/CharSequence; , v4 : single-length
+	move-result	v4
+; v4 : single-length
+	if-ne	v4,v6,l143dbc
+; v4 : single-length , v6 : single-length
+.line 41
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l143d96
+l143dbc:
+.line 44
+	add-int	v4,v9,v0
+; v4 : single-length , v9 : single-length , v0 : single-length
+	invoke-interface	{v8},java/lang/CharSequence/length	; length()I
+; v8 : Ljava/lang/CharSequence;
+	move-result	v5
+; v5 : single-length
+	if-ge	v4,v5,l143de4
+; v4 : single-length , v5 : single-length
+	add-int	v4,v9,v0
+; v4 : single-length , v9 : single-length , v0 : single-length
+	invoke-interface	{v8,v4},java/lang/CharSequence/charAt	; charAt(I)C
+; v8 : Ljava/lang/CharSequence; , v4 : single-length
+	move-result	v4
+; v4 : single-length
+	const/16	v5,43
+; v5 : single-length
+	if-ne	v4,v5,l143de4
+; v4 : single-length , v5 : single-length
+.line 45
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+l143de4:
+.line 48
+	add-int	v4,v9,v0
+; v4 : single-length , v9 : single-length , v0 : single-length
+	add-int/lit8	v4,v4,4
+; v4 : single-length , v4 : single-length
+	invoke-interface	{v8},java/lang/CharSequence/length	; length()I
+; v8 : Ljava/lang/CharSequence;
+	move-result	v5
+; v5 : single-length
+	if-gt	v4,v5,l143e62
+; v4 : single-length , v5 : single-length
+.line 50
+	add-int	v4,v9,v0
+; v4 : single-length , v9 : single-length , v0 : single-length
+	add-int	v5,v9,v0
+; v5 : single-length , v9 : single-length , v0 : single-length
+	add-int/lit8	v5,v5,4
+; v5 : single-length , v5 : single-length
+	invoke-interface	{v8,v4,v5},java/lang/CharSequence/subSequence	; subSequence(II)Ljava/lang/CharSequence;
+; v8 : Ljava/lang/CharSequence; , v4 : single-length , v5 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/CharSequence;
+l143e0c:
+.line 53
+	invoke-virtual	{v2},java/lang/Object/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/CharSequence;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	const/16	v5,16
+; v5 : single-length
+	invoke-static	{v4,v5},java/lang/Integer/parseInt	; parseInt(Ljava/lang/String;I)I
+; v4 : Ljava/lang/String; , v5 : single-length
+	move-result	v3
+; v3 : single-length
+.line 54
+	int-to-char	v4,v3
+; v4 : single-length , v3 : single-length
+	invoke-virtual	{v10,v4},java/io/Writer/write	; write(I)V
+; v10 : Ljava/io/Writer; , v4 : single-length
+l143e28:
+.line 58
+	add-int/lit8	v4,v0,4
+; v4 : single-length , v0 : single-length
+l143e2c:
+.line 64
+	return	v4
+; v4 : single-length
+l143e2e:
+.line 55
+	move-exception	v1
+; v1 : java/lang/NumberFormatException
+.line 56
+	new-instance	v4,java/lang/IllegalArgumentException
+; v4 : Ljava/lang/IllegalArgumentException;
+	new-instance	v5,java/lang/StringBuilder
+; v5 : Ljava/lang/StringBuilder;
+	invoke-direct	{v5},java/lang/StringBuilder/<init>	; <init>()V
+; v5 : Ljava/lang/StringBuilder;
+	const-string	v6,"Unable to parse unicode value: "
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v5,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v5 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v5,v2},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v5 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/CharSequence;
+	move-result-object	v5
+; v5 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v5},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v5 : Ljava/lang/StringBuilder;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-direct	{v4,v5,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+; v4 : Ljava/lang/IllegalArgumentException; , v5 : Ljava/lang/String; , v1 : java/lang/NumberFormatException
+	throw	v4
+; v4 : Ljava/lang/IllegalArgumentException;
+l143e62:
+.line 60
+	new-instance	v4,java/lang/IllegalArgumentException
+; v4 : Ljava/lang/IllegalArgumentException;
+	new-instance	v5,java/lang/StringBuilder
+; v5 : Ljava/lang/StringBuilder;
+	invoke-direct	{v5},java/lang/StringBuilder/<init>	; <init>()V
+; v5 : Ljava/lang/StringBuilder;
+	const-string	v6,"Less than 4 hex digits in unicode value: '"
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v5,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v5 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/StringBuilder;
+	invoke-interface	{v8},java/lang/CharSequence/length	; length()I
+; v8 : Ljava/lang/CharSequence;
+	move-result	v6
+; v6 : single-length
+	invoke-interface	{v8,v9,v6},java/lang/CharSequence/subSequence	; subSequence(II)Ljava/lang/CharSequence;
+; v8 : Ljava/lang/CharSequence; , v9 : single-length , v6 : single-length
+	move-result-object	v6
+; v6 : Ljava/lang/CharSequence;
+	invoke-virtual	{v5,v6},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v5 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/CharSequence;
+	move-result-object	v5
+; v5 : Ljava/lang/StringBuilder;
+	const-string	v6,"' due to end of CharSequence"
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v5,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v5 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v5},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v5 : Ljava/lang/StringBuilder;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-direct	{v4,v5},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v4 : Ljava/lang/IllegalArgumentException; , v5 : Ljava/lang/String;
+	throw	v4
+; v4 : Ljava/lang/IllegalArgumentException;
+l143eb0:
+.line 64
+	const/4	v4,0
+; v4 : single-length
+	goto	l143e2c
+.end method
+
+

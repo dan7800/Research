@@ -1,0 +1,401 @@
+.class public org/apache/commons/io/input/ReaderInputStream
+.super java/io/InputStream
+.source ReaderInputStream.java
+
+.field private static final DEFAULT_BUFFER_SIZE I = 1024	; 0x400
+.field private final encoder Ljava/nio/charset/CharsetEncoder;
+.field private final encoderIn Ljava/nio/CharBuffer;
+.field private final encoderOut Ljava/nio/ByteBuffer;
+.field private endOfInput Z
+.field private lastCoderResult Ljava/nio/charset/CoderResult;
+.field private final reader Ljava/io/Reader;
+
+.method public <init>(Ljava/io/Reader;)V
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/input/ReaderInputStream;)
+; parameter[0] : v2 (Ljava/io/Reader;)
+.line 181
+	invoke-static	{},java/nio/charset/Charset/defaultCharset	; defaultCharset()Ljava/nio/charset/Charset;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Ljava/nio/charset/Charset;
+	invoke-direct	{v1,v2,v0},org/apache/commons/io/input/ReaderInputStream/<init>	; <init>(Ljava/io/Reader;Ljava/nio/charset/Charset;)V
+; v1 : Lorg/apache/commons/io/input/ReaderInputStream; , v2 : Ljava/io/Reader; , v0 : Ljava/nio/charset/Charset;
+.line 182
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/Reader;Ljava/lang/String;)V
+.limit registers 4
+; this: v1 (Lorg/apache/commons/io/input/ReaderInputStream;)
+; parameter[0] : v2 (Ljava/io/Reader;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.line 171
+	const/16	v0,1024
+; v0 : single-length
+	invoke-direct	{v1,v2,v3,v0},org/apache/commons/io/input/ReaderInputStream/<init>	; <init>(Ljava/io/Reader;Ljava/lang/String;I)V
+; v1 : Lorg/apache/commons/io/input/ReaderInputStream; , v2 : Ljava/io/Reader; , v3 : Ljava/lang/String; , v0 : single-length
+.line 172
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/Reader;Ljava/lang/String;I)V
+.limit registers 5
+; this: v1 (Lorg/apache/commons/io/input/ReaderInputStream;)
+; parameter[0] : v2 (Ljava/io/Reader;)
+; parameter[1] : v3 (Ljava/lang/String;)
+; parameter[2] : v4 (I)
+.line 160
+	invoke-static	{v3},java/nio/charset/Charset/forName	; forName(Ljava/lang/String;)Ljava/nio/charset/Charset;
+; v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/nio/charset/Charset;
+	invoke-direct	{v1,v2,v0,v4},org/apache/commons/io/input/ReaderInputStream/<init>	; <init>(Ljava/io/Reader;Ljava/nio/charset/Charset;I)V
+; v1 : Lorg/apache/commons/io/input/ReaderInputStream; , v2 : Ljava/io/Reader; , v0 : Ljava/nio/charset/Charset; , v4 : single-length
+.line 161
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/Reader;Ljava/nio/charset/Charset;)V
+.limit registers 4
+; this: v1 (Lorg/apache/commons/io/input/ReaderInputStream;)
+; parameter[0] : v2 (Ljava/io/Reader;)
+; parameter[1] : v3 (Ljava/nio/charset/Charset;)
+.line 149
+	const/16	v0,1024
+; v0 : single-length
+	invoke-direct	{v1,v2,v3,v0},org/apache/commons/io/input/ReaderInputStream/<init>	; <init>(Ljava/io/Reader;Ljava/nio/charset/Charset;I)V
+; v1 : Lorg/apache/commons/io/input/ReaderInputStream; , v2 : Ljava/io/Reader; , v3 : Ljava/nio/charset/Charset; , v0 : single-length
+.line 150
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/Reader;Ljava/nio/charset/Charset;I)V
+.limit registers 6
+; this: v2 (Lorg/apache/commons/io/input/ReaderInputStream;)
+; parameter[0] : v3 (Ljava/io/Reader;)
+; parameter[1] : v4 (Ljava/nio/charset/Charset;)
+; parameter[2] : v5 (I)
+.line 134
+	invoke-virtual	{v4},java/nio/charset/Charset/newEncoder	; newEncoder()Ljava/nio/charset/CharsetEncoder;
+; v4 : Ljava/nio/charset/Charset;
+	move-result-object	v0
+; v0 : Ljava/nio/charset/CharsetEncoder;
+	sget-object	v1,java/nio/charset/CodingErrorAction.REPLACE Ljava/nio/charset/CodingErrorAction;
+; v1 : Ljava/nio/charset/CodingErrorAction;
+	invoke-virtual	{v0,v1},java/nio/charset/CharsetEncoder/onMalformedInput	; onMalformedInput(Ljava/nio/charset/CodingErrorAction;)Ljava/nio/charset/CharsetEncoder;
+; v0 : Ljava/nio/charset/CharsetEncoder; , v1 : Ljava/nio/charset/CodingErrorAction;
+	move-result-object	v0
+; v0 : Ljava/nio/charset/CharsetEncoder;
+	sget-object	v1,java/nio/charset/CodingErrorAction.REPLACE Ljava/nio/charset/CodingErrorAction;
+; v1 : Ljava/nio/charset/CodingErrorAction;
+	invoke-virtual	{v0,v1},java/nio/charset/CharsetEncoder/onUnmappableCharacter	; onUnmappableCharacter(Ljava/nio/charset/CodingErrorAction;)Ljava/nio/charset/CharsetEncoder;
+; v0 : Ljava/nio/charset/CharsetEncoder; , v1 : Ljava/nio/charset/CodingErrorAction;
+	move-result-object	v0
+; v0 : Ljava/nio/charset/CharsetEncoder;
+	invoke-direct	{v2,v3,v0,v5},org/apache/commons/io/input/ReaderInputStream/<init>	; <init>(Ljava/io/Reader;Ljava/nio/charset/CharsetEncoder;I)V
+; v2 : Lorg/apache/commons/io/input/ReaderInputStream; , v3 : Ljava/io/Reader; , v0 : Ljava/nio/charset/CharsetEncoder; , v5 : single-length
+.line 139
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/Reader;Ljava/nio/charset/CharsetEncoder;)V
+.limit registers 4
+; this: v1 (Lorg/apache/commons/io/input/ReaderInputStream;)
+; parameter[0] : v2 (Ljava/io/Reader;)
+; parameter[1] : v3 (Ljava/nio/charset/CharsetEncoder;)
+.line 108
+	const/16	v0,1024
+; v0 : single-length
+	invoke-direct	{v1,v2,v3,v0},org/apache/commons/io/input/ReaderInputStream/<init>	; <init>(Ljava/io/Reader;Ljava/nio/charset/CharsetEncoder;I)V
+; v1 : Lorg/apache/commons/io/input/ReaderInputStream; , v2 : Ljava/io/Reader; , v3 : Ljava/nio/charset/CharsetEncoder; , v0 : single-length
+.line 109
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/Reader;Ljava/nio/charset/CharsetEncoder;I)V
+.limit registers 5
+; this: v1 (Lorg/apache/commons/io/input/ReaderInputStream;)
+; parameter[0] : v2 (Ljava/io/Reader;)
+; parameter[1] : v3 (Ljava/nio/charset/CharsetEncoder;)
+; parameter[2] : v4 (I)
+.line 119
+	invoke-direct	{v1},java/io/InputStream/<init>	; <init>()V
+; v1 : Lorg/apache/commons/io/input/ReaderInputStream;
+.line 95
+	const/16	v0,128
+; v0 : single-length
+	invoke-static	{v0},java/nio/ByteBuffer/allocate	; allocate(I)Ljava/nio/ByteBuffer;
+; v0 : single-length
+	move-result-object	v0
+; v0 : Ljava/nio/ByteBuffer;
+	iput-object	v0,v1,org/apache/commons/io/input/ReaderInputStream.encoderOut Ljava/nio/ByteBuffer;
+; v0 : Ljava/nio/ByteBuffer; , v1 : Lorg/apache/commons/io/input/ReaderInputStream;
+.line 120
+	iput-object	v2,v1,org/apache/commons/io/input/ReaderInputStream.reader Ljava/io/Reader;
+; v2 : Ljava/io/Reader; , v1 : Lorg/apache/commons/io/input/ReaderInputStream;
+.line 121
+	iput-object	v3,v1,org/apache/commons/io/input/ReaderInputStream.encoder Ljava/nio/charset/CharsetEncoder;
+; v3 : Ljava/nio/charset/CharsetEncoder; , v1 : Lorg/apache/commons/io/input/ReaderInputStream;
+.line 122
+	invoke-static	{v4},java/nio/CharBuffer/allocate	; allocate(I)Ljava/nio/CharBuffer;
+; v4 : single-length
+	move-result-object	v0
+; v0 : Ljava/nio/CharBuffer;
+	iput-object	v0,v1,org/apache/commons/io/input/ReaderInputStream.encoderIn Ljava/nio/CharBuffer;
+; v0 : Ljava/nio/CharBuffer; , v1 : Lorg/apache/commons/io/input/ReaderInputStream;
+.line 123
+	iget-object	v0,v1,org/apache/commons/io/input/ReaderInputStream.encoderIn Ljava/nio/CharBuffer;
+; v0 : Ljava/nio/CharBuffer; , v1 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v0},java/nio/CharBuffer/flip	; flip()Ljava/nio/Buffer;
+; v0 : Ljava/nio/CharBuffer;
+.line 124
+	return-void	
+.end method
+
+.method public close()V
+.throws Ljava/io/IOException;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/input/ReaderInputStream;)
+.line 263
+	iget-object	v0,v1,org/apache/commons/io/input/ReaderInputStream.reader Ljava/io/Reader;
+; v0 : Ljava/io/Reader; , v1 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v0},java/io/Reader/close	; close()V
+; v0 : Ljava/io/Reader;
+.line 264
+	return-void	
+.end method
+
+.method public read()I
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v3 (Lorg/apache/commons/io/input/ReaderInputStream;)
+	const/4	v1,15
+; v1 : single-length
+.line 252
+	const/4	v2,1
+; v2 : single-length
+	new-array	v0,v2,[B
+; v0 : [B , v2 : single-length
+.line 253
+	invoke-virtual	{v3,v0},org/apache/commons/io/input/ReaderInputStream/read	; read([B)I
+; v3 : Lorg/apache/commons/io/input/ReaderInputStream; , v0 : [B
+	move-result	v2
+; v2 : single-length
+	if-ne	v2,v1,l11bed2
+; v2 : single-length , v1 : single-length
+l11bed0:
+	return	v1
+; v1 : single-length
+l11bed2:
+	const/4	v1,0
+; v1 : single-length
+	aget-byte	v1,v0,v1
+; v1 : single-length , v0 : [B , v1 : single-length
+	and-int/lit16	v1,v1,255
+; v1 : single-length , v1 : single-length
+	goto	l11bed0
+.end method
+
+.method public read([B)I
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/io/input/ReaderInputStream;)
+; parameter[0] : v3 ([B)
+.line 240
+	const/4	v0,0
+; v0 : single-length
+	array-length	v1,v3
+; v1 : single-length , v3 : [B
+	invoke-virtual	{v2,v3,v0,v1},org/apache/commons/io/input/ReaderInputStream/read	; read([BII)I
+; v2 : Lorg/apache/commons/io/input/ReaderInputStream; , v3 : [B , v0 : single-length , v1 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public read([BII)I
+.throws Ljava/io/IOException;
+.limit registers 12
+; this: v8 (Lorg/apache/commons/io/input/ReaderInputStream;)
+; parameter[0] : v9 ([B)
+; parameter[1] : v10 (I)
+; parameter[2] : v11 (I)
+.var 0 is c I from l11bf46 to l11bf62
+.var 0 is c I from l11bfbc to l11bfd0
+.var 1 is position I from l11bf98 to l11bfd0
+.var 2 is read I from l11bf14 to l11c012
+	const/4	v3,15
+; v3 : single-length
+.line 196
+	const/4	v2,0
+; v2 : single-length
+l11bf14:
+.line 197
+	if-lez	v11,l11c004
+; v11 : single-length
+.line 198
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.encoderOut Ljava/nio/ByteBuffer;
+; v4 : Ljava/nio/ByteBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v4},java/nio/ByteBuffer/position	; position()I
+; v4 : Ljava/nio/ByteBuffer;
+	move-result	v4
+; v4 : single-length
+	if-lez	v4,l11bf62
+; v4 : single-length
+.line 199
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.encoderOut Ljava/nio/ByteBuffer;
+; v4 : Ljava/nio/ByteBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v4},java/nio/ByteBuffer/flip	; flip()Ljava/nio/Buffer;
+; v4 : Ljava/nio/ByteBuffer;
+.line 200
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.encoderOut Ljava/nio/ByteBuffer;
+; v4 : Ljava/nio/ByteBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v4},java/nio/ByteBuffer/remaining	; remaining()I
+; v4 : Ljava/nio/ByteBuffer;
+	move-result	v4
+; v4 : single-length
+	invoke-static	{v4,v11},java/lang/Math/min	; min(II)I
+; v4 : single-length , v11 : single-length
+	move-result	v0
+; v0 : single-length
+.line 201
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.encoderOut Ljava/nio/ByteBuffer;
+; v4 : Ljava/nio/ByteBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v4,v9,v10,v0},java/nio/ByteBuffer/get	; get([BII)Ljava/nio/ByteBuffer;
+; v4 : Ljava/nio/ByteBuffer; , v9 : [B , v10 : single-length , v0 : single-length
+.line 202
+	add-int/2addr	v10,v0
+; v10 : single-length , v0 : single-length
+.line 203
+	sub-int/2addr	v11,v0
+; v11 : single-length , v0 : single-length
+.line 204
+	add-int/2addr	v2,v0
+; v2 : single-length , v0 : single-length
+.line 205
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.encoderOut Ljava/nio/ByteBuffer;
+; v4 : Ljava/nio/ByteBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v4},java/nio/ByteBuffer/compact	; compact()Ljava/nio/ByteBuffer;
+; v4 : Ljava/nio/ByteBuffer;
+	goto	l11bf14
+l11bf62:
+.line 207
+	iget-boolean	v4,v8,org/apache/commons/io/input/ReaderInputStream.endOfInput Z
+; v4 : single-length , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	if-nez	v4,l11bfd0
+; v4 : single-length
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.lastCoderResult Ljava/nio/charset/CoderResult;
+; v4 : Ljava/nio/charset/CoderResult; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	if-eqz	v4,l11bf82
+; v4 : Ljava/nio/charset/CoderResult;
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.lastCoderResult Ljava/nio/charset/CoderResult;
+; v4 : Ljava/nio/charset/CoderResult; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v4},java/nio/charset/CoderResult/isUnderflow	; isUnderflow()Z
+; v4 : Ljava/nio/charset/CoderResult;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l11bfd0
+; v4 : single-length
+l11bf82:
+.line 208
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.encoderIn Ljava/nio/CharBuffer;
+; v4 : Ljava/nio/CharBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v4},java/nio/CharBuffer/compact	; compact()Ljava/nio/CharBuffer;
+; v4 : Ljava/nio/CharBuffer;
+.line 209
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.encoderIn Ljava/nio/CharBuffer;
+; v4 : Ljava/nio/CharBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v4},java/nio/CharBuffer/position	; position()I
+; v4 : Ljava/nio/CharBuffer;
+	move-result	v1
+; v1 : single-length
+.line 213
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.reader Ljava/io/Reader;
+; v4 : Ljava/io/Reader; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	iget-object	v5,v8,org/apache/commons/io/input/ReaderInputStream.encoderIn Ljava/nio/CharBuffer;
+; v5 : Ljava/nio/CharBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v5},java/nio/CharBuffer/array	; array()[C
+; v5 : Ljava/nio/CharBuffer;
+	move-result-object	v5
+; v5 : [C
+	iget-object	v6,v8,org/apache/commons/io/input/ReaderInputStream.encoderIn Ljava/nio/CharBuffer;
+; v6 : Ljava/nio/CharBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v6},java/nio/CharBuffer/remaining	; remaining()I
+; v6 : Ljava/nio/CharBuffer;
+	move-result	v6
+; v6 : single-length
+	invoke-virtual	{v4,v5,v1,v6},java/io/Reader/read	; read([CII)I
+; v4 : Ljava/io/Reader; , v5 : [C , v1 : single-length , v6 : single-length
+	move-result	v0
+; v0 : single-length
+.line 214
+	if-ne	v0,v3,l11c014
+; v0 : single-length , v3 : single-length
+.line 215
+	const/4	v4,1
+; v4 : single-length
+	iput-boolean	v4,v8,org/apache/commons/io/input/ReaderInputStream.endOfInput Z
+; v4 : single-length , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+l11bfc6:
+.line 219
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.encoderIn Ljava/nio/CharBuffer;
+; v4 : Ljava/nio/CharBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v4},java/nio/CharBuffer/flip	; flip()Ljava/nio/Buffer;
+; v4 : Ljava/nio/CharBuffer;
+l11bfd0:
+.line 221
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.encoder Ljava/nio/charset/CharsetEncoder;
+; v4 : Ljava/nio/charset/CharsetEncoder; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	iget-object	v5,v8,org/apache/commons/io/input/ReaderInputStream.encoderIn Ljava/nio/CharBuffer;
+; v5 : Ljava/nio/CharBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	iget-object	v6,v8,org/apache/commons/io/input/ReaderInputStream.encoderOut Ljava/nio/ByteBuffer;
+; v6 : Ljava/nio/ByteBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	iget-boolean	v7,v8,org/apache/commons/io/input/ReaderInputStream.endOfInput Z
+; v7 : single-length , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v4,v5,v6,v7},java/nio/charset/CharsetEncoder/encode	; encode(Ljava/nio/CharBuffer;Ljava/nio/ByteBuffer;Z)Ljava/nio/charset/CoderResult;
+; v4 : Ljava/nio/charset/CharsetEncoder; , v5 : Ljava/nio/CharBuffer; , v6 : Ljava/nio/ByteBuffer; , v7 : single-length
+	move-result-object	v4
+; v4 : Ljava/nio/charset/CoderResult;
+	iput-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.lastCoderResult Ljava/nio/charset/CoderResult;
+; v4 : Ljava/nio/charset/CoderResult; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+.line 222
+	iget-boolean	v4,v8,org/apache/commons/io/input/ReaderInputStream.endOfInput Z
+; v4 : single-length , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	if-eqz	v4,l11bf14
+; v4 : single-length
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.encoderOut Ljava/nio/ByteBuffer;
+; v4 : Ljava/nio/ByteBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	invoke-virtual	{v4},java/nio/ByteBuffer/position	; position()I
+; v4 : Ljava/nio/ByteBuffer;
+	move-result	v4
+; v4 : single-length
+	if-nez	v4,l11bf14
+; v4 : single-length
+l11c004:
+.line 227
+	if-nez	v2,l11c012
+; v2 : single-length
+	iget-boolean	v4,v8,org/apache/commons/io/input/ReaderInputStream.endOfInput Z
+; v4 : single-length , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	if-eqz	v4,l11c012
+; v4 : single-length
+	move	v2,v3
+; v2 : single-length , v3 : single-length
+l11c012:
+	return	v2
+; v2 : single-length
+l11c014:
+.line 217
+	iget-object	v4,v8,org/apache/commons/io/input/ReaderInputStream.encoderIn Ljava/nio/CharBuffer;
+; v4 : Ljava/nio/CharBuffer; , v8 : Lorg/apache/commons/io/input/ReaderInputStream;
+	add-int	v5,v1,v0
+; v5 : single-length , v1 : single-length , v0 : single-length
+	invoke-virtual	{v4,v5},java/nio/CharBuffer/position	; position(I)Ljava/nio/Buffer;
+; v4 : Ljava/nio/CharBuffer; , v5 : single-length
+	goto	l11bfc6
+.end method
+
+

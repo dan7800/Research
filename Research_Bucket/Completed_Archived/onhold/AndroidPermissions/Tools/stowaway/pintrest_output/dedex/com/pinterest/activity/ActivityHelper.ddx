@@ -1,0 +1,1037 @@
+.class public com/pinterest/activity/ActivityHelper
+.super java/lang/Object
+.source ActivityHelper.java
+
+.field public static final REQUEST_REPORT I = 101	; 0x65
+.field public static final REQUEST_TWITTER I = 101	; 0x65
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/activity/ActivityHelper;)
+.line 50
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lcom/pinterest/activity/ActivityHelper;
+	return-void	
+.end method
+
+.method public static final doInvite(Landroid/app/Activity;)V
+.limit registers 6
+; parameter[0] : v5 (Landroid/app/Activity;)
+.line 185
+	invoke-static	{},com/pinterest/base/Application/getPreferences	; getPreferences()Landroid/content/SharedPreferences;
+; 
+	nop	
+	move-result-object	v2
+; v2 : Landroid/content/SharedPreferences;
+	const-string	v3,"PREF_MY_USERNAME"
+; v3 : Ljava/lang/String;
+	const/4	v4,0
+; v4 : single-length
+	invoke-interface	{v2,v3,v4},android/content/SharedPreferences/getString	; getString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v2 : Landroid/content/SharedPreferences; , v3 : Ljava/lang/String; , v4 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 186
+	new-instance	v0,android/os/Bundle
+; v0 : Landroid/os/Bundle;
+	invoke-direct	{v0},android/os/Bundle/<init>	; <init>()V
+; v0 : Landroid/os/Bundle;
+.line 187
+	const-string	v2,"com.pinterest.EXTRA_NO_OP"
+; v2 : Ljava/lang/String;
+	const/4	v3,1
+; v3 : single-length
+	invoke-virtual	{v0,v2,v3},android/os/Bundle/putBoolean	; putBoolean(Ljava/lang/String;Z)V
+; v0 : Landroid/os/Bundle; , v2 : Ljava/lang/String; , v3 : single-length
+.line 188
+	const-string	v2,"android.intent.extra.SUBJECT"
+; v2 : Ljava/lang/String;
+	const	v3,2131427583	; 0x7f0b00ff
+; v3 : single-length
+	invoke-virtual	{v5,v3},android/app/Activity/getString	; getString(I)Ljava/lang/String;
+; v5 : Landroid/app/Activity; , v3 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v0,v2,v3},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Landroid/os/Bundle; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 189
+	if-eqz	v1,ld2e12
+; v1 : Ljava/lang/String;
+.line 190
+	const-string	v2,"add_friends"
+; v2 : Ljava/lang/String;
+	invoke-static	{v2},com/pinterest/base/Analytics/trackPageView	; trackPageView(Ljava/lang/String;)V
+; v2 : Ljava/lang/String;
+.line 191
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const	v3,2131427495	; 0x7f0b00a7
+; v3 : single-length
+	invoke-virtual	{v5,v3},android/app/Activity/getString	; getString(I)Ljava/lang/String;
+; v5 : Landroid/app/Activity; , v3 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	const	v3,2131427379	; 0x7f0b0033
+; v3 : single-length
+	invoke-virtual	{v5,v3},android/app/Activity/getString	; getString(I)Ljava/lang/String;
+; v5 : Landroid/app/Activity; , v3 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-static	{v5,v2,v3,v0},com/pinterest/activity/ActivityHelper/doShare	; doShare(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Landroid/os/Bundle;)V
+; v5 : Landroid/app/Activity; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String; , v0 : Landroid/os/Bundle;
+ld2e12:
+.line 193
+	return-void	
+.end method
+
+.method public static final doLogout(Landroid/app/Activity;)V
+.limit registers 2
+; parameter[0] : v1 (Landroid/app/Activity;)
+.line 221
+	const/4	v0,0
+; v0 : single-length
+	invoke-static	{v0},com/pinterest/api/PAPI/logout	; logout(Lcom/loopj/android/http/JsonHttpResponseHandler;)V
+; v0 : single-length
+.line 222
+	invoke-static	{v1},com/pinterest/activity/ActivityHelper/notifyWidgetStateChange	; notifyWidgetStateChange(Landroid/content/Context;)V
+; v1 : Landroid/app/Activity;
+.line 223
+	invoke-static	{v1},com/pinterest/activity/ActivityHelper/goSplash	; goSplash(Landroid/app/Activity;)V
+; v1 : Landroid/app/Activity;
+.line 224
+	invoke-virtual	{v1},android/app/Activity/finish	; finish()V
+; v1 : Landroid/app/Activity;
+.line 225
+	return-void	
+.end method
+
+.method public static final doShare(Landroid/app/Activity;Ljava/lang/String;)V
+.limit registers 3
+; parameter[0] : v1 (Landroid/app/Activity;)
+; parameter[1] : v2 (Ljava/lang/String;)
+.line 197
+	const	v0,2131427378	; 0x7f0b0032
+; v0 : single-length
+	invoke-virtual	{v1,v0},android/app/Activity/getString	; getString(I)Ljava/lang/String;
+; v1 : Landroid/app/Activity; , v0 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	invoke-static	{v1,v2,v0},com/pinterest/activity/ActivityHelper/doShare	; doShare(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;)V
+; v1 : Landroid/app/Activity; , v2 : Ljava/lang/String; , v0 : Ljava/lang/String;
+.line 198
+	return-void	
+.end method
+
+.method public static final doShare(Landroid/app/Activity;Ljava/lang/String;Landroid/os/Bundle;)V
+.limit registers 4
+; parameter[0] : v1 (Landroid/app/Activity;)
+; parameter[1] : v2 (Ljava/lang/String;)
+; parameter[2] : v3 (Landroid/os/Bundle;)
+.line 202
+	const	v0,2131427378	; 0x7f0b0032
+; v0 : single-length
+	invoke-virtual	{v1,v0},android/app/Activity/getString	; getString(I)Ljava/lang/String;
+; v1 : Landroid/app/Activity; , v0 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	invoke-static	{v1,v2,v0,v3},com/pinterest/activity/ActivityHelper/doShare	; doShare(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Landroid/os/Bundle;)V
+; v1 : Landroid/app/Activity; , v2 : Ljava/lang/String; , v0 : Ljava/lang/String; , v3 : Landroid/os/Bundle;
+.line 203
+	return-void	
+.end method
+
+.method public static final doShare(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;)V
+.limit registers 4
+; parameter[0] : v1 (Landroid/app/Activity;)
+; parameter[1] : v2 (Ljava/lang/String;)
+; parameter[2] : v3 (Ljava/lang/String;)
+.line 207
+	const/4	v0,0
+; v0 : single-length
+	invoke-static	{v1,v2,v3,v0},com/pinterest/activity/ActivityHelper/doShare	; doShare(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Landroid/os/Bundle;)V
+; v1 : Landroid/app/Activity; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String; , v0 : single-length
+.line 208
+	return-void	
+.end method
+
+.method public static final doShare(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Landroid/os/Bundle;)V
+.limit registers 6
+; parameter[0] : v2 (Landroid/app/Activity;)
+; parameter[1] : v3 (Ljava/lang/String;)
+; parameter[2] : v4 (Ljava/lang/String;)
+; parameter[3] : v5 (Landroid/os/Bundle;)
+.line 212
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	const-string	v1,"android.intent.action.SEND"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},android/content/Intent/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Landroid/content/Intent; , v1 : Ljava/lang/String;
+.line 213
+	const-string	v1,"text/plain"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},android/content/Intent/setType	; setType(Ljava/lang/String;)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : Ljava/lang/String;
+.line 214
+	const-string	v1,"android.intent.extra.TEXT"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v3},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 215
+	if-eqz	v5,ld2ee8
+; v5 : Landroid/os/Bundle;
+	invoke-virtual	{v0,v5},android/content/Intent/putExtras	; putExtras(Landroid/os/Bundle;)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v5 : Landroid/os/Bundle;
+ld2ee8:
+.line 216
+	invoke-static	{v0,v4},android/content/Intent/createChooser	; createChooser(Landroid/content/Intent;Ljava/lang/CharSequence;)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v4 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Landroid/content/Intent;
+	invoke-virtual	{v2,v1},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v2 : Landroid/app/Activity; , v1 : Landroid/content/Intent;
+.line 217
+	return-void	
+.end method
+
+.method public static final getBoardIntent(Landroid/content/Context;)Landroid/content/Intent;
+.limit registers 3
+; parameter[0] : v2 (Landroid/content/Context;)
+.line 288
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	const-class	v1,com/pinterest/activity/board/BoardActivity
+; v1 : Ljava/lang/Class;
+	invoke-direct	{v0,v2,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v2 : Landroid/content/Context; , v1 : Ljava/lang/Class;
+	return-object	v0
+; v0 : Landroid/content/Intent;
+.end method
+
+.method public static final getCreatePinIntent(Landroid/content/Context;)Landroid/content/Intent;
+.limit registers 3
+; parameter[0] : v2 (Landroid/content/Context;)
+.line 245
+	new-instance	v1,android/content/Intent
+; v1 : Landroid/content/Intent;
+	invoke-static	{},com/pinterest/base/Device/isTablet	; isTablet()Z
+; 
+	nop	
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,ld2f44
+; v0 : single-length
+	const-class	v0,com/pinterest/activity/create/CreateOverlayActivity
+; v0 : Ljava/lang/Class;
+ld2f3c:
+	invoke-direct	{v1,v2,v0},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v1 : Landroid/content/Intent; , v2 : Landroid/content/Context; , v0 : Ljava/lang/Class;
+	return-object	v1
+; v1 : Landroid/content/Intent;
+ld2f44:
+	const-class	v0,com/pinterest/activity/create/CreateActivity
+; v0 : Ljava/lang/Class;
+	goto	ld2f3c
+.end method
+
+.method public static final getDomainIntent(Landroid/content/Context;)Landroid/content/Intent;
+.limit registers 3
+; parameter[0] : v2 (Landroid/content/Context;)
+.line 298
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	const-class	v1,com/pinterest/activity/domain/DomainActivity
+; v1 : Ljava/lang/Class;
+	invoke-direct	{v0,v2,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v2 : Landroid/content/Context; , v1 : Ljava/lang/Class;
+	return-object	v0
+; v0 : Landroid/content/Intent;
+.end method
+
+.method public static final getHomeIntent(Landroid/content/Context;)Landroid/content/Intent;
+.limit registers 3
+; parameter[0] : v2 (Landroid/content/Context;)
+.line 304
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	const-class	v1,com/pinterest/activity/home/HomeActivity
+; v1 : Ljava/lang/Class;
+	invoke-direct	{v0,v2,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v2 : Landroid/content/Context; , v1 : Ljava/lang/Class;
+	return-object	v0
+; v0 : Landroid/content/Intent;
+.end method
+
+.method public static final getPinIntent(Landroid/content/Context;)Landroid/content/Intent;
+.limit registers 3
+; parameter[0] : v2 (Landroid/content/Context;)
+.line 260
+	new-instance	v1,android/content/Intent
+; v1 : Landroid/content/Intent;
+	invoke-static	{},com/pinterest/base/Device/isTablet	; isTablet()Z
+; 
+	nop	
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,ld2fb8
+; v0 : single-length
+	const-class	v0,com/pinterest/activity/pin/PinOverlayActivity
+; v0 : Ljava/lang/Class;
+ld2fb0:
+	invoke-direct	{v1,v2,v0},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v1 : Landroid/content/Intent; , v2 : Landroid/content/Context; , v0 : Ljava/lang/Class;
+	return-object	v1
+; v1 : Landroid/content/Intent;
+ld2fb8:
+	const-class	v0,com/pinterest/activity/pin/PinActivity
+; v0 : Ljava/lang/Class;
+	goto	ld2fb0
+.end method
+
+.method public static final getPinIntent(Landroid/content/Context;Ljava/lang/String;)Landroid/content/Intent;
+.limit registers 4
+; parameter[0] : v2 (Landroid/content/Context;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.var 0 is intent Landroid/content/Intent; from ld2fea to ld2ff6
+.line 271
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	invoke-static	{},com/pinterest/base/Device/isTablet	; isTablet()Z
+; 
+	nop	
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,ld2ff6
+; v1 : single-length
+	const-class	v1,com/pinterest/activity/pin/PinOverlayActivity
+; v1 : Ljava/lang/Class;
+ld2fe4:
+	invoke-direct	{v0,v2,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v2 : Landroid/content/Context; , v1 : Ljava/lang/Class;
+.line 272
+	const-string	v1,"com.pinterest.EXTRA_PIN_EVENTLABEL"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v3},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 273
+	return-object	v0
+; v0 : Landroid/content/Intent;
+ld2ff6:
+.line 271
+	const-class	v1,com/pinterest/activity/pin/PinActivity
+; v1 : Ljava/lang/Class;
+	goto	ld2fe4
+.end method
+
+.method public static final getPinOverlayIntent(Landroid/content/Context;)Landroid/content/Intent;
+.limit registers 3
+; parameter[0] : v2 (Landroid/content/Context;)
+.line 278
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	const-class	v1,com/pinterest/activity/pin/PinOverlayActivity
+; v1 : Ljava/lang/Class;
+	invoke-direct	{v0,v2,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v2 : Landroid/content/Context; , v1 : Ljava/lang/Class;
+	return-object	v0
+; v0 : Landroid/content/Intent;
+.end method
+
+.method public static final getPinReportIntent(Landroid/content/Context;)Landroid/content/Intent;
+.limit registers 3
+; parameter[0] : v2 (Landroid/content/Context;)
+.line 283
+	new-instance	v1,android/content/Intent
+; v1 : Landroid/content/Intent;
+	invoke-static	{},com/pinterest/base/Device/isTablet	; isTablet()Z
+; 
+	nop	
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,ld3048
+; v0 : single-length
+	const-class	v0,com/pinterest/activity/report/ReportPinOverlayActivity
+; v0 : Ljava/lang/Class;
+ld3040:
+	invoke-direct	{v1,v2,v0},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v1 : Landroid/content/Intent; , v2 : Landroid/content/Context; , v0 : Ljava/lang/Class;
+	return-object	v1
+; v1 : Landroid/content/Intent;
+ld3048:
+	const-class	v0,com/pinterest/activity/report/ReportPinActivity
+; v0 : Ljava/lang/Class;
+	goto	ld3040
+.end method
+
+.method public static final getPinterestDialog(Landroid/content/Context;)Lcom/pinterest/ui/dialog/PinterestDialog;
+.limit registers 3
+; parameter[0] : v2 (Landroid/content/Context;)
+.line 233
+	new-instance	v0,com/pinterest/ui/dialog/PinterestDialog
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog;
+	const	v1,2131492964	; 0x7f0c0064
+; v1 : single-length
+	invoke-direct	{v0,v2,v1},com/pinterest/ui/dialog/PinterestDialog/<init>	; <init>(Landroid/content/Context;I)V
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog; , v2 : Landroid/content/Context; , v1 : single-length
+	return-object	v0
+; v0 : Lcom/pinterest/ui/dialog/PinterestDialog;
+.end method
+
+.method public static final getRepinIntent(Landroid/content/Context;)Landroid/content/Intent;
+.limit registers 3
+; parameter[0] : v2 (Landroid/content/Context;)
+.line 250
+	new-instance	v1,android/content/Intent
+; v1 : Landroid/content/Intent;
+	invoke-static	{},com/pinterest/base/Device/isTablet	; isTablet()Z
+; 
+	nop	
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,ld30a0
+; v0 : single-length
+	const-class	v0,com/pinterest/activity/create/RepinOverlayActivity
+; v0 : Ljava/lang/Class;
+ld3098:
+	invoke-direct	{v1,v2,v0},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v1 : Landroid/content/Intent; , v2 : Landroid/content/Context; , v0 : Ljava/lang/Class;
+	return-object	v1
+; v1 : Landroid/content/Intent;
+ld30a0:
+	const-class	v0,com/pinterest/activity/create/RepinActivity
+; v0 : Ljava/lang/Class;
+	goto	ld3098
+.end method
+
+.method public static final getUserIntent(Landroid/content/Context;)Landroid/content/Intent;
+.limit registers 3
+; parameter[0] : v2 (Landroid/content/Context;)
+.line 293
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	const-class	v1,com/pinterest/activity/user/UserActivity
+; v1 : Ljava/lang/Class;
+	invoke-direct	{v0,v2,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v2 : Landroid/content/Context; , v1 : Ljava/lang/Class;
+	return-object	v0
+; v0 : Landroid/content/Intent;
+.end method
+
+.method public static final getValidUri(Ljava/lang/String;)Landroid/net/Uri;
+.limit registers 4
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 317
+	invoke-static	{v3},android/net/Uri/parse	; parse(Ljava/lang/String;)Landroid/net/Uri;
+; v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Landroid/net/Uri;
+.line 318
+	invoke-virtual	{v0},android/net/Uri/getScheme	; getScheme()Ljava/lang/String;
+; v0 : Landroid/net/Uri;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	if-nez	v1,ld311a
+; v1 : Ljava/lang/String;
+.line 319
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"http://"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-static	{v1},android/net/Uri/parse	; parse(Ljava/lang/String;)Landroid/net/Uri;
+; v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Landroid/net/Uri;
+ld311a:
+.line 321
+	return-object	v0
+; v0 : Landroid/net/Uri;
+.end method
+
+.method public static final getWaitDialog(Landroid/app/Activity;I)Lcom/pinterest/ui/dialog/WaitDialog;
+.limit registers 4
+; parameter[0] : v2 (Landroid/app/Activity;)
+; parameter[1] : v3 (I)
+.line 238
+	new-instance	v0,com/pinterest/ui/dialog/WaitDialog
+; v0 : Lcom/pinterest/ui/dialog/WaitDialog;
+	const	v1,2131492963	; 0x7f0c0063
+; v1 : single-length
+	invoke-direct	{v0,v2,v1},com/pinterest/ui/dialog/WaitDialog/<init>	; <init>(Landroid/content/Context;I)V
+; v0 : Lcom/pinterest/ui/dialog/WaitDialog; , v2 : Landroid/app/Activity; , v1 : single-length
+.line 239
+	invoke-virtual	{v0,v3},com/pinterest/ui/dialog/WaitDialog/setMessage	; setMessage(I)V
+; v0 : Lcom/pinterest/ui/dialog/WaitDialog; , v3 : single-length
+.line 240
+	return-object	v0
+; v0 : Lcom/pinterest/ui/dialog/WaitDialog;
+.end method
+
+.method public static final getWebViewIntent(Landroid/content/Context;)Landroid/content/Intent;
+.limit registers 3
+; parameter[0] : v2 (Landroid/content/Context;)
+.line 308
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	const-class	v1,com/pinterest/ui/PWebViewActivity
+; v1 : Ljava/lang/Class;
+	invoke-direct	{v0,v2,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v2 : Landroid/content/Context; , v1 : Ljava/lang/Class;
+	return-object	v0
+; v0 : Landroid/content/Intent;
+.end method
+
+.method public static final goAuthFailed(Landroid/app/Activity;)V
+.limit registers 7
+; parameter[0] : v6 (Landroid/app/Activity;)
+.line 141
+	invoke-static	{},com/pinterest/base/Application/getPreferences	; getPreferences()Landroid/content/SharedPreferences;
+; 
+	nop	
+	move-result-object	v2
+; v2 : Landroid/content/SharedPreferences;
+	invoke-interface	{v2},android/content/SharedPreferences/edit	; edit()Landroid/content/SharedPreferences$Editor;
+; v2 : Landroid/content/SharedPreferences;
+	move-result-object	v0
+; v0 : Landroid/content/SharedPreferences$Editor;
+.line 142
+	invoke-interface	{v0},android/content/SharedPreferences$Editor/clear	; clear()Landroid/content/SharedPreferences$Editor;
+; v0 : Landroid/content/SharedPreferences$Editor;
+.line 143
+	invoke-interface	{v0},android/content/SharedPreferences$Editor/commit	; commit()Z
+; v0 : Landroid/content/SharedPreferences$Editor;
+.line 145
+	new-instance	v1,android/content/Intent
+; v1 : Landroid/content/Intent;
+	invoke-static	{},com/pinterest/base/Application/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v2
+; v2 : Lcom/pinterest/kit/application/PApplication;
+	const-class	v3,com/pinterest/activity/signin/SplashActivity
+; v3 : Ljava/lang/Class;
+	invoke-direct	{v1,v2,v3},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v1 : Landroid/content/Intent; , v2 : Lcom/pinterest/kit/application/PApplication; , v3 : Ljava/lang/Class;
+.line 146
+	const/high16	v2,1024
+; v2 : single-length
+	invoke-virtual	{v1,v2},android/content/Intent/addFlags	; addFlags(I)Landroid/content/Intent;
+; v1 : Landroid/content/Intent; , v2 : single-length
+.line 147
+	if-nez	v6,ld31be
+; v6 : Landroid/app/Activity;
+	const/high16	v2,4096
+; v2 : single-length
+	invoke-virtual	{v1,v2},android/content/Intent/addFlags	; addFlags(I)Landroid/content/Intent;
+; v1 : Landroid/content/Intent; , v2 : single-length
+ld31be:
+.line 148
+	const-string	v2,"application"
+; v2 : Ljava/lang/String;
+	const-string	v3,"closed"
+; v3 : Ljava/lang/String;
+	const-string	v4,"application closed"
+; v4 : Ljava/lang/String;
+	const/4	v5,0
+; v5 : single-length
+	invoke-static	{v2,v3,v4,v5},com/pinterest/base/Analytics/event	; event(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String; , v5 : single-length
+.line 149
+	if-nez	v6,ld31e6
+; v6 : Landroid/app/Activity;
+.line 150
+	invoke-static	{},com/pinterest/base/Application/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v2
+; v2 : Lcom/pinterest/kit/application/PApplication;
+	invoke-virtual	{v2,v1},com/pinterest/kit/application/PApplication/startActivity	; startActivity(Landroid/content/Intent;)V
+; v2 : Lcom/pinterest/kit/application/PApplication; , v1 : Landroid/content/Intent;
+ld31e4:
+.line 153
+	return-void	
+ld31e6:
+.line 152
+	invoke-virtual	{v6,v1},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v6 : Landroid/app/Activity; , v1 : Landroid/content/Intent;
+	goto	ld31e4
+.end method
+
+.method public static final goBrowser(Landroid/app/Activity;Landroid/net/Uri;)V
+.limit registers 5
+; parameter[0] : v3 (Landroid/app/Activity;)
+; parameter[1] : v4 (Landroid/net/Uri;)
+.line 174
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	invoke-static	{},com/pinterest/base/Application/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Lcom/pinterest/kit/application/PApplication;
+	const-class	v2,com/pinterest/ui/PWebViewActivity
+; v2 : Ljava/lang/Class;
+	invoke-direct	{v0,v1,v2},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v1 : Lcom/pinterest/kit/application/PApplication; , v2 : Ljava/lang/Class;
+.line 175
+	invoke-virtual	{v0,v4},android/content/Intent/setData	; setData(Landroid/net/Uri;)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v4 : Landroid/net/Uri;
+.line 176
+	invoke-virtual	{v3,v0},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v3 : Landroid/app/Activity; , v0 : Landroid/content/Intent;
+.line 177
+	return-void	
+.end method
+
+.method public static final goFindFriends(Landroid/app/Activity;)V
+.limit registers 3
+; parameter[0] : v2 (Landroid/app/Activity;)
+.var 0 is findfriends Landroid/content/Intent; from ld324e to ld3256
+.line 64
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	invoke-static	{},com/pinterest/base/Device/isTablet	; isTablet()Z
+; 
+	nop	
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,ld3256
+; v1 : single-length
+	const-class	v1,com/pinterest/activity/findfriends/FindFriendsOverlayActivity
+; v1 : Ljava/lang/Class;
+ld3248:
+	invoke-direct	{v0,v2,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v2 : Landroid/app/Activity; , v1 : Ljava/lang/Class;
+.line 65
+	invoke-virtual	{v2,v0},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v2 : Landroid/app/Activity; , v0 : Landroid/content/Intent;
+.line 66
+	return-void	
+ld3256:
+.line 64
+	const-class	v1,com/pinterest/activity/findfriends/FindFriendsActivity
+; v1 : Ljava/lang/Class;
+	goto	ld3248
+.end method
+
+.method public static final goHome(Landroid/app/Activity;)V
+.limit registers 3
+; parameter[0] : v2 (Landroid/app/Activity;)
+.line 118
+	invoke-static	{v2},com/pinterest/activity/ActivityHelper/getHomeIntent	; getHomeIntent(Landroid/content/Context;)Landroid/content/Intent;
+; v2 : Landroid/app/Activity;
+	move-result-object	v0
+; v0 : Landroid/content/Intent;
+.line 119
+	const/high16	v1,9216
+; v1 : single-length
+	invoke-virtual	{v0,v1},android/content/Intent/addFlags	; addFlags(I)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : single-length
+.line 120
+	invoke-virtual	{v2,v0},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v2 : Landroid/app/Activity; , v0 : Landroid/content/Intent;
+.line 121
+	return-void	
+.end method
+
+.method public static final goLogin(Landroid/app/Activity;)V
+.limit registers 4
+; parameter[0] : v3 (Landroid/app/Activity;)
+.line 157
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	invoke-static	{},com/pinterest/base/Application/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Lcom/pinterest/kit/application/PApplication;
+	const-class	v2,com/pinterest/activity/signin/LoginActivity
+; v2 : Ljava/lang/Class;
+	invoke-direct	{v0,v1,v2},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v1 : Lcom/pinterest/kit/application/PApplication; , v2 : Ljava/lang/Class;
+.line 158
+	const/high16	v1,1024
+; v1 : single-length
+	invoke-virtual	{v0,v1},android/content/Intent/addFlags	; addFlags(I)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : single-length
+.line 159
+	const-string	v1,"login selection"
+; v1 : Ljava/lang/String;
+	const-string	v2,"enter login screen from orientation"
+; v2 : Ljava/lang/String;
+	invoke-static	{v1,v2},com/pinterest/base/Analytics/trackLogin	; trackLogin(Ljava/lang/String;Ljava/lang/String;)V
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+.line 160
+	invoke-virtual	{v3,v0},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v3 : Landroid/app/Activity; , v0 : Landroid/content/Intent;
+.line 161
+	return-void	
+.end method
+
+.method public static final goMyProfile(Landroid/app/Activity;)V
+.limit registers 2
+; parameter[0] : v1 (Landroid/app/Activity;)
+.line 85
+	invoke-static	{},com/pinterest/base/Application/getMe	; getMe()Lcom/pinterest/api/models/User;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Lcom/pinterest/api/models/User;
+	invoke-static	{v1,v0},com/pinterest/activity/ActivityHelper/goUserProfile	; goUserProfile(Landroid/content/Context;Lcom/pinterest/api/models/User;)V
+; v1 : Landroid/app/Activity; , v0 : Lcom/pinterest/api/models/User;
+.line 86
+	return-void	
+.end method
+
+.method public static final goReportPin(Landroid/app/Activity;Ljava/lang/String;)V
+.limit registers 4
+; parameter[0] : v2 (Landroid/app/Activity;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.line 71
+	invoke-static	{v2},com/pinterest/activity/ActivityHelper/getPinReportIntent	; getPinReportIntent(Landroid/content/Context;)Landroid/content/Intent;
+; v2 : Landroid/app/Activity;
+	move-result-object	v0
+; v0 : Landroid/content/Intent;
+.line 72
+	const-string	v1,"com.pinterest.EXTRA_ID"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v3},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 73
+	const/16	v1,101
+; v1 : single-length
+	invoke-virtual	{v2,v0,v1},android/app/Activity/startActivityForResult	; startActivityForResult(Landroid/content/Intent;I)V
+; v2 : Landroid/app/Activity; , v0 : Landroid/content/Intent; , v1 : single-length
+.line 74
+	return-void	
+.end method
+
+.method public static final goRoot(Landroid/app/Activity;)V
+.limit registers 4
+; parameter[0] : v3 (Landroid/app/Activity;)
+.line 133
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	invoke-static	{},com/pinterest/base/Application/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Lcom/pinterest/kit/application/PApplication;
+	const-class	v2,com/pinterest/activity/PinterestActivity
+; v2 : Ljava/lang/Class;
+	invoke-direct	{v0,v1,v2},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v1 : Lcom/pinterest/kit/application/PApplication; , v2 : Ljava/lang/Class;
+.line 134
+	const/high16	v1,1024
+; v1 : single-length
+	invoke-virtual	{v0,v1},android/content/Intent/addFlags	; addFlags(I)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : single-length
+.line 135
+	invoke-virtual	{v3,v0},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v3 : Landroid/app/Activity; , v0 : Landroid/content/Intent;
+.line 136
+	return-void	
+.end method
+
+.method public static final goSearch(Landroid/app/Activity;)V
+.limit registers 3
+; parameter[0] : v2 (Landroid/app/Activity;)
+.line 58
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	const-class	v1,com/pinterest/activity/search/SearchActivity
+; v1 : Ljava/lang/Class;
+	invoke-direct	{v0,v2,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v2 : Landroid/app/Activity; , v1 : Ljava/lang/Class;
+.line 59
+	invoke-virtual	{v2,v0},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v2 : Landroid/app/Activity; , v0 : Landroid/content/Intent;
+.line 60
+	return-void	
+.end method
+
+.method public static final goSettings(Landroid/app/Activity;)V
+.limit registers 3
+; parameter[0] : v2 (Landroid/app/Activity;)
+.line 113
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	const-class	v1,com/pinterest/activity/settings/AccountSettingsActivity
+; v1 : Ljava/lang/Class;
+	invoke-direct	{v0,v2,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v2 : Landroid/app/Activity; , v1 : Ljava/lang/Class;
+	invoke-virtual	{v2,v0},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v2 : Landroid/app/Activity; , v0 : Landroid/content/Intent;
+.line 114
+	return-void	
+.end method
+
+.method public static final goSignup(Landroid/app/Activity;)V
+.limit registers 4
+; parameter[0] : v3 (Landroid/app/Activity;)
+.line 165
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	invoke-static	{},com/pinterest/base/Application/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Lcom/pinterest/kit/application/PApplication;
+	const-class	v2,com/pinterest/activity/signin/SplashActivity
+; v2 : Ljava/lang/Class;
+	invoke-direct	{v0,v1,v2},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v1 : Lcom/pinterest/kit/application/PApplication; , v2 : Ljava/lang/Class;
+.line 166
+	const/high16	v1,9216
+; v1 : single-length
+	invoke-virtual	{v0,v1},android/content/Intent/addFlags	; addFlags(I)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : single-length
+.line 167
+	const-string	v1,"com.pinterest.EXTRA_SIGNUP"
+; v1 : Ljava/lang/String;
+	const/4	v2,1
+; v2 : single-length
+	invoke-virtual	{v0,v1,v2},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;Z)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : Ljava/lang/String; , v2 : single-length
+.line 168
+	const-string	v1,"signup"
+; v1 : Ljava/lang/String;
+	const-string	v2,"web signup from orientation"
+; v2 : Ljava/lang/String;
+	invoke-static	{v1,v2},com/pinterest/base/Analytics/trackLogin	; trackLogin(Ljava/lang/String;Ljava/lang/String;)V
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+.line 169
+	invoke-virtual	{v3,v0},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v3 : Landroid/app/Activity; , v0 : Landroid/content/Intent;
+.line 170
+	return-void	
+.end method
+
+.method public static final goSplash(Landroid/app/Activity;)V
+.limit registers 6
+; parameter[0] : v5 (Landroid/app/Activity;)
+.line 125
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	invoke-static	{},com/pinterest/base/Application/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Lcom/pinterest/kit/application/PApplication;
+	const-class	v2,com/pinterest/activity/signin/SplashActivity
+; v2 : Ljava/lang/Class;
+	invoke-direct	{v0,v1,v2},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v1 : Lcom/pinterest/kit/application/PApplication; , v2 : Ljava/lang/Class;
+.line 126
+	const/high16	v1,1024
+; v1 : single-length
+	invoke-virtual	{v0,v1},android/content/Intent/addFlags	; addFlags(I)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : single-length
+.line 127
+	const-string	v1,"application"
+; v1 : Ljava/lang/String;
+	const-string	v2,"closed"
+; v2 : Ljava/lang/String;
+	const-string	v3,"application closed"
+; v3 : Ljava/lang/String;
+	const/4	v4,0
+; v4 : single-length
+	invoke-static	{v1,v2,v3,v4},com/pinterest/base/Analytics/event	; event(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String; , v4 : single-length
+.line 128
+	invoke-virtual	{v5,v0},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v5 : Landroid/app/Activity; , v0 : Landroid/content/Intent;
+.line 129
+	return-void	
+.end method
+
+.method public static final goSupport(Landroid/app/Activity;)V
+.limit registers 4
+; parameter[0] : v3 (Landroid/app/Activity;)
+.line 97
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	const-class	v1,com/pinterest/ui/PWebViewActivity
+; v1 : Ljava/lang/Class;
+	invoke-direct	{v0,v3,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v3 : Landroid/app/Activity; , v1 : Ljava/lang/Class;
+.line 98
+	const	v1,2131427555	; 0x7f0b00e3
+; v1 : single-length
+	invoke-virtual	{v3,v1},android/app/Activity/getString	; getString(I)Ljava/lang/String;
+; v3 : Landroid/app/Activity; , v1 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-static	{v1},com/pinterest/activity/ActivityHelper/getValidUri	; getValidUri(Ljava/lang/String;)Landroid/net/Uri;
+; v1 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Landroid/net/Uri;
+	invoke-virtual	{v0,v1},android/content/Intent/setData	; setData(Landroid/net/Uri;)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : Landroid/net/Uri;
+.line 99
+	const-string	v1,"com.pinterest.EXTRA_WEB_TITLE"
+; v1 : Ljava/lang/String;
+	const	v2,2131427416	; 0x7f0b0058
+; v2 : single-length
+	invoke-virtual	{v0,v1,v2},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : Ljava/lang/String; , v2 : single-length
+.line 100
+	invoke-virtual	{v3,v0},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v3 : Landroid/app/Activity; , v0 : Landroid/content/Intent;
+.line 101
+	return-void	
+.end method
+
+.method public static final goTermsOfService(Landroid/app/Activity;)V
+.limit registers 4
+; parameter[0] : v3 (Landroid/app/Activity;)
+.line 105
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	const-class	v1,com/pinterest/ui/PWebViewActivity
+; v1 : Ljava/lang/Class;
+	invoke-direct	{v0,v3,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v3 : Landroid/app/Activity; , v1 : Ljava/lang/Class;
+.line 106
+	const	v1,2131427554	; 0x7f0b00e2
+; v1 : single-length
+	invoke-virtual	{v3,v1},android/app/Activity/getString	; getString(I)Ljava/lang/String;
+; v3 : Landroid/app/Activity; , v1 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-static	{v1},com/pinterest/activity/ActivityHelper/getValidUri	; getValidUri(Ljava/lang/String;)Landroid/net/Uri;
+; v1 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Landroid/net/Uri;
+	invoke-virtual	{v0,v1},android/content/Intent/setData	; setData(Landroid/net/Uri;)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : Landroid/net/Uri;
+.line 107
+	const-string	v1,"com.pinterest.EXTRA_WEB_TITLE"
+; v1 : Ljava/lang/String;
+	const	v2,2131427407	; 0x7f0b004f
+; v2 : single-length
+	invoke-virtual	{v0,v1,v2},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;I)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : Ljava/lang/String; , v2 : single-length
+.line 108
+	invoke-virtual	{v3,v0},android/app/Activity/startActivity	; startActivity(Landroid/content/Intent;)V
+; v3 : Landroid/app/Activity; , v0 : Landroid/content/Intent;
+.line 109
+	return-void	
+.end method
+
+.method public static final goTwitterAuth(Landroid/app/Activity;)V
+.limit registers 3
+; parameter[0] : v2 (Landroid/app/Activity;)
+.line 79
+	new-instance	v0,android/content/Intent
+; v0 : Landroid/content/Intent;
+	const-class	v1,com/pinterest/activity/signin/TwitterAuthActivity
+; v1 : Ljava/lang/Class;
+	invoke-direct	{v0,v2,v1},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v0 : Landroid/content/Intent; , v2 : Landroid/app/Activity; , v1 : Ljava/lang/Class;
+.line 80
+	const/16	v1,101
+; v1 : single-length
+	invoke-virtual	{v2,v0,v1},android/app/Activity/startActivityForResult	; startActivityForResult(Landroid/content/Intent;I)V
+; v2 : Landroid/app/Activity; , v0 : Landroid/content/Intent; , v1 : single-length
+.line 81
+	return-void	
+.end method
+
+.method public static final goUserProfile(Landroid/content/Context;Lcom/pinterest/api/models/User;)V
+.limit registers 4
+; parameter[0] : v2 (Landroid/content/Context;)
+; parameter[1] : v3 (Lcom/pinterest/api/models/User;)
+.line 89
+	invoke-static	{v2},com/pinterest/activity/ActivityHelper/getUserIntent	; getUserIntent(Landroid/content/Context;)Landroid/content/Intent;
+; v2 : Landroid/content/Context;
+	move-result-object	v0
+; v0 : Landroid/content/Intent;
+.line 90
+	const-string	v1,"com.pinterest.EXTRA_USER"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v3},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+; v0 : Landroid/content/Intent; , v1 : Ljava/lang/String; , v3 : Lcom/pinterest/api/models/User;
+.line 91
+	invoke-virtual	{v2,v0},android/content/Context/startActivity	; startActivity(Landroid/content/Intent;)V
+; v2 : Landroid/content/Context; , v0 : Landroid/content/Intent;
+.line 92
+	return-void	
+.end method
+
+.method public static final notifyWidgetStateChange(Landroid/content/Context;)V
+.limit registers 7
+; parameter[0] : v6 (Landroid/content/Context;)
+.line 328
+	invoke-static	{v6},android/appwidget/AppWidgetManager/getInstance	; getInstance(Landroid/content/Context;)Landroid/appwidget/AppWidgetManager;
+; v6 : Landroid/content/Context;
+	move-result-object	v2
+; v2 : Landroid/appwidget/AppWidgetManager;
+.line 329
+	new-instance	v3,android/content/ComponentName
+; v3 : Landroid/content/ComponentName;
+	invoke-virtual	{v6},android/content/Context/getApplicationContext	; getApplicationContext()Landroid/content/Context;
+; v6 : Landroid/content/Context;
+	move-result-object	v4
+; v4 : Landroid/content/Context;
+	const-class	v5,com/pinterest/appwidget/PWidgetProvider
+; v5 : Ljava/lang/Class;
+	invoke-direct	{v3,v4,v5},android/content/ComponentName/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v3 : Landroid/content/ComponentName; , v4 : Landroid/content/Context; , v5 : Ljava/lang/Class;
+.line 331
+	invoke-virtual	{v2,v3},android/appwidget/AppWidgetManager/getAppWidgetIds	; getAppWidgetIds(Landroid/content/ComponentName;)[I
+; v2 : Landroid/appwidget/AppWidgetManager; , v3 : Landroid/content/ComponentName;
+	move-result-object	v0
+; v0 : [I
+.line 332
+	new-instance	v1,android/content/Intent
+; v1 : Landroid/content/Intent;
+	const-class	v4,com/pinterest/appwidget/PWidgetProvider
+; v4 : Ljava/lang/Class;
+	invoke-direct	{v1,v6,v4},android/content/Intent/<init>	; <init>(Landroid/content/Context;Ljava/lang/Class;)V
+; v1 : Landroid/content/Intent; , v6 : Landroid/content/Context; , v4 : Ljava/lang/Class;
+.line 333
+	const-string	v4,"android.appwidget.action.APPWIDGET_UPDATE"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v1,v4},android/content/Intent/setAction	; setAction(Ljava/lang/String;)Landroid/content/Intent;
+; v1 : Landroid/content/Intent; , v4 : Ljava/lang/String;
+.line 337
+	const-string	v4,"appWidgetIds"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v1,v4,v0},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;[I)Landroid/content/Intent;
+; v1 : Landroid/content/Intent; , v4 : Ljava/lang/String; , v0 : [I
+.line 338
+	invoke-virtual	{v6,v1},android/content/Context/sendBroadcast	; sendBroadcast(Landroid/content/Intent;)V
+; v6 : Landroid/content/Context; , v1 : Landroid/content/Intent;
+.line 339
+	return-void	
+.end method
+
+

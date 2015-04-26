@@ -1,0 +1,85 @@
+.class public abstract org/apache/commons/lang3/concurrent/AtomicInitializer
+.super java/lang/Object
+.source AtomicInitializer.java
+.implements org/apache/commons/lang3/concurrent/ConcurrentInitializer
+
+.annotation systemVisibility Ldalvik/annotation/Signature;
+  value [Ljava/lang/String; = { "<T:" , "Ljava/lang/Object;" , ">" , "Ljava/lang/Object;" , "Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer" , "<TT;>;" }
+.end annotation
+
+.field private final reference Ljava/util/concurrent/atomic/AtomicReference;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/concurrent/atomic/AtomicReference" , "<TT;>;" }
+  .end annotation
+.end field
+
+.method public <init>()V
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/concurrent/AtomicInitializer;)
+.line 67
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lorg/apache/commons/lang3/concurrent/AtomicInitializer;
+.line 69
+	new-instance	v0,java/util/concurrent/atomic/AtomicReference
+; v0 : Ljava/util/concurrent/atomic/AtomicReference;
+	invoke-direct	{v0},java/util/concurrent/atomic/AtomicReference/<init>	; <init>()V
+; v0 : Ljava/util/concurrent/atomic/AtomicReference;
+	iput-object	v0,v1,org/apache/commons/lang3/concurrent/AtomicInitializer.reference Ljava/util/concurrent/atomic/AtomicReference;
+; v0 : Ljava/util/concurrent/atomic/AtomicReference; , v1 : Lorg/apache/commons/lang3/concurrent/AtomicInitializer;
+	return-void	
+.end method
+
+.method public get()Ljava/lang/Object;
+.throws Lorg/apache/commons/lang3/concurrent/ConcurrentException;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "()TT;" }
+.end annotation
+.limit registers 4
+; this: v3 (Lorg/apache/commons/lang3/concurrent/AtomicInitializer;)
+.line 81
+	iget-object	v1,v3,org/apache/commons/lang3/concurrent/AtomicInitializer.reference Ljava/util/concurrent/atomic/AtomicReference;
+; v1 : Ljava/util/concurrent/atomic/AtomicReference; , v3 : Lorg/apache/commons/lang3/concurrent/AtomicInitializer;
+	invoke-virtual	{v1},java/util/concurrent/atomic/AtomicReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/util/concurrent/atomic/AtomicReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+.line 83
+	if-nez	v0,l133782
+; v0 : Ljava/lang/Object;
+.line 84
+	invoke-virtual	{v3},org/apache/commons/lang3/concurrent/AtomicInitializer/initialize	; initialize()Ljava/lang/Object;
+; v3 : Lorg/apache/commons/lang3/concurrent/AtomicInitializer;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+.line 85
+	iget-object	v1,v3,org/apache/commons/lang3/concurrent/AtomicInitializer.reference Ljava/util/concurrent/atomic/AtomicReference;
+; v1 : Ljava/util/concurrent/atomic/AtomicReference; , v3 : Lorg/apache/commons/lang3/concurrent/AtomicInitializer;
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v1,v2,v0},java/util/concurrent/atomic/AtomicReference/compareAndSet	; compareAndSet(Ljava/lang/Object;Ljava/lang/Object;)Z
+; v1 : Ljava/util/concurrent/atomic/AtomicReference; , v2 : single-length , v0 : Ljava/lang/Object;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l133782
+; v1 : single-length
+.line 87
+	iget-object	v1,v3,org/apache/commons/lang3/concurrent/AtomicInitializer.reference Ljava/util/concurrent/atomic/AtomicReference;
+; v1 : Ljava/util/concurrent/atomic/AtomicReference; , v3 : Lorg/apache/commons/lang3/concurrent/AtomicInitializer;
+	invoke-virtual	{v1},java/util/concurrent/atomic/AtomicReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/util/concurrent/atomic/AtomicReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+l133782:
+.line 91
+	return-object	v0
+; v0 : Ljava/lang/Object;
+.end method
+
+.method protected abstract initialize()Ljava/lang/Object;
+.throws Lorg/apache/commons/lang3/concurrent/ConcurrentException;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "()TT;" }
+.end annotation
+.end method
+
+

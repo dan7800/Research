@@ -1,0 +1,136 @@
+.class com/pinterest/activity/home/adapter/HomeActivityAdapter$3
+.super java/lang/Object
+.source HomeActivityAdapter.java
+.implements android/widget/AdapterView$OnItemClickListener
+
+.inner class 3 inner com/pinterest/activity/home/adapter/HomeActivityAdapter$3 outer com/pinterest/activity/home/adapter/HomeActivityAdapter
+.field final this$0 Lcom/pinterest/activity/home/adapter/HomeActivityAdapter;
+
+.method <init>(Lcom/pinterest/activity/home/adapter/HomeActivityAdapter;)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/activity/home/adapter/HomeActivityAdapter$3;)
+; parameter[0] : v1 (Lcom/pinterest/activity/home/adapter/HomeActivityAdapter;)
+.line 149
+	iput-object	v1,v0,com/pinterest/activity/home/adapter/HomeActivityAdapter$3.this$0 Lcom/pinterest/activity/home/adapter/HomeActivityAdapter;
+; v1 : Lcom/pinterest/activity/home/adapter/HomeActivityAdapter; , v0 : Lcom/pinterest/activity/home/adapter/HomeActivityAdapter$3;
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lcom/pinterest/activity/home/adapter/HomeActivityAdapter$3;
+	return-void	
+.end method
+
+.method public onItemClick(Landroid/widget/AdapterView;Landroid/view/View;IJ)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Landroid/widget/AdapterView" , "<*>;" , "Landroid/view/View;" , "IJ)V" }
+.end annotation
+.limit registers 11
+; this: v5 (Lcom/pinterest/activity/home/adapter/HomeActivityAdapter$3;)
+; parameter[0] : v6 (Landroid/widget/AdapterView;)
+; parameter[1] : v7 (Landroid/view/View;)
+; parameter[2] : v8 (I)
+; parameter[3] : v9 (J)
+.catch java/lang/Exception from ldb130 to ldb1c2 using ldb1ac
+.var 2 is pin Landroid/content/Intent; from ldb14e to ldb16a
+.var 1 is board Landroid/content/Intent; from ldb17c to ldb1ac
+.line 153
+	iget-object	v3,v5,com/pinterest/activity/home/adapter/HomeActivityAdapter$3.this$0 Lcom/pinterest/activity/home/adapter/HomeActivityAdapter;
+; v3 : Lcom/pinterest/activity/home/adapter/HomeActivityAdapter; , v5 : Lcom/pinterest/activity/home/adapter/HomeActivityAdapter$3;
+	invoke-virtual	{v3,v8},com/pinterest/activity/home/adapter/HomeActivityAdapter/getItem	; getItem(I)Ljava/lang/Object;
+; v3 : Lcom/pinterest/activity/home/adapter/HomeActivityAdapter; , v8 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/Activity
+; v0 : Lcom/pinterest/api/models/Activity;
+ldb130:
+.line 156
+	iget	v3,v0,com/pinterest/api/models/Activity.type I
+; v3 : single-length , v0 : Lcom/pinterest/api/models/Activity;
+	sparse-switch	v3
+		4 : spdb134_db16c
+		9 : spdb134_db1b0
+		default: spdb134_default
+; v3 : single-length
+spdb134_default:
+.line 173
+	invoke-virtual	{v7},android/view/View/getContext	; getContext()Landroid/content/Context;
+; v7 : Landroid/view/View;
+	move-result-object	v3
+; v3 : Landroid/content/Context;
+	const-string	v4,"activity"
+; v4 : Ljava/lang/String;
+	invoke-static	{v3,v4},com/pinterest/activity/ActivityHelper/getPinIntent	; getPinIntent(Landroid/content/Context;Ljava/lang/String;)Landroid/content/Intent;
+; v3 : Landroid/content/Context; , v4 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Landroid/content/Intent;
+.line 174
+	const-string	v3,"com.pinterest.EXTRA_PIN"
+; v3 : Ljava/lang/String;
+	iget-object	v4,v0,com/pinterest/api/models/Activity.pin Lcom/pinterest/api/models/Pin;
+; v4 : Lcom/pinterest/api/models/Pin; , v0 : Lcom/pinterest/api/models/Activity;
+	invoke-virtual	{v2,v3,v4},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+; v2 : Landroid/content/Intent; , v3 : Ljava/lang/String; , v4 : Lcom/pinterest/api/models/Pin;
+.line 175
+	invoke-virtual	{v7},android/view/View/getContext	; getContext()Landroid/content/Context;
+; v7 : Landroid/view/View;
+	move-result-object	v3
+; v3 : Landroid/content/Context;
+	invoke-virtual	{v3,v2},android/content/Context/startActivity	; startActivity(Landroid/content/Intent;)V
+; v3 : Landroid/content/Context; , v2 : Landroid/content/Intent;
+ldb16a:
+.line 181
+	return-void	
+spdb134_db16c:
+.line 160
+	invoke-virtual	{v7},android/view/View/getContext	; getContext()Landroid/content/Context;
+; v7 : Landroid/view/View;
+	move-result-object	v3
+; v3 : Landroid/content/Context;
+	invoke-static	{v3},com/pinterest/activity/ActivityHelper/getBoardIntent	; getBoardIntent(Landroid/content/Context;)Landroid/content/Intent;
+; v3 : Landroid/content/Context;
+	move-result-object	v1
+; v1 : Landroid/content/Intent;
+.line 161
+	const-string	v3,"com.pinterest.EXTRA_BOARD"
+; v3 : Ljava/lang/String;
+	iget-object	v4,v0,com/pinterest/api/models/Activity.board Lcom/pinterest/api/models/Board;
+; v4 : Lcom/pinterest/api/models/Board; , v0 : Lcom/pinterest/api/models/Activity;
+	invoke-virtual	{v1,v3,v4},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+; v1 : Landroid/content/Intent; , v3 : Ljava/lang/String; , v4 : Lcom/pinterest/api/models/Board;
+.line 162
+	const-string	v3,"com.pinterest.EXTRA_USER"
+; v3 : Ljava/lang/String;
+	invoke-static	{},com/pinterest/base/Application/getMe	; getMe()Lcom/pinterest/api/models/User;
+; 
+	nop	
+	move-result-object	v4
+; v4 : Lcom/pinterest/api/models/User;
+	invoke-virtual	{v1,v3,v4},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
+; v1 : Landroid/content/Intent; , v3 : Ljava/lang/String; , v4 : Lcom/pinterest/api/models/User;
+.line 163
+	invoke-virtual	{v7},android/view/View/getContext	; getContext()Landroid/content/Context;
+; v7 : Landroid/view/View;
+	move-result-object	v3
+; v3 : Landroid/content/Context;
+	invoke-virtual	{v3,v1},android/content/Context/startActivity	; startActivity(Landroid/content/Intent;)V
+; v3 : Landroid/content/Context; , v1 : Landroid/content/Intent;
+	goto	ldb16a
+ldb1ac:
+.line 180
+	move-exception	v3
+; v3 : java/lang/Exception
+	goto	ldb16a
+spdb134_db1b0:
+.line 168
+	invoke-virtual	{v7},android/view/View/getContext	; getContext()Landroid/content/Context;
+; v7 : Landroid/view/View;
+	move-result-object	v3
+; v3 : Landroid/content/Context;
+	iget-object	v4,v0,com/pinterest/api/models/Activity.user Lcom/pinterest/api/models/User;
+; v4 : Lcom/pinterest/api/models/User; , v0 : Lcom/pinterest/api/models/Activity;
+	invoke-static	{v3,v4},com/pinterest/activity/ActivityHelper/goUserProfile	; goUserProfile(Landroid/content/Context;Lcom/pinterest/api/models/User;)V
+; v3 : Landroid/content/Context; , v4 : Lcom/pinterest/api/models/User;
+ldb1c2:
+	goto	ldb16a
+.line 156
+.end method
+
+

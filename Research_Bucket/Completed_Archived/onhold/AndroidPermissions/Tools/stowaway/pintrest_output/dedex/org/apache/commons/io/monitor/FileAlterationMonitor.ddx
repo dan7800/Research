@@ -1,0 +1,474 @@
+.class public final org/apache/commons/io/monitor/FileAlterationMonitor
+.super java/lang/Object
+.source FileAlterationMonitor.java
+.implements java/lang/Runnable
+
+.field private final interval J
+.field private final observers Ljava/util/List;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/List" , "<" , "Lorg/apache/commons/io/monitor/FileAlterationObserver;" , ">;" }
+  .end annotation
+.end field
+.field private volatile running Z
+.field private thread Ljava/lang/Thread;
+.field private threadFactory Ljava/util/concurrent/ThreadFactory;
+
+.method public <init>()V
+.limit registers 3
+; this: v2 (Lorg/apache/commons/io/monitor/FileAlterationMonitor;)
+.line 43
+	const-wide/16	v0,10000
+; v0 : double-length
+	invoke-direct	{v2,v0,v1},org/apache/commons/io/monitor/FileAlterationMonitor/<init>	; <init>(J)V
+; v2 : Lorg/apache/commons/io/monitor/FileAlterationMonitor; , v0 : double-length
+.line 44
+	return-void	
+.end method
+
+.method public <init>(J)V
+.limit registers 4
+; this: v1 (Lorg/apache/commons/io/monitor/FileAlterationMonitor;)
+; parameter[0] : v2 (J)
+.line 52
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+.line 34
+	new-instance	v0,java/util/concurrent/CopyOnWriteArrayList
+; v0 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	invoke-direct	{v0},java/util/concurrent/CopyOnWriteArrayList/<init>	; <init>()V
+; v0 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	iput-object	v0,v1,org/apache/commons/io/monitor/FileAlterationMonitor.observers Ljava/util/List;
+; v0 : Ljava/util/concurrent/CopyOnWriteArrayList; , v1 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+.line 35
+	const/4	v0,0
+; v0 : single-length
+	iput-object	v0,v1,org/apache/commons/io/monitor/FileAlterationMonitor.thread Ljava/lang/Thread;
+; v0 : single-length , v1 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+.line 37
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v1,org/apache/commons/io/monitor/FileAlterationMonitor.running Z
+; v0 : single-length , v1 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+.line 53
+	iput-wide	v2,v1,org/apache/commons/io/monitor/FileAlterationMonitor.interval J
+; v2 : double-length , v1 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+.line 54
+	return-void	
+.end method
+
+.method public <init>(J[Lorg/apache/commons/io/monitor/FileAlterationObserver;)V
+.limit registers 8
+; this: v4 (Lorg/apache/commons/io/monitor/FileAlterationMonitor;)
+; parameter[0] : v5 (J)
+; parameter[1] : v7 ([Lorg/apache/commons/io/monitor/FileAlterationObserver;)
+.var 0 is arr$ [Lorg/apache/commons/io/monitor/FileAlterationObserver; from l11d5b8 to l11d5d0
+.var 1 is i$ I from l11d5bc to l11d5d0
+.var 2 is len$ I from l11d5ba to l11d5d0
+.var 3 is observer Lorg/apache/commons/io/monitor/FileAlterationObserver; from l11d5c4 to l11d5d0
+.line 64
+	invoke-direct	{v4,v5,v6},org/apache/commons/io/monitor/FileAlterationMonitor/<init>	; <init>(J)V
+; v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor; , v5 : double-length
+.line 65
+	if-eqz	v7,l11d5d0
+; v7 : [Lorg/apache/commons/io/monitor/FileAlterationObserver;
+.line 66
+	move-object	v0,v7
+; v0 : [Lorg/apache/commons/io/monitor/FileAlterationObserver; , v7 : [Lorg/apache/commons/io/monitor/FileAlterationObserver;
+l11d5b8:
+	array-length	v2,v0
+; v2 : single-length , v0 : [Lorg/apache/commons/io/monitor/FileAlterationObserver;
+l11d5ba:
+	const/4	v1,0
+; v1 : single-length
+l11d5bc:
+	if-ge	v1,v2,l11d5d0
+; v1 : single-length , v2 : single-length
+	aget-object	v3,v0,v1
+; v3 : Lorg/apache/commons/io/monitor/FileAlterationObserver; , v0 : [Lorg/apache/commons/io/monitor/FileAlterationObserver; , v1 : single-length
+.line 67
+	invoke-virtual	{v4,v3},org/apache/commons/io/monitor/FileAlterationMonitor/addObserver	; addObserver(Lorg/apache/commons/io/monitor/FileAlterationObserver;)V
+; v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor; , v3 : Lorg/apache/commons/io/monitor/FileAlterationObserver;
+.line 66
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	l11d5bc
+l11d5d0:
+.line 70
+	return-void	
+.end method
+
+.method public addObserver(Lorg/apache/commons/io/monitor/FileAlterationObserver;)V
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/monitor/FileAlterationMonitor;)
+; parameter[0] : v2 (Lorg/apache/commons/io/monitor/FileAlterationObserver;)
+.line 96
+	if-eqz	v2,l11d5f2
+; v2 : Lorg/apache/commons/io/monitor/FileAlterationObserver;
+.line 97
+	iget-object	v0,v1,org/apache/commons/io/monitor/FileAlterationMonitor.observers Ljava/util/List;
+; v0 : Ljava/util/List; , v1 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	invoke-interface	{v0,v2},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v0 : Ljava/util/List; , v2 : Lorg/apache/commons/io/monitor/FileAlterationObserver;
+l11d5f2:
+.line 99
+	return-void	
+.end method
+
+.method public getInterval()J
+.limit registers 3
+; this: v2 (Lorg/apache/commons/io/monitor/FileAlterationMonitor;)
+.line 78
+	iget-wide	v0,v2,org/apache/commons/io/monitor/FileAlterationMonitor.interval J
+; v0 : double-length , v2 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	return-wide	v0
+; v0 : double-length
+.end method
+
+.method public getObservers()Ljava/lang/Iterable;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "()" , "Ljava/lang/Iterable" , "<" , "Lorg/apache/commons/io/monitor/FileAlterationObserver;" , ">;" }
+.end annotation
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/monitor/FileAlterationMonitor;)
+.line 120
+	iget-object	v0,v1,org/apache/commons/io/monitor/FileAlterationMonitor.observers Ljava/util/List;
+; v0 : Ljava/util/List; , v1 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	return-object	v0
+; v0 : Ljava/util/List;
+.end method
+
+.method public removeObserver(Lorg/apache/commons/io/monitor/FileAlterationObserver;)V
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/monitor/FileAlterationMonitor;)
+; parameter[0] : v2 (Lorg/apache/commons/io/monitor/FileAlterationObserver;)
+.line 107
+	if-eqz	v2,l11d648
+; v2 : Lorg/apache/commons/io/monitor/FileAlterationObserver;
+l11d638:
+.line 108
+	iget-object	v0,v1,org/apache/commons/io/monitor/FileAlterationMonitor.observers Ljava/util/List;
+; v0 : Ljava/util/List; , v1 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	invoke-interface	{v0,v2},java/util/List/remove	; remove(Ljava/lang/Object;)Z
+; v0 : Ljava/util/List; , v2 : Lorg/apache/commons/io/monitor/FileAlterationObserver;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l11d638
+; v0 : single-length
+l11d648:
+.line 111
+	return-void	
+.end method
+
+.method public run()V
+.limit registers 5
+; this: v4 (Lorg/apache/commons/io/monitor/FileAlterationMonitor;)
+.catch java/lang/InterruptedException from l11d69a to l11d6a4 using l11d6a6
+.var 1 is observer Lorg/apache/commons/io/monitor/FileAlterationObserver; from l11d688 to l11d690
+.var 0 is i$ Ljava/util/Iterator; from l11d670 to l11d698
+l11d65c:
+.line 180
+	iget-boolean	v2,v4,org/apache/commons/io/monitor/FileAlterationMonitor.running Z
+; v2 : single-length , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	if-eqz	v2,l11d698
+; v2 : single-length
+.line 181
+	iget-object	v2,v4,org/apache/commons/io/monitor/FileAlterationMonitor.observers Ljava/util/List;
+; v2 : Ljava/util/List; , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	invoke-interface	{v2},java/util/List/iterator	; iterator()Ljava/util/Iterator;
+; v2 : Ljava/util/List;
+	move-result-object	v0
+; v0 : Ljava/util/Iterator;
+l11d670:
+	invoke-interface	{v0},java/util/Iterator/hasNext	; hasNext()Z
+; v0 : Ljava/util/Iterator;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,l11d690
+; v2 : single-length
+	invoke-interface	{v0},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v0 : Ljava/util/Iterator;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,org/apache/commons/io/monitor/FileAlterationObserver
+; v1 : Lorg/apache/commons/io/monitor/FileAlterationObserver;
+.line 182
+	invoke-virtual	{v1},org/apache/commons/io/monitor/FileAlterationObserver/checkAndNotify	; checkAndNotify()V
+; v1 : Lorg/apache/commons/io/monitor/FileAlterationObserver;
+	goto	l11d670
+l11d690:
+.line 184
+	iget-boolean	v2,v4,org/apache/commons/io/monitor/FileAlterationMonitor.running Z
+; v2 : single-length , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	if-nez	v2,l11d69a
+; v2 : single-length
+l11d698:
+.line 192
+	return-void	
+l11d69a:
+.line 188
+	iget-wide	v2,v4,org/apache/commons/io/monitor/FileAlterationMonitor.interval J
+; v2 : double-length , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	invoke-static	{v2,v3},java/lang/Thread/sleep	; sleep(J)V
+; v2 : double-length
+l11d6a4:
+	goto	l11d65c
+l11d6a6:
+.line 189
+	move-exception	v2
+; v2 : java/lang/InterruptedException
+	goto	l11d65c
+.end method
+
+.method public synchronized setThreadFactory(Ljava/util/concurrent/ThreadFactory;)V
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/monitor/FileAlterationMonitor;)
+; parameter[0] : v2 (Ljava/util/concurrent/ThreadFactory;)
+.catch java/lang/Exception from l11d6ce to l11d6d2 using l11d6d6
+.line 87
+	monitor-enter	v1
+; v1 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+l11d6ce:
+	iput-object	v2,v1,org/apache/commons/io/monitor/FileAlterationMonitor.threadFactory Ljava/util/concurrent/ThreadFactory;
+; v2 : Ljava/util/concurrent/ThreadFactory; , v1 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+l11d6d2:
+.line 88
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	return-void	
+l11d6d6:
+.line 87
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public synchronized start()V
+.throws Ljava/lang/Exception;
+.limit registers 5
+; this: v4 (Lorg/apache/commons/io/monitor/FileAlterationMonitor;)
+.catch java/lang/Exception from l11d770 to l11d77e using l11d712
+.catch java/lang/Exception from l11d718 to l11d76c using l11d712
+.catch java/lang/Exception from l11d6fa to l11d712 using l11d712
+.var 1 is observer Lorg/apache/commons/io/monitor/FileAlterationObserver; from l11d73c to l11d744
+.line 129
+	monitor-enter	v4
+; v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+l11d6fa:
+	iget-boolean	v2,v4,org/apache/commons/io/monitor/FileAlterationMonitor.running Z
+; v2 : single-length , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	if-eqz	v2,l11d718
+; v2 : single-length
+.line 130
+	new-instance	v2,java/lang/IllegalStateException
+; v2 : Ljava/lang/IllegalStateException;
+	const-string	v3,"Monitor is already running"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/IllegalStateException/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/IllegalStateException; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Ljava/lang/IllegalStateException;
+l11d712:
+.line 129
+	move-exception	v2
+; v2 : java/lang/Exception
+	monitor-exit	v4
+; v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	throw	v2
+; v2 : java/lang/Exception
+l11d718:
+.line 132
+	iget-object	v2,v4,org/apache/commons/io/monitor/FileAlterationMonitor.observers Ljava/util/List;
+; v2 : Ljava/util/List; , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	invoke-interface	{v2},java/util/List/iterator	; iterator()Ljava/util/Iterator;
+; v2 : Ljava/util/List;
+	move-result-object	v0
+; v0 : Ljava/util/Iterator;
+l11d724:
+	invoke-interface	{v0},java/util/Iterator/hasNext	; hasNext()Z
+; v0 : Ljava/util/Iterator;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,l11d744
+; v2 : single-length
+	invoke-interface	{v0},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v0 : Ljava/util/Iterator;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,org/apache/commons/io/monitor/FileAlterationObserver
+; v1 : Lorg/apache/commons/io/monitor/FileAlterationObserver;
+.line 133
+	invoke-virtual	{v1},org/apache/commons/io/monitor/FileAlterationObserver/initialize	; initialize()V
+; v1 : Lorg/apache/commons/io/monitor/FileAlterationObserver;
+	goto	l11d724
+l11d744:
+.line 135
+	const/4	v2,1
+; v2 : single-length
+	iput-boolean	v2,v4,org/apache/commons/io/monitor/FileAlterationMonitor.running Z
+; v2 : single-length , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+.line 136
+	iget-object	v2,v4,org/apache/commons/io/monitor/FileAlterationMonitor.threadFactory Ljava/util/concurrent/ThreadFactory;
+; v2 : Ljava/util/concurrent/ThreadFactory; , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	if-eqz	v2,l11d770
+; v2 : Ljava/util/concurrent/ThreadFactory;
+.line 137
+	iget-object	v2,v4,org/apache/commons/io/monitor/FileAlterationMonitor.threadFactory Ljava/util/concurrent/ThreadFactory;
+; v2 : Ljava/util/concurrent/ThreadFactory; , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	invoke-interface	{v2,v4},java/util/concurrent/ThreadFactory/newThread	; newThread(Ljava/lang/Runnable;)Ljava/lang/Thread;
+; v2 : Ljava/util/concurrent/ThreadFactory; , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	move-result-object	v2
+; v2 : Ljava/lang/Thread;
+	iput-object	v2,v4,org/apache/commons/io/monitor/FileAlterationMonitor.thread Ljava/lang/Thread;
+; v2 : Ljava/lang/Thread; , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+l11d762:
+.line 141
+	iget-object	v2,v4,org/apache/commons/io/monitor/FileAlterationMonitor.thread Ljava/lang/Thread;
+; v2 : Ljava/lang/Thread; , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	invoke-virtual	{v2},java/lang/Thread/start	; start()V
+; v2 : Ljava/lang/Thread;
+l11d76c:
+.line 142
+	monitor-exit	v4
+; v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	return-void	
+l11d770:
+.line 139
+	new-instance	v2,java/lang/Thread
+; v2 : Ljava/lang/Thread;
+	invoke-direct	{v2,v4},java/lang/Thread/<init>	; <init>(Ljava/lang/Runnable;)V
+; v2 : Ljava/lang/Thread; , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	iput-object	v2,v4,org/apache/commons/io/monitor/FileAlterationMonitor.thread Ljava/lang/Thread;
+; v2 : Ljava/lang/Thread; , v4 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+l11d77e:
+	goto	l11d762
+.end method
+
+.method public synchronized stop()V
+.throws Ljava/lang/Exception;
+.limit registers 3
+; this: v2 (Lorg/apache/commons/io/monitor/FileAlterationMonitor;)
+.catch java/lang/Exception from l11d7ae to l11d7b8 using l11d7bc
+.line 150
+	monitor-enter	v2
+; v2 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+l11d7ae:
+	iget-wide	v0,v2,org/apache/commons/io/monitor/FileAlterationMonitor.interval J
+; v0 : double-length , v2 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	invoke-virtual	{v2,v0,v1},org/apache/commons/io/monitor/FileAlterationMonitor/stop	; stop(J)V
+; v2 : Lorg/apache/commons/io/monitor/FileAlterationMonitor; , v0 : double-length
+l11d7b8:
+.line 151
+	monitor-exit	v2
+; v2 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	return-void	
+l11d7bc:
+.line 150
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v2
+; v2 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public synchronized stop(J)V
+.throws Ljava/lang/Exception;
+.limit registers 8
+; this: v5 (Lorg/apache/commons/io/monitor/FileAlterationMonitor;)
+; parameter[0] : v6 (J)
+.catch java/lang/Exception from l11d810 to l11d84c using l11d7fa
+.catch java/lang/InterruptedException from l11d806 to l11d810 using l11d83c
+.catch java/lang/Exception from l11d806 to l11d810 using l11d7fa
+.catch java/lang/Exception from l11d802 to l11d806 using l11d7fa
+.catch java/lang/Exception from l11d7e2 to l11d7fa using l11d7fa
+.var 1 is i$ Ljava/util/Iterator; from l11d81c to l11d83c
+.var 2 is observer Lorg/apache/commons/io/monitor/FileAlterationObserver; from l11d834 to l11d83c
+.var 0 is e Ljava/lang/InterruptedException; from l11d83e to l11d84e
+.line 162
+	monitor-enter	v5
+; v5 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+l11d7e2:
+	iget-boolean	v3,v5,org/apache/commons/io/monitor/FileAlterationMonitor.running Z
+; v3 : single-length , v5 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	if-nez	v3,l11d800
+; v3 : single-length
+.line 163
+	new-instance	v3,java/lang/IllegalStateException
+; v3 : Ljava/lang/IllegalStateException;
+	const-string	v4,"Monitor is not running"
+; v4 : Ljava/lang/String;
+	invoke-direct	{v3,v4},java/lang/IllegalStateException/<init>	; <init>(Ljava/lang/String;)V
+; v3 : Ljava/lang/IllegalStateException; , v4 : Ljava/lang/String;
+	throw	v3
+; v3 : Ljava/lang/IllegalStateException;
+l11d7fa:
+.line 162
+	move-exception	v3
+; v3 : java/lang/Exception
+	monitor-exit	v5
+; v5 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	throw	v3
+; v3 : java/lang/Exception
+l11d800:
+.line 165
+	const/4	v3,0
+; v3 : single-length
+l11d802:
+	iput-boolean	v3,v5,org/apache/commons/io/monitor/FileAlterationMonitor.running Z
+; v3 : single-length , v5 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+l11d806:
+.line 167
+	iget-object	v3,v5,org/apache/commons/io/monitor/FileAlterationMonitor.thread Ljava/lang/Thread;
+; v3 : Ljava/lang/Thread; , v5 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	invoke-virtual	{v3,v6,v7},java/lang/Thread/join	; join(J)V
+; v3 : Ljava/lang/Thread; , v6 : double-length
+l11d810:
+.line 171
+	iget-object	v3,v5,org/apache/commons/io/monitor/FileAlterationMonitor.observers Ljava/util/List;
+; v3 : Ljava/util/List; , v5 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	invoke-interface	{v3},java/util/List/iterator	; iterator()Ljava/util/Iterator;
+; v3 : Ljava/util/List;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+l11d81c:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l11d84e
+; v3 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,org/apache/commons/io/monitor/FileAlterationObserver
+; v2 : Lorg/apache/commons/io/monitor/FileAlterationObserver;
+.line 172
+	invoke-virtual	{v2},org/apache/commons/io/monitor/FileAlterationObserver/destroy	; destroy()V
+; v2 : Lorg/apache/commons/io/monitor/FileAlterationObserver;
+	goto	l11d81c
+l11d83c:
+.line 168
+	move-exception	v0
+; v0 : java/lang/InterruptedException
+.line 169
+	invoke-static	{},java/lang/Thread/currentThread	; currentThread()Ljava/lang/Thread;
+; 
+	nop	
+	move-result-object	v3
+; v3 : Ljava/lang/Thread;
+	invoke-virtual	{v3},java/lang/Thread/interrupt	; interrupt()V
+; v3 : Ljava/lang/Thread;
+l11d84c:
+	goto	l11d810
+l11d84e:
+.line 174
+	monitor-exit	v5
+; v5 : Lorg/apache/commons/io/monitor/FileAlterationMonitor;
+	return-void	
+.end method
+
+

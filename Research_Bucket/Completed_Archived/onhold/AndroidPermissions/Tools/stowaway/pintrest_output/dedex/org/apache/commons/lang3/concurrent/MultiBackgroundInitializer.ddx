@@ -1,0 +1,346 @@
+.class public org/apache/commons/lang3/concurrent/MultiBackgroundInitializer
+.super org/apache/commons/lang3/concurrent/BackgroundInitializer
+.source MultiBackgroundInitializer.java
+
+.inner class 1 inner org/apache/commons/lang3/concurrent/MultiBackgroundInitializer$1 outer org/apache/commons/lang3/concurrent/MultiBackgroundInitializer
+.inner class MultiBackgroundInitializerResults inner org/apache/commons/lang3/concurrent/MultiBackgroundInitializer$MultiBackgroundInitializerResults outer org/apache/commons/lang3/concurrent/MultiBackgroundInitializer
+.annotation systemVisibility Ldalvik/annotation/Signature;
+  value [Ljava/lang/String; = { "Lorg/apache/commons/lang3/concurrent/BackgroundInitializer" , "<" , "Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer$MultiBackgroundInitializerResults;" , ">;" }
+.end annotation
+
+.field private final childInitializers Ljava/util/Map;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "Lorg/apache/commons/lang3/concurrent/BackgroundInitializer" , "<*>;>;" }
+  .end annotation
+.end field
+
+.method public <init>()V
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;)
+.line 108
+	invoke-direct	{v1},org/apache/commons/lang3/concurrent/BackgroundInitializer/<init>	; <init>()V
+; v1 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+.line 101
+	new-instance	v0,java/util/HashMap
+; v0 : Ljava/util/HashMap;
+	invoke-direct	{v0},java/util/HashMap/<init>	; <init>()V
+; v0 : Ljava/util/HashMap;
+	iput-object	v0,v1,org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.childInitializers Ljava/util/Map;
+; v0 : Ljava/util/HashMap; , v1 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+.line 109
+	return-void	
+.end method
+
+.method public <init>(Ljava/util/concurrent/ExecutorService;)V
+.limit registers 3
+; this: v1 (Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;)
+; parameter[0] : v2 (Ljava/util/concurrent/ExecutorService;)
+.line 119
+	invoke-direct	{v1,v2},org/apache/commons/lang3/concurrent/BackgroundInitializer/<init>	; <init>(Ljava/util/concurrent/ExecutorService;)V
+; v1 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer; , v2 : Ljava/util/concurrent/ExecutorService;
+.line 101
+	new-instance	v0,java/util/HashMap
+; v0 : Ljava/util/HashMap;
+	invoke-direct	{v0},java/util/HashMap/<init>	; <init>()V
+; v0 : Ljava/util/HashMap;
+	iput-object	v0,v1,org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.childInitializers Ljava/util/Map;
+; v0 : Ljava/util/HashMap; , v1 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+.line 120
+	return-void	
+.end method
+
+.method public addInitializer(Ljava/lang/String;Lorg/apache/commons/lang3/concurrent/BackgroundInitializer;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/lang/String;" , "Lorg/apache/commons/lang3/concurrent/BackgroundInitializer" , "<*>;)V" }
+.end annotation
+.limit registers 5
+; this: v2 (Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;)
+; parameter[0] : v3 (Ljava/lang/String;)
+; parameter[1] : v4 (Lorg/apache/commons/lang3/concurrent/BackgroundInitializer;)
+.catch java/lang/Exception from l1346cc to l1346d8 using l1346c6
+.catch java/lang/Exception from l1346aa to l1346ca using l1346c6
+.line 135
+	if-nez	v3,l134694
+; v3 : Ljava/lang/String;
+.line 136
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"Name of child initializer must not be null!"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l134694:
+.line 139
+	if-nez	v4,l1346a8
+; v4 : Lorg/apache/commons/lang3/concurrent/BackgroundInitializer;
+.line 140
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"Child initializer must not be null!"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l1346a8:
+.line 144
+	monitor-enter	v2
+; v2 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+l1346aa:
+.line 145
+	invoke-virtual	{v2},org/apache/commons/lang3/concurrent/MultiBackgroundInitializer/isStarted	; isStarted()Z
+; v2 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l1346cc
+; v0 : single-length
+.line 146
+	new-instance	v0,java/lang/IllegalStateException
+; v0 : Ljava/lang/IllegalStateException;
+	const-string	v1,"addInitializer() must not be called after start()!"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalStateException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalStateException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalStateException;
+l1346c6:
+.line 150
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v2
+; v2 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+l1346ca:
+	throw	v0
+; v0 : java/lang/Exception
+l1346cc:
+.line 149
+	iget-object	v0,v2,org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.childInitializers Ljava/util/Map;
+; v0 : Ljava/util/Map; , v2 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+	invoke-interface	{v0,v3,v4},java/util/Map/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v3 : Ljava/lang/String; , v4 : Lorg/apache/commons/lang3/concurrent/BackgroundInitializer;
+.line 150
+	monitor-exit	v2
+; v2 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+l1346d8:
+.line 151
+	return-void	
+.end method
+
+.method protected getTaskCount()I
+.limit registers 5
+; this: v4 (Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;)
+.var 0 is bi Lorg/apache/commons/lang3/concurrent/BackgroundInitializer; from l13472e to l13473a
+.line 165
+	const/4	v2,1
+; v2 : single-length
+.line 167
+	iget-object	v3,v4,org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.childInitializers Ljava/util/Map;
+; v3 : Ljava/util/Map; , v4 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+	invoke-interface	{v3},java/util/Map/values	; values()Ljava/util/Collection;
+; v3 : Ljava/util/Map;
+	move-result-object	v3
+; v3 : Ljava/util/Collection;
+	invoke-interface	{v3},java/util/Collection/iterator	; iterator()Ljava/util/Iterator;
+; v3 : Ljava/util/Collection;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+l134716:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l13473a
+; v3 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,org/apache/commons/lang3/concurrent/BackgroundInitializer
+; v0 : Lorg/apache/commons/lang3/concurrent/BackgroundInitializer;
+.line 168
+	invoke-virtual	{v0},org/apache/commons/lang3/concurrent/BackgroundInitializer/getTaskCount	; getTaskCount()I
+; v0 : Lorg/apache/commons/lang3/concurrent/BackgroundInitializer;
+	move-result	v3
+; v3 : single-length
+	add-int/2addr	v2,v3
+; v2 : single-length , v3 : single-length
+	goto	l134716
+l13473a:
+.line 171
+	return	v2
+; v2 : single-length
+.end method
+
+.method protected initialize()Ljava/lang/Object;
+.throws Ljava/lang/Exception;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;)
+.line 97
+	invoke-virtual	{v1},org/apache/commons/lang3/concurrent/MultiBackgroundInitializer/initialize	; initialize()Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer$MultiBackgroundInitializerResults;
+; v1 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer$MultiBackgroundInitializerResults;
+	return-object	v0
+; v0 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer$MultiBackgroundInitializerResults;
+.end method
+
+.method protected initialize()Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer$MultiBackgroundInitializerResults;
+.throws Ljava/lang/Exception;
+.limit registers 11
+; this: v10 (Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;)
+.catch org/apache/commons/lang3/concurrent/ConcurrentException from l134806 to l134828 using l13482a
+.catch java/lang/Exception from l1347c6 to l1347c8 using l1347c4
+.catch java/lang/Exception from l13476a to l13477a using l1347c4
+.var 0 is bi Lorg/apache/commons/lang3/concurrent/BackgroundInitializer; from l1347aa to l1347c4
+.var 4 is exec Ljava/util/concurrent/ExecutorService; from l134782 to l1347c4
+.var 5 is i$ Ljava/util/Iterator; from l134792 to l1347c4
+.var 6 is inits Ljava/util/Map; from l134778 to l1347c4
+.var 1 is cex Lorg/apache/commons/lang3/concurrent/ConcurrentException; from l13482c to l13483c
+.var 2 is e Ljava/util/Map$Entry; from l134806 to l13483c
+.line 187
+	monitor-enter	v10
+; v10 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+l13476a:
+.line 189
+	new-instance	v6,java/util/HashMap
+; v6 : Ljava/util/HashMap;
+	iget-object	v8,v10,org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.childInitializers Ljava/util/Map;
+; v8 : Ljava/util/Map; , v10 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+	invoke-direct	{v6,v8},java/util/HashMap/<init>	; <init>(Ljava/util/Map;)V
+; v6 : Ljava/util/HashMap; , v8 : Ljava/util/Map;
+.line 191
+	monitor-exit	v10
+; v10 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+l13477a:
+.line 194
+	invoke-virtual	{v10},org/apache/commons/lang3/concurrent/MultiBackgroundInitializer/getActiveExecutor	; getActiveExecutor()Ljava/util/concurrent/ExecutorService;
+; v10 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+	move-result-object	v4
+; v4 : Ljava/util/concurrent/ExecutorService;
+.line 195
+	invoke-interface	{v6},java/util/Map/values	; values()Ljava/util/Collection;
+; v6 : Ljava/util/HashMap;
+	move-result-object	v8
+; v8 : Ljava/util/Collection;
+	invoke-interface	{v8},java/util/Collection/iterator	; iterator()Ljava/util/Iterator;
+; v8 : Ljava/util/Collection;
+	move-result-object	v5
+; v5 : Ljava/util/Iterator;
+l134792:
+	invoke-interface	{v5},java/util/Iterator/hasNext	; hasNext()Z
+; v5 : Ljava/util/Iterator;
+	move-result	v8
+; v8 : single-length
+	if-eqz	v8,l1347ca
+; v8 : single-length
+	invoke-interface	{v5},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v5 : Ljava/util/Iterator;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,org/apache/commons/lang3/concurrent/BackgroundInitializer
+; v0 : Lorg/apache/commons/lang3/concurrent/BackgroundInitializer;
+.line 196
+	invoke-virtual	{v0},org/apache/commons/lang3/concurrent/BackgroundInitializer/getExternalExecutor	; getExternalExecutor()Ljava/util/concurrent/ExecutorService;
+; v0 : Lorg/apache/commons/lang3/concurrent/BackgroundInitializer;
+	move-result-object	v8
+; v8 : Ljava/util/concurrent/ExecutorService;
+	if-nez	v8,l1347bc
+; v8 : Ljava/util/concurrent/ExecutorService;
+.line 198
+	invoke-virtual	{v0,v4},org/apache/commons/lang3/concurrent/BackgroundInitializer/setExternalExecutor	; setExternalExecutor(Ljava/util/concurrent/ExecutorService;)V
+; v0 : Lorg/apache/commons/lang3/concurrent/BackgroundInitializer; , v4 : Ljava/util/concurrent/ExecutorService;
+l1347bc:
+.line 200
+	invoke-virtual	{v0},org/apache/commons/lang3/concurrent/BackgroundInitializer/start	; start()Z
+; v0 : Lorg/apache/commons/lang3/concurrent/BackgroundInitializer;
+	goto	l134792
+l1347c4:
+.line 191
+	move-exception	v8
+; v8 : java/lang/Exception
+l1347c6:
+	monitor-exit	v10
+; v10 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer;
+l1347c8:
+	throw	v8
+; v8 : java/lang/Exception
+l1347ca:
+.line 204
+	new-instance	v7,java/util/HashMap
+; v7 : Ljava/util/HashMap;
+	invoke-direct	{v7},java/util/HashMap/<init>	; <init>()V
+; v7 : Ljava/util/HashMap;
+.line 205
+	new-instance	v3,java/util/HashMap
+; v3 : Ljava/util/HashMap;
+	invoke-direct	{v3},java/util/HashMap/<init>	; <init>()V
+; v3 : Ljava/util/HashMap;
+.line 206
+	invoke-interface	{v6},java/util/Map/entrySet	; entrySet()Ljava/util/Set;
+; v6 : Ljava/util/HashMap;
+	move-result-object	v8
+; v8 : Ljava/util/Set;
+	invoke-interface	{v8},java/util/Set/iterator	; iterator()Ljava/util/Iterator;
+; v8 : Ljava/util/Set;
+	move-result-object	v5
+; v5 : Ljava/util/Iterator;
+l1347ee:
+	invoke-interface	{v5},java/util/Iterator/hasNext	; hasNext()Z
+; v5 : Ljava/util/Iterator;
+	move-result	v8
+; v8 : single-length
+	if-eqz	v8,l13483c
+; v8 : single-length
+	invoke-interface	{v5},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v5 : Ljava/util/Iterator;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/util/Map$Entry
+; v2 : Ljava/util/Map$Entry;
+l134806:
+.line 208
+	invoke-interface	{v2},java/util/Map$Entry/getKey	; getKey()Ljava/lang/Object;
+; v2 : Ljava/util/Map$Entry;
+	move-result-object	v9
+; v9 : Ljava/lang/Object;
+	invoke-interface	{v2},java/util/Map$Entry/getValue	; getValue()Ljava/lang/Object;
+; v2 : Ljava/util/Map$Entry;
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	check-cast	v8,org/apache/commons/lang3/concurrent/BackgroundInitializer
+; v8 : Lorg/apache/commons/lang3/concurrent/BackgroundInitializer;
+	invoke-virtual	{v8},org/apache/commons/lang3/concurrent/BackgroundInitializer/get	; get()Ljava/lang/Object;
+; v8 : Lorg/apache/commons/lang3/concurrent/BackgroundInitializer;
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	invoke-interface	{v7,v9,v8},java/util/Map/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v7 : Ljava/util/HashMap; , v9 : Ljava/lang/Object; , v8 : Ljava/lang/Object;
+l134828:
+	goto	l1347ee
+l13482a:
+.line 209
+	move-exception	v1
+; v1 : org/apache/commons/lang3/concurrent/ConcurrentException
+.line 210
+	invoke-interface	{v2},java/util/Map$Entry/getKey	; getKey()Ljava/lang/Object;
+; v2 : Ljava/util/Map$Entry;
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	invoke-interface	{v3,v8,v1},java/util/Map/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v3 : Ljava/util/HashMap; , v8 : Ljava/lang/Object; , v1 : org/apache/commons/lang3/concurrent/ConcurrentException
+	goto	l1347ee
+l13483c:
+.line 214
+	new-instance	v8,org/apache/commons/lang3/concurrent/MultiBackgroundInitializer$MultiBackgroundInitializerResults
+; v8 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer$MultiBackgroundInitializerResults;
+	const/4	v9,0
+; v9 : single-length
+	invoke-direct	{v8,v6,v7,v3,v9},org/apache/commons/lang3/concurrent/MultiBackgroundInitializer$MultiBackgroundInitializerResults/<init>	; <init>(Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer$1;)V
+; v8 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer$MultiBackgroundInitializerResults; , v6 : Ljava/util/HashMap; , v7 : Ljava/util/HashMap; , v3 : Ljava/util/HashMap; , v9 : single-length
+	return-object	v8
+; v8 : Lorg/apache/commons/lang3/concurrent/MultiBackgroundInitializer$MultiBackgroundInitializerResults;
+.end method
+
+

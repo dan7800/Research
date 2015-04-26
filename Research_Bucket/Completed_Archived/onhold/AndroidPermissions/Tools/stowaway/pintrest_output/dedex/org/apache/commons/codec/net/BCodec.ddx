@@ -1,0 +1,349 @@
+.class public org/apache/commons/codec/net/BCodec
+.super org/apache/commons/codec/net/RFC1522Codec
+.source BCodec.java
+.implements org/apache/commons/codec/StringEncoder
+.implements org/apache/commons/codec/StringDecoder
+
+.field private final charset Ljava/lang/String;
+
+.method public <init>()V
+.limit registers 2
+; this: v1 (Lorg/apache/commons/codec/net/BCodec;)
+.line 58
+	const-string	v0,"UTF-8"
+; v0 : Ljava/lang/String;
+	invoke-direct	{v1,v0},org/apache/commons/codec/net/BCodec/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Lorg/apache/commons/codec/net/BCodec; , v0 : Ljava/lang/String;
+.line 59
+	return-void	
+.end method
+
+.method public <init>(Ljava/lang/String;)V
+.limit registers 2
+; this: v0 (Lorg/apache/commons/codec/net/BCodec;)
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 70
+	invoke-direct	{v0},org/apache/commons/codec/net/RFC1522Codec/<init>	; <init>()V
+; v0 : Lorg/apache/commons/codec/net/BCodec;
+.line 71
+	iput-object	v1,v0,org/apache/commons/codec/net/BCodec.charset Ljava/lang/String;
+; v1 : Ljava/lang/String; , v0 : Lorg/apache/commons/codec/net/BCodec;
+.line 72
+	return-void	
+.end method
+
+.method public decode(Ljava/lang/Object;)Ljava/lang/Object;
+.throws Lorg/apache/commons/codec/DecoderException;
+.limit registers 5
+; this: v3 (Lorg/apache/commons/codec/net/BCodec;)
+; parameter[0] : v4 (Ljava/lang/Object;)
+.line 192
+	if-nez	v4,l10f028
+; v4 : Ljava/lang/Object;
+.line 193
+	const/4	v0,0
+; v0 : single-length
+l10f026:
+.line 195
+	return-object	v0
+; v0 : Ljava/lang/String;
+l10f028:
+.line 194
+	instance-of	v0,v4,java/lang/String
+; v0 : single-length , v4 : Ljava/lang/Object;
+	if-eqz	v0,l10f03e
+; v0 : single-length
+.line 195
+	check-cast	v4,java/lang/String
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},org/apache/commons/codec/net/BCodec/decode	; decode(Ljava/lang/String;)Ljava/lang/String;
+; v3 : Lorg/apache/commons/codec/net/BCodec; , v4 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l10f026
+l10f03e:
+.line 197
+	new-instance	v0,org/apache/commons/codec/DecoderException
+; v0 : Lorg/apache/commons/codec/DecoderException;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"Objects of type "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v4 : Ljava/lang/Object;
+	move-result-object	v2
+; v2 : Ljava/lang/Class;
+	invoke-virtual	{v2},java/lang/Class/getName	; getName()Ljava/lang/String;
+; v2 : Ljava/lang/Class;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2," cannot be decoded using BCodec"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},org/apache/commons/codec/DecoderException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/codec/DecoderException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Lorg/apache/commons/codec/DecoderException;
+.end method
+
+.method public decode(Ljava/lang/String;)Ljava/lang/String;
+.throws Lorg/apache/commons/codec/DecoderException;
+.limit registers 5
+; this: v3 (Lorg/apache/commons/codec/net/BCodec;)
+; parameter[0] : v4 (Ljava/lang/String;)
+.catch java/io/UnsupportedEncodingException from l10f0a4 to l10f0aa using l10f0ae
+.line 146
+	if-nez	v4,l10f0a4
+; v4 : Ljava/lang/String;
+.line 147
+	const/4	v1,0
+; v1 : single-length
+l10f0a2:
+.line 150
+	return-object	v1
+; v1 : Ljava/lang/String;
+l10f0a4:
+	invoke-virtual	{v3,v4},org/apache/commons/codec/net/BCodec/decodeText	; decodeText(Ljava/lang/String;)Ljava/lang/String;
+; v3 : Lorg/apache/commons/codec/net/BCodec; , v4 : Ljava/lang/String;
+l10f0aa:
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l10f0a2
+l10f0ae:
+.line 151
+	move-exception	v0
+; v0 : java/io/UnsupportedEncodingException
+.line 152
+	new-instance	v1,org/apache/commons/codec/DecoderException
+; v1 : Lorg/apache/commons/codec/DecoderException;
+	invoke-virtual	{v0},java/io/UnsupportedEncodingException/getMessage	; getMessage()Ljava/lang/String;
+; v0 : java/io/UnsupportedEncodingException
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2,v0},org/apache/commons/codec/DecoderException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+; v1 : Lorg/apache/commons/codec/DecoderException; , v2 : Ljava/lang/String; , v0 : java/io/UnsupportedEncodingException
+	throw	v1
+; v1 : Lorg/apache/commons/codec/DecoderException;
+.end method
+
+.method protected doDecoding([B)[B
+.limit registers 3
+; this: v1 (Lorg/apache/commons/codec/net/BCodec;)
+; parameter[0] : v2 ([B)
+.line 89
+	if-nez	v2,l10f0ec
+; v2 : [B
+.line 90
+	const/4	v0,0
+; v0 : single-length
+l10f0ea:
+.line 92
+	return-object	v0
+; v0 : [B
+l10f0ec:
+	invoke-static	{v2},org/apache/commons/codec/binary/Base64/decodeBase64	; decodeBase64([B)[B
+; v2 : [B
+	move-result-object	v0
+; v0 : [B
+	goto	l10f0ea
+.end method
+
+.method protected doEncoding([B)[B
+.limit registers 3
+; this: v1 (Lorg/apache/commons/codec/net/BCodec;)
+; parameter[0] : v2 ([B)
+.line 81
+	if-nez	v2,l10f110
+; v2 : [B
+.line 82
+	const/4	v0,0
+; v0 : single-length
+l10f10e:
+.line 84
+	return-object	v0
+; v0 : [B
+l10f110:
+	invoke-static	{v2},org/apache/commons/codec/binary/Base64/encodeBase64	; encodeBase64([B)[B
+; v2 : [B
+	move-result-object	v0
+; v0 : [B
+	goto	l10f10e
+.end method
+
+.method public encode(Ljava/lang/Object;)Ljava/lang/Object;
+.throws Lorg/apache/commons/codec/EncoderException;
+.limit registers 5
+; this: v3 (Lorg/apache/commons/codec/net/BCodec;)
+; parameter[0] : v4 (Ljava/lang/Object;)
+.line 167
+	if-nez	v4,l10f134
+; v4 : Ljava/lang/Object;
+.line 168
+	const/4	v0,0
+; v0 : single-length
+l10f132:
+.line 170
+	return-object	v0
+; v0 : Ljava/lang/String;
+l10f134:
+.line 169
+	instance-of	v0,v4,java/lang/String
+; v0 : single-length , v4 : Ljava/lang/Object;
+	if-eqz	v0,l10f14a
+; v0 : single-length
+.line 170
+	check-cast	v4,java/lang/String
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},org/apache/commons/codec/net/BCodec/encode	; encode(Ljava/lang/String;)Ljava/lang/String;
+; v3 : Lorg/apache/commons/codec/net/BCodec; , v4 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l10f132
+l10f14a:
+.line 172
+	new-instance	v0,org/apache/commons/codec/EncoderException
+; v0 : Lorg/apache/commons/codec/EncoderException;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"Objects of type "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v4 : Ljava/lang/Object;
+	move-result-object	v2
+; v2 : Ljava/lang/Class;
+	invoke-virtual	{v2},java/lang/Class/getName	; getName()Ljava/lang/String;
+; v2 : Ljava/lang/Class;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2," cannot be encoded using BCodec"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},org/apache/commons/codec/EncoderException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/codec/EncoderException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Lorg/apache/commons/codec/EncoderException;
+.end method
+
+.method public encode(Ljava/lang/String;)Ljava/lang/String;
+.throws Lorg/apache/commons/codec/EncoderException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/codec/net/BCodec;)
+; parameter[0] : v2 (Ljava/lang/String;)
+.line 129
+	if-nez	v2,l10f1b0
+; v2 : Ljava/lang/String;
+.line 130
+	const/4	v0,0
+; v0 : single-length
+l10f1ae:
+.line 132
+	return-object	v0
+; v0 : Ljava/lang/String;
+l10f1b0:
+	invoke-virtual	{v1},org/apache/commons/codec/net/BCodec/getDefaultCharset	; getDefaultCharset()Ljava/lang/String;
+; v1 : Lorg/apache/commons/codec/net/BCodec;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v2,v0},org/apache/commons/codec/net/BCodec/encode	; encode(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v1 : Lorg/apache/commons/codec/net/BCodec; , v2 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l10f1ae
+.end method
+
+.method public encode(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+.throws Lorg/apache/commons/codec/EncoderException;
+.limit registers 6
+; this: v3 (Lorg/apache/commons/codec/net/BCodec;)
+; parameter[0] : v4 (Ljava/lang/String;)
+; parameter[1] : v5 (Ljava/lang/String;)
+.catch java/io/UnsupportedEncodingException from l10f1dc to l10f1e2 using l10f1e6
+.line 108
+	if-nez	v4,l10f1dc
+; v4 : Ljava/lang/String;
+.line 109
+	const/4	v1,0
+; v1 : single-length
+l10f1da:
+.line 112
+	return-object	v1
+; v1 : Ljava/lang/String;
+l10f1dc:
+	invoke-virtual	{v3,v4,v5},org/apache/commons/codec/net/BCodec/encodeText	; encodeText(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v3 : Lorg/apache/commons/codec/net/BCodec; , v4 : Ljava/lang/String; , v5 : Ljava/lang/String;
+l10f1e2:
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l10f1da
+l10f1e6:
+.line 113
+	move-exception	v0
+; v0 : java/io/UnsupportedEncodingException
+.line 114
+	new-instance	v1,org/apache/commons/codec/EncoderException
+; v1 : Lorg/apache/commons/codec/EncoderException;
+	invoke-virtual	{v0},java/io/UnsupportedEncodingException/getMessage	; getMessage()Ljava/lang/String;
+; v0 : java/io/UnsupportedEncodingException
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2,v0},org/apache/commons/codec/EncoderException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+; v1 : Lorg/apache/commons/codec/EncoderException; , v2 : Ljava/lang/String; , v0 : java/io/UnsupportedEncodingException
+	throw	v1
+; v1 : Lorg/apache/commons/codec/EncoderException;
+.end method
+
+.method public getDefaultCharset()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/codec/net/BCodec;)
+.line 209
+	iget-object	v0,v1,org/apache/commons/codec/net/BCodec.charset Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/apache/commons/codec/net/BCodec;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method protected getEncoding()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/codec/net/BCodec;)
+.line 76
+	const-string	v0,"B"
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+

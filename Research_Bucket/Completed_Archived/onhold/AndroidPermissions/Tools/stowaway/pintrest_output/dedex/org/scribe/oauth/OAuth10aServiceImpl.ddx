@@ -1,0 +1,774 @@
+.class public org/scribe/oauth/OAuth10aServiceImpl
+.super java/lang/Object
+.source OAuth10aServiceImpl.java
+.implements org/scribe/oauth/OAuthService
+
+.inner class 1 inner org/scribe/oauth/OAuth10aServiceImpl$1 outer org/scribe/oauth/OAuth10aServiceImpl
+.field private static final VERSION Ljava/lang/String; = "1.0"
+.field private api Lorg/scribe/builder/api/DefaultApi10a;
+.field private config Lorg/scribe/model/OAuthConfig;
+
+.method public <init>(Lorg/scribe/builder/api/DefaultApi10a;Lorg/scribe/model/OAuthConfig;)V
+.limit registers 3
+; this: v0 (Lorg/scribe/oauth/OAuth10aServiceImpl;)
+; parameter[0] : v1 (Lorg/scribe/builder/api/DefaultApi10a;)
+; parameter[1] : v2 (Lorg/scribe/model/OAuthConfig;)
+.line 28
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+.line 29
+	iput-object	v1,v0,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v1 : Lorg/scribe/builder/api/DefaultApi10a; , v0 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+.line 30
+	iput-object	v2,v0,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v2 : Lorg/scribe/model/OAuthConfig; , v0 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+.line 31
+	return-void	
+.end method
+
+.method private addOAuthParams(Lorg/scribe/model/OAuthRequest;Lorg/scribe/model/Token;)V
+.limit registers 6
+; this: v3 (Lorg/scribe/oauth/OAuth10aServiceImpl;)
+; parameter[0] : v4 (Lorg/scribe/model/OAuthRequest;)
+; parameter[1] : v5 (Lorg/scribe/model/Token;)
+.line 57
+	const-string	v0,"oauth_timestamp"
+; v0 : Ljava/lang/String;
+	iget-object	v1,v3,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v1 : Lorg/scribe/builder/api/DefaultApi10a; , v3 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v1},org/scribe/builder/api/DefaultApi10a/getTimestampService	; getTimestampService()Lorg/scribe/services/TimestampService;
+; v1 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v1
+; v1 : Lorg/scribe/services/TimestampService;
+	invoke-interface	{v1},org/scribe/services/TimestampService/getTimestampInSeconds	; getTimestampInSeconds()Ljava/lang/String;
+; v1 : Lorg/scribe/services/TimestampService;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v4,v0,v1},org/scribe/model/OAuthRequest/addOAuthParameter	; addOAuthParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v4 : Lorg/scribe/model/OAuthRequest; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 58
+	const-string	v0,"oauth_nonce"
+; v0 : Ljava/lang/String;
+	iget-object	v1,v3,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v1 : Lorg/scribe/builder/api/DefaultApi10a; , v3 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v1},org/scribe/builder/api/DefaultApi10a/getTimestampService	; getTimestampService()Lorg/scribe/services/TimestampService;
+; v1 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v1
+; v1 : Lorg/scribe/services/TimestampService;
+	invoke-interface	{v1},org/scribe/services/TimestampService/getNonce	; getNonce()Ljava/lang/String;
+; v1 : Lorg/scribe/services/TimestampService;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v4,v0,v1},org/scribe/model/OAuthRequest/addOAuthParameter	; addOAuthParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v4 : Lorg/scribe/model/OAuthRequest; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 59
+	const-string	v0,"oauth_consumer_key"
+; v0 : Ljava/lang/String;
+	iget-object	v1,v3,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v1 : Lorg/scribe/model/OAuthConfig; , v3 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v1},org/scribe/model/OAuthConfig/getApiKey	; getApiKey()Ljava/lang/String;
+; v1 : Lorg/scribe/model/OAuthConfig;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v4,v0,v1},org/scribe/model/OAuthRequest/addOAuthParameter	; addOAuthParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v4 : Lorg/scribe/model/OAuthRequest; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 60
+	const-string	v0,"oauth_signature_method"
+; v0 : Ljava/lang/String;
+	iget-object	v1,v3,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v1 : Lorg/scribe/builder/api/DefaultApi10a; , v3 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v1},org/scribe/builder/api/DefaultApi10a/getSignatureService	; getSignatureService()Lorg/scribe/services/SignatureService;
+; v1 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v1
+; v1 : Lorg/scribe/services/SignatureService;
+	invoke-interface	{v1},org/scribe/services/SignatureService/getSignatureMethod	; getSignatureMethod()Ljava/lang/String;
+; v1 : Lorg/scribe/services/SignatureService;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v4,v0,v1},org/scribe/model/OAuthRequest/addOAuthParameter	; addOAuthParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v4 : Lorg/scribe/model/OAuthRequest; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 61
+	const-string	v0,"oauth_version"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v3},org/scribe/oauth/OAuth10aServiceImpl/getVersion	; getVersion()Ljava/lang/String;
+; v3 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v4,v0,v1},org/scribe/model/OAuthRequest/addOAuthParameter	; addOAuthParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v4 : Lorg/scribe/model/OAuthRequest; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 62
+	iget-object	v0,v3,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v0 : Lorg/scribe/model/OAuthConfig; , v3 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v0},org/scribe/model/OAuthConfig/hasScope	; hasScope()Z
+; v0 : Lorg/scribe/model/OAuthConfig;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l14bb30
+; v0 : single-length
+	const-string	v0,"scope"
+; v0 : Ljava/lang/String;
+	iget-object	v1,v3,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v1 : Lorg/scribe/model/OAuthConfig; , v3 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v1},org/scribe/model/OAuthConfig/getScope	; getScope()Ljava/lang/String;
+; v1 : Lorg/scribe/model/OAuthConfig;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v4,v0,v1},org/scribe/model/OAuthRequest/addOAuthParameter	; addOAuthParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v4 : Lorg/scribe/model/OAuthRequest; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+l14bb30:
+.line 63
+	const-string	v0,"oauth_signature"
+; v0 : Ljava/lang/String;
+	invoke-direct	{v3,v4,v5},org/scribe/oauth/OAuth10aServiceImpl/getSignature	; getSignature(Lorg/scribe/model/OAuthRequest;Lorg/scribe/model/Token;)Ljava/lang/String;
+; v3 : Lorg/scribe/oauth/OAuth10aServiceImpl; , v4 : Lorg/scribe/model/OAuthRequest; , v5 : Lorg/scribe/model/Token;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v4,v0,v1},org/scribe/model/OAuthRequest/addOAuthParameter	; addOAuthParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v4 : Lorg/scribe/model/OAuthRequest; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 65
+	iget-object	v0,v3,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v0 : Lorg/scribe/model/OAuthConfig; , v3 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"appended additional OAuth parameters: "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},org/scribe/model/OAuthRequest/getOauthParameters	; getOauthParameters()Ljava/util/Map;
+; v4 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v2
+; v2 : Ljava/util/Map;
+	invoke-static	{v2},org/scribe/utils/MapUtils/toString	; toString(Ljava/util/Map;)Ljava/lang/String;
+; v2 : Ljava/util/Map;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/OAuthConfig; , v1 : Ljava/lang/String;
+.line 66
+	return-void	
+.end method
+
+.method private appendSignature(Lorg/scribe/model/OAuthRequest;)V
+.limit registers 7
+; this: v5 (Lorg/scribe/oauth/OAuth10aServiceImpl;)
+; parameter[0] : v6 (Lorg/scribe/model/OAuthRequest;)
+.var 2 is oauthHeader Ljava/lang/String; from l14bbda to l14bbe6
+.line 127
+	sget-object	v3,org/scribe/oauth/OAuth10aServiceImpl$1.$SwitchMap$org$scribe$model$SignatureType [I
+; v3 : [I
+	iget-object	v4,v5,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v4 : Lorg/scribe/model/OAuthConfig; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v4},org/scribe/model/OAuthConfig/getSignatureType	; getSignatureType()Lorg/scribe/model/SignatureType;
+; v4 : Lorg/scribe/model/OAuthConfig;
+	move-result-object	v4
+; v4 : Lorg/scribe/model/SignatureType;
+	invoke-virtual	{v4},org/scribe/model/SignatureType/ordinal	; ordinal()I
+; v4 : Lorg/scribe/model/SignatureType;
+	move-result	v4
+; v4 : single-length
+	aget	v3,v3,v4
+; v3 : single-length , v3 : single-length , v4 : single-length
+	packed-switch	v3,1
+		ps14bbb0_14bbb8	; case 1
+		ps14bbb0_14bbe6	; case 2
+		default: ps14bbb0_default
+; v3 : single-length
+l14bbb6:
+.line 144
+	return-void	
+ps14bbb0_14bbb8:
+.line 130
+	iget-object	v3,v5,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v3 : Lorg/scribe/model/OAuthConfig; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	const-string	v4,"using Http Header signature"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v3 : Lorg/scribe/model/OAuthConfig; , v4 : Ljava/lang/String;
+.line 132
+	iget-object	v3,v5,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v3 : Lorg/scribe/builder/api/DefaultApi10a; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v3},org/scribe/builder/api/DefaultApi10a/getHeaderExtractor	; getHeaderExtractor()Lorg/scribe/extractors/HeaderExtractor;
+; v3 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v3
+; v3 : Lorg/scribe/extractors/HeaderExtractor;
+	invoke-interface	{v3,v6},org/scribe/extractors/HeaderExtractor/extract	; extract(Lorg/scribe/model/OAuthRequest;)Ljava/lang/String;
+; v3 : Lorg/scribe/extractors/HeaderExtractor; , v6 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+.line 133
+	const-string	v3,"Authorization"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v6,v3,v2},org/scribe/model/OAuthRequest/addHeader	; addHeader(Ljava/lang/String;Ljava/lang/String;)V
+; v6 : Lorg/scribe/model/OAuthRequest; , v3 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	goto	l14bbb6
+ps14bbb0_14bbe6:
+.line 136
+	iget-object	v3,v5,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v3 : Lorg/scribe/model/OAuthConfig; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	const-string	v4,"using Querystring signature"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v3 : Lorg/scribe/model/OAuthConfig; , v4 : Ljava/lang/String;
+.line 138
+	invoke-virtual	{v6},org/scribe/model/OAuthRequest/getOauthParameters	; getOauthParameters()Ljava/util/Map;
+; v6 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v3
+; v3 : Ljava/util/Map;
+	invoke-interface	{v3},java/util/Map/entrySet	; entrySet()Ljava/util/Set;
+; v3 : Ljava/util/Map;
+	move-result-object	v3
+; v3 : Ljava/util/Set;
+	invoke-interface	{v3},java/util/Set/iterator	; iterator()Ljava/util/Iterator;
+; v3 : Ljava/util/Set;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+l14bc0c:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l14bbb6
+; v3 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/util/Map$Entry
+; v0 : Ljava/util/Map$Entry;
+.line 140
+	invoke-interface	{v0},java/util/Map$Entry/getKey	; getKey()Ljava/lang/Object;
+; v0 : Ljava/util/Map$Entry;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,java/lang/String
+; v3 : Ljava/lang/String;
+	invoke-interface	{v0},java/util/Map$Entry/getValue	; getValue()Ljava/lang/Object;
+; v0 : Ljava/util/Map$Entry;
+	move-result-object	v4
+; v4 : Ljava/lang/Object;
+	check-cast	v4,java/lang/String
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v6,v3,v4},org/scribe/model/OAuthRequest/addQuerystringParameter	; addQuerystringParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v6 : Lorg/scribe/model/OAuthRequest; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	goto	l14bc0c
+.line 127
+.end method
+
+.method private getSignature(Lorg/scribe/model/OAuthRequest;Lorg/scribe/model/Token;)Ljava/lang/String;
+.limit registers 8
+; this: v5 (Lorg/scribe/oauth/OAuth10aServiceImpl;)
+; parameter[0] : v6 (Lorg/scribe/model/OAuthRequest;)
+; parameter[1] : v7 (Lorg/scribe/model/Token;)
+.line 116
+	iget-object	v2,v5,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v2 : Lorg/scribe/model/OAuthConfig; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	const-string	v3,"generating signature..."
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v2 : Lorg/scribe/model/OAuthConfig; , v3 : Ljava/lang/String;
+.line 117
+	iget-object	v2,v5,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v2 : Lorg/scribe/builder/api/DefaultApi10a; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v2},org/scribe/builder/api/DefaultApi10a/getBaseStringExtractor	; getBaseStringExtractor()Lorg/scribe/extractors/BaseStringExtractor;
+; v2 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v2
+; v2 : Lorg/scribe/extractors/BaseStringExtractor;
+	invoke-interface	{v2,v6},org/scribe/extractors/BaseStringExtractor/extract	; extract(Lorg/scribe/model/OAuthRequest;)Ljava/lang/String;
+; v2 : Lorg/scribe/extractors/BaseStringExtractor; , v6 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 118
+	iget-object	v2,v5,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v2 : Lorg/scribe/builder/api/DefaultApi10a; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v2},org/scribe/builder/api/DefaultApi10a/getSignatureService	; getSignatureService()Lorg/scribe/services/SignatureService;
+; v2 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v2
+; v2 : Lorg/scribe/services/SignatureService;
+	iget-object	v3,v5,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v3 : Lorg/scribe/model/OAuthConfig; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v3},org/scribe/model/OAuthConfig/getApiSecret	; getApiSecret()Ljava/lang/String;
+; v3 : Lorg/scribe/model/OAuthConfig;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v7},org/scribe/model/Token/getSecret	; getSecret()Ljava/lang/String;
+; v7 : Lorg/scribe/model/Token;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-interface	{v2,v0,v3,v4},org/scribe/services/SignatureService/getSignature	; getSignature(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v2 : Lorg/scribe/services/SignatureService; , v0 : Ljava/lang/String; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 120
+	iget-object	v2,v5,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v2 : Lorg/scribe/model/OAuthConfig; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	new-instance	v3,java/lang/StringBuilder
+; v3 : Ljava/lang/StringBuilder;
+	invoke-direct	{v3},java/lang/StringBuilder/<init>	; <init>()V
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"base string is: "
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v2 : Lorg/scribe/model/OAuthConfig; , v3 : Ljava/lang/String;
+.line 121
+	iget-object	v2,v5,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v2 : Lorg/scribe/model/OAuthConfig; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	new-instance	v3,java/lang/StringBuilder
+; v3 : Ljava/lang/StringBuilder;
+	invoke-direct	{v3},java/lang/StringBuilder/<init>	; <init>()V
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"signature is: "
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v2 : Lorg/scribe/model/OAuthConfig; , v3 : Ljava/lang/String;
+.line 122
+	return-object	v1
+; v1 : Ljava/lang/String;
+.end method
+
+.method public getAccessToken(Lorg/scribe/model/Token;Lorg/scribe/model/Verifier;)Lorg/scribe/model/Token;
+.limit registers 8
+; this: v5 (Lorg/scribe/oauth/OAuth10aServiceImpl;)
+; parameter[0] : v6 (Lorg/scribe/model/Token;)
+; parameter[1] : v7 (Lorg/scribe/model/Verifier;)
+.line 73
+	iget-object	v2,v5,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v2 : Lorg/scribe/model/OAuthConfig; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	new-instance	v3,java/lang/StringBuilder
+; v3 : Ljava/lang/StringBuilder;
+	invoke-direct	{v3},java/lang/StringBuilder/<init>	; <init>()V
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"obtaining access token from "
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	iget-object	v4,v5,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v4 : Lorg/scribe/builder/api/DefaultApi10a; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v4},org/scribe/builder/api/DefaultApi10a/getAccessTokenEndpoint	; getAccessTokenEndpoint()Ljava/lang/String;
+; v4 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v2 : Lorg/scribe/model/OAuthConfig; , v3 : Ljava/lang/String;
+.line 74
+	new-instance	v0,org/scribe/model/OAuthRequest
+; v0 : Lorg/scribe/model/OAuthRequest;
+	iget-object	v2,v5,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v2 : Lorg/scribe/builder/api/DefaultApi10a; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v2},org/scribe/builder/api/DefaultApi10a/getAccessTokenVerb	; getAccessTokenVerb()Lorg/scribe/model/Verb;
+; v2 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v2
+; v2 : Lorg/scribe/model/Verb;
+	iget-object	v3,v5,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v3 : Lorg/scribe/builder/api/DefaultApi10a; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v3},org/scribe/builder/api/DefaultApi10a/getAccessTokenEndpoint	; getAccessTokenEndpoint()Ljava/lang/String;
+; v3 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-direct	{v0,v2,v3},org/scribe/model/OAuthRequest/<init>	; <init>(Lorg/scribe/model/Verb;Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/OAuthRequest; , v2 : Lorg/scribe/model/Verb; , v3 : Ljava/lang/String;
+.line 75
+	const-string	v2,"oauth_token"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v6},org/scribe/model/Token/getToken	; getToken()Ljava/lang/String;
+; v6 : Lorg/scribe/model/Token;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v0,v2,v3},org/scribe/model/OAuthRequest/addOAuthParameter	; addOAuthParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/OAuthRequest; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 76
+	const-string	v2,"oauth_verifier"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v7},org/scribe/model/Verifier/getValue	; getValue()Ljava/lang/String;
+; v7 : Lorg/scribe/model/Verifier;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v0,v2,v3},org/scribe/model/OAuthRequest/addOAuthParameter	; addOAuthParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/OAuthRequest; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 78
+	iget-object	v2,v5,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v2 : Lorg/scribe/model/OAuthConfig; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	new-instance	v3,java/lang/StringBuilder
+; v3 : Ljava/lang/StringBuilder;
+	invoke-direct	{v3},java/lang/StringBuilder/<init>	; <init>()V
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"setting token to: "
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3,v6},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v6 : Lorg/scribe/model/Token;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4," and verifier to: "
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3,v7},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v7 : Lorg/scribe/model/Verifier;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v2 : Lorg/scribe/model/OAuthConfig; , v3 : Ljava/lang/String;
+.line 79
+	invoke-direct	{v5,v0,v6},org/scribe/oauth/OAuth10aServiceImpl/addOAuthParams	; addOAuthParams(Lorg/scribe/model/OAuthRequest;Lorg/scribe/model/Token;)V
+; v5 : Lorg/scribe/oauth/OAuth10aServiceImpl; , v0 : Lorg/scribe/model/OAuthRequest; , v6 : Lorg/scribe/model/Token;
+.line 80
+	invoke-direct	{v5,v0},org/scribe/oauth/OAuth10aServiceImpl/appendSignature	; appendSignature(Lorg/scribe/model/OAuthRequest;)V
+; v5 : Lorg/scribe/oauth/OAuth10aServiceImpl; , v0 : Lorg/scribe/model/OAuthRequest;
+.line 81
+	invoke-virtual	{v0},org/scribe/model/OAuthRequest/send	; send()Lorg/scribe/model/Response;
+; v0 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v1
+; v1 : Lorg/scribe/model/Response;
+.line 82
+	iget-object	v2,v5,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v2 : Lorg/scribe/builder/api/DefaultApi10a; , v5 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v2},org/scribe/builder/api/DefaultApi10a/getAccessTokenExtractor	; getAccessTokenExtractor()Lorg/scribe/extractors/AccessTokenExtractor;
+; v2 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v2
+; v2 : Lorg/scribe/extractors/AccessTokenExtractor;
+	invoke-virtual	{v1},org/scribe/model/Response/getBody	; getBody()Ljava/lang/String;
+; v1 : Lorg/scribe/model/Response;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-interface	{v2,v3},org/scribe/extractors/AccessTokenExtractor/extract	; extract(Ljava/lang/String;)Lorg/scribe/model/Token;
+; v2 : Lorg/scribe/extractors/AccessTokenExtractor; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Lorg/scribe/model/Token;
+	return-object	v2
+; v2 : Lorg/scribe/model/Token;
+.end method
+
+.method public getAuthorizationUrl(Lorg/scribe/model/Token;)Ljava/lang/String;
+.limit registers 3
+; this: v1 (Lorg/scribe/oauth/OAuth10aServiceImpl;)
+; parameter[0] : v2 (Lorg/scribe/model/Token;)
+.line 111
+	iget-object	v0,v1,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v0 : Lorg/scribe/builder/api/DefaultApi10a; , v1 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v0,v2},org/scribe/builder/api/DefaultApi10a/getAuthorizationUrl	; getAuthorizationUrl(Lorg/scribe/model/Token;)Ljava/lang/String;
+; v0 : Lorg/scribe/builder/api/DefaultApi10a; , v2 : Lorg/scribe/model/Token;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getRequestToken()Lorg/scribe/model/Token;
+.limit registers 7
+; this: v6 (Lorg/scribe/oauth/OAuth10aServiceImpl;)
+.line 38
+	iget-object	v3,v6,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v3 : Lorg/scribe/model/OAuthConfig; , v6 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	new-instance	v4,java/lang/StringBuilder
+; v4 : Ljava/lang/StringBuilder;
+	invoke-direct	{v4},java/lang/StringBuilder/<init>	; <init>()V
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,"obtaining request token from "
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	iget-object	v5,v6,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v5 : Lorg/scribe/builder/api/DefaultApi10a; , v6 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v5},org/scribe/builder/api/DefaultApi10a/getRequestTokenEndpoint	; getRequestTokenEndpoint()Ljava/lang/String;
+; v5 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v4 : Ljava/lang/StringBuilder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v3 : Lorg/scribe/model/OAuthConfig; , v4 : Ljava/lang/String;
+.line 39
+	new-instance	v1,org/scribe/model/OAuthRequest
+; v1 : Lorg/scribe/model/OAuthRequest;
+	iget-object	v3,v6,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v3 : Lorg/scribe/builder/api/DefaultApi10a; , v6 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v3},org/scribe/builder/api/DefaultApi10a/getRequestTokenVerb	; getRequestTokenVerb()Lorg/scribe/model/Verb;
+; v3 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v3
+; v3 : Lorg/scribe/model/Verb;
+	iget-object	v4,v6,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v4 : Lorg/scribe/builder/api/DefaultApi10a; , v6 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v4},org/scribe/builder/api/DefaultApi10a/getRequestTokenEndpoint	; getRequestTokenEndpoint()Ljava/lang/String;
+; v4 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-direct	{v1,v3,v4},org/scribe/model/OAuthRequest/<init>	; <init>(Lorg/scribe/model/Verb;Ljava/lang/String;)V
+; v1 : Lorg/scribe/model/OAuthRequest; , v3 : Lorg/scribe/model/Verb; , v4 : Ljava/lang/String;
+.line 41
+	iget-object	v3,v6,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v3 : Lorg/scribe/model/OAuthConfig; , v6 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	new-instance	v4,java/lang/StringBuilder
+; v4 : Ljava/lang/StringBuilder;
+	invoke-direct	{v4},java/lang/StringBuilder/<init>	; <init>()V
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,"setting oauth_callback to "
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	iget-object	v5,v6,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v5 : Lorg/scribe/model/OAuthConfig; , v6 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v5},org/scribe/model/OAuthConfig/getCallback	; getCallback()Ljava/lang/String;
+; v5 : Lorg/scribe/model/OAuthConfig;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v4 : Ljava/lang/StringBuilder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v3 : Lorg/scribe/model/OAuthConfig; , v4 : Ljava/lang/String;
+.line 42
+	const-string	v3,"oauth_callback"
+; v3 : Ljava/lang/String;
+	iget-object	v4,v6,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v4 : Lorg/scribe/model/OAuthConfig; , v6 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v4},org/scribe/model/OAuthConfig/getCallback	; getCallback()Ljava/lang/String;
+; v4 : Lorg/scribe/model/OAuthConfig;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v1,v3,v4},org/scribe/model/OAuthRequest/addOAuthParameter	; addOAuthParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v1 : Lorg/scribe/model/OAuthRequest; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+.line 43
+	sget-object	v3,org/scribe/model/OAuthConstants.EMPTY_TOKEN Lorg/scribe/model/Token;
+; v3 : Lorg/scribe/model/Token;
+	invoke-direct	{v6,v1,v3},org/scribe/oauth/OAuth10aServiceImpl/addOAuthParams	; addOAuthParams(Lorg/scribe/model/OAuthRequest;Lorg/scribe/model/Token;)V
+; v6 : Lorg/scribe/oauth/OAuth10aServiceImpl; , v1 : Lorg/scribe/model/OAuthRequest; , v3 : Lorg/scribe/model/Token;
+.line 44
+	invoke-direct	{v6,v1},org/scribe/oauth/OAuth10aServiceImpl/appendSignature	; appendSignature(Lorg/scribe/model/OAuthRequest;)V
+; v6 : Lorg/scribe/oauth/OAuth10aServiceImpl; , v1 : Lorg/scribe/model/OAuthRequest;
+.line 46
+	iget-object	v3,v6,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v3 : Lorg/scribe/model/OAuthConfig; , v6 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	const-string	v4,"sending request..."
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v3 : Lorg/scribe/model/OAuthConfig; , v4 : Ljava/lang/String;
+.line 47
+	invoke-virtual	{v1},org/scribe/model/OAuthRequest/send	; send()Lorg/scribe/model/Response;
+; v1 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v2
+; v2 : Lorg/scribe/model/Response;
+.line 48
+	invoke-virtual	{v2},org/scribe/model/Response/getBody	; getBody()Ljava/lang/String;
+; v2 : Lorg/scribe/model/Response;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 50
+	iget-object	v3,v6,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v3 : Lorg/scribe/model/OAuthConfig; , v6 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	new-instance	v4,java/lang/StringBuilder
+; v4 : Ljava/lang/StringBuilder;
+	invoke-direct	{v4},java/lang/StringBuilder/<init>	; <init>()V
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,"response status code: "
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},org/scribe/model/Response/getCode	; getCode()I
+; v2 : Lorg/scribe/model/Response;
+	move-result	v5
+; v5 : single-length
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(I)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v4 : Ljava/lang/StringBuilder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v3 : Lorg/scribe/model/OAuthConfig; , v4 : Ljava/lang/String;
+.line 51
+	iget-object	v3,v6,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v3 : Lorg/scribe/model/OAuthConfig; , v6 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	new-instance	v4,java/lang/StringBuilder
+; v4 : Ljava/lang/StringBuilder;
+	invoke-direct	{v4},java/lang/StringBuilder/<init>	; <init>()V
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,"response body: "
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v4 : Ljava/lang/StringBuilder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v3 : Lorg/scribe/model/OAuthConfig; , v4 : Ljava/lang/String;
+.line 52
+	iget-object	v3,v6,org/scribe/oauth/OAuth10aServiceImpl.api Lorg/scribe/builder/api/DefaultApi10a;
+; v3 : Lorg/scribe/builder/api/DefaultApi10a; , v6 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	invoke-virtual	{v3},org/scribe/builder/api/DefaultApi10a/getRequestTokenExtractor	; getRequestTokenExtractor()Lorg/scribe/extractors/RequestTokenExtractor;
+; v3 : Lorg/scribe/builder/api/DefaultApi10a;
+	move-result-object	v3
+; v3 : Lorg/scribe/extractors/RequestTokenExtractor;
+	invoke-interface	{v3,v0},org/scribe/extractors/RequestTokenExtractor/extract	; extract(Ljava/lang/String;)Lorg/scribe/model/Token;
+; v3 : Lorg/scribe/extractors/RequestTokenExtractor; , v0 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Lorg/scribe/model/Token;
+	return-object	v3
+; v3 : Lorg/scribe/model/Token;
+.end method
+
+.method public getVersion()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/scribe/oauth/OAuth10aServiceImpl;)
+.line 103
+	const-string	v0,"1.0"
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public signRequest(Lorg/scribe/model/Token;Lorg/scribe/model/OAuthRequest;)V
+.limit registers 6
+; this: v3 (Lorg/scribe/oauth/OAuth10aServiceImpl;)
+; parameter[0] : v4 (Lorg/scribe/model/Token;)
+; parameter[1] : v5 (Lorg/scribe/model/OAuthRequest;)
+.line 90
+	iget-object	v0,v3,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v0 : Lorg/scribe/model/OAuthConfig; , v3 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"signing request: "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v5},org/scribe/model/OAuthRequest/getCompleteUrl	; getCompleteUrl()Ljava/lang/String;
+; v5 : Lorg/scribe/model/OAuthRequest;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/OAuthConfig; , v1 : Ljava/lang/String;
+.line 91
+	const-string	v0,"oauth_token"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v4},org/scribe/model/Token/getToken	; getToken()Ljava/lang/String;
+; v4 : Lorg/scribe/model/Token;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v5,v0,v1},org/scribe/model/OAuthRequest/addOAuthParameter	; addOAuthParameter(Ljava/lang/String;Ljava/lang/String;)V
+; v5 : Lorg/scribe/model/OAuthRequest; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 93
+	iget-object	v0,v3,org/scribe/oauth/OAuth10aServiceImpl.config Lorg/scribe/model/OAuthConfig;
+; v0 : Lorg/scribe/model/OAuthConfig; , v3 : Lorg/scribe/oauth/OAuth10aServiceImpl;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"setting token to: "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1,v4},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v4 : Lorg/scribe/model/Token;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},org/scribe/model/OAuthConfig/log	; log(Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/OAuthConfig; , v1 : Ljava/lang/String;
+.line 94
+	invoke-direct	{v3,v5,v4},org/scribe/oauth/OAuth10aServiceImpl/addOAuthParams	; addOAuthParams(Lorg/scribe/model/OAuthRequest;Lorg/scribe/model/Token;)V
+; v3 : Lorg/scribe/oauth/OAuth10aServiceImpl; , v5 : Lorg/scribe/model/OAuthRequest; , v4 : Lorg/scribe/model/Token;
+.line 95
+	invoke-direct	{v3,v5},org/scribe/oauth/OAuth10aServiceImpl/appendSignature	; appendSignature(Lorg/scribe/model/OAuthRequest;)V
+; v3 : Lorg/scribe/oauth/OAuth10aServiceImpl; , v5 : Lorg/scribe/model/OAuthRequest;
+.line 96
+	return-void	
+.end method
+
+

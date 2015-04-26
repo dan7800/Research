@@ -1,0 +1,698 @@
+.class public org/apache/commons/codec/net/QuotedPrintableCodec
+.super java/lang/Object
+.source QuotedPrintableCodec.java
+.implements org/apache/commons/codec/BinaryEncoder
+.implements org/apache/commons/codec/BinaryDecoder
+.implements org/apache/commons/codec/StringEncoder
+.implements org/apache/commons/codec/StringDecoder
+
+.field private static final ESCAPE_CHAR B = 61
+.field private static final PRINTABLE_CHARS Ljava/util/BitSet; = null
+.field private static final SPACE B = 32
+.field private static final TAB B = 9
+.field private final charset Ljava/lang/String;
+
+.method static <clinit>()V
+.limit registers 3
+.line 72
+	new-instance	v1,java/util/BitSet
+; v1 : Ljava/util/BitSet;
+	const/16	v2,256
+; v2 : single-length
+	invoke-direct	{v1,v2},java/util/BitSet/<init>	; <init>(I)V
+; v1 : Ljava/util/BitSet; , v2 : single-length
+	sput-object	v1,org/apache/commons/codec/net/QuotedPrintableCodec.PRINTABLE_CHARS Ljava/util/BitSet;
+; v1 : Ljava/util/BitSet;
+.line 82
+	const/16	v0,33
+; v0 : single-length
+l10f79e:
+	const/16	v1,60
+; v1 : single-length
+	if-gt	v0,v1,l10f7b6
+; v0 : single-length , v1 : single-length
+.line 83
+	sget-object	v1,org/apache/commons/codec/net/QuotedPrintableCodec.PRINTABLE_CHARS Ljava/util/BitSet;
+; v1 : Ljava/util/BitSet;
+	invoke-virtual	{v1,v0},java/util/BitSet/set	; set(I)V
+; v1 : Ljava/util/BitSet; , v0 : single-length
+.line 82
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l10f79e
+l10f7b6:
+.line 85
+	const/16	v0,62
+; v0 : single-length
+l10f7ba:
+	const/16	v1,126
+; v1 : single-length
+	if-gt	v0,v1,l10f7d2
+; v0 : single-length , v1 : single-length
+.line 86
+	sget-object	v1,org/apache/commons/codec/net/QuotedPrintableCodec.PRINTABLE_CHARS Ljava/util/BitSet;
+; v1 : Ljava/util/BitSet;
+	invoke-virtual	{v1,v0},java/util/BitSet/set	; set(I)V
+; v1 : Ljava/util/BitSet; , v0 : single-length
+.line 85
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l10f7ba
+l10f7d2:
+.line 88
+	sget-object	v1,org/apache/commons/codec/net/QuotedPrintableCodec.PRINTABLE_CHARS Ljava/util/BitSet;
+; v1 : Ljava/util/BitSet;
+	const/16	v2,9
+; v2 : single-length
+	invoke-virtual	{v1,v2},java/util/BitSet/set	; set(I)V
+; v1 : Ljava/util/BitSet; , v2 : single-length
+.line 89
+	sget-object	v1,org/apache/commons/codec/net/QuotedPrintableCodec.PRINTABLE_CHARS Ljava/util/BitSet;
+; v1 : Ljava/util/BitSet;
+	const/16	v2,32
+; v2 : single-length
+	invoke-virtual	{v1,v2},java/util/BitSet/set	; set(I)V
+; v1 : Ljava/util/BitSet; , v2 : single-length
+.line 90
+	return-void	
+.end method
+
+.method public <init>()V
+.limit registers 2
+; this: v1 (Lorg/apache/commons/codec/net/QuotedPrintableCodec;)
+.line 96
+	const-string	v0,"UTF-8"
+; v0 : Ljava/lang/String;
+	invoke-direct	{v1,v0},org/apache/commons/codec/net/QuotedPrintableCodec/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Lorg/apache/commons/codec/net/QuotedPrintableCodec; , v0 : Ljava/lang/String;
+.line 97
+	return-void	
+.end method
+
+.method public <init>(Ljava/lang/String;)V
+.limit registers 2
+; this: v0 (Lorg/apache/commons/codec/net/QuotedPrintableCodec;)
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 106
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/codec/net/QuotedPrintableCodec;
+.line 107
+	iput-object	v1,v0,org/apache/commons/codec/net/QuotedPrintableCodec.charset Ljava/lang/String;
+; v1 : Ljava/lang/String; , v0 : Lorg/apache/commons/codec/net/QuotedPrintableCodec;
+.line 108
+	return-void	
+.end method
+
+.method public static final decodeQuotedPrintable([B)[B
+.throws Lorg/apache/commons/codec/DecoderException;
+.limit registers 9
+; parameter[0] : v8 ([B)
+.catch java/lang/ArrayIndexOutOfBoundsException from l10f862 to l10f88c using l10f892
+.var 4 is l I from l10f87e to l10f88c
+.var 5 is u I from l10f86e to l10f88c
+.var 2 is e Ljava/lang/ArrayIndexOutOfBoundsException; from l10f894 to l10f8a4
+.var 0 is b I from l10f856 to l10f8ac
+.line 178
+	if-nez	v8,l10f840
+; v8 : [B
+.line 179
+	const/4	v6,0
+; v6 : single-length
+l10f83e:
+.line 196
+	return-object	v6
+; v6 : [B
+l10f840:
+.line 181
+	new-instance	v1,java/io/ByteArrayOutputStream
+; v1 : Ljava/io/ByteArrayOutputStream;
+	invoke-direct	{v1},java/io/ByteArrayOutputStream/<init>	; <init>()V
+; v1 : Ljava/io/ByteArrayOutputStream;
+.line 182
+	const/4	v3,0
+; v3 : single-length
+l10f84c:
+	array-length	v6,v8
+; v6 : single-length , v8 : [B
+	if-ge	v3,v6,l10f8ac
+; v3 : single-length , v6 : single-length
+.line 183
+	aget-byte	v0,v8,v3
+; v0 : single-length , v8 : [B , v3 : single-length
+.line 184
+	const/16	v6,61
+; v6 : single-length
+	if-ne	v0,v6,l10f8a4
+; v0 : single-length , v6 : single-length
+.line 186
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+l10f862:
+	aget-byte	v6,v8,v3
+; v6 : single-length , v8 : [B , v3 : single-length
+	invoke-static	{v6},org/apache/commons/codec/net/Utils/digit16	; digit16(B)I
+; v6 : single-length
+	move-result	v5
+; v5 : single-length
+.line 187
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	aget-byte	v6,v8,v3
+; v6 : single-length , v8 : [B , v3 : single-length
+	invoke-static	{v6},org/apache/commons/codec/net/Utils/digit16	; digit16(B)I
+; v6 : single-length
+	move-result	v4
+; v4 : single-length
+.line 188
+	shl-int/lit8	v6,v5,4
+; v6 : single-length , v5 : single-length
+	add-int/2addr	v6,v4
+; v6 : single-length , v4 : single-length
+	int-to-char	v6,v6
+; v6 : single-length , v6 : single-length
+	invoke-virtual	{v1,v6},java/io/ByteArrayOutputStream/write	; write(I)V
+; v1 : Ljava/io/ByteArrayOutputStream; , v6 : single-length
+l10f88c:
+.line 182
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	l10f84c
+l10f892:
+.line 189
+	move-exception	v2
+; v2 : java/lang/ArrayIndexOutOfBoundsException
+.line 190
+	new-instance	v6,org/apache/commons/codec/DecoderException
+; v6 : Lorg/apache/commons/codec/DecoderException;
+	const-string	v7,"Invalid quoted-printable encoding"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v6,v7,v2},org/apache/commons/codec/DecoderException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+; v6 : Lorg/apache/commons/codec/DecoderException; , v7 : Ljava/lang/String; , v2 : java/lang/ArrayIndexOutOfBoundsException
+	throw	v6
+; v6 : Lorg/apache/commons/codec/DecoderException;
+l10f8a4:
+.line 193
+	invoke-virtual	{v1,v0},java/io/ByteArrayOutputStream/write	; write(I)V
+; v1 : Ljava/io/ByteArrayOutputStream; , v0 : single-length
+	goto	l10f88c
+l10f8ac:
+.line 196
+	invoke-virtual	{v1},java/io/ByteArrayOutputStream/toByteArray	; toByteArray()[B
+; v1 : Ljava/io/ByteArrayOutputStream;
+	move-result-object	v6
+; v6 : [B
+	goto	l10f83e
+.end method
+
+.method private static final encodeQuotedPrintable(ILjava/io/ByteArrayOutputStream;)V
+.limit registers 6
+; parameter[0] : v4 (I)
+; parameter[1] : v5 (Ljava/io/ByteArrayOutputStream;)
+	const/16	v3,16
+; v3 : single-length
+.line 119
+	const/16	v2,61
+; v2 : single-length
+	invoke-virtual	{v5,v2},java/io/ByteArrayOutputStream/write	; write(I)V
+; v5 : Ljava/io/ByteArrayOutputStream; , v2 : single-length
+.line 120
+	shr-int/lit8	v2,v4,4
+; v2 : single-length , v4 : single-length
+	and-int/lit8	v2,v2,15
+; v2 : single-length , v2 : single-length
+	invoke-static	{v2,v3},java/lang/Character/forDigit	; forDigit(II)C
+; v2 : single-length , v3 : single-length
+	move-result	v2
+; v2 : single-length
+	invoke-static	{v2},java/lang/Character/toUpperCase	; toUpperCase(C)C
+; v2 : single-length
+	move-result	v0
+; v0 : single-length
+.line 121
+	and-int/lit8	v2,v4,15
+; v2 : single-length , v4 : single-length
+	invoke-static	{v2,v3},java/lang/Character/forDigit	; forDigit(II)C
+; v2 : single-length , v3 : single-length
+	move-result	v2
+; v2 : single-length
+	invoke-static	{v2},java/lang/Character/toUpperCase	; toUpperCase(C)C
+; v2 : single-length
+	move-result	v1
+; v1 : single-length
+.line 122
+	invoke-virtual	{v5,v0},java/io/ByteArrayOutputStream/write	; write(I)V
+; v5 : Ljava/io/ByteArrayOutputStream; , v0 : single-length
+.line 123
+	invoke-virtual	{v5,v1},java/io/ByteArrayOutputStream/write	; write(I)V
+; v5 : Ljava/io/ByteArrayOutputStream; , v1 : single-length
+.line 124
+	return-void	
+.end method
+
+.method public static final encodeQuotedPrintable(Ljava/util/BitSet;[B)[B
+.limit registers 9
+; parameter[0] : v7 (Ljava/util/BitSet;)
+; parameter[1] : v8 ([B)
+.var 1 is b I from l10f95a to l10f982
+.var 3 is c B from l10f958 to l10f982
+.line 141
+	if-nez	v8,l10f938
+; v8 : [B
+.line 142
+	const/4	v6,0
+; v6 : single-length
+l10f936:
+.line 159
+	return-object	v6
+; v6 : [B
+l10f938:
+.line 144
+	if-nez	v7,l10f940
+; v7 : Ljava/util/BitSet;
+.line 145
+	sget-object	v7,org/apache/commons/codec/net/QuotedPrintableCodec.PRINTABLE_CHARS Ljava/util/BitSet;
+; v7 : Ljava/util/BitSet;
+l10f940:
+.line 147
+	new-instance	v2,java/io/ByteArrayOutputStream
+; v2 : Ljava/io/ByteArrayOutputStream;
+	invoke-direct	{v2},java/io/ByteArrayOutputStream/<init>	; <init>()V
+; v2 : Ljava/io/ByteArrayOutputStream;
+.line 148
+	move-object	v0,v8
+; v0 : [B , v8 : [B
+	array-length	v5,v0
+; v5 : single-length , v0 : [B
+	const/4	v4,0
+; v4 : single-length
+l10f950:
+	if-ge	v4,v5,l10f982
+; v4 : single-length , v5 : single-length
+	aget-byte	v3,v0,v4
+; v3 : single-length , v0 : [B , v4 : single-length
+.line 149
+	move	v1,v3
+; v1 : single-length , v3 : single-length
+.line 150
+	if-gez	v1,l10f962
+; v1 : single-length
+.line 151
+	add-int/lit16	v1,v1,256
+; v1 : single-length , v1 : single-length
+l10f962:
+.line 153
+	invoke-virtual	{v7,v1},java/util/BitSet/get	; get(I)Z
+; v7 : Ljava/util/BitSet; , v1 : single-length
+	move-result	v6
+; v6 : single-length
+	if-eqz	v6,l10f97a
+; v6 : single-length
+.line 154
+	invoke-virtual	{v2,v1},java/io/ByteArrayOutputStream/write	; write(I)V
+; v2 : Ljava/io/ByteArrayOutputStream; , v1 : single-length
+l10f974:
+.line 148
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	goto	l10f950
+l10f97a:
+.line 156
+	invoke-static	{v1,v2},org/apache/commons/codec/net/QuotedPrintableCodec/encodeQuotedPrintable	; encodeQuotedPrintable(ILjava/io/ByteArrayOutputStream;)V
+; v1 : single-length , v2 : Ljava/io/ByteArrayOutputStream;
+	goto	l10f974
+l10f982:
+.line 159
+	invoke-virtual	{v2},java/io/ByteArrayOutputStream/toByteArray	; toByteArray()[B
+; v2 : Ljava/io/ByteArrayOutputStream;
+	move-result-object	v6
+; v6 : [B
+	goto	l10f936
+.end method
+
+.method public decode(Ljava/lang/Object;)Ljava/lang/Object;
+.throws Lorg/apache/commons/codec/DecoderException;
+.limit registers 5
+; this: v3 (Lorg/apache/commons/codec/net/QuotedPrintableCodec;)
+; parameter[0] : v4 (Ljava/lang/Object;)
+.line 342
+	if-nez	v4,l10f9a4
+; v4 : Ljava/lang/Object;
+.line 343
+	const/4	v0,0
+; v0 : single-length
+l10f9a2:
+.line 347
+	return-object	v0
+; v0 : Ljava/lang/Object;
+l10f9a4:
+.line 344
+	instance-of	v0,v4,[B
+; v0 : single-length , v4 : Ljava/lang/Object;
+	if-eqz	v0,l10f9be
+; v0 : single-length
+.line 345
+	check-cast	v4,[B
+; v4 : [B
+	check-cast	v4,[B
+; v4 : [B
+	invoke-virtual	{v3,v4},org/apache/commons/codec/net/QuotedPrintableCodec/decode	; decode([B)[B
+; v3 : Lorg/apache/commons/codec/net/QuotedPrintableCodec; , v4 : [B
+	move-result-object	v0
+; v0 : [B
+	goto	l10f9a2
+l10f9be:
+.line 346
+	instance-of	v0,v4,java/lang/String
+; v0 : single-length , v4 : Ljava/lang/Object;
+	if-eqz	v0,l10f9d4
+; v0 : single-length
+.line 347
+	check-cast	v4,java/lang/String
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},org/apache/commons/codec/net/QuotedPrintableCodec/decode	; decode(Ljava/lang/String;)Ljava/lang/String;
+; v3 : Lorg/apache/commons/codec/net/QuotedPrintableCodec; , v4 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l10f9a2
+l10f9d4:
+.line 349
+	new-instance	v0,org/apache/commons/codec/DecoderException
+; v0 : Lorg/apache/commons/codec/DecoderException;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"Objects of type "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v4 : Ljava/lang/Object;
+	move-result-object	v2
+; v2 : Ljava/lang/Class;
+	invoke-virtual	{v2},java/lang/Class/getName	; getName()Ljava/lang/String;
+; v2 : Ljava/lang/Class;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2," cannot be quoted-printable decoded"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},org/apache/commons/codec/DecoderException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/codec/DecoderException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Lorg/apache/commons/codec/DecoderException;
+.end method
+
+.method public decode(Ljava/lang/String;)Ljava/lang/String;
+.throws Lorg/apache/commons/codec/DecoderException;
+.limit registers 5
+; this: v3 (Lorg/apache/commons/codec/net/QuotedPrintableCodec;)
+; parameter[0] : v4 (Ljava/lang/String;)
+.catch java/io/UnsupportedEncodingException from l10fa3c to l10fa4a using l10fa4e
+.line 296
+	if-nez	v4,l10fa3c
+; v4 : Ljava/lang/String;
+.line 297
+	const/4	v1,0
+; v1 : single-length
+l10fa3a:
+.line 300
+	return-object	v1
+; v1 : Ljava/lang/String;
+l10fa3c:
+	invoke-virtual	{v3},org/apache/commons/codec/net/QuotedPrintableCodec/getDefaultCharset	; getDefaultCharset()Ljava/lang/String;
+; v3 : Lorg/apache/commons/codec/net/QuotedPrintableCodec;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v3,v4,v1},org/apache/commons/codec/net/QuotedPrintableCodec/decode	; decode(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v3 : Lorg/apache/commons/codec/net/QuotedPrintableCodec; , v4 : Ljava/lang/String; , v1 : Ljava/lang/String;
+l10fa4a:
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l10fa3a
+l10fa4e:
+.line 301
+	move-exception	v0
+; v0 : java/io/UnsupportedEncodingException
+.line 302
+	new-instance	v1,org/apache/commons/codec/DecoderException
+; v1 : Lorg/apache/commons/codec/DecoderException;
+	invoke-virtual	{v0},java/io/UnsupportedEncodingException/getMessage	; getMessage()Ljava/lang/String;
+; v0 : java/io/UnsupportedEncodingException
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2,v0},org/apache/commons/codec/DecoderException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+; v1 : Lorg/apache/commons/codec/DecoderException; , v2 : Ljava/lang/String; , v0 : java/io/UnsupportedEncodingException
+	throw	v1
+; v1 : Lorg/apache/commons/codec/DecoderException;
+.end method
+
+.method public decode(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+.throws Lorg/apache/commons/codec/DecoderException;
+.limit registers 5
+; this: v2 (Lorg/apache/commons/codec/net/QuotedPrintableCodec;)
+; parameter[0] : v3 (Ljava/lang/String;)
+; parameter[1] : v4 (Ljava/lang/String;)
+.line 277
+	if-nez	v3,l10fa8c
+; v3 : Ljava/lang/String;
+.line 278
+	const/4	v0,0
+; v0 : single-length
+l10fa8a:
+.line 280
+	return-object	v0
+; v0 : Ljava/lang/String;
+l10fa8c:
+	new-instance	v0,java/lang/String
+; v0 : Ljava/lang/String;
+	invoke-static	{v3},org/apache/commons/codec/binary/StringUtils/getBytesUsAscii	; getBytesUsAscii(Ljava/lang/String;)[B
+; v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : [B
+	invoke-virtual	{v2,v1},org/apache/commons/codec/net/QuotedPrintableCodec/decode	; decode([B)[B
+; v2 : Lorg/apache/commons/codec/net/QuotedPrintableCodec; , v1 : [B
+	move-result-object	v1
+; v1 : [B
+	invoke-direct	{v0,v1,v4},java/lang/String/<init>	; <init>([BLjava/lang/String;)V
+; v0 : Ljava/lang/String; , v1 : [B , v4 : Ljava/lang/String;
+	goto	l10fa8a
+.end method
+
+.method public decode([B)[B
+.throws Lorg/apache/commons/codec/DecoderException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/codec/net/QuotedPrintableCodec;)
+; parameter[0] : v2 ([B)
+.line 231
+	invoke-static	{v2},org/apache/commons/codec/net/QuotedPrintableCodec/decodeQuotedPrintable	; decodeQuotedPrintable([B)[B
+; v2 : [B
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+.method public encode(Ljava/lang/Object;)Ljava/lang/Object;
+.throws Ljava/io/UnsupportedEncodingException;
+.limit registers 5
+; this: v3 (Lorg/apache/commons/codec/net/QuotedPrintableCodec;)
+; parameter[0] : v4 (Ljava/lang/Object;)
+.line 317
+	if-nez	v4,l10fadc
+; v4 : Ljava/lang/Object;
+.line 318
+	const/4	v0,0
+; v0 : single-length
+l10fada:
+.line 322
+	return-object	v0
+; v0 : Ljava/lang/Object;
+l10fadc:
+.line 319
+	instance-of	v0,v4,[B
+; v0 : single-length , v4 : Ljava/lang/Object;
+	if-eqz	v0,l10faf6
+; v0 : single-length
+.line 320
+	check-cast	v4,[B
+; v4 : [B
+	check-cast	v4,[B
+; v4 : [B
+	invoke-virtual	{v3,v4},org/apache/commons/codec/net/QuotedPrintableCodec/encode	; encode([B)[B
+; v3 : Lorg/apache/commons/codec/net/QuotedPrintableCodec; , v4 : [B
+	move-result-object	v0
+; v0 : [B
+	goto	l10fada
+l10faf6:
+.line 321
+	instance-of	v0,v4,java/lang/String
+; v0 : single-length , v4 : Ljava/lang/Object;
+	if-eqz	v0,l10fb0c
+; v0 : single-length
+.line 322
+	check-cast	v4,java/lang/String
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},org/apache/commons/codec/net/QuotedPrintableCodec/encode	; encode(Ljava/lang/String;)Ljava/lang/String;
+; v3 : Lorg/apache/commons/codec/net/QuotedPrintableCodec; , v4 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l10fada
+l10fb0c:
+.line 324
+	new-instance	v0,org/apache/commons/codec/EncoderException
+; v0 : Lorg/apache/commons/codec/EncoderException;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"Objects of type "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v4 : Ljava/lang/Object;
+	move-result-object	v2
+; v2 : Ljava/lang/Class;
+	invoke-virtual	{v2},java/lang/Class/getName	; getName()Ljava/lang/String;
+; v2 : Ljava/lang/Class;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2," cannot be quoted-printable encoded"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},org/apache/commons/codec/EncoderException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/codec/EncoderException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Lorg/apache/commons/codec/EncoderException;
+.end method
+
+.method public encode(Ljava/lang/String;)Ljava/lang/String;
+.throws Ljava/io/UnsupportedEncodingException;
+.limit registers 5
+; this: v3 (Lorg/apache/commons/codec/net/QuotedPrintableCodec;)
+; parameter[0] : v4 (Ljava/lang/String;)
+.catch java/io/UnsupportedEncodingException from l10fb74 to l10fb82 using l10fb86
+.line 252
+	if-nez	v4,l10fb74
+; v4 : Ljava/lang/String;
+.line 253
+	const/4	v1,0
+; v1 : single-length
+l10fb72:
+.line 256
+	return-object	v1
+; v1 : Ljava/lang/String;
+l10fb74:
+	invoke-virtual	{v3},org/apache/commons/codec/net/QuotedPrintableCodec/getDefaultCharset	; getDefaultCharset()Ljava/lang/String;
+; v3 : Lorg/apache/commons/codec/net/QuotedPrintableCodec;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v3,v4,v1},org/apache/commons/codec/net/QuotedPrintableCodec/encode	; encode(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v3 : Lorg/apache/commons/codec/net/QuotedPrintableCodec; , v4 : Ljava/lang/String; , v1 : Ljava/lang/String;
+l10fb82:
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l10fb72
+l10fb86:
+.line 257
+	move-exception	v0
+; v0 : java/io/UnsupportedEncodingException
+.line 258
+	new-instance	v1,org/apache/commons/codec/EncoderException
+; v1 : Lorg/apache/commons/codec/EncoderException;
+	invoke-virtual	{v0},java/io/UnsupportedEncodingException/getMessage	; getMessage()Ljava/lang/String;
+; v0 : java/io/UnsupportedEncodingException
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2,v0},org/apache/commons/codec/EncoderException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+; v1 : Lorg/apache/commons/codec/EncoderException; , v2 : Ljava/lang/String; , v0 : java/io/UnsupportedEncodingException
+	throw	v1
+; v1 : Lorg/apache/commons/codec/EncoderException;
+.end method
+
+.method public encode(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+.throws Ljava/io/UnsupportedEncodingException;
+.limit registers 4
+; this: v1 (Lorg/apache/commons/codec/net/QuotedPrintableCodec;)
+; parameter[0] : v2 (Ljava/lang/String;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.line 382
+	if-nez	v2,l10fbc4
+; v2 : Ljava/lang/String;
+.line 383
+	const/4	v0,0
+; v0 : single-length
+l10fbc2:
+.line 385
+	return-object	v0
+; v0 : Ljava/lang/String;
+l10fbc4:
+	invoke-virtual	{v2,v3},java/lang/String/getBytes	; getBytes(Ljava/lang/String;)[B
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : [B
+	invoke-virtual	{v1,v0},org/apache/commons/codec/net/QuotedPrintableCodec/encode	; encode([B)[B
+; v1 : Lorg/apache/commons/codec/net/QuotedPrintableCodec; , v0 : [B
+	move-result-object	v0
+; v0 : [B
+	invoke-static	{v0},org/apache/commons/codec/binary/StringUtils/newStringUsAscii	; newStringUsAscii([B)Ljava/lang/String;
+; v0 : [B
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l10fbc2
+.end method
+
+.method public encode([B)[B
+.throws Ljava/io/UnsupportedEncodingException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/codec/net/QuotedPrintableCodec;)
+; parameter[0] : v2 ([B)
+.line 212
+	sget-object	v0,org/apache/commons/codec/net/QuotedPrintableCodec.PRINTABLE_CHARS Ljava/util/BitSet;
+; v0 : Ljava/util/BitSet;
+	invoke-static	{v0,v2},org/apache/commons/codec/net/QuotedPrintableCodec/encodeQuotedPrintable	; encodeQuotedPrintable(Ljava/util/BitSet;[B)[B
+; v0 : Ljava/util/BitSet; , v2 : [B
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+.method public getDefaultCharset()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/codec/net/QuotedPrintableCodec;)
+.line 361
+	iget-object	v0,v1,org/apache/commons/codec/net/QuotedPrintableCodec.charset Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/apache/commons/codec/net/QuotedPrintableCodec;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+

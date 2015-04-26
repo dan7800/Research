@@ -1,0 +1,129 @@
+.class com/pinterest/adapter/PeopleListAdapter$2
+.super java/lang/Object
+.source PeopleListAdapter.java
+.implements android/view/View$OnClickListener
+
+.inner class 2 inner com/pinterest/adapter/PeopleListAdapter$2 outer com/pinterest/adapter/PeopleListAdapter
+.field final this$0 Lcom/pinterest/adapter/PeopleListAdapter;
+
+.method <init>(Lcom/pinterest/adapter/PeopleListAdapter;)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/adapter/PeopleListAdapter$2;)
+; parameter[0] : v1 (Lcom/pinterest/adapter/PeopleListAdapter;)
+.line 159
+	iput-object	v1,v0,com/pinterest/adapter/PeopleListAdapter$2.this$0 Lcom/pinterest/adapter/PeopleListAdapter;
+; v1 : Lcom/pinterest/adapter/PeopleListAdapter; , v0 : Lcom/pinterest/adapter/PeopleListAdapter$2;
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lcom/pinterest/adapter/PeopleListAdapter$2;
+	return-void	
+.end method
+
+.method public onClick(Landroid/view/View;)V
+.limit registers 7
+; this: v5 (Lcom/pinterest/adapter/PeopleListAdapter$2;)
+; parameter[0] : v6 (Landroid/view/View;)
+.var 0 is r Lcom/pinterest/adapter/PeopleListAdapter$FollowRunnable; from leb49c to leb4c6
+.line 163
+	iget-object	v3,v5,com/pinterest/adapter/PeopleListAdapter$2.this$0 Lcom/pinterest/adapter/PeopleListAdapter;
+; v3 : Lcom/pinterest/adapter/PeopleListAdapter; , v5 : Lcom/pinterest/adapter/PeopleListAdapter$2;
+	invoke-virtual	{v6},android/view/View/getTag	; getTag()Ljava/lang/Object;
+; v6 : Landroid/view/View;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/lang/Integer
+; v2 : Ljava/lang/Integer;
+	invoke-virtual	{v2},java/lang/Integer/intValue	; intValue()I
+; v2 : Ljava/lang/Integer;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v3,v2},com/pinterest/adapter/PeopleListAdapter/getItem	; getItem(I)Ljava/lang/Object;
+; v3 : Lcom/pinterest/adapter/PeopleListAdapter; , v2 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/pinterest/api/models/User
+; v1 : Lcom/pinterest/api/models/User;
+.line 164
+	iget-boolean	v2,v1,com/pinterest/api/models/User.isFollowing Z
+; v2 : single-length , v1 : Lcom/pinterest/api/models/User;
+	if-nez	v2,leb4c6
+; v2 : single-length
+	const/4	v2,1
+; v2 : single-length
+leb466:
+	iput-boolean	v2,v1,com/pinterest/api/models/User.isFollowing Z
+; v2 : single-length , v1 : Lcom/pinterest/api/models/User;
+.line 165
+	iget-object	v2,v5,com/pinterest/adapter/PeopleListAdapter$2.this$0 Lcom/pinterest/adapter/PeopleListAdapter;
+; v2 : Lcom/pinterest/adapter/PeopleListAdapter; , v5 : Lcom/pinterest/adapter/PeopleListAdapter$2;
+	invoke-virtual	{v2},com/pinterest/adapter/PeopleListAdapter/notifyDataSetChanged	; notifyDataSetChanged()V
+; v2 : Lcom/pinterest/adapter/PeopleListAdapter;
+.line 169
+	invoke-static	{},com/pinterest/adapter/PeopleListAdapter/access$000	; access$000()Ljava/util/AbstractMap;
+; 
+	nop	
+	move-result-object	v2
+; v2 : Ljava/util/AbstractMap;
+	invoke-virtual	{v2,v1},java/util/AbstractMap/containsKey	; containsKey(Ljava/lang/Object;)Z
+; v2 : Ljava/util/AbstractMap; , v1 : Lcom/pinterest/api/models/User;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,leb4ca
+; v2 : single-length
+.line 170
+	invoke-static	{},com/pinterest/adapter/PeopleListAdapter/access$000	; access$000()Ljava/util/AbstractMap;
+; 
+	nop	
+	move-result-object	v2
+; v2 : Ljava/util/AbstractMap;
+	invoke-virtual	{v2,v1},java/util/AbstractMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v2 : Ljava/util/AbstractMap; , v1 : Lcom/pinterest/api/models/User;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/adapter/PeopleListAdapter$FollowRunnable
+; v0 : Lcom/pinterest/adapter/PeopleListAdapter$FollowRunnable;
+.line 171
+	iget-object	v2,v5,com/pinterest/adapter/PeopleListAdapter$2.this$0 Lcom/pinterest/adapter/PeopleListAdapter;
+; v2 : Lcom/pinterest/adapter/PeopleListAdapter; , v5 : Lcom/pinterest/adapter/PeopleListAdapter$2;
+	invoke-static	{v2},com/pinterest/adapter/PeopleListAdapter/access$100	; access$100(Lcom/pinterest/adapter/PeopleListAdapter;)Landroid/os/Handler;
+; v2 : Lcom/pinterest/adapter/PeopleListAdapter;
+	move-result-object	v2
+; v2 : Landroid/os/Handler;
+	invoke-virtual	{v2,v0},android/os/Handler/removeCallbacks	; removeCallbacks(Ljava/lang/Runnable;)V
+; v2 : Landroid/os/Handler; , v0 : Lcom/pinterest/adapter/PeopleListAdapter$FollowRunnable;
+leb4ae:
+.line 176
+	iget-object	v2,v5,com/pinterest/adapter/PeopleListAdapter$2.this$0 Lcom/pinterest/adapter/PeopleListAdapter;
+; v2 : Lcom/pinterest/adapter/PeopleListAdapter; , v5 : Lcom/pinterest/adapter/PeopleListAdapter$2;
+	invoke-static	{v2},com/pinterest/adapter/PeopleListAdapter/access$100	; access$100(Lcom/pinterest/adapter/PeopleListAdapter;)Landroid/os/Handler;
+; v2 : Lcom/pinterest/adapter/PeopleListAdapter;
+	move-result-object	v2
+; v2 : Landroid/os/Handler;
+	const-wide/16	v3,1000
+; v3 : double-length
+	invoke-virtual	{v2,v0,v3,v4},android/os/Handler/postDelayed	; postDelayed(Ljava/lang/Runnable;J)Z
+; v2 : Landroid/os/Handler; , v0 : Lcom/pinterest/adapter/PeopleListAdapter$FollowRunnable; , v3 : double-length
+.line 177
+	return-void	
+leb4c6:
+.line 164
+	const/4	v2,0
+; v2 : single-length
+	goto	leb466
+leb4ca:
+.line 173
+	new-instance	v0,com/pinterest/adapter/PeopleListAdapter$FollowRunnable
+; v0 : Lcom/pinterest/adapter/PeopleListAdapter$FollowRunnable;
+	invoke-direct	{v0,v1},com/pinterest/adapter/PeopleListAdapter$FollowRunnable/<init>	; <init>(Lcom/pinterest/api/models/User;)V
+; v0 : Lcom/pinterest/adapter/PeopleListAdapter$FollowRunnable; , v1 : Lcom/pinterest/api/models/User;
+.line 174
+	invoke-static	{},com/pinterest/adapter/PeopleListAdapter/access$000	; access$000()Ljava/util/AbstractMap;
+; 
+	nop	
+	move-result-object	v2
+; v2 : Ljava/util/AbstractMap;
+	invoke-virtual	{v2,v1,v0},java/util/AbstractMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v2 : Ljava/util/AbstractMap; , v1 : Lcom/pinterest/api/models/User; , v0 : Lcom/pinterest/adapter/PeopleListAdapter$FollowRunnable;
+	goto	leb4ae
+.end method
+
+

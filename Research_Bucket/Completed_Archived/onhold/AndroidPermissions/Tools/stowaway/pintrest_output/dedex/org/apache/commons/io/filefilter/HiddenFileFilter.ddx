@@ -1,0 +1,53 @@
+.class public org/apache/commons/io/filefilter/HiddenFileFilter
+.super org/apache/commons/io/filefilter/AbstractFileFilter
+.source HiddenFileFilter.java
+.implements java/io/Serializable
+
+.field public static final HIDDEN Lorg/apache/commons/io/filefilter/IOFileFilter;
+.field public static final VISIBLE Lorg/apache/commons/io/filefilter/IOFileFilter;
+
+.method static <clinit>()V
+.limit registers 2
+.line 54
+	new-instance	v0,org/apache/commons/io/filefilter/HiddenFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/HiddenFileFilter;
+	invoke-direct	{v0},org/apache/commons/io/filefilter/HiddenFileFilter/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/filefilter/HiddenFileFilter;
+	sput-object	v0,org/apache/commons/io/filefilter/HiddenFileFilter.HIDDEN Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 57
+	new-instance	v0,org/apache/commons/io/filefilter/NotFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/NotFileFilter;
+	sget-object	v1,org/apache/commons/io/filefilter/HiddenFileFilter.HIDDEN Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/NotFileFilter/<init>	; <init>(Lorg/apache/commons/io/filefilter/IOFileFilter;)V
+; v0 : Lorg/apache/commons/io/filefilter/NotFileFilter; , v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	sput-object	v0,org/apache/commons/io/filefilter/HiddenFileFilter.VISIBLE Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	return-void	
+.end method
+
+.method protected <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/io/filefilter/HiddenFileFilter;)
+.line 62
+	invoke-direct	{v0},org/apache/commons/io/filefilter/AbstractFileFilter/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/filefilter/HiddenFileFilter;
+.line 63
+	return-void	
+.end method
+
+.method public accept(Ljava/io/File;)Z
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/filefilter/HiddenFileFilter;)
+; parameter[0] : v2 (Ljava/io/File;)
+.line 74
+	invoke-virtual	{v2},java/io/File/isHidden	; isHidden()Z
+; v2 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+

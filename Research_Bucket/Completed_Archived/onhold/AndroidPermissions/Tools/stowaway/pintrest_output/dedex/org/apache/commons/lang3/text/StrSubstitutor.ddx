@@ -1,0 +1,1633 @@
+.class public org/apache/commons/lang3/text/StrSubstitutor
+.super java/lang/Object
+.source StrSubstitutor.java
+
+.field public static final DEFAULT_ESCAPE C = '$'
+.field public static final DEFAULT_PREFIX Lorg/apache/commons/lang3/text/StrMatcher;
+.field public static final DEFAULT_SUFFIX Lorg/apache/commons/lang3/text/StrMatcher;
+.field private enableSubstitutionInVariables Z
+.field private escapeChar C
+.field private prefixMatcher Lorg/apache/commons/lang3/text/StrMatcher;
+.field private suffixMatcher Lorg/apache/commons/lang3/text/StrMatcher;
+.field private variableResolver Lorg/apache/commons/lang3/text/StrLookup;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Lorg/apache/commons/lang3/text/StrLookup" , "<*>;" }
+  .end annotation
+.end field
+
+.method static <clinit>()V
+.limit registers 1
+.line 112
+	const-string	v0,"${"
+; v0 : Ljava/lang/String;
+	invoke-static	{v0},org/apache/commons/lang3/text/StrMatcher/stringMatcher	; stringMatcher(Ljava/lang/String;)Lorg/apache/commons/lang3/text/StrMatcher;
+; v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+	sput-object	v0,org/apache/commons/lang3/text/StrSubstitutor.DEFAULT_PREFIX Lorg/apache/commons/lang3/text/StrMatcher;
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+.line 116
+	const-string	v0,"}"
+; v0 : Ljava/lang/String;
+	invoke-static	{v0},org/apache/commons/lang3/text/StrMatcher/stringMatcher	; stringMatcher(Ljava/lang/String;)Lorg/apache/commons/lang3/text/StrMatcher;
+; v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+	sput-object	v0,org/apache/commons/lang3/text/StrSubstitutor.DEFAULT_SUFFIX Lorg/apache/commons/lang3/text/StrMatcher;
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+	return-void	
+.end method
+
+.method public <init>()V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/lang3/text/StrLookup" , "<*>;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "C)V" }
+.end annotation
+.limit registers 5
+; this: v4 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+.line 209
+	const/4	v0,0
+; v0 : single-length
+	check-cast	v0,org/apache/commons/lang3/text/StrLookup
+; v0 : Lorg/apache/commons/lang3/text/StrLookup;
+	sget-object	v1,org/apache/commons/lang3/text/StrSubstitutor.DEFAULT_PREFIX Lorg/apache/commons/lang3/text/StrMatcher;
+; v1 : Lorg/apache/commons/lang3/text/StrMatcher;
+	sget-object	v2,org/apache/commons/lang3/text/StrSubstitutor.DEFAULT_SUFFIX Lorg/apache/commons/lang3/text/StrMatcher;
+; v2 : Lorg/apache/commons/lang3/text/StrMatcher;
+	const/16	v3,36
+; v3 : single-length
+	invoke-direct	{v4,v0,v1,v2,v3},org/apache/commons/lang3/text/StrSubstitutor/<init>	; <init>(Lorg/apache/commons/lang3/text/StrLookup;Lorg/apache/commons/lang3/text/StrMatcher;Lorg/apache/commons/lang3/text/StrMatcher;C)V
+; v4 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrLookup; , v1 : Lorg/apache/commons/lang3/text/StrMatcher; , v2 : Lorg/apache/commons/lang3/text/StrMatcher; , v3 : single-length
+.line 210
+	return-void	
+.end method
+
+.method public <init>(Ljava/util/Map;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/lang3/text/StrLookup" , "<*>;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "C)V" }
+.end annotation
+.limit registers 6
+; this: v4 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v5 (Ljava/util/Map;)
+.line 220
+	invoke-static	{v5},org/apache/commons/lang3/text/StrLookup/mapLookup	; mapLookup(Ljava/util/Map;)Lorg/apache/commons/lang3/text/StrLookup;
+; v5 : Ljava/util/Map;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrLookup;
+	sget-object	v1,org/apache/commons/lang3/text/StrSubstitutor.DEFAULT_PREFIX Lorg/apache/commons/lang3/text/StrMatcher;
+; v1 : Lorg/apache/commons/lang3/text/StrMatcher;
+	sget-object	v2,org/apache/commons/lang3/text/StrSubstitutor.DEFAULT_SUFFIX Lorg/apache/commons/lang3/text/StrMatcher;
+; v2 : Lorg/apache/commons/lang3/text/StrMatcher;
+	const/16	v3,36
+; v3 : single-length
+	invoke-direct	{v4,v0,v1,v2,v3},org/apache/commons/lang3/text/StrSubstitutor/<init>	; <init>(Lorg/apache/commons/lang3/text/StrLookup;Lorg/apache/commons/lang3/text/StrMatcher;Lorg/apache/commons/lang3/text/StrMatcher;C)V
+; v4 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrLookup; , v1 : Lorg/apache/commons/lang3/text/StrMatcher; , v2 : Lorg/apache/commons/lang3/text/StrMatcher; , v3 : single-length
+.line 221
+	return-void	
+.end method
+
+.method public <init>(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/lang3/text/StrLookup" , "<*>;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "C)V" }
+.end annotation
+.limit registers 6
+; this: v2 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v3 (Ljava/util/Map;)
+; parameter[1] : v4 (Ljava/lang/String;)
+; parameter[2] : v5 (Ljava/lang/String;)
+.line 233
+	invoke-static	{v3},org/apache/commons/lang3/text/StrLookup/mapLookup	; mapLookup(Ljava/util/Map;)Lorg/apache/commons/lang3/text/StrLookup;
+; v3 : Ljava/util/Map;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrLookup;
+	const/16	v1,36
+; v1 : single-length
+	invoke-direct	{v2,v0,v4,v5,v1},org/apache/commons/lang3/text/StrSubstitutor/<init>	; <init>(Lorg/apache/commons/lang3/text/StrLookup;Ljava/lang/String;Ljava/lang/String;C)V
+; v2 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrLookup; , v4 : Ljava/lang/String; , v5 : Ljava/lang/String; , v1 : single-length
+.line 234
+	return-void	
+.end method
+
+.method public <init>(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;C)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/lang3/text/StrLookup" , "<*>;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "C)V" }
+.end annotation
+.limit registers 6
+; this: v1 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v2 (Ljava/util/Map;)
+; parameter[1] : v3 (Ljava/lang/String;)
+; parameter[2] : v4 (Ljava/lang/String;)
+; parameter[3] : v5 (C)
+.line 247
+	invoke-static	{v2},org/apache/commons/lang3/text/StrLookup/mapLookup	; mapLookup(Ljava/util/Map;)Lorg/apache/commons/lang3/text/StrLookup;
+; v2 : Ljava/util/Map;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrLookup;
+	invoke-direct	{v1,v0,v3,v4,v5},org/apache/commons/lang3/text/StrSubstitutor/<init>	; <init>(Lorg/apache/commons/lang3/text/StrLookup;Ljava/lang/String;Ljava/lang/String;C)V
+; v1 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrLookup; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String; , v5 : single-length
+.line 248
+	return-void	
+.end method
+
+.method public <init>(Lorg/apache/commons/lang3/text/StrLookup;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/lang3/text/StrLookup" , "<*>;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "C)V" }
+.end annotation
+.limit registers 5
+; this: v3 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v4 (Lorg/apache/commons/lang3/text/StrLookup;)
+.line 256
+	sget-object	v0,org/apache/commons/lang3/text/StrSubstitutor.DEFAULT_PREFIX Lorg/apache/commons/lang3/text/StrMatcher;
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+	sget-object	v1,org/apache/commons/lang3/text/StrSubstitutor.DEFAULT_SUFFIX Lorg/apache/commons/lang3/text/StrMatcher;
+; v1 : Lorg/apache/commons/lang3/text/StrMatcher;
+	const/16	v2,36
+; v2 : single-length
+	invoke-direct	{v3,v4,v0,v1,v2},org/apache/commons/lang3/text/StrSubstitutor/<init>	; <init>(Lorg/apache/commons/lang3/text/StrLookup;Lorg/apache/commons/lang3/text/StrMatcher;Lorg/apache/commons/lang3/text/StrMatcher;C)V
+; v3 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v4 : Lorg/apache/commons/lang3/text/StrLookup; , v0 : Lorg/apache/commons/lang3/text/StrMatcher; , v1 : Lorg/apache/commons/lang3/text/StrMatcher; , v2 : single-length
+.line 257
+	return-void	
+.end method
+
+.method public <init>(Lorg/apache/commons/lang3/text/StrLookup;Ljava/lang/String;Ljava/lang/String;C)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/lang3/text/StrLookup" , "<*>;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "C)V" }
+.end annotation
+.limit registers 5
+; this: v0 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v1 (Lorg/apache/commons/lang3/text/StrLookup;)
+; parameter[1] : v2 (Ljava/lang/String;)
+; parameter[2] : v3 (Ljava/lang/String;)
+; parameter[3] : v4 (C)
+.line 268
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.line 269
+	invoke-virtual	{v0,v1},org/apache/commons/lang3/text/StrSubstitutor/setVariableResolver	; setVariableResolver(Lorg/apache/commons/lang3/text/StrLookup;)V
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v1 : Lorg/apache/commons/lang3/text/StrLookup;
+.line 270
+	invoke-virtual	{v0,v2},org/apache/commons/lang3/text/StrSubstitutor/setVariablePrefix	; setVariablePrefix(Ljava/lang/String;)Lorg/apache/commons/lang3/text/StrSubstitutor;
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v2 : Ljava/lang/String;
+.line 271
+	invoke-virtual	{v0,v3},org/apache/commons/lang3/text/StrSubstitutor/setVariableSuffix	; setVariableSuffix(Ljava/lang/String;)Lorg/apache/commons/lang3/text/StrSubstitutor;
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v3 : Ljava/lang/String;
+.line 272
+	invoke-virtual	{v0,v4},org/apache/commons/lang3/text/StrSubstitutor/setEscapeChar	; setEscapeChar(C)V
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v4 : single-length
+.line 273
+	return-void	
+.end method
+
+.method public <init>(Lorg/apache/commons/lang3/text/StrLookup;Lorg/apache/commons/lang3/text/StrMatcher;Lorg/apache/commons/lang3/text/StrMatcher;C)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/lang3/text/StrLookup" , "<*>;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "Lorg/apache/commons/lang3/text/StrMatcher;" , "C)V" }
+.end annotation
+.limit registers 5
+; this: v0 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v1 (Lorg/apache/commons/lang3/text/StrLookup;)
+; parameter[1] : v2 (Lorg/apache/commons/lang3/text/StrMatcher;)
+; parameter[2] : v3 (Lorg/apache/commons/lang3/text/StrMatcher;)
+; parameter[3] : v4 (C)
+.line 285
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.line 286
+	invoke-virtual	{v0,v1},org/apache/commons/lang3/text/StrSubstitutor/setVariableResolver	; setVariableResolver(Lorg/apache/commons/lang3/text/StrLookup;)V
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v1 : Lorg/apache/commons/lang3/text/StrLookup;
+.line 287
+	invoke-virtual	{v0,v2},org/apache/commons/lang3/text/StrSubstitutor/setVariablePrefixMatcher	; setVariablePrefixMatcher(Lorg/apache/commons/lang3/text/StrMatcher;)Lorg/apache/commons/lang3/text/StrSubstitutor;
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v2 : Lorg/apache/commons/lang3/text/StrMatcher;
+.line 288
+	invoke-virtual	{v0,v3},org/apache/commons/lang3/text/StrSubstitutor/setVariableSuffixMatcher	; setVariableSuffixMatcher(Lorg/apache/commons/lang3/text/StrMatcher;)Lorg/apache/commons/lang3/text/StrSubstitutor;
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v3 : Lorg/apache/commons/lang3/text/StrMatcher;
+.line 289
+	invoke-virtual	{v0,v4},org/apache/commons/lang3/text/StrSubstitutor/setEscapeChar	; setEscapeChar(C)V
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v4 : single-length
+.line 290
+	return-void	
+.end method
+
+.method private checkCyclicSubstitution(Ljava/lang/String;Ljava/util/List;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/lang/String;" , "Ljava/util/List" , "<" , "Ljava/lang/String;" , ">;)V" }
+.end annotation
+.limit registers 6
+; this: v3 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v4 (Ljava/lang/String;)
+; parameter[1] : v5 (Ljava/util/List;)
+.line 693
+	invoke-interface	{v5,v4},java/util/List/contains	; contains(Ljava/lang/Object;)Z
+; v5 : Ljava/util/List; , v4 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l14088a
+; v1 : single-length
+.line 694
+	return-void	
+l14088a:
+.line 696
+	new-instance	v0,org/apache/commons/lang3/text/StrBuilder
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	const/16	v1,256
+; v1 : single-length
+	invoke-direct	{v0,v1},org/apache/commons/lang3/text/StrBuilder/<init>	; <init>(I)V
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length
+.line 697
+	const-string	v1,"Infinite loop in property interpolation of "
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},org/apache/commons/lang3/text/StrBuilder/append	; append(Ljava/lang/String;)Lorg/apache/commons/lang3/text/StrBuilder;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : Ljava/lang/String;
+.line 698
+	const/4	v1,0
+; v1 : single-length
+	invoke-interface	{v5,v1},java/util/List/remove	; remove(I)Ljava/lang/Object;
+; v5 : Ljava/util/List; , v1 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,java/lang/String
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},org/apache/commons/lang3/text/StrBuilder/append	; append(Ljava/lang/String;)Lorg/apache/commons/lang3/text/StrBuilder;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : Ljava/lang/String;
+.line 699
+	const-string	v1,": "
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},org/apache/commons/lang3/text/StrBuilder/append	; append(Ljava/lang/String;)Lorg/apache/commons/lang3/text/StrBuilder;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : Ljava/lang/String;
+.line 700
+	const-string	v1,"->"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v5,v1},org/apache/commons/lang3/text/StrBuilder/appendWithSeparators	; appendWithSeparators(Ljava/lang/Iterable;Ljava/lang/String;)Lorg/apache/commons/lang3/text/StrBuilder;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v5 : Ljava/util/List; , v1 : Ljava/lang/String;
+.line 701
+	new-instance	v1,java/lang/IllegalStateException
+; v1 : Ljava/lang/IllegalStateException;
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},java/lang/IllegalStateException/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/lang/IllegalStateException; , v2 : Ljava/lang/String;
+	throw	v1
+; v1 : Ljava/lang/IllegalStateException;
+.end method
+
+.method public static replace(Ljava/lang/Object;Ljava/util/Map;)Ljava/lang/String;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Ljava/lang/Object;" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TV;>;" , "Ljava/lang/String;" , "Ljava/lang/String;" , ")" , "Ljava/lang/String;" }
+.end annotation
+.limit registers 3
+; parameter[0] : v1 (Ljava/lang/Object;)
+; parameter[1] : v2 (Ljava/util/Map;)
+.line 150
+	new-instance	v0,org/apache/commons/lang3/text/StrSubstitutor
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	invoke-direct	{v0,v2},org/apache/commons/lang3/text/StrSubstitutor/<init>	; <init>(Ljava/util/Map;)V
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v2 : Ljava/util/Map;
+	invoke-virtual	{v0,v1},org/apache/commons/lang3/text/StrSubstitutor/replace	; replace(Ljava/lang/Object;)Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v1 : Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static replace(Ljava/lang/Object;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Ljava/lang/Object;" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TV;>;" , "Ljava/lang/String;" , "Ljava/lang/String;" , ")" , "Ljava/lang/String;" }
+.end annotation
+.limit registers 5
+; parameter[0] : v1 (Ljava/lang/Object;)
+; parameter[1] : v2 (Ljava/util/Map;)
+; parameter[2] : v3 (Ljava/lang/String;)
+; parameter[3] : v4 (Ljava/lang/String;)
+.line 167
+	new-instance	v0,org/apache/commons/lang3/text/StrSubstitutor
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	invoke-direct	{v0,v2,v3,v4},org/apache/commons/lang3/text/StrSubstitutor/<init>	; <init>(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v2 : Ljava/util/Map; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},org/apache/commons/lang3/text/StrSubstitutor/replace	; replace(Ljava/lang/Object;)Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v1 : Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static replace(Ljava/lang/Object;Ljava/util/Properties;)Ljava/lang/String;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Ljava/lang/Object;" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TV;>;" , "Ljava/lang/String;" , "Ljava/lang/String;" , ")" , "Ljava/lang/String;" }
+.end annotation
+.limit registers 7
+; parameter[0] : v5 (Ljava/lang/Object;)
+; parameter[1] : v6 (Ljava/util/Properties;)
+.var 0 is propName Ljava/lang/String; from l140970 to l140980
+.var 2 is propValue Ljava/lang/String; from l140978 to l140980
+.line 179
+	if-nez	v6,l140946
+; v6 : Ljava/util/Properties;
+.line 180
+	invoke-virtual	{v5},java/lang/Object/toString	; toString()Ljava/lang/String;
+; v5 : Ljava/lang/Object;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+l140944:
+.line 189
+	return-object	v4
+; v4 : Ljava/lang/String;
+l140946:
+.line 182
+	new-instance	v3,java/util/HashMap
+; v3 : Ljava/util/HashMap;
+	invoke-direct	{v3},java/util/HashMap/<init>	; <init>()V
+; v3 : Ljava/util/HashMap;
+.line 183
+	invoke-virtual	{v6},java/util/Properties/propertyNames	; propertyNames()Ljava/util/Enumeration;
+; v6 : Ljava/util/Properties;
+	move-result-object	v1
+; v1 : Ljava/util/Enumeration;
+l140958:
+.line 184
+	invoke-interface	{v1},java/util/Enumeration/hasMoreElements	; hasMoreElements()Z
+; v1 : Ljava/util/Enumeration;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l140980
+; v4 : single-length
+.line 185
+	invoke-interface	{v1},java/util/Enumeration/nextElement	; nextElement()Ljava/lang/Object;
+; v1 : Ljava/util/Enumeration;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/lang/String
+; v0 : Ljava/lang/String;
+.line 186
+	invoke-virtual	{v6,v0},java/util/Properties/getProperty	; getProperty(Ljava/lang/String;)Ljava/lang/String;
+; v6 : Ljava/util/Properties; , v0 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+.line 187
+	invoke-interface	{v3,v0,v2},java/util/Map/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v3 : Ljava/util/HashMap; , v0 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	goto	l140958
+l140980:
+.line 189
+	invoke-static	{v5,v3},org/apache/commons/lang3/text/StrSubstitutor/replace	; replace(Ljava/lang/Object;Ljava/util/Map;)Ljava/lang/String;
+; v5 : Ljava/lang/Object; , v3 : Ljava/util/HashMap;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	goto	l140944
+.end method
+
+.method public static replaceSystemProperties(Ljava/lang/Object;)Ljava/lang/String;
+.limit registers 3
+; parameter[0] : v2 (Ljava/lang/Object;)
+.line 200
+	new-instance	v0,org/apache/commons/lang3/text/StrSubstitutor
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	invoke-static	{},org/apache/commons/lang3/text/StrLookup/systemPropertiesLookup	; systemPropertiesLookup()Lorg/apache/commons/lang3/text/StrLookup;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Lorg/apache/commons/lang3/text/StrLookup;
+	invoke-direct	{v0,v1},org/apache/commons/lang3/text/StrSubstitutor/<init>	; <init>(Lorg/apache/commons/lang3/text/StrLookup;)V
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v1 : Lorg/apache/commons/lang3/text/StrLookup;
+	invoke-virtual	{v0,v2},org/apache/commons/lang3/text/StrSubstitutor/replace	; replace(Ljava/lang/Object;)Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v2 : Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method private substitute(Lorg/apache/commons/lang3/text/StrBuilder;IILjava/util/List;)I
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/lang3/text/StrBuilder;" , "II" , "Ljava/util/List" , "<" , "Ljava/lang/String;" , ">;)I" }
+.end annotation
+.limit registers 31
+; this: v26 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v27 (Lorg/apache/commons/lang3/text/StrBuilder;)
+; parameter[1] : v28 (I)
+; parameter[2] : v29 (I)
+; parameter[3] : v30 (Ljava/util/List;)
+.var 5 is altered Z from l1409ea to l140a1a
+.var 6 is bufEnd I from l1409f8 to l140a1a
+.var 9 is chars [C from l1409f4 to l140a1a
+.var 13 is lengthChange I from l1409ec to l140a1a
+.var 15 is pos I from l1409fc to l140a1a
+.var 17 is startMatchLen I from l140a10 to l140a1a
+.var 20 is top Z from l1409e8 to l140a1a
+.var 7 is bufName Lorg/apache/commons/lang3/text/StrBuilder; from l140af0 to l140b16
+.var 30 is priorVariables Ljava/util/List; from l1409c8 to l140b22
+.var 8 is change I from l140bc0 to l140bda
+.var 21 is varLen I from l140b90 to l140bda
+.var 11 is endPos I from l140b1a to l140bf8
+.var 22 is varName Ljava/lang/String; from l140ad6 to l140bf8
+.var 23 is varValue Ljava/lang/String; from l140b84 to l140bf8
+.var 10 is endMatchLen I from l140a68 to l140c02
+.var 14 is nestedVarCount I from l140a6a to l140c02
+.var 17 is startMatchLen I from l140a20 to l140c02
+.var 18 is startPos I from l140a62 to l140c02
+.line 579
+	invoke-virtual/range	{v26},org/apache/commons/lang3/text/StrSubstitutor/getVariablePrefixMatcher;	getVariablePrefixMatcher()Lorg/apache/commons/lang3/text/StrMatcher;
+; v26 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	move-result-object	v16
+; v16 : Lorg/apache/commons/lang3/text/StrMatcher;
+.line 580
+	invoke-virtual/range	{v26},org/apache/commons/lang3/text/StrSubstitutor/getVariableSuffixMatcher;	getVariableSuffixMatcher()Lorg/apache/commons/lang3/text/StrMatcher;
+; v26 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	move-result-object	v19
+; v19 : Lorg/apache/commons/lang3/text/StrMatcher;
+.line 581
+	invoke-virtual/range	{v26},org/apache/commons/lang3/text/StrSubstitutor/getEscapeChar;	getEscapeChar()C
+; v26 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	move-result	v12
+; v12 : single-length
+.line 583
+	if-nez	v30,l140a1a
+; v30 : Ljava/util/List;
+	const/16	v20,1
+; v20 : single-length
+l1409e8:
+.line 584
+	const/4	v5,0
+; v5 : single-length
+.line 585
+	const/4	v13,0
+; v13 : single-length
+.line 586
+	move-object/from16	v0,v27
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v27 : Lorg/apache/commons/lang3/text/StrBuilder;
+	iget-object	v9,v0,org/apache/commons/lang3/text/StrBuilder.buffer [C
+; v9 : [C , v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 587
+	add-int	v6,v28,v29
+; v6 : single-length , v28 : single-length , v29 : single-length
+.line 588
+	move/from16	v15,v28
+; v15 : single-length , v28 : single-length
+l1409fc:
+.line 589
+	if-ge	v15,v6,l140c02
+; v15 : single-length , v6 : single-length
+.line 590
+	move-object/from16	v0,v16
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher; , v16 : Lorg/apache/commons/lang3/text/StrMatcher;
+	move/from16	v1,v28
+; v1 : single-length , v28 : single-length
+	invoke-virtual	{v0,v9,v15,v1,v6},org/apache/commons/lang3/text/StrMatcher/isMatch	; isMatch([CIII)I
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher; , v9 : [C , v15 : single-length , v1 : single-length , v6 : single-length
+	move-result	v17
+; v17 : single-length
+.line 592
+	if-nez	v17,l140a20
+; v17 : single-length
+.line 593
+	add-int/lit8	v15,v15,1
+; v15 : single-length , v15 : single-length
+	goto	l1409fc
+l140a1a:
+.line 583
+	const/16	v20,0
+; v20 : single-length
+	goto	l1409e8
+l140a20:
+.line 596
+	move/from16	v0,v28
+; v0 : single-length , v28 : single-length
+	if-le	v15,v0,l140a5e
+; v15 : single-length , v0 : single-length
+	add-int/lit8	v24,v15,255
+; v24 : single-length , v15 : single-length
+	aget-char	v24,v9,v24
+; v24 : single-length , v9 : [C , v24 : single-length
+	move/from16	v0,v24
+; v0 : single-length , v24 : single-length
+	if-ne	v0,v12,l140a5e
+; v0 : single-length , v12 : single-length
+.line 598
+	add-int/lit8	v24,v15,255
+; v24 : single-length , v15 : single-length
+	move-object/from16	v0,v27
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v27 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move/from16	v1,v24
+; v1 : single-length , v24 : single-length
+	invoke-virtual	{v0,v1},org/apache/commons/lang3/text/StrBuilder/deleteCharAt	; deleteCharAt(I)Lorg/apache/commons/lang3/text/StrBuilder;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length
+.line 599
+	move-object/from16	v0,v27
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v27 : Lorg/apache/commons/lang3/text/StrBuilder;
+	iget-object	v9,v0,org/apache/commons/lang3/text/StrBuilder.buffer [C
+; v9 : [C , v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 600
+	add-int/lit8	v13,v13,255
+; v13 : single-length , v13 : single-length
+.line 601
+	const/4	v5,1
+; v5 : single-length
+.line 602
+	add-int/lit8	v6,v6,255
+; v6 : single-length , v6 : single-length
+	goto	l1409fc
+l140a5e:
+.line 605
+	move/from16	v18,v15
+; v18 : single-length , v15 : single-length
+.line 606
+	add-int	v15,v15,v17
+; v15 : single-length , v15 : single-length , v17 : single-length
+.line 607
+	const/4	v10,0
+; v10 : single-length
+.line 608
+	const/4	v14,0
+; v14 : single-length
+l140a6a:
+.line 609
+	if-ge	v15,v6,l1409fc
+; v15 : single-length , v6 : single-length
+.line 610
+	invoke-virtual/range	{v26},org/apache/commons/lang3/text/StrSubstitutor/isEnableSubstitutionInVariables;	isEnableSubstitutionInVariables()Z
+; v26 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	move-result	v24
+; v24 : single-length
+	if-eqz	v24,l140a96
+; v24 : single-length
+	move-object/from16	v0,v16
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher; , v16 : Lorg/apache/commons/lang3/text/StrMatcher;
+	move/from16	v1,v28
+; v1 : single-length , v28 : single-length
+	invoke-virtual	{v0,v9,v15,v1,v6},org/apache/commons/lang3/text/StrMatcher/isMatch	; isMatch([CIII)I
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher; , v9 : [C , v15 : single-length , v1 : single-length , v6 : single-length
+	move-result	v10
+; v10 : single-length
+	if-eqz	v10,l140a96
+; v10 : single-length
+.line 614
+	add-int/lit8	v14,v14,1
+; v14 : single-length , v14 : single-length
+.line 615
+	add-int/2addr	v15,v10
+; v15 : single-length , v10 : single-length
+.line 616
+	goto	l140a6a
+l140a96:
+.line 619
+	move-object/from16	v0,v19
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher; , v19 : Lorg/apache/commons/lang3/text/StrMatcher;
+	move/from16	v1,v28
+; v1 : single-length , v28 : single-length
+	invoke-virtual	{v0,v9,v15,v1,v6},org/apache/commons/lang3/text/StrMatcher/isMatch	; isMatch([CIII)I
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher; , v9 : [C , v15 : single-length , v1 : single-length , v6 : single-length
+	move-result	v10
+; v10 : single-length
+.line 621
+	if-nez	v10,l140ab0
+; v10 : single-length
+.line 622
+	add-int/lit8	v15,v15,1
+; v15 : single-length , v15 : single-length
+	goto	l140a6a
+l140ab0:
+.line 625
+	if-nez	v14,l140bf8
+; v14 : single-length
+.line 626
+	new-instance	v22,java/lang/String
+; v22 : Ljava/lang/String;
+	add-int	v24,v18,v17
+; v24 : single-length , v18 : single-length , v17 : single-length
+	sub-int	v25,v15,v18
+; v25 : single-length , v15 : single-length , v18 : single-length
+	sub-int	v25,v25,v17
+; v25 : single-length , v25 : single-length , v17 : single-length
+	move-object/from16	v0,v22
+; v0 : Ljava/lang/String; , v22 : Ljava/lang/String;
+	move/from16	v1,v24
+; v1 : single-length , v24 : single-length
+	move/from16	v2,v25
+; v2 : single-length , v25 : single-length
+	invoke-direct	{v0,v9,v1,v2},java/lang/String/<init>	; <init>([CII)V
+; v0 : Ljava/lang/String; , v9 : [C , v1 : single-length , v2 : single-length
+.line 629
+	invoke-virtual/range	{v26},org/apache/commons/lang3/text/StrSubstitutor/isEnableSubstitutionInVariables;	isEnableSubstitutionInVariables()Z
+; v26 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	move-result	v24
+; v24 : single-length
+	if-eqz	v24,l140b16
+; v24 : single-length
+.line 630
+	new-instance	v7,org/apache/commons/lang3/text/StrBuilder
+; v7 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-object/from16	v0,v22
+; v0 : Ljava/lang/String; , v22 : Ljava/lang/String;
+	invoke-direct	{v7,v0},org/apache/commons/lang3/text/StrBuilder/<init>	; <init>(Ljava/lang/String;)V
+; v7 : Lorg/apache/commons/lang3/text/StrBuilder; , v0 : Ljava/lang/String;
+.line 631
+	const/16	v24,0
+; v24 : single-length
+	invoke-virtual	{v7},org/apache/commons/lang3/text/StrBuilder/length	; length()I
+; v7 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result	v25
+; v25 : single-length
+	move-object/from16	v0,v26
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v26 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	move/from16	v1,v24
+; v1 : single-length , v24 : single-length
+	move/from16	v2,v25
+; v2 : single-length , v25 : single-length
+	invoke-virtual	{v0,v7,v1,v2},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v7 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length , v2 : single-length
+.line 632
+	invoke-virtual	{v7},org/apache/commons/lang3/text/StrBuilder/toString	; toString()Ljava/lang/String;
+; v7 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v22
+; v22 : Ljava/lang/String;
+l140b16:
+.line 634
+	add-int/2addr	v15,v10
+; v15 : single-length , v10 : single-length
+.line 635
+	move	v11,v15
+; v11 : single-length , v15 : single-length
+.line 638
+	if-nez	v30,l140b4c
+; v30 : Ljava/util/List;
+.line 639
+	new-instance	v30,java/util/ArrayList
+; v30 : Ljava/util/ArrayList;
+l140b22:
+	invoke-direct/range	{v30},java/util/ArrayList/<init>;	<init>()V
+; v30 : Ljava/util/ArrayList;
+.line 640
+	new-instance	v24,java/lang/String
+; v24 : Ljava/lang/String;
+	move-object/from16	v0,v24
+; v0 : Ljava/lang/String; , v24 : Ljava/lang/String;
+	move/from16	v1,v28
+; v1 : single-length , v28 : single-length
+	move/from16	v2,v29
+; v2 : single-length , v29 : single-length
+	invoke-direct	{v0,v9,v1,v2},java/lang/String/<init>	; <init>([CII)V
+; v0 : Ljava/lang/String; , v9 : [C , v1 : single-length , v2 : single-length
+	move-object/from16	v0,v30
+; v0 : Ljava/util/ArrayList; , v30 : Ljava/util/ArrayList;
+	move-object/from16	v1,v24
+; v1 : Ljava/lang/String; , v24 : Ljava/lang/String;
+	invoke-interface	{v0,v1},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v0 : Ljava/util/ArrayList; , v1 : Ljava/lang/String;
+l140b4c:
+.line 645
+	move-object/from16	v0,v26
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v26 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	move-object/from16	v1,v22
+; v1 : Ljava/lang/String; , v22 : Ljava/lang/String;
+	move-object/from16	v2,v30
+; v2 : Ljava/util/List; , v30 : Ljava/util/List;
+	invoke-direct	{v0,v1,v2},org/apache/commons/lang3/text/StrSubstitutor/checkCyclicSubstitution	; checkCyclicSubstitution(Ljava/lang/String;Ljava/util/List;)V
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v1 : Ljava/lang/String; , v2 : Ljava/util/List;
+.line 646
+	move-object/from16	v0,v30
+; v0 : Ljava/util/List; , v30 : Ljava/util/List;
+	move-object/from16	v1,v22
+; v1 : Ljava/lang/String; , v22 : Ljava/lang/String;
+	invoke-interface	{v0,v1},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v0 : Ljava/util/List; , v1 : Ljava/lang/String;
+.line 649
+	move-object/from16	v0,v26
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v26 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	move-object/from16	v1,v22
+; v1 : Ljava/lang/String; , v22 : Ljava/lang/String;
+	move-object/from16	v2,v27
+; v2 : Lorg/apache/commons/lang3/text/StrBuilder; , v27 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move/from16	v3,v18
+; v3 : single-length , v18 : single-length
+	invoke-virtual	{v0,v1,v2,v3,v11},org/apache/commons/lang3/text/StrSubstitutor/resolveVariable	; resolveVariable(Ljava/lang/String;Lorg/apache/commons/lang3/text/StrBuilder;II)Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v1 : Ljava/lang/String; , v2 : Lorg/apache/commons/lang3/text/StrBuilder; , v3 : single-length , v11 : single-length
+	move-result-object	v23
+; v23 : Ljava/lang/String;
+.line 651
+	if-eqz	v23,l140bda
+; v23 : Ljava/lang/String;
+.line 653
+	invoke-virtual/range	{v23},java/lang/String/length;	length()I
+; v23 : Ljava/lang/String;
+	move-result	v21
+; v21 : single-length
+.line 654
+	move-object/from16	v0,v27
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v27 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move/from16	v1,v18
+; v1 : single-length , v18 : single-length
+	move-object/from16	v2,v23
+; v2 : Ljava/lang/String; , v23 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v11,v2},org/apache/commons/lang3/text/StrBuilder/replace	; replace(IILjava/lang/String;)Lorg/apache/commons/lang3/text/StrBuilder;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length , v11 : single-length , v2 : Ljava/lang/String;
+.line 655
+	const/4	v5,1
+; v5 : single-length
+.line 656
+	move-object/from16	v0,v26
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v26 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	move-object/from16	v1,v27
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v27 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move/from16	v2,v18
+; v2 : single-length , v18 : single-length
+	move/from16	v3,v21
+; v3 : single-length , v21 : single-length
+	move-object/from16	v4,v30
+; v4 : Ljava/util/List; , v30 : Ljava/util/List;
+	invoke-direct	{v0,v1,v2,v3,v4},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;IILjava/util/List;)I
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v2 : single-length , v3 : single-length , v4 : Ljava/util/List;
+	move-result	v8
+; v8 : single-length
+.line 658
+	add-int	v24,v8,v21
+; v24 : single-length , v8 : single-length , v21 : single-length
+	sub-int	v25,v11,v18
+; v25 : single-length , v11 : single-length , v18 : single-length
+	sub-int	v8,v24,v25
+; v8 : single-length , v24 : single-length , v25 : single-length
+.line 660
+	add-int/2addr	v15,v8
+; v15 : single-length , v8 : single-length
+.line 661
+	add-int/2addr	v6,v8
+; v6 : single-length , v8 : single-length
+.line 662
+	add-int/2addr	v13,v8
+; v13 : single-length , v8 : single-length
+.line 663
+	move-object/from16	v0,v27
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v27 : Lorg/apache/commons/lang3/text/StrBuilder;
+	iget-object	v9,v0,org/apache/commons/lang3/text/StrBuilder.buffer [C
+; v9 : [C , v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+l140bda:
+.line 668
+	invoke-interface/range	{v30},java/util/List/size;	size()I
+; v30 : Ljava/util/ArrayList;
+	move-result	v24
+; v24 : single-length
+	add-int/lit8	v24,v24,255
+; v24 : single-length , v24 : single-length
+	move-object/from16	v0,v30
+; v0 : Ljava/util/ArrayList; , v30 : Ljava/util/ArrayList;
+	move/from16	v1,v24
+; v1 : single-length , v24 : single-length
+	invoke-interface	{v0,v1},java/util/List/remove	; remove(I)Ljava/lang/Object;
+; v0 : Ljava/util/ArrayList; , v1 : single-length
+	goto/16	l1409fc
+l140bf8:
+.line 672
+	add-int/lit8	v14,v14,255
+; v14 : single-length , v14 : single-length
+.line 673
+	add-int/2addr	v15,v10
+; v15 : single-length , v10 : single-length
+	goto/16	l140a6a
+l140c02:
+.line 680
+	if-eqz	v20,l140c16
+; v20 : single-length
+.line 681
+	if-eqz	v5,l140c10
+; v5 : single-length
+	const/16	v24,1
+; v24 : single-length
+l140c0e:
+.line 683
+	return	v24
+; v24 : single-length
+l140c10:
+.line 681
+	const/16	v24,0
+; v24 : single-length
+	goto	l140c0e
+l140c16:
+	move/from16	v24,v13
+; v24 : single-length , v13 : single-length
+.line 683
+	goto	l140c0e
+.end method
+
+.method public getEscapeChar()C
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+.line 737
+	iget-char	v0,v1,org/apache/commons/lang3/text/StrSubstitutor.escapeChar C
+; v0 : single-length , v1 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getVariablePrefixMatcher()Lorg/apache/commons/lang3/text/StrMatcher;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+.line 763
+	iget-object	v0,v1,org/apache/commons/lang3/text/StrSubstitutor.prefixMatcher Lorg/apache/commons/lang3/text/StrMatcher;
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher; , v1 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	return-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+.end method
+
+.method public getVariableResolver()Lorg/apache/commons/lang3/text/StrLookup;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "()" , "Lorg/apache/commons/lang3/text/StrLookup" , "<*>;" }
+.end annotation
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+.line 889
+	iget-object	v0,v1,org/apache/commons/lang3/text/StrSubstitutor.variableResolver Lorg/apache/commons/lang3/text/StrLookup;
+; v0 : Lorg/apache/commons/lang3/text/StrLookup; , v1 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	return-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrLookup;
+.end method
+
+.method public getVariableSuffixMatcher()Lorg/apache/commons/lang3/text/StrMatcher;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+.line 828
+	iget-object	v0,v1,org/apache/commons/lang3/text/StrSubstitutor.suffixMatcher Lorg/apache/commons/lang3/text/StrMatcher;
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher; , v1 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	return-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+.end method
+
+.method public isEnableSubstitutionInVariables()Z
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+.line 910
+	iget-boolean	v0,v1,org/apache/commons/lang3/text/StrSubstitutor.enableSubstitutionInVariables Z
+; v0 : single-length , v1 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public replace(Ljava/lang/Object;)Ljava/lang/String;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Ljava/lang/Object;" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TV;>;" , "Ljava/lang/String;" , "Ljava/lang/String;" , ")" , "Ljava/lang/String;" }
+.end annotation
+.limit registers 5
+; this: v3 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v4 (Ljava/lang/Object;)
+.line 464
+	if-nez	v4,l140cac
+; v4 : Ljava/lang/Object;
+.line 465
+	const/4	v1,0
+; v1 : single-length
+l140caa:
+.line 469
+	return-object	v1
+; v1 : Ljava/lang/String;
+l140cac:
+.line 467
+	new-instance	v1,org/apache/commons/lang3/text/StrBuilder
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder;
+	invoke-direct	{v1},org/apache/commons/lang3/text/StrBuilder/<init>	; <init>()V
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder;
+	invoke-virtual	{v1,v4},org/apache/commons/lang3/text/StrBuilder/append	; append(Ljava/lang/Object;)Lorg/apache/commons/lang3/text/StrBuilder;
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v4 : Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 468
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/length	; length()I
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v3,v0,v1,v2},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v3 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length , v2 : single-length
+.line 469
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l140caa
+.end method
+
+.method public replace(Ljava/lang/String;)Ljava/lang/String;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Ljava/lang/Object;" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TV;>;" , "Ljava/lang/String;" , "Ljava/lang/String;" , ")" , "Ljava/lang/String;" }
+.end annotation
+.limit registers 5
+; this: v3 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v4 (Ljava/lang/String;)
+.line 301
+	if-nez	v4,l140cf0
+; v4 : Ljava/lang/String;
+.line 302
+	const/4	v4,0
+; v4 : single-length
+l140cee:
+.line 308
+	return-object	v4
+; v4 : Ljava/lang/String;
+l140cf0:
+.line 304
+	new-instance	v0,org/apache/commons/lang3/text/StrBuilder
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	invoke-direct	{v0,v4},org/apache/commons/lang3/text/StrBuilder/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v4 : Ljava/lang/String;
+.line 305
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v4},java/lang/String/length	; length()I
+; v4 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v3,v0,v1,v2},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v3 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length , v2 : single-length
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l140cee
+; v1 : single-length
+.line 308
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	goto	l140cee
+.end method
+
+.method public replace(Ljava/lang/String;II)Ljava/lang/String;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Ljava/lang/Object;" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TV;>;" , "Ljava/lang/String;" , "Ljava/lang/String;" , ")" , "Ljava/lang/String;" }
+.end annotation
+.limit registers 6
+; this: v2 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v3 (Ljava/lang/String;)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (I)
+.line 324
+	if-nez	v3,l140d34
+; v3 : Ljava/lang/String;
+.line 325
+	const/4	v1,0
+; v1 : single-length
+l140d32:
+.line 331
+	return-object	v1
+; v1 : Ljava/lang/String;
+l140d34:
+.line 327
+	new-instance	v1,org/apache/commons/lang3/text/StrBuilder
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder;
+	invoke-direct	{v1,v5},org/apache/commons/lang3/text/StrBuilder/<init>	; <init>(I)V
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v5 : single-length
+	invoke-virtual	{v1,v3,v4,v5},org/apache/commons/lang3/text/StrBuilder/append	; append(Ljava/lang/String;II)Lorg/apache/commons/lang3/text/StrBuilder;
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v3 : Ljava/lang/String; , v4 : single-length , v5 : single-length
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 328
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v2,v0,v1,v5},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v2 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length , v5 : single-length
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l140d62
+; v1 : single-length
+.line 329
+	add-int	v1,v4,v5
+; v1 : single-length , v4 : single-length , v5 : single-length
+	invoke-virtual	{v3,v4,v1},java/lang/String/substring	; substring(II)Ljava/lang/String;
+; v3 : Ljava/lang/String; , v4 : single-length , v1 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l140d32
+l140d62:
+.line 331
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l140d32
+.end method
+
+.method public replace(Ljava/lang/StringBuffer;)Ljava/lang/String;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Ljava/lang/Object;" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TV;>;" , "Ljava/lang/String;" , "Ljava/lang/String;" , ")" , "Ljava/lang/String;" }
+.end annotation
+.limit registers 5
+; this: v3 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v4 (Ljava/lang/StringBuffer;)
+.line 384
+	if-nez	v4,l140d84
+; v4 : Ljava/lang/StringBuffer;
+.line 385
+	const/4	v1,0
+; v1 : single-length
+l140d82:
+.line 389
+	return-object	v1
+; v1 : Ljava/lang/String;
+l140d84:
+.line 387
+	new-instance	v1,org/apache/commons/lang3/text/StrBuilder
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder;
+	invoke-virtual	{v4},java/lang/StringBuffer/length	; length()I
+; v4 : Ljava/lang/StringBuffer;
+	move-result	v2
+; v2 : single-length
+	invoke-direct	{v1,v2},org/apache/commons/lang3/text/StrBuilder/<init>	; <init>(I)V
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v2 : single-length
+	invoke-virtual	{v1,v4},org/apache/commons/lang3/text/StrBuilder/append	; append(Ljava/lang/StringBuffer;)Lorg/apache/commons/lang3/text/StrBuilder;
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v4 : Ljava/lang/StringBuffer;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 388
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/length	; length()I
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v3,v0,v1,v2},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v3 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length , v2 : single-length
+.line 389
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l140d82
+.end method
+
+.method public replace(Ljava/lang/StringBuffer;II)Ljava/lang/String;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Ljava/lang/Object;" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TV;>;" , "Ljava/lang/String;" , "Ljava/lang/String;" , ")" , "Ljava/lang/String;" }
+.end annotation
+.limit registers 6
+; this: v2 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v3 (Ljava/lang/StringBuffer;)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (I)
+.line 406
+	if-nez	v3,l140dd0
+; v3 : Ljava/lang/StringBuffer;
+.line 407
+	const/4	v1,0
+; v1 : single-length
+l140dce:
+.line 411
+	return-object	v1
+; v1 : Ljava/lang/String;
+l140dd0:
+.line 409
+	new-instance	v1,org/apache/commons/lang3/text/StrBuilder
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder;
+	invoke-direct	{v1,v5},org/apache/commons/lang3/text/StrBuilder/<init>	; <init>(I)V
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v5 : single-length
+	invoke-virtual	{v1,v3,v4,v5},org/apache/commons/lang3/text/StrBuilder/append	; append(Ljava/lang/StringBuffer;II)Lorg/apache/commons/lang3/text/StrBuilder;
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v5 : single-length
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 410
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v2,v0,v1,v5},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v2 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length , v5 : single-length
+.line 411
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l140dce
+.end method
+
+.method public replace(Lorg/apache/commons/lang3/text/StrBuilder;)Ljava/lang/String;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Ljava/lang/Object;" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TV;>;" , "Ljava/lang/String;" , "Ljava/lang/String;" , ")" , "Ljava/lang/String;" }
+.end annotation
+.limit registers 5
+; this: v3 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v4 (Lorg/apache/commons/lang3/text/StrBuilder;)
+.line 424
+	if-nez	v4,l140e0c
+; v4 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 425
+	const/4	v1,0
+; v1 : single-length
+l140e0a:
+.line 429
+	return-object	v1
+; v1 : Ljava/lang/String;
+l140e0c:
+.line 427
+	new-instance	v1,org/apache/commons/lang3/text/StrBuilder
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder;
+	invoke-virtual	{v4},org/apache/commons/lang3/text/StrBuilder/length	; length()I
+; v4 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result	v2
+; v2 : single-length
+	invoke-direct	{v1,v2},org/apache/commons/lang3/text/StrBuilder/<init>	; <init>(I)V
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v2 : single-length
+	invoke-virtual	{v1,v4},org/apache/commons/lang3/text/StrBuilder/append	; append(Lorg/apache/commons/lang3/text/StrBuilder;)Lorg/apache/commons/lang3/text/StrBuilder;
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v4 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 428
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/length	; length()I
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v3,v0,v1,v2},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v3 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length , v2 : single-length
+.line 429
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l140e0a
+.end method
+
+.method public replace(Lorg/apache/commons/lang3/text/StrBuilder;II)Ljava/lang/String;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Ljava/lang/Object;" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TV;>;" , "Ljava/lang/String;" , "Ljava/lang/String;" , ")" , "Ljava/lang/String;" }
+.end annotation
+.limit registers 6
+; this: v2 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v3 (Lorg/apache/commons/lang3/text/StrBuilder;)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (I)
+.line 446
+	if-nez	v3,l140e58
+; v3 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 447
+	const/4	v1,0
+; v1 : single-length
+l140e56:
+.line 451
+	return-object	v1
+; v1 : Ljava/lang/String;
+l140e58:
+.line 449
+	new-instance	v1,org/apache/commons/lang3/text/StrBuilder
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder;
+	invoke-direct	{v1,v5},org/apache/commons/lang3/text/StrBuilder/<init>	; <init>(I)V
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v5 : single-length
+	invoke-virtual	{v1,v3,v4,v5},org/apache/commons/lang3/text/StrBuilder/append	; append(Lorg/apache/commons/lang3/text/StrBuilder;II)Lorg/apache/commons/lang3/text/StrBuilder;
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v3 : Lorg/apache/commons/lang3/text/StrBuilder; , v4 : single-length , v5 : single-length
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 450
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v2,v0,v1,v5},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v2 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length , v5 : single-length
+.line 451
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l140e56
+.end method
+
+.method public replace([C)Ljava/lang/String;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Ljava/lang/Object;" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TV;>;" , "Ljava/lang/String;" , "Ljava/lang/String;" , ")" , "Ljava/lang/String;" }
+.end annotation
+.limit registers 5
+; this: v3 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v4 ([C)
+.line 344
+	if-nez	v4,l140e94
+; v4 : [C
+.line 345
+	const/4	v1,0
+; v1 : single-length
+l140e92:
+.line 349
+	return-object	v1
+; v1 : Ljava/lang/String;
+l140e94:
+.line 347
+	new-instance	v1,org/apache/commons/lang3/text/StrBuilder
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder;
+	array-length	v2,v4
+; v2 : single-length , v4 : [C
+	invoke-direct	{v1,v2},org/apache/commons/lang3/text/StrBuilder/<init>	; <init>(I)V
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v2 : single-length
+	invoke-virtual	{v1,v4},org/apache/commons/lang3/text/StrBuilder/append	; append([C)Lorg/apache/commons/lang3/text/StrBuilder;
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v4 : [C
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 348
+	const/4	v1,0
+; v1 : single-length
+	array-length	v2,v4
+; v2 : single-length , v4 : [C
+	invoke-virtual	{v3,v0,v1,v2},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v3 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length , v2 : single-length
+.line 349
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l140e92
+.end method
+
+.method public replace([CII)Ljava/lang/String;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Ljava/lang/Object;" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "TV;>;" , "Ljava/lang/String;" , "Ljava/lang/String;" , ")" , "Ljava/lang/String;" }
+.end annotation
+.limit registers 6
+; this: v2 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v3 ([C)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (I)
+.line 366
+	if-nez	v3,l140ed4
+; v3 : [C
+.line 367
+	const/4	v1,0
+; v1 : single-length
+l140ed2:
+.line 371
+	return-object	v1
+; v1 : Ljava/lang/String;
+l140ed4:
+.line 369
+	new-instance	v1,org/apache/commons/lang3/text/StrBuilder
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder;
+	invoke-direct	{v1,v5},org/apache/commons/lang3/text/StrBuilder/<init>	; <init>(I)V
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v5 : single-length
+	invoke-virtual	{v1,v3,v4,v5},org/apache/commons/lang3/text/StrBuilder/append	; append([CII)Lorg/apache/commons/lang3/text/StrBuilder;
+; v1 : Lorg/apache/commons/lang3/text/StrBuilder; , v3 : [C , v4 : single-length , v5 : single-length
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 370
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v2,v0,v1,v5},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v2 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length , v5 : single-length
+.line 371
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l140ed2
+.end method
+
+.method public replaceIn(Ljava/lang/StringBuffer;)Z
+.limit registers 4
+; this: v2 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v3 (Ljava/lang/StringBuffer;)
+	const/4	v0,0
+; v0 : single-length
+.line 482
+	if-nez	v3,l140f10
+; v3 : Ljava/lang/StringBuffer;
+l140f0e:
+.line 485
+	return	v0
+; v0 : single-length
+l140f10:
+	invoke-virtual	{v3},java/lang/StringBuffer/length	; length()I
+; v3 : Ljava/lang/StringBuffer;
+	move-result	v1
+; v1 : single-length
+	invoke-virtual	{v2,v3,v0,v1},org/apache/commons/lang3/text/StrSubstitutor/replaceIn	; replaceIn(Ljava/lang/StringBuffer;II)Z
+; v2 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v3 : Ljava/lang/StringBuffer; , v0 : single-length , v1 : single-length
+	move-result	v0
+; v0 : single-length
+	goto	l140f0e
+.end method
+
+.method public replaceIn(Ljava/lang/StringBuffer;II)Z
+.limit registers 7
+; this: v3 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v4 (Ljava/lang/StringBuffer;)
+; parameter[1] : v5 (I)
+; parameter[2] : v6 (I)
+	const/4	v1,0
+; v1 : single-length
+.line 502
+	if-nez	v4,l140f3c
+; v4 : Ljava/lang/StringBuffer;
+l140f3a:
+.line 510
+	return	v1
+; v1 : single-length
+l140f3c:
+.line 505
+	new-instance	v2,org/apache/commons/lang3/text/StrBuilder
+; v2 : Lorg/apache/commons/lang3/text/StrBuilder;
+	invoke-direct	{v2,v6},org/apache/commons/lang3/text/StrBuilder/<init>	; <init>(I)V
+; v2 : Lorg/apache/commons/lang3/text/StrBuilder; , v6 : single-length
+	invoke-virtual	{v2,v4,v5,v6},org/apache/commons/lang3/text/StrBuilder/append	; append(Ljava/lang/StringBuffer;II)Lorg/apache/commons/lang3/text/StrBuilder;
+; v2 : Lorg/apache/commons/lang3/text/StrBuilder; , v4 : Ljava/lang/StringBuffer; , v5 : single-length , v6 : single-length
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 506
+	invoke-virtual	{v3,v0,v1,v6},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v3 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrBuilder; , v1 : single-length , v6 : single-length
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,l140f3a
+; v2 : single-length
+.line 509
+	add-int	v1,v5,v6
+; v1 : single-length , v5 : single-length , v6 : single-length
+	invoke-virtual	{v0},org/apache/commons/lang3/text/StrBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v4,v5,v1,v2},java/lang/StringBuffer/replace	; replace(IILjava/lang/String;)Ljava/lang/StringBuffer;
+; v4 : Ljava/lang/StringBuffer; , v5 : single-length , v1 : single-length , v2 : Ljava/lang/String;
+.line 510
+	const/4	v1,1
+; v1 : single-length
+	goto	l140f3a
+.end method
+
+.method public replaceIn(Lorg/apache/commons/lang3/text/StrBuilder;)Z
+.limit registers 4
+; this: v2 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v3 (Lorg/apache/commons/lang3/text/StrBuilder;)
+	const/4	v0,0
+; v0 : single-length
+.line 522
+	if-nez	v3,l140f88
+; v3 : Lorg/apache/commons/lang3/text/StrBuilder;
+l140f86:
+.line 525
+	return	v0
+; v0 : single-length
+l140f88:
+	invoke-virtual	{v3},org/apache/commons/lang3/text/StrBuilder/length	; length()I
+; v3 : Lorg/apache/commons/lang3/text/StrBuilder;
+	move-result	v1
+; v1 : single-length
+	invoke-virtual	{v2,v3,v0,v1},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v2 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v3 : Lorg/apache/commons/lang3/text/StrBuilder; , v0 : single-length , v1 : single-length
+	move-result	v0
+; v0 : single-length
+	goto	l140f86
+.end method
+
+.method public replaceIn(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+.limit registers 5
+; this: v1 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v2 (Lorg/apache/commons/lang3/text/StrBuilder;)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+.line 541
+	if-nez	v2,l140fb4
+; v2 : Lorg/apache/commons/lang3/text/StrBuilder;
+.line 542
+	const/4	v0,0
+; v0 : single-length
+l140fb2:
+.line 544
+	return	v0
+; v0 : single-length
+l140fb4:
+	invoke-virtual	{v1,v2,v3,v4},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+; v1 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v2 : Lorg/apache/commons/lang3/text/StrBuilder; , v3 : single-length , v4 : single-length
+	move-result	v0
+; v0 : single-length
+	goto	l140fb2
+.end method
+
+.method protected resolveVariable(Ljava/lang/String;Lorg/apache/commons/lang3/text/StrBuilder;II)Ljava/lang/String;
+.limit registers 7
+; this: v2 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v3 (Ljava/lang/String;)
+; parameter[1] : v4 (Lorg/apache/commons/lang3/text/StrBuilder;)
+; parameter[2] : v5 (I)
+; parameter[3] : v6 (I)
+.line 722
+	invoke-virtual	{v2},org/apache/commons/lang3/text/StrSubstitutor/getVariableResolver	; getVariableResolver()Lorg/apache/commons/lang3/text/StrLookup;
+; v2 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrLookup;
+.line 723
+	if-nez	v0,l140fe0
+; v0 : Lorg/apache/commons/lang3/text/StrLookup;
+.line 724
+	const/4	v1,0
+; v1 : single-length
+l140fde:
+.line 726
+	return-object	v1
+; v1 : Ljava/lang/String;
+l140fe0:
+	invoke-virtual	{v0,v3},org/apache/commons/lang3/text/StrLookup/lookup	; lookup(Ljava/lang/String;)Ljava/lang/String;
+; v0 : Lorg/apache/commons/lang3/text/StrLookup; , v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	l140fde
+.end method
+
+.method public setEnableSubstitutionInVariables(Z)V
+.limit registers 2
+; this: v0 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v1 (Z)
+.line 924
+	iput-boolean	v1,v0,org/apache/commons/lang3/text/StrSubstitutor.enableSubstitutionInVariables Z
+; v1 : single-length , v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.line 925
+	return-void	
+.end method
+
+.method public setEscapeChar(C)V
+.limit registers 2
+; this: v0 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v1 (C)
+.line 748
+	iput-char	v1,v0,org/apache/commons/lang3/text/StrSubstitutor.escapeChar C
+; v1 : single-length , v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.line 749
+	return-void	
+.end method
+
+.method public setVariablePrefix(C)Lorg/apache/commons/lang3/text/StrSubstitutor;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v2 (C)
+.line 796
+	invoke-static	{v2},org/apache/commons/lang3/text/StrMatcher/charMatcher	; charMatcher(C)Lorg/apache/commons/lang3/text/StrMatcher;
+; v2 : single-length
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+	invoke-virtual	{v1,v0},org/apache/commons/lang3/text/StrSubstitutor/setVariablePrefixMatcher	; setVariablePrefixMatcher(Lorg/apache/commons/lang3/text/StrMatcher;)Lorg/apache/commons/lang3/text/StrSubstitutor;
+; v1 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	return-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.end method
+
+.method public setVariablePrefix(Ljava/lang/String;)Lorg/apache/commons/lang3/text/StrSubstitutor;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 810
+	if-nez	v3,l141064
+; v3 : Ljava/lang/String;
+.line 811
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"Variable prefix must not be null!"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l141064:
+.line 813
+	invoke-static	{v3},org/apache/commons/lang3/text/StrMatcher/stringMatcher	; stringMatcher(Ljava/lang/String;)Lorg/apache/commons/lang3/text/StrMatcher;
+; v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+	invoke-virtual	{v2,v0},org/apache/commons/lang3/text/StrSubstitutor/setVariablePrefixMatcher	; setVariablePrefixMatcher(Lorg/apache/commons/lang3/text/StrMatcher;)Lorg/apache/commons/lang3/text/StrSubstitutor;
+; v2 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	return-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.end method
+
+.method public setVariablePrefixMatcher(Lorg/apache/commons/lang3/text/StrMatcher;)Lorg/apache/commons/lang3/text/StrSubstitutor;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v3 (Lorg/apache/commons/lang3/text/StrMatcher;)
+.line 778
+	if-nez	v3,l14109c
+; v3 : Lorg/apache/commons/lang3/text/StrMatcher;
+.line 779
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"Variable prefix matcher must not be null!"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l14109c:
+.line 781
+	iput-object	v3,v2,org/apache/commons/lang3/text/StrSubstitutor.prefixMatcher Lorg/apache/commons/lang3/text/StrMatcher;
+; v3 : Lorg/apache/commons/lang3/text/StrMatcher; , v2 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.line 782
+	return-object	v2
+; v2 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.end method
+
+.method public setVariableResolver(Lorg/apache/commons/lang3/text/StrLookup;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/lang3/text/StrLookup" , "<*>;)V" }
+.end annotation
+.limit registers 2
+; this: v0 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v1 (Lorg/apache/commons/lang3/text/StrLookup;)
+.line 898
+	iput-object	v1,v0,org/apache/commons/lang3/text/StrSubstitutor.variableResolver Lorg/apache/commons/lang3/text/StrLookup;
+; v1 : Lorg/apache/commons/lang3/text/StrLookup; , v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.line 899
+	return-void	
+.end method
+
+.method public setVariableSuffix(C)Lorg/apache/commons/lang3/text/StrSubstitutor;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v2 (C)
+.line 861
+	invoke-static	{v2},org/apache/commons/lang3/text/StrMatcher/charMatcher	; charMatcher(C)Lorg/apache/commons/lang3/text/StrMatcher;
+; v2 : single-length
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+	invoke-virtual	{v1,v0},org/apache/commons/lang3/text/StrSubstitutor/setVariableSuffixMatcher	; setVariableSuffixMatcher(Lorg/apache/commons/lang3/text/StrMatcher;)Lorg/apache/commons/lang3/text/StrSubstitutor;
+; v1 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	return-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.end method
+
+.method public setVariableSuffix(Ljava/lang/String;)Lorg/apache/commons/lang3/text/StrSubstitutor;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 875
+	if-nez	v3,l141104
+; v3 : Ljava/lang/String;
+.line 876
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"Variable suffix must not be null!"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l141104:
+.line 878
+	invoke-static	{v3},org/apache/commons/lang3/text/StrMatcher/stringMatcher	; stringMatcher(Ljava/lang/String;)Lorg/apache/commons/lang3/text/StrMatcher;
+; v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+	invoke-virtual	{v2,v0},org/apache/commons/lang3/text/StrSubstitutor/setVariableSuffixMatcher	; setVariableSuffixMatcher(Lorg/apache/commons/lang3/text/StrMatcher;)Lorg/apache/commons/lang3/text/StrSubstitutor;
+; v2 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v0 : Lorg/apache/commons/lang3/text/StrMatcher;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+	return-object	v0
+; v0 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.end method
+
+.method public setVariableSuffixMatcher(Lorg/apache/commons/lang3/text/StrMatcher;)Lorg/apache/commons/lang3/text/StrSubstitutor;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v3 (Lorg/apache/commons/lang3/text/StrMatcher;)
+.line 843
+	if-nez	v3,l14113c
+; v3 : Lorg/apache/commons/lang3/text/StrMatcher;
+.line 844
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"Variable suffix matcher must not be null!"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l14113c:
+.line 846
+	iput-object	v3,v2,org/apache/commons/lang3/text/StrSubstitutor.suffixMatcher Lorg/apache/commons/lang3/text/StrMatcher;
+; v3 : Lorg/apache/commons/lang3/text/StrMatcher; , v2 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.line 847
+	return-object	v2
+; v2 : Lorg/apache/commons/lang3/text/StrSubstitutor;
+.end method
+
+.method protected substitute(Lorg/apache/commons/lang3/text/StrBuilder;II)Z
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/apache/commons/lang3/text/StrBuilder;" , "II" , "Ljava/util/List" , "<" , "Ljava/lang/String;" , ">;)I" }
+.end annotation
+.limit registers 5
+; this: v1 (Lorg/apache/commons/lang3/text/StrSubstitutor;)
+; parameter[0] : v2 (Lorg/apache/commons/lang3/text/StrBuilder;)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+.line 563
+	const/4	v0,0
+; v0 : single-length
+	invoke-direct	{v1,v2,v3,v4,v0},org/apache/commons/lang3/text/StrSubstitutor/substitute	; substitute(Lorg/apache/commons/lang3/text/StrBuilder;IILjava/util/List;)I
+; v1 : Lorg/apache/commons/lang3/text/StrSubstitutor; , v2 : Lorg/apache/commons/lang3/text/StrBuilder; , v3 : single-length , v4 : single-length , v0 : single-length
+	move-result	v0
+; v0 : single-length
+	if-lez	v0,l141166
+; v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l141164:
+	return	v0
+; v0 : single-length
+l141166:
+	const/4	v0,0
+; v0 : single-length
+	goto	l141164
+.end method
+
+

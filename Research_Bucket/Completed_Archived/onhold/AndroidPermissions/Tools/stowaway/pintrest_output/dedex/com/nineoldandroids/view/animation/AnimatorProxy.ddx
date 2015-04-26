@@ -1,0 +1,1317 @@
+.class public final com/nineoldandroids/view/animation/AnimatorProxy
+.super android/view/animation/Animation
+.source AnimatorProxy.java
+
+.field public static final NEEDS_PROXY Z
+.field private static final PROXIES Ljava/util/WeakHashMap;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/WeakHashMap" , "<" , "Landroid/view/View;" , "Lcom/nineoldandroids/view/animation/AnimatorProxy;" , ">;" }
+  .end annotation
+.end field
+.field private final mAfter Landroid/graphics/RectF;
+.field private mAlpha F
+.field private final mBefore Landroid/graphics/RectF;
+.field private final mCamera Landroid/graphics/Camera;
+.field private mHasPivot Z
+.field private mPivotX F
+.field private mPivotY F
+.field private mRotationX F
+.field private mRotationY F
+.field private mRotationZ F
+.field private mScaleX F
+.field private mScaleY F
+.field private final mTempMatrix Landroid/graphics/Matrix;
+.field private mTranslationX F
+.field private mTranslationY F
+.field private final mView Ljava/lang/ref/WeakReference;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/lang/ref/WeakReference" , "<" , "Landroid/view/View;" , ">;" }
+  .end annotation
+.end field
+
+.method static <clinit>()V
+.limit registers 2
+.line 20
+	sget-object	v0,android/os/Build$VERSION.SDK Ljava/lang/String;
+; v0 : Ljava/lang/String;
+	invoke-static	{v0},java/lang/Integer/valueOf	; valueOf(Ljava/lang/String;)Ljava/lang/Integer;
+; v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Integer;
+	invoke-virtual	{v0},java/lang/Integer/intValue	; intValue()I
+; v0 : Ljava/lang/Integer;
+	move-result	v0
+; v0 : single-length
+	const/16	v1,11
+; v1 : single-length
+	if-ge	v0,v1,ld1fa6
+; v0 : single-length , v1 : single-length
+	const/4	v0,1
+; v0 : single-length
+ld1f92:
+	sput-boolean	v0,com/nineoldandroids/view/animation/AnimatorProxy.NEEDS_PROXY Z
+; v0 : Z
+.line 22
+	new-instance	v0,java/util/WeakHashMap
+; v0 : Ljava/util/WeakHashMap;
+	invoke-direct	{v0},java/util/WeakHashMap/<init>	; <init>()V
+; v0 : Ljava/util/WeakHashMap;
+	sput-object	v0,com/nineoldandroids/view/animation/AnimatorProxy.PROXIES Ljava/util/WeakHashMap;
+; v0 : Ljava/util/WeakHashMap;
+	return-void	
+ld1fa6:
+.line 20
+	const/4	v0,0
+; v0 : single-length
+	goto	ld1f92
+.end method
+
+.method private <init>(Landroid/view/View;)V
+.limit registers 4
+; this: v2 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v3 (Landroid/view/View;)
+	const/high16	v1,16256
+; v1 : single-length
+.line 62
+	invoke-direct	{v2},android/view/animation/Animation/<init>	; <init>()V
+; v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 44
+	new-instance	v0,android/graphics/Camera
+; v0 : Landroid/graphics/Camera;
+	invoke-direct	{v0},android/graphics/Camera/<init>	; <init>()V
+; v0 : Landroid/graphics/Camera;
+	iput-object	v0,v2,com/nineoldandroids/view/animation/AnimatorProxy.mCamera Landroid/graphics/Camera;
+; v0 : Landroid/graphics/Camera; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 47
+	iput	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mAlpha F
+; v1 : single-length , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 53
+	iput	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mScaleX F
+; v1 : single-length , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 54
+	iput	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mScaleY F
+; v1 : single-length , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 58
+	new-instance	v0,android/graphics/RectF
+; v0 : Landroid/graphics/RectF;
+	invoke-direct	{v0},android/graphics/RectF/<init>	; <init>()V
+; v0 : Landroid/graphics/RectF;
+	iput-object	v0,v2,com/nineoldandroids/view/animation/AnimatorProxy.mBefore Landroid/graphics/RectF;
+; v0 : Landroid/graphics/RectF; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 59
+	new-instance	v0,android/graphics/RectF
+; v0 : Landroid/graphics/RectF;
+	invoke-direct	{v0},android/graphics/RectF/<init>	; <init>()V
+; v0 : Landroid/graphics/RectF;
+	iput-object	v0,v2,com/nineoldandroids/view/animation/AnimatorProxy.mAfter Landroid/graphics/RectF;
+; v0 : Landroid/graphics/RectF; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 60
+	new-instance	v0,android/graphics/Matrix
+; v0 : Landroid/graphics/Matrix;
+	invoke-direct	{v0},android/graphics/Matrix/<init>	; <init>()V
+; v0 : Landroid/graphics/Matrix;
+	iput-object	v0,v2,com/nineoldandroids/view/animation/AnimatorProxy.mTempMatrix Landroid/graphics/Matrix;
+; v0 : Landroid/graphics/Matrix; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 63
+	const-wide/16	v0,0
+; v0 : double-length
+	invoke-virtual	{v2,v0,v1},com/nineoldandroids/view/animation/AnimatorProxy/setDuration	; setDuration(J)V
+; v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v0 : double-length
+.line 64
+	const/4	v0,1
+; v0 : single-length
+	invoke-virtual	{v2,v0},com/nineoldandroids/view/animation/AnimatorProxy/setFillAfter	; setFillAfter(Z)V
+; v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v0 : single-length
+.line 65
+	invoke-virtual	{v3,v2},android/view/View/setAnimation	; setAnimation(Landroid/view/animation/Animation;)V
+; v3 : Landroid/view/View; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 66
+	new-instance	v0,java/lang/ref/WeakReference
+; v0 : Ljava/lang/ref/WeakReference;
+	invoke-direct	{v0,v3},java/lang/ref/WeakReference/<init>	; <init>(Ljava/lang/Object;)V
+; v0 : Ljava/lang/ref/WeakReference; , v3 : Landroid/view/View;
+	iput-object	v0,v2,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v0 : Ljava/lang/ref/WeakReference; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 67
+	return-void	
+.end method
+
+.method private computeRect(Landroid/graphics/RectF;Landroid/view/View;)V
+.limit registers 9
+; this: v6 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v7 (Landroid/graphics/RectF;)
+; parameter[1] : v8 (Landroid/view/View;)
+.var 0 is f F from ld20a8 to ld20b4
+.var 0 is f F from ld20c8 to ld20d4
+	const/4	v5,0
+; v5 : single-length
+.line 269
+	invoke-virtual	{v8},android/view/View/getWidth	; getWidth()I
+; v8 : Landroid/view/View;
+	move-result	v4
+; v4 : single-length
+	int-to-float	v3,v4
+; v3 : single-length , v4 : single-length
+.line 270
+	invoke-virtual	{v8},android/view/View/getHeight	; getHeight()I
+; v8 : Landroid/view/View;
+	move-result	v4
+; v4 : single-length
+	int-to-float	v1,v4
+; v1 : single-length , v4 : single-length
+.line 273
+	invoke-virtual	{v7,v5,v5,v3,v1},android/graphics/RectF/set	; set(FFFF)V
+; v7 : Landroid/graphics/RectF; , v5 : single-length , v5 : single-length , v3 : single-length , v1 : single-length
+.line 275
+	iget-object	v2,v6,com/nineoldandroids/view/animation/AnimatorProxy.mTempMatrix Landroid/graphics/Matrix;
+; v2 : Landroid/graphics/Matrix; , v6 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 276
+	invoke-virtual	{v2},android/graphics/Matrix/reset	; reset()V
+; v2 : Landroid/graphics/Matrix;
+.line 277
+	invoke-direct	{v6,v2,v8},com/nineoldandroids/view/animation/AnimatorProxy/transformMatrix	; transformMatrix(Landroid/graphics/Matrix;Landroid/view/View;)V
+; v6 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v2 : Landroid/graphics/Matrix; , v8 : Landroid/view/View;
+.line 278
+	iget-object	v4,v6,com/nineoldandroids/view/animation/AnimatorProxy.mTempMatrix Landroid/graphics/Matrix;
+; v4 : Landroid/graphics/Matrix; , v6 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v4,v7},android/graphics/Matrix/mapRect	; mapRect(Landroid/graphics/RectF;)Z
+; v4 : Landroid/graphics/Matrix; , v7 : Landroid/graphics/RectF;
+.line 280
+	invoke-virtual	{v8},android/view/View/getLeft	; getLeft()I
+; v8 : Landroid/view/View;
+	move-result	v4
+; v4 : single-length
+	int-to-float	v4,v4
+; v4 : single-length , v4 : single-length
+	invoke-virtual	{v8},android/view/View/getTop	; getTop()I
+; v8 : Landroid/view/View;
+	move-result	v5
+; v5 : single-length
+	int-to-float	v5,v5
+; v5 : single-length , v5 : single-length
+	invoke-virtual	{v7,v4,v5},android/graphics/RectF/offset	; offset(FF)V
+; v7 : Landroid/graphics/RectF; , v4 : single-length , v5 : single-length
+.line 283
+	iget	v4,v7,android/graphics/RectF.right F
+; v4 : single-length , v7 : Landroid/graphics/RectF;
+	iget	v5,v7,android/graphics/RectF.left F
+; v5 : single-length , v7 : Landroid/graphics/RectF;
+	cmpg-float	v4,v4,v5
+; v4 : single-length , v4 : single-length , v5 : single-length
+	if-gez	v4,ld20b4
+; v4 : single-length
+.line 284
+	iget	v0,v7,android/graphics/RectF.right F
+; v0 : single-length , v7 : Landroid/graphics/RectF;
+.line 285
+	iget	v4,v7,android/graphics/RectF.left F
+; v4 : single-length , v7 : Landroid/graphics/RectF;
+	iput	v4,v7,android/graphics/RectF.right F
+; v4 : single-length , v7 : Landroid/graphics/RectF;
+.line 286
+	iput	v0,v7,android/graphics/RectF.left F
+; v0 : single-length , v7 : Landroid/graphics/RectF;
+ld20b4:
+.line 288
+	iget	v4,v7,android/graphics/RectF.bottom F
+; v4 : single-length , v7 : Landroid/graphics/RectF;
+	iget	v5,v7,android/graphics/RectF.top F
+; v5 : single-length , v7 : Landroid/graphics/RectF;
+	cmpg-float	v4,v4,v5
+; v4 : single-length , v4 : single-length , v5 : single-length
+	if-gez	v4,ld20d4
+; v4 : single-length
+.line 289
+	iget	v0,v7,android/graphics/RectF.top F
+; v0 : single-length , v7 : Landroid/graphics/RectF;
+.line 290
+	iget	v4,v7,android/graphics/RectF.bottom F
+; v4 : single-length , v7 : Landroid/graphics/RectF;
+	iput	v4,v7,android/graphics/RectF.top F
+; v4 : single-length , v7 : Landroid/graphics/RectF;
+.line 291
+	iput	v0,v7,android/graphics/RectF.bottom F
+; v0 : single-length , v7 : Landroid/graphics/RectF;
+ld20d4:
+.line 293
+	return-void	
+.end method
+
+.method private invalidateAfterUpdate()V
+.limit registers 9
+; this: v8 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 251
+	iget-object	v2,v8,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v2 : Ljava/lang/ref/WeakReference; , v8 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v2},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v2 : Ljava/lang/ref/WeakReference;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,android/view/View
+; v1 : Landroid/view/View;
+.line 252
+	if-nez	v1,ld20fe
+; v1 : Landroid/view/View;
+ld20fc:
+.line 265
+	return-void	
+ld20fe:
+.line 256
+	iget-object	v0,v8,com/nineoldandroids/view/animation/AnimatorProxy.mAfter Landroid/graphics/RectF;
+; v0 : Landroid/graphics/RectF; , v8 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 257
+	invoke-direct	{v8,v0,v1},com/nineoldandroids/view/animation/AnimatorProxy/computeRect	; computeRect(Landroid/graphics/RectF;Landroid/view/View;)V
+; v8 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v0 : Landroid/graphics/RectF; , v1 : Landroid/view/View;
+.line 258
+	iget-object	v2,v8,com/nineoldandroids/view/animation/AnimatorProxy.mBefore Landroid/graphics/RectF;
+; v2 : Landroid/graphics/RectF; , v8 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v0,v2},android/graphics/RectF/union	; union(Landroid/graphics/RectF;)V
+; v0 : Landroid/graphics/RectF; , v2 : Landroid/graphics/RectF;
+.line 260
+	invoke-virtual	{v1},android/view/View/getParent	; getParent()Landroid/view/ViewParent;
+; v1 : Landroid/view/View;
+	move-result-object	v2
+; v2 : Landroid/view/ViewParent;
+	check-cast	v2,android/view/View
+; v2 : Landroid/view/View;
+	iget	v3,v0,android/graphics/RectF.left F
+; v3 : single-length , v0 : Landroid/graphics/RectF;
+	float-to-double	v3,v3
+; v3 : double-length , v3 : double-length
+	invoke-static	{v3,v4},java/lang/Math/floor	; floor(D)D
+; v3 : double-length
+	move-result-wide	v3
+; v3 : double-length
+	double-to-int	v3,v3
+; v3 : single-length , v3 : single-length
+	iget	v4,v0,android/graphics/RectF.top F
+; v4 : single-length , v0 : Landroid/graphics/RectF;
+	float-to-double	v4,v4
+; v4 : double-length , v4 : double-length
+	invoke-static	{v4,v5},java/lang/Math/floor	; floor(D)D
+; v4 : double-length
+	move-result-wide	v4
+; v4 : double-length
+	double-to-int	v4,v4
+; v4 : single-length , v4 : single-length
+	iget	v5,v0,android/graphics/RectF.right F
+; v5 : single-length , v0 : Landroid/graphics/RectF;
+	float-to-double	v5,v5
+; v5 : double-length , v5 : double-length
+	invoke-static	{v5,v6},java/lang/Math/ceil	; ceil(D)D
+; v5 : double-length
+	move-result-wide	v5
+; v5 : double-length
+	double-to-int	v5,v5
+; v5 : single-length , v5 : single-length
+	iget	v6,v0,android/graphics/RectF.bottom F
+; v6 : single-length , v0 : Landroid/graphics/RectF;
+	float-to-double	v6,v6
+; v6 : double-length , v6 : double-length
+	invoke-static	{v6,v7},java/lang/Math/ceil	; ceil(D)D
+; v6 : double-length
+	move-result-wide	v6
+; v6 : double-length
+	double-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	invoke-virtual	{v2,v3,v4,v5,v6},android/view/View/invalidate	; invalidate(IIII)V
+; v2 : Landroid/view/View; , v3 : single-length , v4 : single-length , v5 : single-length , v6 : single-length
+	goto	ld20fc
+.end method
+
+.method private prepareForUpdate()V
+.limit registers 3
+; this: v2 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 245
+	iget-object	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v1 : Ljava/lang/ref/WeakReference; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v1},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/lang/ref/WeakReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/view/View
+; v0 : Landroid/view/View;
+.line 246
+	if-eqz	v0,ld2196
+; v0 : Landroid/view/View;
+.line 247
+	iget-object	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mBefore Landroid/graphics/RectF;
+; v1 : Landroid/graphics/RectF; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-direct	{v2,v1,v0},com/nineoldandroids/view/animation/AnimatorProxy/computeRect	; computeRect(Landroid/graphics/RectF;Landroid/view/View;)V
+; v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v1 : Landroid/graphics/RectF; , v0 : Landroid/view/View;
+ld2196:
+.line 249
+	return-void	
+.end method
+
+.method private transformMatrix(Landroid/graphics/Matrix;Landroid/view/View;)V
+.limit registers 19
+; this: v16 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v17 (Landroid/graphics/Matrix;)
+; parameter[1] : v18 (Landroid/view/View;)
+.var 1 is camera Landroid/graphics/Camera; from ld21fa to ld225c
+.var 5 is hasPivot Z from ld2202 to ld225c
+.var 6 is pX F from ld220e to ld225c
+.var 7 is pY F from ld221a to ld225c
+.var 2 is deltaSX F from ld2292 to ld22b8
+.var 3 is deltaSY F from ld22a0 to ld22b8
+.var 11 is sX F from ld2264 to ld22d4
+.var 12 is sY F from ld226c to ld22d4
+.line 296
+	invoke-virtual/range	{v18},android/view/View/getWidth;	getWidth()I
+; v18 : Landroid/view/View;
+	move-result	v14
+; v14 : single-length
+	int-to-float	v13,v14
+; v13 : single-length , v14 : single-length
+.line 297
+	invoke-virtual/range	{v18},android/view/View/getHeight;	getHeight()I
+; v18 : Landroid/view/View;
+	move-result	v14
+; v14 : single-length
+	int-to-float	v4,v14
+; v4 : single-length , v14 : single-length
+.line 299
+	move-object/from16	v0,v16
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v16 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	iget	v8,v0,com/nineoldandroids/view/animation/AnimatorProxy.mRotationX F
+; v8 : single-length , v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 300
+	move-object/from16	v0,v16
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v16 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	iget	v9,v0,com/nineoldandroids/view/animation/AnimatorProxy.mRotationY F
+; v9 : single-length , v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 301
+	move-object/from16	v0,v16
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v16 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	iget	v10,v0,com/nineoldandroids/view/animation/AnimatorProxy.mRotationZ F
+; v10 : single-length , v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 302
+	const/4	v14,0
+; v14 : single-length
+	cmpl-float	v14,v8,v14
+; v14 : single-length , v8 : single-length , v14 : single-length
+	if-nez	v14,ld21f2
+; v14 : single-length
+	const/4	v14,0
+; v14 : single-length
+	cmpl-float	v14,v9,v14
+; v14 : single-length , v9 : single-length , v14 : single-length
+	if-nez	v14,ld21f2
+; v14 : single-length
+	const/4	v14,0
+; v14 : single-length
+	cmpl-float	v14,v10,v14
+; v14 : single-length , v10 : single-length , v14 : single-length
+	if-eqz	v14,ld225c
+; v14 : single-length
+ld21f2:
+.line 303
+	move-object/from16	v0,v16
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v16 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	iget-object	v1,v0,com/nineoldandroids/view/animation/AnimatorProxy.mCamera Landroid/graphics/Camera;
+; v1 : Landroid/graphics/Camera; , v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 304
+	move-object/from16	v0,v16
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v16 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	iget-boolean	v5,v0,com/nineoldandroids/view/animation/AnimatorProxy.mHasPivot Z
+; v5 : single-length , v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 305
+	if-eqz	v5,ld22d4
+; v5 : single-length
+	move-object/from16	v0,v16
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v16 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	iget	v6,v0,com/nineoldandroids/view/animation/AnimatorProxy.mPivotX F
+; v6 : single-length , v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld220e:
+.line 306
+	if-eqz	v5,ld22de
+; v5 : single-length
+	move-object/from16	v0,v16
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v16 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	iget	v7,v0,com/nineoldandroids/view/animation/AnimatorProxy.mPivotY F
+; v7 : single-length , v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld221a:
+.line 307
+	invoke-virtual	{v1},android/graphics/Camera/save	; save()V
+; v1 : Landroid/graphics/Camera;
+.line 308
+	invoke-virtual	{v1,v8},android/graphics/Camera/rotateX	; rotateX(F)V
+; v1 : Landroid/graphics/Camera; , v8 : single-length
+.line 309
+	invoke-virtual	{v1,v9},android/graphics/Camera/rotateY	; rotateY(F)V
+; v1 : Landroid/graphics/Camera; , v9 : single-length
+.line 310
+	neg-float	v14,v10
+; v14 : single-length , v10 : single-length
+	invoke-virtual	{v1,v14},android/graphics/Camera/rotateZ	; rotateZ(F)V
+; v1 : Landroid/graphics/Camera; , v14 : single-length
+.line 311
+	move-object/from16	v0,v17
+; v0 : Landroid/graphics/Matrix; , v17 : Landroid/graphics/Matrix;
+	invoke-virtual	{v1,v0},android/graphics/Camera/getMatrix	; getMatrix(Landroid/graphics/Matrix;)V
+; v1 : Landroid/graphics/Camera; , v0 : Landroid/graphics/Matrix;
+.line 312
+	invoke-virtual	{v1},android/graphics/Camera/restore	; restore()V
+; v1 : Landroid/graphics/Camera;
+.line 313
+	neg-float	v14,v6
+; v14 : single-length , v6 : single-length
+	neg-float	v15,v7
+; v15 : single-length , v7 : single-length
+	move-object/from16	v0,v17
+; v0 : Landroid/graphics/Matrix; , v17 : Landroid/graphics/Matrix;
+	invoke-virtual	{v0,v14,v15},android/graphics/Matrix/preTranslate	; preTranslate(FF)Z
+; v0 : Landroid/graphics/Matrix; , v14 : single-length , v15 : single-length
+.line 314
+	move-object/from16	v0,v17
+; v0 : Landroid/graphics/Matrix; , v17 : Landroid/graphics/Matrix;
+	invoke-virtual	{v0,v6,v7},android/graphics/Matrix/postTranslate	; postTranslate(FF)Z
+; v0 : Landroid/graphics/Matrix; , v6 : single-length , v7 : single-length
+ld225c:
+.line 317
+	move-object/from16	v0,v16
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v16 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	iget	v11,v0,com/nineoldandroids/view/animation/AnimatorProxy.mScaleX F
+; v11 : single-length , v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 318
+	move-object/from16	v0,v16
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v16 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	iget	v12,v0,com/nineoldandroids/view/animation/AnimatorProxy.mScaleY F
+; v12 : single-length , v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 319
+	const/high16	v14,16256
+; v14 : single-length
+	cmpl-float	v14,v11,v14
+; v14 : single-length , v11 : single-length , v14 : single-length
+	if-nez	v14,ld2284
+; v14 : single-length
+	const/high16	v14,16256
+; v14 : single-length
+	cmpl-float	v14,v12,v14
+; v14 : single-length , v12 : single-length , v14 : single-length
+	if-eqz	v14,ld22b8
+; v14 : single-length
+ld2284:
+.line 320
+	mul-float	v14,v11,v13
+; v14 : single-length , v11 : single-length , v13 : single-length
+	sub-float/2addr	v14,v13
+; v14 : single-length , v13 : single-length
+	const/high16	v15,16384
+; v15 : single-length
+	div-float	v2,v14,v15
+; v2 : single-length , v14 : single-length , v15 : single-length
+.line 321
+	mul-float	v14,v12,v4
+; v14 : single-length , v12 : single-length , v4 : single-length
+	sub-float/2addr	v14,v4
+; v14 : single-length , v4 : single-length
+	const/high16	v15,16384
+; v15 : single-length
+	div-float	v3,v14,v15
+; v3 : single-length , v14 : single-length , v15 : single-length
+.line 322
+	move-object/from16	v0,v17
+; v0 : Landroid/graphics/Matrix; , v17 : Landroid/graphics/Matrix;
+	invoke-virtual	{v0,v11,v12},android/graphics/Matrix/postScale	; postScale(FF)Z
+; v0 : Landroid/graphics/Matrix; , v11 : single-length , v12 : single-length
+.line 323
+	neg-float	v14,v2
+; v14 : single-length , v2 : single-length
+	neg-float	v15,v3
+; v15 : single-length , v3 : single-length
+	move-object/from16	v0,v17
+; v0 : Landroid/graphics/Matrix; , v17 : Landroid/graphics/Matrix;
+	invoke-virtual	{v0,v14,v15},android/graphics/Matrix/postTranslate	; postTranslate(FF)Z
+; v0 : Landroid/graphics/Matrix; , v14 : single-length , v15 : single-length
+ld22b8:
+.line 325
+	move-object/from16	v0,v16
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v16 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	iget	v14,v0,com/nineoldandroids/view/animation/AnimatorProxy.mTranslationX F
+; v14 : single-length , v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	move-object/from16	v0,v16
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v16 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	iget	v15,v0,com/nineoldandroids/view/animation/AnimatorProxy.mTranslationY F
+; v15 : single-length , v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	move-object/from16	v0,v17
+; v0 : Landroid/graphics/Matrix; , v17 : Landroid/graphics/Matrix;
+	invoke-virtual	{v0,v14,v15},android/graphics/Matrix/postTranslate	; postTranslate(FF)Z
+; v0 : Landroid/graphics/Matrix; , v14 : single-length , v15 : single-length
+.line 326
+	return-void	
+ld22d4:
+.line 305
+	const/high16	v14,16384
+; v14 : single-length
+	div-float	v6,v13,v14
+; v6 : single-length , v13 : single-length , v14 : single-length
+	goto	ld220e
+ld22de:
+.line 306
+	const/high16	v14,16384
+; v14 : single-length
+	div-float	v7,v4,v14
+; v7 : single-length , v4 : single-length , v14 : single-length
+	goto	ld221a
+.end method
+
+.method public static wrap(Landroid/view/View;)Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.limit registers 3
+; parameter[0] : v2 (Landroid/view/View;)
+.var 0 is proxy Lcom/nineoldandroids/view/animation/AnimatorProxy; from ld2308 to ld231c
+.line 34
+	sget-object	v1,com/nineoldandroids/view/animation/AnimatorProxy.PROXIES Ljava/util/WeakHashMap;
+; v1 : Ljava/util/WeakHashMap;
+	invoke-virtual	{v1,v2},java/util/WeakHashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/WeakHashMap; , v2 : Landroid/view/View;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/nineoldandroids/view/animation/AnimatorProxy
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 36
+	if-eqz	v0,ld2318
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v2},android/view/View/getAnimation	; getAnimation()Landroid/view/animation/Animation;
+; v2 : Landroid/view/View;
+	move-result-object	v1
+; v1 : Landroid/view/animation/Animation;
+	if-eq	v0,v1,ld232c
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v1 : Landroid/view/animation/Animation;
+ld2318:
+.line 37
+	new-instance	v0,com/nineoldandroids/view/animation/AnimatorProxy
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld231c:
+	invoke-direct	{v0,v2},com/nineoldandroids/view/animation/AnimatorProxy/<init>	; <init>(Landroid/view/View;)V
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v2 : Landroid/view/View;
+.line 38
+	sget-object	v1,com/nineoldandroids/view/animation/AnimatorProxy.PROXIES Ljava/util/WeakHashMap;
+; v1 : Ljava/util/WeakHashMap;
+	invoke-virtual	{v1,v2,v0},java/util/WeakHashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/WeakHashMap; , v2 : Landroid/view/View; , v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld232c:
+.line 40
+	return-object	v0
+; v0 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.end method
+
+.method protected applyTransformation(FLandroid/view/animation/Transformation;)V
+.limit registers 5
+; this: v2 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v3 (F)
+; parameter[1] : v4 (Landroid/view/animation/Transformation;)
+.line 330
+	iget-object	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v1 : Ljava/lang/ref/WeakReference; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v1},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/lang/ref/WeakReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/view/View
+; v0 : Landroid/view/View;
+.line 331
+	if-eqz	v0,ld236c
+; v0 : Landroid/view/View;
+.line 332
+	iget	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mAlpha F
+; v1 : single-length , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v4,v1},android/view/animation/Transformation/setAlpha	; setAlpha(F)V
+; v4 : Landroid/view/animation/Transformation; , v1 : single-length
+.line 333
+	invoke-virtual	{v4},android/view/animation/Transformation/getMatrix	; getMatrix()Landroid/graphics/Matrix;
+; v4 : Landroid/view/animation/Transformation;
+	move-result-object	v1
+; v1 : Landroid/graphics/Matrix;
+	invoke-direct	{v2,v1,v0},com/nineoldandroids/view/animation/AnimatorProxy/transformMatrix	; transformMatrix(Landroid/graphics/Matrix;Landroid/view/View;)V
+; v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v1 : Landroid/graphics/Matrix; , v0 : Landroid/view/View;
+ld236c:
+.line 335
+	return-void	
+.end method
+
+.method public getAlpha()F
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 70
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mAlpha F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getPivotX()F
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 82
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mPivotX F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getPivotY()F
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 93
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mPivotY F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getRotation()F
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 104
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mRotationZ F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getRotationX()F
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 114
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mRotationX F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getRotationY()F
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 124
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mRotationY F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getScale()F
+.limit registers 3
+; this: v2 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 231
+	iget	v0,v2,com/nineoldandroids/view/animation/AnimatorProxy.mScaleX F
+; v0 : single-length , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	iget	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mScaleY F
+; v1 : single-length , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-static	{v0,v1},java/lang/Math/max	; max(FF)F
+; v0 : single-length , v1 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getScaleX()F
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 135
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mScaleX F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getScaleY()F
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 145
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mScaleY F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getScrollX()I
+.limit registers 3
+; this: v2 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 155
+	iget-object	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v1 : Ljava/lang/ref/WeakReference; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v1},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/lang/ref/WeakReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/view/View
+; v0 : Landroid/view/View;
+.line 156
+	if-nez	v0,ld247c
+; v0 : Landroid/view/View;
+.line 157
+	const/4	v1,0
+; v1 : single-length
+ld247a:
+.line 159
+	return	v1
+; v1 : single-length
+ld247c:
+	invoke-virtual	{v0},android/view/View/getScrollX	; getScrollX()I
+; v0 : Landroid/view/View;
+	move-result	v1
+; v1 : single-length
+	goto	ld247a
+.end method
+
+.method public getScrollY()I
+.limit registers 3
+; this: v2 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 168
+	iget-object	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v1 : Ljava/lang/ref/WeakReference; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v1},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/lang/ref/WeakReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/view/View
+; v0 : Landroid/view/View;
+.line 169
+	if-nez	v0,ld24b0
+; v0 : Landroid/view/View;
+.line 170
+	const/4	v1,0
+; v1 : single-length
+ld24ae:
+.line 172
+	return	v1
+; v1 : single-length
+ld24b0:
+	invoke-virtual	{v0},android/view/View/getScrollY	; getScrollY()I
+; v0 : Landroid/view/View;
+	move-result	v1
+; v1 : single-length
+	goto	ld24ae
+.end method
+
+.method public getTranslationX()F
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 182
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mTranslationX F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getTranslationY()F
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 192
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mTranslationY F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getX()F
+.limit registers 4
+; this: v3 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 202
+	iget-object	v1,v3,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v1 : Ljava/lang/ref/WeakReference; , v3 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v1},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/lang/ref/WeakReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/view/View
+; v0 : Landroid/view/View;
+.line 203
+	if-nez	v0,ld2514
+; v0 : Landroid/view/View;
+.line 204
+	const/4	v1,0
+; v1 : single-length
+ld2512:
+.line 206
+	return	v1
+; v1 : single-length
+ld2514:
+	invoke-virtual	{v0},android/view/View/getLeft	; getLeft()I
+; v0 : Landroid/view/View;
+	move-result	v1
+; v1 : single-length
+	int-to-float	v1,v1
+; v1 : single-length , v1 : single-length
+	iget	v2,v3,com/nineoldandroids/view/animation/AnimatorProxy.mTranslationX F
+; v2 : single-length , v3 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	add-float/2addr	v1,v2
+; v1 : single-length , v2 : single-length
+	goto	ld2512
+.end method
+
+.method public getY()F
+.limit registers 4
+; this: v3 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+.line 215
+	iget-object	v1,v3,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v1 : Ljava/lang/ref/WeakReference; , v3 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v1},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/lang/ref/WeakReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/view/View
+; v0 : Landroid/view/View;
+.line 216
+	if-nez	v0,ld2550
+; v0 : Landroid/view/View;
+.line 217
+	const/4	v1,0
+; v1 : single-length
+ld254e:
+.line 219
+	return	v1
+; v1 : single-length
+ld2550:
+	invoke-virtual	{v0},android/view/View/getTop	; getTop()I
+; v0 : Landroid/view/View;
+	move-result	v1
+; v1 : single-length
+	int-to-float	v1,v1
+; v1 : single-length , v1 : single-length
+	iget	v2,v3,com/nineoldandroids/view/animation/AnimatorProxy.mTranslationY F
+; v2 : single-length , v3 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	add-float/2addr	v1,v2
+; v1 : single-length , v2 : single-length
+	goto	ld254e
+.end method
+
+.method public setAlpha(F)V
+.limit registers 4
+; this: v2 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v3 (F)
+.var 0 is view Landroid/view/View; from ld2594 to ld259e
+.line 73
+	iget	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mAlpha F
+; v1 : single-length , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	cmpl-float	v1,v1,v3
+; v1 : single-length , v1 : single-length , v3 : single-length
+	if-eqz	v1,ld259e
+; v1 : single-length
+.line 74
+	iput	v3,v2,com/nineoldandroids/view/animation/AnimatorProxy.mAlpha F
+; v3 : single-length , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 75
+	iget-object	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v1 : Ljava/lang/ref/WeakReference; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v1},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/lang/ref/WeakReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/view/View
+; v0 : Landroid/view/View;
+.line 76
+	if-eqz	v0,ld259e
+; v0 : Landroid/view/View;
+.line 77
+	invoke-virtual	{v0},android/view/View/invalidate	; invalidate()V
+; v0 : Landroid/view/View;
+ld259e:
+.line 80
+	return-void	
+.end method
+
+.method public setPivotX(F)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v2 (F)
+.line 85
+	iget-boolean	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mHasPivot Z
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	if-eqz	v0,ld25c4
+; v0 : single-length
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mPivotX F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	cmpl-float	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : single-length
+	if-eqz	v0,ld25da
+; v0 : single-length
+ld25c4:
+.line 86
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/prepareForUpdate	; prepareForUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 87
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mHasPivot Z
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 88
+	iput	v2,v1,com/nineoldandroids/view/animation/AnimatorProxy.mPivotX F
+; v2 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 89
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/invalidateAfterUpdate	; invalidateAfterUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld25da:
+.line 91
+	return-void	
+.end method
+
+.method public setPivotY(F)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v2 (F)
+.line 96
+	iget-boolean	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mHasPivot Z
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	if-eqz	v0,ld2600
+; v0 : single-length
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mPivotY F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	cmpl-float	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : single-length
+	if-eqz	v0,ld2616
+; v0 : single-length
+ld2600:
+.line 97
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/prepareForUpdate	; prepareForUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 98
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mHasPivot Z
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 99
+	iput	v2,v1,com/nineoldandroids/view/animation/AnimatorProxy.mPivotY F
+; v2 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 100
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/invalidateAfterUpdate	; invalidateAfterUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld2616:
+.line 102
+	return-void	
+.end method
+
+.method public setRotation(F)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v2 (F)
+.line 107
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mRotationZ F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	cmpl-float	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : single-length
+	if-eqz	v0,ld2644
+; v0 : single-length
+.line 108
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/prepareForUpdate	; prepareForUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 109
+	iput	v2,v1,com/nineoldandroids/view/animation/AnimatorProxy.mRotationZ F
+; v2 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 110
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/invalidateAfterUpdate	; invalidateAfterUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld2644:
+.line 112
+	return-void	
+.end method
+
+.method public setRotationX(F)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v2 (F)
+.line 117
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mRotationX F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	cmpl-float	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : single-length
+	if-eqz	v0,ld2674
+; v0 : single-length
+.line 118
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/prepareForUpdate	; prepareForUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 119
+	iput	v2,v1,com/nineoldandroids/view/animation/AnimatorProxy.mRotationX F
+; v2 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 120
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/invalidateAfterUpdate	; invalidateAfterUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld2674:
+.line 122
+	return-void	
+.end method
+
+.method public setRotationY(F)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v2 (F)
+.line 128
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mRotationY F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	cmpl-float	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : single-length
+	if-eqz	v0,ld26a4
+; v0 : single-length
+.line 129
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/prepareForUpdate	; prepareForUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 130
+	iput	v2,v1,com/nineoldandroids/view/animation/AnimatorProxy.mRotationY F
+; v2 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 131
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/invalidateAfterUpdate	; invalidateAfterUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld26a4:
+.line 133
+	return-void	
+.end method
+
+.method public setScale(F)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v2 (F)
+.line 236
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mScaleX F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	cmpl-float	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : single-length
+	if-nez	v0,ld26d0
+; v0 : single-length
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mScaleY F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	cmpl-float	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : single-length
+	if-eqz	v0,ld26e4
+; v0 : single-length
+ld26d0:
+.line 237
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/prepareForUpdate	; prepareForUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 238
+	iput	v2,v1,com/nineoldandroids/view/animation/AnimatorProxy.mScaleX F
+; v2 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 239
+	iput	v2,v1,com/nineoldandroids/view/animation/AnimatorProxy.mScaleY F
+; v2 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 240
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/invalidateAfterUpdate	; invalidateAfterUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld26e4:
+.line 242
+	return-void	
+.end method
+
+.method public setScaleX(F)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v2 (F)
+.line 138
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mScaleX F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	cmpl-float	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : single-length
+	if-eqz	v0,ld2714
+; v0 : single-length
+.line 139
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/prepareForUpdate	; prepareForUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 140
+	iput	v2,v1,com/nineoldandroids/view/animation/AnimatorProxy.mScaleX F
+; v2 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 141
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/invalidateAfterUpdate	; invalidateAfterUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld2714:
+.line 143
+	return-void	
+.end method
+
+.method public setScaleY(F)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v2 (F)
+.line 148
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mScaleY F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	cmpl-float	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : single-length
+	if-eqz	v0,ld2744
+; v0 : single-length
+.line 149
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/prepareForUpdate	; prepareForUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 150
+	iput	v2,v1,com/nineoldandroids/view/animation/AnimatorProxy.mScaleY F
+; v2 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 151
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/invalidateAfterUpdate	; invalidateAfterUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld2744:
+.line 153
+	return-void	
+.end method
+
+.method public setScrollX(I)V
+.limit registers 4
+; this: v2 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v3 (I)
+.line 162
+	iget-object	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v1 : Ljava/lang/ref/WeakReference; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v1},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/lang/ref/WeakReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/view/View
+; v0 : Landroid/view/View;
+.line 163
+	if-eqz	v0,ld277a
+; v0 : Landroid/view/View;
+.line 164
+	invoke-virtual	{v0},android/view/View/getScrollY	; getScrollY()I
+; v0 : Landroid/view/View;
+	move-result	v1
+; v1 : single-length
+	invoke-virtual	{v0,v3,v1},android/view/View/scrollTo	; scrollTo(II)V
+; v0 : Landroid/view/View; , v3 : single-length , v1 : single-length
+ld277a:
+.line 166
+	return-void	
+.end method
+
+.method public setScrollY(I)V
+.limit registers 4
+; this: v2 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v3 (I)
+.line 175
+	iget-object	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v1 : Ljava/lang/ref/WeakReference; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v1},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/lang/ref/WeakReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/view/View
+; v0 : Landroid/view/View;
+.line 176
+	if-eqz	v0,ld27ae
+; v0 : Landroid/view/View;
+.line 177
+	invoke-virtual	{v0},android/view/View/getScrollX	; getScrollX()I
+; v0 : Landroid/view/View;
+	move-result	v1
+; v1 : single-length
+	invoke-virtual	{v0,v1,v3},android/view/View/scrollTo	; scrollTo(II)V
+; v0 : Landroid/view/View; , v1 : single-length , v3 : single-length
+ld27ae:
+.line 179
+	return-void	
+.end method
+
+.method public setTranslationX(F)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v2 (F)
+.line 185
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mTranslationX F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	cmpl-float	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : single-length
+	if-eqz	v0,ld27dc
+; v0 : single-length
+.line 186
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/prepareForUpdate	; prepareForUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 187
+	iput	v2,v1,com/nineoldandroids/view/animation/AnimatorProxy.mTranslationX F
+; v2 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 188
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/invalidateAfterUpdate	; invalidateAfterUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld27dc:
+.line 190
+	return-void	
+.end method
+
+.method public setTranslationY(F)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v2 (F)
+.line 195
+	iget	v0,v1,com/nineoldandroids/view/animation/AnimatorProxy.mTranslationY F
+; v0 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	cmpl-float	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : single-length
+	if-eqz	v0,ld280c
+; v0 : single-length
+.line 196
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/prepareForUpdate	; prepareForUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 197
+	iput	v2,v1,com/nineoldandroids/view/animation/AnimatorProxy.mTranslationY F
+; v2 : single-length , v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+.line 198
+	invoke-direct	{v1},com/nineoldandroids/view/animation/AnimatorProxy/invalidateAfterUpdate	; invalidateAfterUpdate()V
+; v1 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+ld280c:
+.line 200
+	return-void	
+.end method
+
+.method public setX(F)V
+.limit registers 4
+; this: v2 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v3 (F)
+.line 209
+	iget-object	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v1 : Ljava/lang/ref/WeakReference; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v1},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/lang/ref/WeakReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/view/View
+; v0 : Landroid/view/View;
+.line 210
+	if-eqz	v0,ld2848
+; v0 : Landroid/view/View;
+.line 211
+	invoke-virtual	{v0},android/view/View/getLeft	; getLeft()I
+; v0 : Landroid/view/View;
+	move-result	v1
+; v1 : single-length
+	int-to-float	v1,v1
+; v1 : single-length , v1 : single-length
+	sub-float	v1,v3,v1
+; v1 : single-length , v3 : single-length , v1 : single-length
+	invoke-virtual	{v2,v1},com/nineoldandroids/view/animation/AnimatorProxy/setTranslationX	; setTranslationX(F)V
+; v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v1 : single-length
+ld2848:
+.line 213
+	return-void	
+.end method
+
+.method public setY(F)V
+.limit registers 4
+; this: v2 (Lcom/nineoldandroids/view/animation/AnimatorProxy;)
+; parameter[0] : v3 (F)
+.line 222
+	iget-object	v1,v2,com/nineoldandroids/view/animation/AnimatorProxy.mView Ljava/lang/ref/WeakReference;
+; v1 : Ljava/lang/ref/WeakReference; , v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy;
+	invoke-virtual	{v1},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v1 : Ljava/lang/ref/WeakReference;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/view/View
+; v0 : Landroid/view/View;
+.line 223
+	if-eqz	v0,ld2884
+; v0 : Landroid/view/View;
+.line 224
+	invoke-virtual	{v0},android/view/View/getTop	; getTop()I
+; v0 : Landroid/view/View;
+	move-result	v1
+; v1 : single-length
+	int-to-float	v1,v1
+; v1 : single-length , v1 : single-length
+	sub-float	v1,v3,v1
+; v1 : single-length , v3 : single-length , v1 : single-length
+	invoke-virtual	{v2,v1},com/nineoldandroids/view/animation/AnimatorProxy/setTranslationY	; setTranslationY(F)V
+; v2 : Lcom/nineoldandroids/view/animation/AnimatorProxy; , v1 : single-length
+ld2884:
+.line 226
+	return-void	
+.end method
+
+

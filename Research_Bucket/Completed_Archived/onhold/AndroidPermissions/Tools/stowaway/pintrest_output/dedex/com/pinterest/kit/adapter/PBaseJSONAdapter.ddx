@@ -1,0 +1,282 @@
+.class public com/pinterest/kit/adapter/PBaseJSONAdapter
+.super android/widget/BaseAdapter
+.source PBaseJSONAdapter.java
+
+.inner class NJSONAdapterListener inner com/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener outer com/pinterest/kit/adapter/PBaseJSONAdapter
+.field protected _listener Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener;
+.field public dataSource Lorg/json/JSONArray;
+.field public imageCache Lcom/pinterest/kit/network/PImageCache;
+.field protected inflater Landroid/view/LayoutInflater;
+.field public loading Z
+
+.method public <init>(Landroid/app/Activity;)V
+.limit registers 3
+; this: v1 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+; parameter[0] : v2 (Landroid/app/Activity;)
+.line 22
+	invoke-direct	{v1},android/widget/BaseAdapter/<init>	; <init>()V
+; v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+.line 17
+	invoke-static	{},com/pinterest/kit/network/PImageCache/instance	; instance()Lcom/pinterest/kit/network/PImageCache;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Lcom/pinterest/kit/network/PImageCache;
+	iput-object	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.imageCache Lcom/pinterest/kit/network/PImageCache;
+; v0 : Lcom/pinterest/kit/network/PImageCache; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+.line 19
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.loading Z
+; v0 : single-length , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+.line 23
+	invoke-static	{v2},android/view/LayoutInflater/from	; from(Landroid/content/Context;)Landroid/view/LayoutInflater;
+; v2 : Landroid/app/Activity;
+	move-result-object	v0
+; v0 : Landroid/view/LayoutInflater;
+	iput-object	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.inflater Landroid/view/LayoutInflater;
+; v0 : Landroid/view/LayoutInflater; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+.line 24
+	new-instance	v0,org/json/JSONArray
+; v0 : Lorg/json/JSONArray;
+	invoke-direct	{v0},org/json/JSONArray/<init>	; <init>()V
+; v0 : Lorg/json/JSONArray;
+	iput-object	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.dataSource Lorg/json/JSONArray;
+; v0 : Lorg/json/JSONArray; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+.line 25
+	return-void	
+.end method
+
+.method public <init>(Landroid/view/LayoutInflater;)V
+.limit registers 3
+; this: v1 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+; parameter[0] : v2 (Landroid/view/LayoutInflater;)
+.line 28
+	invoke-direct	{v1},android/widget/BaseAdapter/<init>	; <init>()V
+; v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+.line 17
+	invoke-static	{},com/pinterest/kit/network/PImageCache/instance	; instance()Lcom/pinterest/kit/network/PImageCache;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Lcom/pinterest/kit/network/PImageCache;
+	iput-object	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.imageCache Lcom/pinterest/kit/network/PImageCache;
+; v0 : Lcom/pinterest/kit/network/PImageCache; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+.line 19
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.loading Z
+; v0 : single-length , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+.line 29
+	iput-object	v2,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.inflater Landroid/view/LayoutInflater;
+; v2 : Landroid/view/LayoutInflater; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+.line 30
+	return-void	
+.end method
+
+.method public finishedLoading()V
+.limit registers 2
+; this: v1 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+.line 111
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.loading Z
+; v0 : single-length , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+.line 112
+	return-void	
+.end method
+
+.method protected getActivity()Lcom/actionbarsherlock/app/SherlockFragmentActivity;
+.limit registers 2
+; this: v1 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+.line 34
+	iget-object	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.inflater Landroid/view/LayoutInflater;
+; v0 : Landroid/view/LayoutInflater; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+	invoke-virtual	{v0},android/view/LayoutInflater/getContext	; getContext()Landroid/content/Context;
+; v0 : Landroid/view/LayoutInflater;
+	move-result-object	v0
+; v0 : Landroid/content/Context;
+	check-cast	v0,com/actionbarsherlock/app/SherlockFragmentActivity
+; v0 : Lcom/actionbarsherlock/app/SherlockFragmentActivity;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/app/SherlockFragmentActivity;
+.end method
+
+.method public getCount()I
+.limit registers 2
+; this: v1 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+.line 71
+	iget-object	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.dataSource Lorg/json/JSONArray;
+; v0 : Lorg/json/JSONArray; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+	if-nez	v0,ld6398
+; v0 : Lorg/json/JSONArray;
+	const/4	v0,0
+; v0 : single-length
+ld6396:
+.line 72
+	return	v0
+; v0 : single-length
+ld6398:
+	iget-object	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.dataSource Lorg/json/JSONArray;
+; v0 : Lorg/json/JSONArray; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+	invoke-virtual	{v0},org/json/JSONArray/length	; length()I
+; v0 : Lorg/json/JSONArray;
+	move-result	v0
+; v0 : single-length
+	goto	ld6396
+.end method
+
+.method public getDataSource()Lorg/json/JSONArray;
+.limit registers 2
+; this: v1 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+.line 47
+	iget-object	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.dataSource Lorg/json/JSONArray;
+; v0 : Lorg/json/JSONArray; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+	return-object	v0
+; v0 : Lorg/json/JSONArray;
+.end method
+
+.method public getItem(I)Ljava/lang/Object;
+.limit registers 3
+; this: v1 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+; parameter[0] : v2 (I)
+.catch org/json/JSONException from ld63d0 to ld63e0 using ld63e4
+ld63d0:
+.line 79
+	invoke-virtual	{v1,v2},com/pinterest/kit/adapter/PBaseJSONAdapter/loadMore	; loadMore(I)V
+; v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter; , v2 : single-length
+.line 80
+	iget-object	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.dataSource Lorg/json/JSONArray;
+; v0 : Lorg/json/JSONArray; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+	invoke-virtual	{v0,v2},org/json/JSONArray/get	; get(I)Ljava/lang/Object;
+; v0 : Lorg/json/JSONArray; , v2 : single-length
+ld63e0:
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+ld63e2:
+.line 83
+	return-object	v0
+; v0 : single-length
+ld63e4:
+.line 82
+	move-exception	v0
+; v0 : org/json/JSONException
+.line 83
+	const/4	v0,0
+; v0 : single-length
+	goto	ld63e2
+.end method
+
+.method public getItemId(I)J
+.limit registers 4
+; this: v2 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+; parameter[0] : v3 (I)
+.line 88
+	int-to-long	v0,v3
+; v0 : double-length , v3 : single-length
+	return-wide	v0
+; v0 : double-length
+.end method
+
+.method public getListener()Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener;
+.limit registers 2
+; this: v1 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+.line 130
+	iget-object	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter._listener Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener;
+; v0 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+	return-object	v0
+; v0 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener;
+.end method
+
+.method public getView(ILandroid/view/View;Landroid/view/ViewGroup;)Landroid/view/View;
+.limit registers 5
+; this: v1 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (Landroid/view/View;)
+; parameter[2] : v4 (Landroid/view/ViewGroup;)
+.line 93
+	const/4	v0,0
+; v0 : single-length
+	return-object	v0
+; v0 : single-length
+.end method
+
+.method protected loadMore(I)V
+.limit registers 3
+; this: v1 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+; parameter[0] : v2 (I)
+.line 98
+	iget-object	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter._listener Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener;
+; v0 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+	if-eqz	v0,ld647c
+; v0 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener;
+	invoke-virtual	{v1},com/pinterest/kit/adapter/PBaseJSONAdapter/getCount	; getCount()I
+; v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+	move-result	v0
+; v0 : single-length
+	add-int/lit8	v0,v0,255
+; v0 : single-length , v0 : single-length
+	if-ne	v2,v0,ld647c
+; v2 : single-length , v0 : single-length
+	iget-boolean	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.loading Z
+; v0 : single-length , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+	if-nez	v0,ld647c
+; v0 : single-length
+.line 100
+	iget-object	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter._listener Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener;
+; v0 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+	invoke-interface	{v0},com/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener/loadMore	; loadMore()V
+; v0 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener;
+.line 101
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v1,com/pinterest/kit/adapter/PBaseJSONAdapter.loading Z
+; v0 : single-length , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+ld647c:
+.line 103
+	return-void	
+.end method
+
+.method protected precache(I)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+; parameter[0] : v1 (I)
+.line 107
+	return-void	
+.end method
+
+.method public setDataSource(Lorg/json/JSONArray;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+; parameter[0] : v3 (Lorg/json/JSONArray;)
+.line 55
+	iget-object	v0,v2,com/pinterest/kit/adapter/PBaseJSONAdapter.inflater Landroid/view/LayoutInflater;
+; v0 : Landroid/view/LayoutInflater; , v2 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+	invoke-virtual	{v0},android/view/LayoutInflater/getContext	; getContext()Landroid/content/Context;
+; v0 : Landroid/view/LayoutInflater;
+	move-result-object	v0
+; v0 : Landroid/content/Context;
+	check-cast	v0,android/app/Activity
+; v0 : Landroid/app/Activity;
+	new-instance	v1,com/pinterest/kit/adapter/PBaseJSONAdapter$1
+; v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter$1;
+	invoke-direct	{v1,v2,v3},com/pinterest/kit/adapter/PBaseJSONAdapter$1/<init>	; <init>(Lcom/pinterest/kit/adapter/PBaseJSONAdapter;Lorg/json/JSONArray;)V
+; v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter$1; , v2 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter; , v3 : Lorg/json/JSONArray;
+	invoke-virtual	{v0,v1},android/app/Activity/runOnUiThread	; runOnUiThread(Ljava/lang/Runnable;)V
+; v0 : Landroid/app/Activity; , v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter$1;
+.line 63
+	return-void	
+.end method
+
+.method public setListener(Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener;)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter;)
+; parameter[0] : v1 (Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener;)
+.line 125
+	iput-object	v1,v0,com/pinterest/kit/adapter/PBaseJSONAdapter._listener Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener;
+; v1 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter$NJSONAdapterListener; , v0 : Lcom/pinterest/kit/adapter/PBaseJSONAdapter;
+.line 126
+	return-void	
+.end method
+
+

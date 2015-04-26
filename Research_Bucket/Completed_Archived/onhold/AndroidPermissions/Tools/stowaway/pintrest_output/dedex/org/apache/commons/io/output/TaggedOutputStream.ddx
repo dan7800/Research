@@ -1,0 +1,71 @@
+.class public org/apache/commons/io/output/TaggedOutputStream
+.super org/apache/commons/io/output/ProxyOutputStream
+.source TaggedOutputStream.java
+
+.field private final tag Ljava/io/Serializable;
+
+.method public <init>(Ljava/io/OutputStream;)V
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/output/TaggedOutputStream;)
+; parameter[0] : v2 (Ljava/io/OutputStream;)
+.line 77
+	invoke-direct	{v1,v2},org/apache/commons/io/output/ProxyOutputStream/<init>	; <init>(Ljava/io/OutputStream;)V
+; v1 : Lorg/apache/commons/io/output/TaggedOutputStream; , v2 : Ljava/io/OutputStream;
+.line 69
+	invoke-static	{},java/util/UUID/randomUUID	; randomUUID()Ljava/util/UUID;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Ljava/util/UUID;
+	iput-object	v0,v1,org/apache/commons/io/output/TaggedOutputStream.tag Ljava/io/Serializable;
+; v0 : Ljava/util/UUID; , v1 : Lorg/apache/commons/io/output/TaggedOutputStream;
+.line 78
+	return-void	
+.end method
+
+.method protected handleIOException(Ljava/io/IOException;)V
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/io/output/TaggedOutputStream;)
+; parameter[0] : v3 (Ljava/io/IOException;)
+.line 113
+	new-instance	v0,org/apache/commons/io/TaggedIOException
+; v0 : Lorg/apache/commons/io/TaggedIOException;
+	iget-object	v1,v2,org/apache/commons/io/output/TaggedOutputStream.tag Ljava/io/Serializable;
+; v1 : Ljava/io/Serializable; , v2 : Lorg/apache/commons/io/output/TaggedOutputStream;
+	invoke-direct	{v0,v3,v1},org/apache/commons/io/TaggedIOException/<init>	; <init>(Ljava/io/IOException;Ljava/io/Serializable;)V
+; v0 : Lorg/apache/commons/io/TaggedIOException; , v3 : Ljava/io/IOException; , v1 : Ljava/io/Serializable;
+	throw	v0
+; v0 : Lorg/apache/commons/io/TaggedIOException;
+.end method
+
+.method public isCauseOf(Ljava/lang/Exception;)Z
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/output/TaggedOutputStream;)
+; parameter[0] : v2 (Ljava/lang/Exception;)
+.line 88
+	iget-object	v0,v1,org/apache/commons/io/output/TaggedOutputStream.tag Ljava/io/Serializable;
+; v0 : Ljava/io/Serializable; , v1 : Lorg/apache/commons/io/output/TaggedOutputStream;
+	invoke-static	{v2,v0},org/apache/commons/io/TaggedIOException/isTaggedWith	; isTaggedWith(Ljava/lang/Throwable;Ljava/lang/Object;)Z
+; v2 : Ljava/lang/Exception; , v0 : Ljava/io/Serializable;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public throwIfCauseOf(Ljava/lang/Exception;)V
+.throws Ljava/io/IOException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/output/TaggedOutputStream;)
+; parameter[0] : v2 (Ljava/lang/Exception;)
+.line 102
+	iget-object	v0,v1,org/apache/commons/io/output/TaggedOutputStream.tag Ljava/io/Serializable;
+; v0 : Ljava/io/Serializable; , v1 : Lorg/apache/commons/io/output/TaggedOutputStream;
+	invoke-static	{v2,v0},org/apache/commons/io/TaggedIOException/throwCauseIfTaggedWith	; throwCauseIfTaggedWith(Ljava/lang/Throwable;Ljava/lang/Object;)V
+; v2 : Ljava/lang/Exception; , v0 : Ljava/io/Serializable;
+.line 103
+	return-void	
+.end method
+
+

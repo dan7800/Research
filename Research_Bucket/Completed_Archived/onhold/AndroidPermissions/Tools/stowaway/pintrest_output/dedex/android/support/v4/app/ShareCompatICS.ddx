@@ -1,0 +1,88 @@
+.class android/support/v4/app/ShareCompatICS
+.super java/lang/Object
+.source ShareCompatICS.java
+
+.field private static final HISTORY_FILENAME_PREFIX Ljava/lang/String; = ".sharecompat_"
+
+.method <init>()V
+.limit registers 1
+; this: v0 (Landroid/support/v4/app/ShareCompatICS;)
+.line 25
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Landroid/support/v4/app/ShareCompatICS;
+	return-void	
+.end method
+
+.method public static configureMenuItem(Landroid/view/MenuItem;Landroid/app/Activity;Landroid/content/Intent;)V
+.limit registers 7
+; parameter[0] : v4 (Landroid/view/MenuItem;)
+; parameter[1] : v5 (Landroid/app/Activity;)
+; parameter[2] : v6 (Landroid/content/Intent;)
+.var 1 is provider Landroid/widget/ShareActionProvider; from l762a2 to l762ae
+.line 29
+	invoke-interface	{v4},android/view/MenuItem/getActionProvider	; getActionProvider()Landroid/view/ActionProvider;
+; v4 : Landroid/view/MenuItem;
+	move-result-object	v0
+; v0 : Landroid/view/ActionProvider;
+.line 30
+	const/4	v1,0
+; v1 : single-length
+.line 31
+	instance-of	v2,v0,android/widget/ShareActionProvider
+; v2 : single-length , v0 : Landroid/view/ActionProvider;
+	if-nez	v2,l762fe
+; v2 : single-length
+.line 32
+	new-instance	v1,android/widget/ShareActionProvider
+; v1 : Landroid/widget/ShareActionProvider;
+l762ae:
+	invoke-direct	{v1,v5},android/widget/ShareActionProvider/<init>	; <init>(Landroid/content/Context;)V
+; v1 : Landroid/widget/ShareActionProvider; , v5 : Landroid/app/Activity;
+l762b4:
+.line 36
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,".sharecompat_"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v5},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v5 : Landroid/app/Activity;
+	move-result-object	v3
+; v3 : Ljava/lang/Class;
+	invoke-virtual	{v3},java/lang/Class/getName	; getName()Ljava/lang/String;
+; v3 : Ljava/lang/Class;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},android/widget/ShareActionProvider/setShareHistoryFileName	; setShareHistoryFileName(Ljava/lang/String;)V
+; v1 : Landroid/widget/ShareActionProvider; , v2 : Ljava/lang/String;
+.line 38
+	invoke-virtual	{v1,v6},android/widget/ShareActionProvider/setShareIntent	; setShareIntent(Landroid/content/Intent;)V
+; v1 : Landroid/widget/ShareActionProvider; , v6 : Landroid/content/Intent;
+.line 39
+	invoke-interface	{v4,v1},android/view/MenuItem/setActionProvider	; setActionProvider(Landroid/view/ActionProvider;)Landroid/view/MenuItem;
+; v4 : Landroid/view/MenuItem; , v1 : Landroid/widget/ShareActionProvider;
+.line 40
+	return-void	
+l762fe:
+	move-object	v1,v0
+; v1 : Landroid/view/ActionProvider; , v0 : Landroid/view/ActionProvider;
+.line 34
+	check-cast	v1,android/widget/ShareActionProvider
+; v1 : Landroid/widget/ShareActionProvider;
+	goto	l762b4
+.end method
+
+

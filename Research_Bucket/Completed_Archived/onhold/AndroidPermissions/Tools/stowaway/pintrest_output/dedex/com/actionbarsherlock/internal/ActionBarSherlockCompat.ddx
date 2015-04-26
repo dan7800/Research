@@ -1,0 +1,3404 @@
+.class public com/actionbarsherlock/internal/ActionBarSherlockCompat
+.super com/actionbarsherlock/ActionBarSherlock
+.source ActionBarSherlockCompat.java
+.implements com/actionbarsherlock/internal/view/menu/MenuBuilder$Callback
+.implements com/actionbarsherlock/view/Window$Callback
+.implements com/actionbarsherlock/internal/view/menu/MenuPresenter$Callback
+.implements android/view/MenuItem$OnMenuItemClickListener
+
+.annotation runtimeVisibility Lcom/actionbarsherlock/ActionBarSherlock$Implementation;
+  api I = 7
+.end annotation
+
+.inner class ActionModeCallbackWrapper inner com/actionbarsherlock/internal/ActionBarSherlockCompat$ActionModeCallbackWrapper outer com/actionbarsherlock/internal/ActionBarSherlockCompat
+.field protected static final DEFAULT_FEATURES I
+.field private aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+.field private mActionMode Lcom/actionbarsherlock/view/ActionMode;
+.field private mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+.field private mCircularProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+.field private mClosingActionMenu Z
+.field private mContentParent Landroid/view/ViewGroup;
+.field private mDecor Landroid/view/ViewGroup;
+.field private mFeatures I
+.field private mHorizontalProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+.field private mIsDestroyed Z
+.field private mIsFloating Z
+.field private mIsTitleReady Z
+.field private mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.field private mMenuFrozenActionViewState Landroid/os/Bundle;
+.field private mMenuIsPrepared Z
+.field private mMenuKeyIsLongPress Z
+.field private mMenuRefreshContent Z
+.field protected mNativeItemMap Ljava/util/HashMap;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/HashMap" , "<" , "Landroid/view/MenuItem;" , "Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;" , ">;" }
+  .end annotation
+.end field
+.field private mReserveOverflow Z
+.field private mReserveOverflowSet Z
+.field private mTitle Ljava/lang/CharSequence;
+.field private mTitleView Landroid/widget/TextView;
+.field private mUiOptions I
+.field private wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+
+.method public <init>(Landroid/app/Activity;I)V
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (Landroid/app/Activity;)
+; parameter[1] : v3 (I)
+	const/4	v0,0
+; v0 : single-length
+.line 57
+	invoke-direct	{v1,v2,v3},com/actionbarsherlock/ActionBarSherlock/<init>	; <init>(Landroid/app/Activity;I)V
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v2 : Landroid/app/Activity; , v3 : single-length
+.line 68
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mReserveOverflowSet Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 75
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuKeyIsLongPress Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 83
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mIsTitleReady Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 85
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mIsDestroyed Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 98
+	iput	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mFeatures I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 100
+	iput	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mUiOptions I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 115
+	const/4	v0,0
+; v0 : single-length
+	iput-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mTitle Ljava/lang/CharSequence;
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 58
+	return-void	
+.end method
+
+.method static access$000(Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)Z
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 51
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mIsDestroyed Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	return	v0
+; v0 : single-length
+.end method
+
+.method static access$100(Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)Landroid/app/Activity;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 51
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v0 : Landroid/app/Activity; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	return-object	v0
+; v0 : Landroid/app/Activity;
+.end method
+
+.method static access$200(Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 51
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.end method
+
+.method static access$300(Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 51
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+.end method
+
+.method static access$400(Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)Landroid/app/Activity;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 51
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v0 : Landroid/app/Activity; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	return-object	v0
+; v0 : Landroid/app/Activity;
+.end method
+
+.method static access$500(Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)Lcom/actionbarsherlock/view/ActionMode;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 51
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v0 : Lcom/actionbarsherlock/view/ActionMode; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/ActionMode;
+.end method
+
+.method static access$502(Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;Lcom/actionbarsherlock/view/ActionMode;)Lcom/actionbarsherlock/view/ActionMode;
+.limit registers 2
+; parameter[0] : v0 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[1] : v1 (Lcom/actionbarsherlock/view/ActionMode;)
+.line 51
+	iput-object	v1,v0,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v1 : Lcom/actionbarsherlock/view/ActionMode; , v0 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	return-object	v1
+; v1 : Lcom/actionbarsherlock/view/ActionMode;
+.end method
+
+.method static access$600(Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)Landroid/app/Activity;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 51
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v0 : Landroid/app/Activity; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	return-object	v0
+; v0 : Landroid/app/Activity;
+.end method
+
+.method public static cleanActivityName(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+.limit registers 4
+; parameter[0] : v2 (Ljava/lang/String;)
+; parameter[1] : v3 (Ljava/lang/String;)
+	const/16	v1,46
+; v1 : single-length
+.line 1161
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v3,v0},java/lang/String/charAt	; charAt(I)C
+; v3 : Ljava/lang/String; , v0 : single-length
+	move-result	v0
+; v0 : single-length
+	if-ne	v0,v1,l8901e
+; v0 : single-length , v1 : single-length
+.line 1163
+	new-instance	v0,java/lang/StringBuilder
+; v0 : Ljava/lang/StringBuilder;
+	invoke-direct	{v0},java/lang/StringBuilder/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+l8901c:
+.line 1170
+	return-object	v3
+; v3 : Ljava/lang/String;
+l8901e:
+.line 1165
+	const/4	v0,1
+; v0 : single-length
+	invoke-virtual	{v3,v1,v0},java/lang/String/indexOf	; indexOf(II)I
+; v3 : Ljava/lang/String; , v1 : single-length , v0 : single-length
+	move-result	v0
+; v0 : single-length
+	const/4	v1,15
+; v1 : single-length
+	if-ne	v0,v1,l8901c
+; v0 : single-length , v1 : single-length
+.line 1167
+	new-instance	v0,java/lang/StringBuilder
+; v0 : Ljava/lang/StringBuilder;
+	invoke-direct	{v0},java/lang/StringBuilder/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,"."
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	goto	l8901c
+.end method
+
+.method private generateLayout()Landroid/view/ViewGroup;
+.limit registers 13
+; this: v12 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.var 1 is contentParent Landroid/view/ViewGroup; from l8917e to l89192
+.var 2 is in Landroid/view/View; from l89156 to l89192
+.var 3 is layoutResource I from l89140 to l89192
+.var 3 is layoutResource I from l891be to l891c0
+.var 3 is layoutResource I from l891c4 to l891c6
+.var 3 is layoutResource I from l891e2 to l891e4
+.var 4 is progress Lcom/actionbarsherlock/internal/widget/IcsProgressBar; from l89216 to l89220
+	const/16	v11,10
+; v11 : single-length
+	const/16	v10,9
+; v10 : single-length
+	const/4	v9,15
+; v9 : single-length
+	const/4	v8,1
+; v8 : single-length
+	const/4	v7,0
+; v7 : single-length
+.line 1002
+	iget-object	v5,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v5 : Landroid/app/Activity; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v5},android/app/Activity/getTheme	; getTheme()Landroid/content/res/Resources$Theme;
+; v5 : Landroid/app/Activity;
+	move-result-object	v5
+; v5 : Landroid/content/res/Resources$Theme;
+	sget-object	v6,com/actionbarsherlock/R$styleable.SherlockTheme [I
+; v6 : [I
+	invoke-virtual	{v5,v6},android/content/res/Resources$Theme/obtainStyledAttributes	; obtainStyledAttributes([I)Landroid/content/res/TypedArray;
+; v5 : Landroid/content/res/Resources$Theme; , v6 : [I
+	move-result-object	v0
+; v0 : Landroid/content/res/TypedArray;
+.line 1004
+	invoke-virtual	{v0,v7,v7},android/content/res/TypedArray/getBoolean	; getBoolean(IZ)Z
+; v0 : Landroid/content/res/TypedArray; , v7 : single-length , v7 : single-length
+	move-result	v5
+; v5 : single-length
+	iput-boolean	v5,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mIsFloating Z
+; v5 : single-length , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 1006
+	const/16	v5,45
+; v5 : single-length
+	invoke-virtual	{v0,v5},android/content/res/TypedArray/hasValue	; hasValue(I)Z
+; v0 : Landroid/content/res/TypedArray; , v5 : single-length
+	move-result	v5
+; v5 : single-length
+	if-nez	v5,l890c2
+; v5 : single-length
+.line 1007
+	new-instance	v5,java/lang/IllegalStateException
+; v5 : Ljava/lang/IllegalStateException;
+	const-string	v6,"You must use Theme.Sherlock, Theme.Sherlock.Light, Theme.Sherlock.Light.DarkActionBar, or a derivative."
+; v6 : Ljava/lang/String;
+	invoke-direct	{v5,v6},java/lang/IllegalStateException/<init>	; <init>(Ljava/lang/String;)V
+; v5 : Ljava/lang/IllegalStateException; , v6 : Ljava/lang/String;
+	throw	v5
+; v5 : Ljava/lang/IllegalStateException;
+l890c2:
+.line 1010
+	const/16	v5,44
+; v5 : single-length
+	invoke-virtual	{v0,v5,v7},android/content/res/TypedArray/getBoolean	; getBoolean(IZ)Z
+; v0 : Landroid/content/res/TypedArray; , v5 : single-length , v7 : single-length
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l89192
+; v5 : single-length
+.line 1011
+	invoke-virtual	{v12,v8},com/actionbarsherlock/internal/ActionBarSherlockCompat/requestFeature	; requestFeature(I)Z
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v8 : single-length
+l890d8:
+.line 1017
+	const/16	v5,46
+; v5 : single-length
+	invoke-virtual	{v0,v5,v7},android/content/res/TypedArray/getBoolean	; getBoolean(IZ)Z
+; v0 : Landroid/content/res/TypedArray; , v5 : single-length , v7 : single-length
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l890ee
+; v5 : single-length
+.line 1018
+	invoke-virtual	{v12,v10},com/actionbarsherlock/internal/ActionBarSherlockCompat/requestFeature	; requestFeature(I)Z
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v10 : single-length
+l890ee:
+.line 1021
+	const/16	v5,47
+; v5 : single-length
+	invoke-virtual	{v0,v5,v7},android/content/res/TypedArray/getBoolean	; getBoolean(IZ)Z
+; v0 : Landroid/content/res/TypedArray; , v5 : single-length , v7 : single-length
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l89104
+; v5 : single-length
+.line 1022
+	invoke-virtual	{v12,v11},com/actionbarsherlock/internal/ActionBarSherlockCompat/requestFeature	; requestFeature(I)Z
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v11 : single-length
+l89104:
+.line 1025
+	invoke-virtual	{v0},android/content/res/TypedArray/recycle	; recycle()V
+; v0 : Landroid/content/res/TypedArray;
+.line 1028
+	invoke-virtual	{v12,v8},com/actionbarsherlock/internal/ActionBarSherlockCompat/hasFeature	; hasFeature(I)Z
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v8 : single-length
+	move-result	v5
+; v5 : single-length
+	if-nez	v5,l891c6
+; v5 : single-length
+.line 1029
+	iget-boolean	v5,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mIsFloating Z
+; v5 : single-length , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v5,l891ae
+; v5 : single-length
+.line 1031
+	iget-object	v5,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v5 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v5},android/view/ViewGroup/getParent	; getParent()Landroid/view/ViewParent;
+; v5 : Landroid/view/ViewGroup;
+	move-result-object	v5
+; v5 : Landroid/view/ViewParent;
+	check-cast	v5,android/view/ViewGroup
+; v5 : Landroid/view/ViewGroup;
+	iput-object	v5,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v5 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 1032
+	iget-object	v5,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v5 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v5},android/view/ViewGroup/removeAllViews	; removeAllViews()V
+; v5 : Landroid/view/ViewGroup;
+.line 1034
+	sget	v3,com/actionbarsherlock/R$layout.abs__dialog_title_holo I
+; v3 : single-length
+l89140:
+.line 1049
+	iget-object	v5,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v5 : Landroid/app/Activity; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v5},android/app/Activity/getLayoutInflater	; getLayoutInflater()Landroid/view/LayoutInflater;
+; v5 : Landroid/app/Activity;
+	move-result-object	v5
+; v5 : Landroid/view/LayoutInflater;
+	const/4	v6,0
+; v6 : single-length
+	invoke-virtual	{v5,v3,v6},android/view/LayoutInflater/inflate	; inflate(ILandroid/view/ViewGroup;)Landroid/view/View;
+; v5 : Landroid/view/LayoutInflater; , v3 : single-length , v6 : single-length
+	move-result-object	v2
+; v2 : Landroid/view/View;
+.line 1050
+	iget-object	v5,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v5 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	new-instance	v6,android/view/ViewGroup$LayoutParams
+; v6 : Landroid/view/ViewGroup$LayoutParams;
+	invoke-direct	{v6,v9,v9},android/view/ViewGroup$LayoutParams/<init>	; <init>(II)V
+; v6 : Landroid/view/ViewGroup$LayoutParams; , v9 : single-length , v9 : single-length
+	invoke-virtual	{v5,v2,v6},android/view/ViewGroup/addView	; addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+; v5 : Landroid/view/ViewGroup; , v2 : Landroid/view/View; , v6 : Landroid/view/ViewGroup$LayoutParams;
+.line 1052
+	iget-object	v5,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v5 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	sget	v6,com/actionbarsherlock/R$id.abs__content I
+; v6 : single-length
+	invoke-virtual	{v5,v6},android/view/ViewGroup/findViewById	; findViewById(I)Landroid/view/View;
+; v5 : Landroid/view/ViewGroup; , v6 : single-length
+	move-result-object	v1
+; v1 : Landroid/view/View;
+	check-cast	v1,android/view/ViewGroup
+; v1 : Landroid/view/ViewGroup;
+.line 1053
+	if-nez	v1,l891ea
+; v1 : Landroid/view/ViewGroup;
+.line 1054
+	new-instance	v5,java/lang/RuntimeException
+; v5 : Ljava/lang/RuntimeException;
+	const-string	v6,"Couldn't find content container view"
+; v6 : Ljava/lang/String;
+	invoke-direct	{v5,v6},java/lang/RuntimeException/<init>	; <init>(Ljava/lang/String;)V
+; v5 : Ljava/lang/RuntimeException; , v6 : Ljava/lang/String;
+	throw	v5
+; v5 : Ljava/lang/RuntimeException;
+l89192:
+.line 1012
+	const/16	v5,45
+; v5 : single-length
+	invoke-virtual	{v0,v5,v7},android/content/res/TypedArray/getBoolean	; getBoolean(IZ)Z
+; v0 : Landroid/content/res/TypedArray; , v5 : single-length , v7 : single-length
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l890d8
+; v5 : single-length
+.line 1014
+	const/16	v5,8
+; v5 : single-length
+	invoke-virtual	{v12,v5},com/actionbarsherlock/internal/ActionBarSherlockCompat/requestFeature	; requestFeature(I)Z
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v5 : single-length
+	goto	l890d8
+l891ae:
+.line 1036
+	invoke-virtual	{v12,v10},com/actionbarsherlock/internal/ActionBarSherlockCompat/hasFeature	; hasFeature(I)Z
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v10 : single-length
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l891c0
+; v5 : single-length
+.line 1037
+	sget	v3,com/actionbarsherlock/R$layout.abs__screen_action_bar_overlay I
+; v3 : single-length
+l891be:
+	goto	l89140
+l891c0:
+.line 1039
+	sget	v3,com/actionbarsherlock/R$layout.abs__screen_action_bar I
+; v3 : single-length
+l891c4:
+	goto	l89140
+l891c6:
+.line 1042
+	invoke-virtual	{v12,v11},com/actionbarsherlock/internal/ActionBarSherlockCompat/hasFeature	; hasFeature(I)Z
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v11 : single-length
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l891e4
+; v5 : single-length
+	invoke-virtual	{v12,v8},com/actionbarsherlock/internal/ActionBarSherlockCompat/hasFeature	; hasFeature(I)Z
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v8 : single-length
+	move-result	v5
+; v5 : single-length
+	if-nez	v5,l891e4
+; v5 : single-length
+.line 1043
+	sget	v3,com/actionbarsherlock/R$layout.abs__screen_simple_overlay_action_mode I
+; v3 : single-length
+l891e2:
+	goto	l89140
+l891e4:
+.line 1045
+	sget	v3,com/actionbarsherlock/R$layout.abs__screen_simple I
+; v3 : single-length
+	goto	l89140
+l891ea:
+.line 1058
+	iget-object	v5,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v5 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v5,v9},android/view/ViewGroup/setId	; setId(I)V
+; v5 : Landroid/view/ViewGroup; , v9 : single-length
+.line 1059
+	const	v5,16908290	; 0x1020002
+; v5 : single-length
+	invoke-virtual	{v1,v5},android/view/ViewGroup/setId	; setId(I)V
+; v1 : Landroid/view/ViewGroup; , v5 : single-length
+.line 1061
+	const/4	v5,5
+; v5 : single-length
+	invoke-virtual	{v12,v5},com/actionbarsherlock/internal/ActionBarSherlockCompat/hasFeature	; hasFeature(I)Z
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v5 : single-length
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l89220
+; v5 : single-length
+.line 1062
+	invoke-direct	{v12,v7},com/actionbarsherlock/internal/ActionBarSherlockCompat/getCircularProgressBar	; getCircularProgressBar(Z)Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v7 : single-length
+	move-result-object	v4
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+.line 1063
+	if-eqz	v4,l89220
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+.line 1064
+	invoke-virtual	{v4,v8},com/actionbarsherlock/internal/widget/IcsProgressBar/setIndeterminate	; setIndeterminate(Z)V
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v8 : single-length
+l89220:
+.line 1068
+	return-object	v1
+; v1 : Landroid/view/ViewGroup;
+.end method
+
+.method private getCircularProgressBar(Z)Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (Z)
+.line 764
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mCircularProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l89242
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+.line 765
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mCircularProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l89240:
+.line 774
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+l89242:
+.line 767
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v0 : Landroid/view/ViewGroup; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v0,l89254
+; v0 : Landroid/view/ViewGroup;
+	if-eqz	v3,l89254
+; v3 : single-length
+.line 768
+	invoke-direct	{v2},com/actionbarsherlock/internal/ActionBarSherlockCompat/installDecor	; installDecor()V
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l89254:
+.line 770
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v0 : Landroid/view/ViewGroup; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	sget	v1,com/actionbarsherlock/R$id.abs__progress_circular I
+; v1 : single-length
+	invoke-virtual	{v0,v1},android/view/ViewGroup/findViewById	; findViewById(I)Landroid/view/View;
+; v0 : Landroid/view/ViewGroup; , v1 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+	check-cast	v0,com/actionbarsherlock/internal/widget/IcsProgressBar
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+	iput-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mCircularProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 771
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mCircularProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l89280
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+.line 772
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mCircularProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	const/4	v1,4
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/IcsProgressBar/setVisibility	; setVisibility(I)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v1 : single-length
+l89280:
+.line 774
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mCircularProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	goto	l89240
+.end method
+
+.method private getFeatures()I
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 799
+	iget	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mFeatures I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	return	v0
+; v0 : single-length
+.end method
+
+.method private getHorizontalProgressBar(Z)Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (Z)
+.line 778
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mHorizontalProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l892be
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+.line 779
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mHorizontalProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l892bc:
+.line 788
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+l892be:
+.line 781
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v0 : Landroid/view/ViewGroup; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v0,l892d0
+; v0 : Landroid/view/ViewGroup;
+	if-eqz	v3,l892d0
+; v3 : single-length
+.line 782
+	invoke-direct	{v2},com/actionbarsherlock/internal/ActionBarSherlockCompat/installDecor	; installDecor()V
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l892d0:
+.line 784
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v0 : Landroid/view/ViewGroup; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	sget	v1,com/actionbarsherlock/R$id.abs__progress_horizontal I
+; v1 : single-length
+	invoke-virtual	{v0,v1},android/view/ViewGroup/findViewById	; findViewById(I)Landroid/view/View;
+; v0 : Landroid/view/ViewGroup; , v1 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+	check-cast	v0,com/actionbarsherlock/internal/widget/IcsProgressBar
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+	iput-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mHorizontalProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 785
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mHorizontalProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l892fc
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+.line 786
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mHorizontalProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	const/4	v1,4
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/IcsProgressBar/setVisibility	; setVisibility(I)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v1 : single-length
+l892fc:
+.line 788
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mHorizontalProgressBar Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	goto	l892bc
+.end method
+
+.method private hideProgressBars(Lcom/actionbarsherlock/internal/widget/IcsProgressBar;Lcom/actionbarsherlock/internal/widget/IcsProgressBar;)V
+.limit registers 8
+; this: v5 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v6 (Lcom/actionbarsherlock/internal/widget/IcsProgressBar;)
+; parameter[1] : v7 (Lcom/actionbarsherlock/internal/widget/IcsProgressBar;)
+	const/4	v4,4
+; v4 : single-length
+.line 748
+	iget	v1,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.mFeatures I
+; v1 : single-length , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 749
+	iget-object	v2,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v2 : Landroid/app/Activity; , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	const	v3,17432577	; 0x10a0001
+; v3 : single-length
+	invoke-static	{v2,v3},android/view/animation/AnimationUtils/loadAnimation	; loadAnimation(Landroid/content/Context;I)Landroid/view/animation/Animation;
+; v2 : Landroid/app/Activity; , v3 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/animation/Animation;
+.line 750
+	const-wide/16	v2,1000
+; v2 : double-length
+	invoke-virtual	{v0,v2,v3},android/view/animation/Animation/setDuration	; setDuration(J)V
+; v0 : Landroid/view/animation/Animation; , v2 : double-length
+.line 751
+	and-int/lit8	v2,v1,32
+; v2 : single-length , v1 : single-length
+	if-eqz	v2,l89356
+; v2 : single-length
+	invoke-virtual	{v7},com/actionbarsherlock/internal/widget/IcsProgressBar/getVisibility	; getVisibility()I
+; v7 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+	move-result	v2
+; v2 : single-length
+	if-nez	v2,l89356
+; v2 : single-length
+.line 753
+	invoke-virtual	{v7,v0},com/actionbarsherlock/internal/widget/IcsProgressBar/startAnimation	; startAnimation(Landroid/view/animation/Animation;)V
+; v7 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v0 : Landroid/view/animation/Animation;
+.line 754
+	invoke-virtual	{v7,v4},com/actionbarsherlock/internal/widget/IcsProgressBar/setVisibility	; setVisibility(I)V
+; v7 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v4 : single-length
+l89356:
+.line 756
+	and-int/lit8	v2,v1,4
+; v2 : single-length , v1 : single-length
+	if-eqz	v2,l89376
+; v2 : single-length
+	invoke-virtual	{v6},com/actionbarsherlock/internal/widget/IcsProgressBar/getVisibility	; getVisibility()I
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+	move-result	v2
+; v2 : single-length
+	if-nez	v2,l89376
+; v2 : single-length
+.line 758
+	invoke-virtual	{v6,v0},com/actionbarsherlock/internal/widget/IcsProgressBar/startAnimation	; startAnimation(Landroid/view/animation/Animation;)V
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v0 : Landroid/view/animation/Animation;
+.line 759
+	invoke-virtual	{v6,v4},com/actionbarsherlock/internal/widget/IcsProgressBar/setVisibility	; setVisibility(I)V
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v4 : single-length
+l89376:
+.line 761
+	return-void	
+.end method
+
+.method private initActionBar()V
+.limit registers 4
+; this: v3 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 138
+	iget-object	v0,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v0 : Landroid/view/ViewGroup; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v0,l89396
+; v0 : Landroid/view/ViewGroup;
+.line 139
+	invoke-direct	{v3},com/actionbarsherlock/internal/ActionBarSherlockCompat/installDecor	; installDecor()V
+; v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l89396:
+.line 142
+	iget-object	v0,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v0,l893cc
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+	const/16	v0,8
+; v0 : single-length
+	invoke-virtual	{v3,v0},com/actionbarsherlock/internal/ActionBarSherlockCompat/hasFeature	; hasFeature(I)Z
+; v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v0 : single-length
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l893cc
+; v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+	invoke-virtual	{v3,v0},com/actionbarsherlock/internal/ActionBarSherlockCompat/hasFeature	; hasFeature(I)Z
+; v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v0 : single-length
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l893cc
+; v0 : single-length
+	iget-object	v0,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v0 : Landroid/app/Activity; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},android/app/Activity/isChild	; isChild()Z
+; v0 : Landroid/app/Activity;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l893ce
+; v0 : single-length
+l893cc:
+.line 152
+	return-void	
+l893ce:
+.line 146
+	new-instance	v0,com/actionbarsherlock/internal/app/ActionBarImpl
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+	iget-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v1 : Landroid/app/Activity; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	iget	v2,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mFeatures I
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-direct	{v0,v1,v2},com/actionbarsherlock/internal/app/ActionBarImpl/<init>	; <init>(Landroid/app/Activity;I)V
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v1 : Landroid/app/Activity; , v2 : single-length
+	iput-object	v0,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 148
+	iget-boolean	v0,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mIsDelegate Z
+; v0 : single-length , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v0,l893cc
+; v0 : single-length
+.line 150
+	iget-object	v0,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	iget-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v1 : Landroid/app/Activity; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1},android/app/Activity/getTitle	; getTitle()Ljava/lang/CharSequence;
+; v1 : Landroid/app/Activity;
+	move-result-object	v1
+; v1 : Ljava/lang/CharSequence;
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/ActionBarView/setWindowTitle	; setWindowTitle(Ljava/lang/CharSequence;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Ljava/lang/CharSequence;
+	goto	l893cc
+.end method
+
+.method private initializePanelMenu()Z
+.limit registers 8
+; this: v7 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.var 0 is context Landroid/content/Context; from l8941a to l89450
+.var 1 is context Landroid/content/Context; from l89450 to l89452
+.var 2 is currentTheme Landroid/content/res/Resources$Theme; from l89434 to l89452
+.var 3 is outValue Landroid/util/TypedValue; from l8942c to l89452
+.var 4 is targetThemeRes I from l89442 to l89452
+	const/4	v6,1
+; v6 : single-length
+.line 556
+	iget-object	v0,v7,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v0 : Landroid/app/Activity; , v7 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 559
+	iget-object	v5,v7,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v5 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v7 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v5,l89452
+; v5 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+.line 560
+	new-instance	v3,android/util/TypedValue
+; v3 : Landroid/util/TypedValue;
+	invoke-direct	{v3},android/util/TypedValue/<init>	; <init>()V
+; v3 : Landroid/util/TypedValue;
+.line 561
+	invoke-virtual	{v0},android/content/Context/getTheme	; getTheme()Landroid/content/res/Resources$Theme;
+; v0 : Landroid/app/Activity;
+	move-result-object	v2
+; v2 : Landroid/content/res/Resources$Theme;
+.line 562
+	sget	v5,com/actionbarsherlock/R$attr.actionBarWidgetTheme I
+; v5 : single-length
+	invoke-virtual	{v2,v5,v3,v6},android/content/res/Resources$Theme/resolveAttribute	; resolveAttribute(ILandroid/util/TypedValue;Z)Z
+; v2 : Landroid/content/res/Resources$Theme; , v5 : single-length , v3 : Landroid/util/TypedValue; , v6 : single-length
+.line 564
+	iget	v4,v3,android/util/TypedValue.resourceId I
+; v4 : single-length , v3 : Landroid/util/TypedValue;
+.line 566
+	if-eqz	v4,l89452
+; v4 : single-length
+.line 567
+	new-instance	v1,android/view/ContextThemeWrapper
+; v1 : Landroid/view/ContextThemeWrapper;
+	invoke-direct	{v1,v0,v4},android/view/ContextThemeWrapper/<init>	; <init>(Landroid/content/Context;I)V
+; v1 : Landroid/view/ContextThemeWrapper; , v0 : Landroid/app/Activity; , v4 : single-length
+l89450:
+	move-object	v0,v1
+; v0 : Landroid/view/ContextThemeWrapper; , v1 : Landroid/view/ContextThemeWrapper;
+l89452:
+.line 571
+	new-instance	v5,com/actionbarsherlock/internal/view/menu/MenuBuilder
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-direct	{v5,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/<init>	; <init>(Landroid/content/Context;)V
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : Landroid/app/Activity;
+	iput-object	v5,v7,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v7 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 572
+	iget-object	v5,v7,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v7 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v5,v7},com/actionbarsherlock/internal/view/menu/MenuBuilder/setCallback	; setCallback(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback;)V
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v7 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 574
+	return	v6
+; v6 : single-length
+.end method
+
+.method private installDecor()V
+.limit registers 13
+; this: v12 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.var 8 is views Ljava/util/List; from l894bc to l894d0
+.var 0 is child Landroid/view/View; from l894f4 to l8950a
+.var 1 is children I from l894e4 to l8950a
+.var 2 is i I from l894d8 to l8950a
+.var 0 is child Landroid/view/View; from l8953a to l89546
+.var 3 is i$ Ljava/util/Iterator; from l89522 to l89546
+.var 8 is views Ljava/util/List; from l894d6 to l8959e
+.var 5 is splitView Lcom/actionbarsherlock/internal/widget/ActionBarContainer; from l8967a to l896ea
+.var 6 is splitWhenNarrow Z from l89652 to l896ea
+	const/4	v6,1
+; v6 : single-length
+	const/4	v10,0
+; v10 : single-length
+.line 901
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v9,l894b2
+; v9 : Landroid/view/ViewGroup;
+.line 902
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v9 : Landroid/app/Activity; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9},android/app/Activity/getWindow	; getWindow()Landroid/view/Window;
+; v9 : Landroid/app/Activity;
+	move-result-object	v9
+; v9 : Landroid/view/Window;
+	invoke-virtual	{v9},android/view/Window/getDecorView	; getDecorView()Landroid/view/View;
+; v9 : Landroid/view/Window;
+	move-result-object	v9
+; v9 : Landroid/view/View;
+	const	v11,16908290	; 0x1020002
+; v11 : single-length
+	invoke-virtual	{v9,v11},android/view/View/findViewById	; findViewById(I)Landroid/view/View;
+; v9 : Landroid/view/View; , v11 : single-length
+	move-result-object	v9
+; v9 : Landroid/view/View;
+	check-cast	v9,android/view/ViewGroup
+; v9 : Landroid/view/ViewGroup;
+	iput-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l894b2:
+.line 904
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v9,l8959e
+; v9 : Landroid/view/ViewGroup;
+.line 909
+	const/4	v8,0
+; v8 : single-length
+.line 910
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9},android/view/ViewGroup/getChildCount	; getChildCount()I
+; v9 : Landroid/view/ViewGroup;
+	move-result	v9
+; v9 : single-length
+	if-lez	v9,l8950a
+; v9 : single-length
+.line 911
+	new-instance	v8,java/util/ArrayList
+; v8 : Ljava/util/ArrayList;
+l894d0:
+	invoke-direct	{v8,v6},java/util/ArrayList/<init>	; <init>(I)V
+; v8 : Ljava/util/ArrayList; , v6 : single-length
+.line 912
+	const/4	v2,0
+; v2 : single-length
+l894d8:
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9},android/view/ViewGroup/getChildCount	; getChildCount()I
+; v9 : Landroid/view/ViewGroup;
+	move-result	v1
+; v1 : single-length
+l894e4:
+	if-ge	v2,v1,l8950a
+; v2 : single-length , v1 : single-length
+.line 913
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9,v10},android/view/ViewGroup/getChildAt	; getChildAt(I)Landroid/view/View;
+; v9 : Landroid/view/ViewGroup; , v10 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+.line 914
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9,v0},android/view/ViewGroup/removeView	; removeView(Landroid/view/View;)V
+; v9 : Landroid/view/ViewGroup; , v0 : Landroid/view/View;
+.line 915
+	invoke-interface	{v8,v0},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v8 : Ljava/util/ArrayList; , v0 : Landroid/view/View;
+.line 912
+	add-int/lit8	v2,v2,1
+; v2 : single-length , v2 : single-length
+	goto	l894e4
+l8950a:
+.line 919
+	invoke-direct	{v12},com/actionbarsherlock/internal/ActionBarSherlockCompat/generateLayout	; generateLayout()Landroid/view/ViewGroup;
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	move-result-object	v9
+; v9 : Landroid/view/ViewGroup;
+	iput-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 922
+	if-eqz	v8,l89546
+; v8 : Ljava/util/ArrayList;
+.line 923
+	invoke-interface	{v8},java/util/List/iterator	; iterator()Ljava/util/Iterator;
+; v8 : Ljava/util/ArrayList;
+	move-result-object	v3
+; v3 : Ljava/util/Iterator;
+l89522:
+	invoke-interface	{v3},java/util/Iterator/hasNext	; hasNext()Z
+; v3 : Ljava/util/Iterator;
+	move-result	v9
+; v9 : single-length
+	if-eqz	v9,l89546
+; v9 : single-length
+	invoke-interface	{v3},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v3 : Ljava/util/Iterator;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,android/view/View
+; v0 : Landroid/view/View;
+.line 924
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9,v0},android/view/ViewGroup/addView	; addView(Landroid/view/View;)V
+; v9 : Landroid/view/ViewGroup; , v0 : Landroid/view/View;
+	goto	l89522
+l89546:
+.line 928
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	const	v11,16908310	; 0x1020016
+; v11 : single-length
+	invoke-virtual	{v9,v11},android/view/ViewGroup/findViewById	; findViewById(I)Landroid/view/View;
+; v9 : Landroid/view/ViewGroup; , v11 : single-length
+	move-result-object	v9
+; v9 : Landroid/view/View;
+	check-cast	v9,android/widget/TextView
+; v9 : Landroid/widget/TextView;
+	iput-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mTitleView Landroid/widget/TextView;
+; v9 : Landroid/widget/TextView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 929
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mTitleView Landroid/widget/TextView;
+; v9 : Landroid/widget/TextView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v9,l895b0
+; v9 : Landroid/widget/TextView;
+.line 930
+	invoke-virtual	{v12,v6},com/actionbarsherlock/internal/ActionBarSherlockCompat/hasFeature	; hasFeature(I)Z
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v6 : single-length
+	move-result	v9
+; v9 : single-length
+	if-eqz	v9,l895a0
+; v9 : single-length
+.line 931
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mTitleView Landroid/widget/TextView;
+; v9 : Landroid/widget/TextView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	const/16	v10,8
+; v10 : single-length
+	invoke-virtual	{v9,v10},android/widget/TextView/setVisibility	; setVisibility(I)V
+; v9 : Landroid/widget/TextView; , v10 : single-length
+.line 932
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	instance-of	v9,v9,android/widget/FrameLayout
+; v9 : single-length , v9 : single-length
+	if-eqz	v9,l8959e
+; v9 : single-length
+.line 933
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	check-cast	v9,android/widget/FrameLayout
+; v9 : Landroid/widget/FrameLayout;
+	const/4	v10,0
+; v10 : single-length
+	invoke-virtual	{v9,v10},android/widget/FrameLayout/setForeground	; setForeground(Landroid/graphics/drawable/Drawable;)V
+; v9 : Landroid/widget/FrameLayout; , v10 : single-length
+l8959e:
+.line 995
+	return-void	
+l895a0:
+.line 936
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mTitleView Landroid/widget/TextView;
+; v9 : Landroid/widget/TextView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	iget-object	v10,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mTitle Ljava/lang/CharSequence;
+; v10 : Ljava/lang/CharSequence; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9,v10},android/widget/TextView/setText	; setText(Ljava/lang/CharSequence;)V
+; v9 : Landroid/widget/TextView; , v10 : Ljava/lang/CharSequence;
+	goto	l8959e
+l895b0:
+.line 939
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	sget	v11,com/actionbarsherlock/R$id.abs__action_bar I
+; v11 : single-length
+	invoke-virtual	{v9,v11},android/view/ViewGroup/findViewById	; findViewById(I)Landroid/view/View;
+; v9 : Landroid/view/ViewGroup; , v11 : single-length
+	move-result-object	v9
+; v9 : Landroid/view/View;
+	check-cast	v9,com/actionbarsherlock/internal/widget/ActionBarView
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	iput-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 940
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v9,l8959e
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+.line 941
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9,v12},com/actionbarsherlock/internal/widget/ActionBarView/setWindowCallback	; setWindowCallback(Lcom/actionbarsherlock/view/Window$Callback;)V
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 942
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9},com/actionbarsherlock/internal/widget/ActionBarView/getTitle	; getTitle()Ljava/lang/CharSequence;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	move-result-object	v9
+; v9 : Ljava/lang/CharSequence;
+	if-nez	v9,l89600
+; v9 : Ljava/lang/CharSequence;
+.line 943
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	iget-object	v11,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v11 : Landroid/app/Activity; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v11},android/app/Activity/getTitle	; getTitle()Ljava/lang/CharSequence;
+; v11 : Landroid/app/Activity;
+	move-result-object	v11
+; v11 : Ljava/lang/CharSequence;
+	invoke-virtual	{v9,v11},com/actionbarsherlock/internal/widget/ActionBarView/setWindowTitle	; setWindowTitle(Ljava/lang/CharSequence;)V
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v11 : Ljava/lang/CharSequence;
+l89600:
+.line 945
+	const/4	v9,2
+; v9 : single-length
+	invoke-virtual	{v12,v9},com/actionbarsherlock/internal/ActionBarSherlockCompat/hasFeature	; hasFeature(I)Z
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v9 : single-length
+	move-result	v9
+; v9 : single-length
+	if-eqz	v9,l89618
+; v9 : single-length
+.line 946
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9},com/actionbarsherlock/internal/widget/ActionBarView/initProgress	; initProgress()V
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+l89618:
+.line 948
+	const/4	v9,5
+; v9 : single-length
+	invoke-virtual	{v12,v9},com/actionbarsherlock/internal/ActionBarSherlockCompat/hasFeature	; hasFeature(I)Z
+; v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v9 : single-length
+	move-result	v9
+; v9 : single-length
+	if-eqz	v9,l89630
+; v9 : single-length
+.line 949
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9},com/actionbarsherlock/internal/widget/ActionBarView/initIndeterminateProgress	; initIndeterminateProgress()V
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+l89630:
+.line 953
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v9 : Landroid/app/Activity; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-static	{v9},com/actionbarsherlock/internal/ActionBarSherlockCompat/loadUiOptionsFromManifest	; loadUiOptionsFromManifest(Landroid/app/Activity;)I
+; v9 : Landroid/app/Activity;
+	move-result	v7
+; v7 : single-length
+.line 954
+	if-eqz	v7,l89644
+; v7 : single-length
+.line 955
+	iput	v7,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mUiOptions I
+; v7 : single-length , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l89644:
+.line 958
+	const/4	v4,0
+; v4 : single-length
+.line 959
+	iget	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mUiOptions I
+; v9 : single-length , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	and-int/lit8	v9,v9,1
+; v9 : single-length , v9 : single-length
+	if-eqz	v9,l896ea
+; v9 : single-length
+l89652:
+.line 960
+	if-eqz	v6,l896ee
+; v6 : single-length
+.line 961
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v9 : Landroid/app/Activity; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	sget	v10,com/actionbarsherlock/R$bool.abs__split_action_bar_is_narrow I
+; v10 : single-length
+	invoke-static	{v9,v10},com/actionbarsherlock/internal/ResourcesCompat/getResources_getBoolean	; getResources_getBoolean(Landroid/content/Context;I)Z
+; v9 : Landroid/app/Activity; , v10 : single-length
+	move-result	v4
+; v4 : single-length
+l89666:
+.line 967
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	sget	v10,com/actionbarsherlock/R$id.abs__split_action_bar I
+; v10 : single-length
+	invoke-virtual	{v9,v10},android/view/ViewGroup/findViewById	; findViewById(I)Landroid/view/View;
+; v9 : Landroid/view/ViewGroup; , v10 : single-length
+	move-result-object	v5
+; v5 : Landroid/view/View;
+	check-cast	v5,com/actionbarsherlock/internal/widget/ActionBarContainer
+; v5 : Lcom/actionbarsherlock/internal/widget/ActionBarContainer;
+.line 968
+	if-eqz	v5,l89714
+; v5 : Lcom/actionbarsherlock/internal/widget/ActionBarContainer;
+.line 969
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9,v5},com/actionbarsherlock/internal/widget/ActionBarView/setSplitView	; setSplitView(Lcom/actionbarsherlock/internal/widget/ActionBarContainer;)V
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v5 : Lcom/actionbarsherlock/internal/widget/ActionBarContainer;
+.line 970
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9,v4},com/actionbarsherlock/internal/widget/ActionBarView/setSplitActionBar	; setSplitActionBar(Z)V
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v4 : single-length
+.line 971
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9,v6},com/actionbarsherlock/internal/widget/ActionBarView/setSplitWhenNarrow	; setSplitWhenNarrow(Z)V
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v6 : single-length
+.line 973
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	sget	v10,com/actionbarsherlock/R$id.abs__action_context_bar I
+; v10 : single-length
+	invoke-virtual	{v9,v10},android/view/ViewGroup/findViewById	; findViewById(I)Landroid/view/View;
+; v9 : Landroid/view/ViewGroup; , v10 : single-length
+	move-result-object	v9
+; v9 : Landroid/view/View;
+	check-cast	v9,com/actionbarsherlock/internal/widget/ActionBarContextView
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+	iput-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 974
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9,v5},com/actionbarsherlock/internal/widget/ActionBarContextView/setSplitView	; setSplitView(Lcom/actionbarsherlock/internal/widget/ActionBarContainer;)V
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v5 : Lcom/actionbarsherlock/internal/widget/ActionBarContainer;
+.line 975
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9,v4},com/actionbarsherlock/internal/widget/ActionBarContextView/setSplitActionBar	; setSplitActionBar(Z)V
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v4 : single-length
+.line 976
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9,v6},com/actionbarsherlock/internal/widget/ActionBarContextView/setSplitWhenNarrow	; setSplitWhenNarrow(Z)V
+; v9 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v6 : single-length
+l896d2:
+.line 983
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v9 : Landroid/view/ViewGroup; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	new-instance	v10,com/actionbarsherlock/internal/ActionBarSherlockCompat$1
+; v10 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat$1;
+	invoke-direct	{v10,v12},com/actionbarsherlock/internal/ActionBarSherlockCompat$1/<init>	; <init>(Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)V
+; v10 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat$1; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9,v10},android/view/ViewGroup/post	; post(Ljava/lang/Runnable;)Z
+; v9 : Landroid/view/ViewGroup; , v10 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat$1;
+	goto/16	l8959e
+l896ea:
+	move	v6,v10
+; v6 : single-length , v10 : single-length
+.line 959
+	goto	l89652
+l896ee:
+.line 963
+	iget-object	v9,v12,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v9 : Landroid/app/Activity; , v12 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v9},android/app/Activity/getTheme	; getTheme()Landroid/content/res/Resources$Theme;
+; v9 : Landroid/app/Activity;
+	move-result-object	v9
+; v9 : Landroid/content/res/Resources$Theme;
+	sget-object	v11,com/actionbarsherlock/R$styleable.SherlockTheme [I
+; v11 : [I
+	invoke-virtual	{v9,v11},android/content/res/Resources$Theme/obtainStyledAttributes	; obtainStyledAttributes([I)Landroid/content/res/TypedArray;
+; v9 : Landroid/content/res/Resources$Theme; , v11 : [I
+	move-result-object	v9
+; v9 : Landroid/content/res/TypedArray;
+	const/16	v11,48
+; v11 : single-length
+	invoke-virtual	{v9,v11,v10},android/content/res/TypedArray/getBoolean	; getBoolean(IZ)Z
+; v9 : Landroid/content/res/TypedArray; , v11 : single-length , v10 : single-length
+	move-result	v4
+; v4 : single-length
+	goto	l89666
+l89714:
+.line 977
+	if-eqz	v4,l896d2
+; v4 : single-length
+.line 978
+	const-string	v9,"ActionBarSherlock"
+; v9 : Ljava/lang/String;
+	const-string	v10,"Requested split action bar with incompatible window decor! Ignoring request."
+; v10 : Ljava/lang/String;
+	invoke-static	{v9,v10},android/util/Log/e	; e(Ljava/lang/String;Ljava/lang/String;)I
+; v9 : Ljava/lang/String; , v10 : Ljava/lang/String;
+	goto	l896d2
+.end method
+
+.method private isReservingOverflow()Z
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 1082
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mReserveOverflowSet Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v0,l89756
+; v0 : single-length
+.line 1083
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v0 : Landroid/app/Activity; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-static	{v0},com/actionbarsherlock/internal/view/menu/ActionMenuPresenter/reserveOverflow	; reserveOverflow(Landroid/content/Context;)Z
+; v0 : Landroid/app/Activity;
+	move-result	v0
+; v0 : single-length
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mReserveOverflow Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 1084
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mReserveOverflowSet Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l89756:
+.line 1086
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mReserveOverflow Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	return	v0
+; v0 : single-length
+.end method
+
+.method private static loadUiOptionsFromManifest(Landroid/app/Activity;)I
+.limit registers 16
+; parameter[0] : v15 (Landroid/app/Activity;)
+.catch java/lang/Exception from l8976e to l898a2 using l898b2
+.var 6 is i I from l897e0 to l89806
+.var 8 is name Ljava/lang/String; from l897c4 to l89806
+.var 6 is i I from l89810 to l89816
+.var 3 is attrName Ljava/lang/String; from l89844 to l898a8
+.var 0 is activityPackage Ljava/lang/String; from l8982a to l898ac
+.var 1 is activityUiOptions Ljava/lang/Integer; from l89828 to l898ac
+.var 2 is am Landroid/content/res/AssetManager; from l8979c to l898ac
+.var 5 is eventType I from l897b0 to l898ac
+.var 6 is i I from l89838 to l898ac
+.var 7 is isOurActivity Z from l8982c to l898ac
+.var 8 is name Ljava/lang/String; from l89810 to l898ac
+.var 9 is packageName Ljava/lang/String; from l8978a to l898ac
+.var 10 is thisPackage Ljava/lang/String; from l8977e to l898ac
+.var 12 is xml Landroid/content/res/XmlResourceParser; from l897a8 to l898ac
+.var 0 is activityPackage Ljava/lang/String; from l898ae to l898b2
+.var 1 is activityUiOptions Ljava/lang/Integer; from l898ae to l898b2
+.var 2 is am Landroid/content/res/AssetManager; from l898ae to l898b2
+.var 3 is attrName Ljava/lang/String; from l898ae to l898b2
+.var 5 is eventType I from l898ae to l898b2
+.var 6 is i I from l898ae to l898b2
+.var 7 is isOurActivity Z from l898ae to l898b2
+.var 8 is name Ljava/lang/String; from l898ae to l898b2
+.var 9 is packageName Ljava/lang/String; from l898ae to l898b2
+.var 10 is thisPackage Ljava/lang/String; from l898ae to l898b2
+.var 12 is xml Landroid/content/res/XmlResourceParser; from l898ae to l898b2
+.line 1090
+	const/4	v11,0
+; v11 : single-length
+l8976e:
+.line 1092
+	invoke-virtual	{v15},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v15 : Landroid/app/Activity;
+	move-result-object	v13
+; v13 : Ljava/lang/Class;
+	invoke-virtual	{v13},java/lang/Class/getName	; getName()Ljava/lang/String;
+; v13 : Ljava/lang/Class;
+	move-result-object	v10
+; v10 : Ljava/lang/String;
+.line 1095
+	invoke-virtual	{v15},android/app/Activity/getApplicationInfo	; getApplicationInfo()Landroid/content/pm/ApplicationInfo;
+; v15 : Landroid/app/Activity;
+	move-result-object	v13
+; v13 : Landroid/content/pm/ApplicationInfo;
+	iget-object	v9,v13,android/content/pm/ApplicationInfo.packageName Ljava/lang/String;
+; v9 : Ljava/lang/String; , v13 : Landroid/content/pm/ApplicationInfo;
+.line 1096
+	const/4	v13,0
+; v13 : single-length
+	invoke-virtual	{v15,v9,v13},android/app/Activity/createPackageContext	; createPackageContext(Ljava/lang/String;I)Landroid/content/Context;
+; v15 : Landroid/app/Activity; , v9 : Ljava/lang/String; , v13 : single-length
+	move-result-object	v13
+; v13 : Landroid/content/Context;
+	invoke-virtual	{v13},android/content/Context/getAssets	; getAssets()Landroid/content/res/AssetManager;
+; v13 : Landroid/content/Context;
+	move-result-object	v2
+; v2 : Landroid/content/res/AssetManager;
+.line 1097
+	const-string	v13,"AndroidManifest.xml"
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v2,v13},android/content/res/AssetManager/openXmlResourceParser	; openXmlResourceParser(Ljava/lang/String;)Landroid/content/res/XmlResourceParser;
+; v2 : Landroid/content/res/AssetManager; , v13 : Ljava/lang/String;
+	move-result-object	v12
+; v12 : Landroid/content/res/XmlResourceParser;
+.line 1099
+	invoke-interface	{v12},android/content/res/XmlResourceParser/getEventType	; getEventType()I
+; v12 : Landroid/content/res/XmlResourceParser;
+	move-result	v5
+; v5 : single-length
+l897b0:
+.line 1100
+	const/4	v13,1
+; v13 : single-length
+	if-eq	v5,v13,l898ac
+; v5 : single-length , v13 : single-length
+.line 1101
+	const/4	v13,2
+; v13 : single-length
+	if-ne	v5,v13,l89806
+; v5 : single-length , v13 : single-length
+.line 1102
+	invoke-interface	{v12},android/content/res/XmlResourceParser/getName	; getName()Ljava/lang/String;
+; v12 : Landroid/content/res/XmlResourceParser;
+	move-result-object	v8
+; v8 : Ljava/lang/String;
+.line 1104
+	const-string	v13,"application"
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v13,v8},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v13 : Ljava/lang/String; , v8 : Ljava/lang/String;
+	move-result	v13
+; v13 : single-length
+	if-eqz	v13,l89816
+; v13 : single-length
+.line 1108
+	invoke-interface	{v12},android/content/res/XmlResourceParser/getAttributeCount	; getAttributeCount()I
+; v12 : Landroid/content/res/XmlResourceParser;
+	move-result	v13
+; v13 : single-length
+	add-int/lit8	v6,v13,255
+; v6 : single-length , v13 : single-length
+l897e0:
+	if-ltz	v6,l89806
+; v6 : single-length
+.line 1111
+	const-string	v13,"uiOptions"
+; v13 : Ljava/lang/String;
+	invoke-interface	{v12,v6},android/content/res/XmlResourceParser/getAttributeName	; getAttributeName(I)Ljava/lang/String;
+; v12 : Landroid/content/res/XmlResourceParser; , v6 : single-length
+	move-result-object	v14
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v13 : Ljava/lang/String; , v14 : Ljava/lang/String;
+	move-result	v13
+; v13 : single-length
+	if-eqz	v13,l89810
+; v13 : single-length
+.line 1112
+	const/4	v13,0
+; v13 : single-length
+	invoke-interface	{v12,v6,v13},android/content/res/XmlResourceParser/getAttributeIntValue	; getAttributeIntValue(II)I
+; v12 : Landroid/content/res/XmlResourceParser; , v6 : single-length , v13 : single-length
+	move-result	v11
+; v11 : single-length
+l89806:
+.line 1151
+	invoke-interface	{v12},android/content/res/XmlResourceParser/nextToken	; nextToken()I
+; v12 : Landroid/content/res/XmlResourceParser;
+	move-result	v5
+; v5 : single-length
+	goto	l897b0
+l89810:
+.line 1108
+	add-int/lit8	v6,v6,255
+; v6 : single-length , v6 : single-length
+	goto	l897e0
+l89816:
+.line 1116
+	const-string	v13,"activity"
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v13,v8},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v13 : Ljava/lang/String; , v8 : Ljava/lang/String;
+	move-result	v13
+; v13 : single-length
+	if-eqz	v13,l89806
+; v13 : single-length
+.line 1119
+	const/4	v1,0
+; v1 : single-length
+.line 1120
+	const/4	v0,0
+; v0 : single-length
+.line 1121
+	const/4	v7,0
+; v7 : single-length
+.line 1123
+	invoke-interface	{v12},android/content/res/XmlResourceParser/getAttributeCount	; getAttributeCount()I
+; v12 : Landroid/content/res/XmlResourceParser;
+	move-result	v13
+; v13 : single-length
+	add-int/lit8	v6,v13,255
+; v6 : single-length , v13 : single-length
+l89838:
+	if-ltz	v6,l898a8
+; v6 : single-length
+.line 1127
+	invoke-interface	{v12,v6},android/content/res/XmlResourceParser/getAttributeName	; getAttributeName(I)Ljava/lang/String;
+; v12 : Landroid/content/res/XmlResourceParser; , v6 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+.line 1128
+	const-string	v13,"uiOptions"
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v13,v3},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v13 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result	v13
+; v13 : single-length
+	if-eqz	v13,l8987c
+; v13 : single-length
+.line 1129
+	const/4	v13,0
+; v13 : single-length
+	invoke-interface	{v12,v6,v13},android/content/res/XmlResourceParser/getAttributeIntValue	; getAttributeIntValue(II)I
+; v12 : Landroid/content/res/XmlResourceParser; , v6 : single-length , v13 : single-length
+	move-result	v13
+; v13 : single-length
+	invoke-static	{v13},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v13 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Integer;
+l89866:
+.line 1139
+	if-eqz	v1,l89876
+; v1 : Ljava/lang/Integer;
+	if-eqz	v0,l89876
+; v0 : Ljava/lang/String;
+.line 1141
+	invoke-virtual	{v1},java/lang/Integer/intValue	; intValue()I
+; v1 : Ljava/lang/Integer;
+	move-result	v11
+; v11 : single-length
+l89876:
+.line 1123
+	add-int/lit8	v6,v6,255
+; v6 : single-length , v6 : single-length
+	goto	l89838
+l8987c:
+.line 1130
+	const-string	v13,"name"
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v13,v3},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v13 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result	v13
+; v13 : single-length
+	if-eqz	v13,l89866
+; v13 : single-length
+.line 1131
+	invoke-interface	{v12,v6},android/content/res/XmlResourceParser/getAttributeValue	; getAttributeValue(I)Ljava/lang/String;
+; v12 : Landroid/content/res/XmlResourceParser; , v6 : single-length
+	move-result-object	v13
+; v13 : Ljava/lang/String;
+	invoke-static	{v9,v13},com/actionbarsherlock/internal/ActionBarSherlockCompat/cleanActivityName	; cleanActivityName(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v9 : Ljava/lang/String; , v13 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 1132
+	invoke-virtual	{v10,v0},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v10 : Ljava/lang/String; , v0 : Ljava/lang/String;
+l898a2:
+	move-result	v13
+; v13 : single-length
+	if-nez	v13,l898ae
+; v13 : single-length
+l898a8:
+.line 1144
+	if-eqz	v7,l89806
+; v7 : single-length
+l898ac:
+.line 1157
+	return	v11
+; v11 : single-length
+l898ae:
+.line 1135
+	const/4	v7,1
+; v7 : single-length
+	goto	l89866
+l898b2:
+.line 1153
+	move-exception	v4
+; v4 : java/lang/Exception
+.line 1154
+	invoke-virtual	{v4},java/lang/Exception/printStackTrace	; printStackTrace()V
+; v4 : java/lang/Exception
+	goto	l898ac
+.end method
+
+.method private onIntChanged(II)V
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+.line 685
+	const/4	v0,2
+; v0 : single-length
+	if-eq	v2,v0,l898e8
+; v2 : single-length , v0 : single-length
+	const/4	v0,5
+; v0 : single-length
+	if-ne	v2,v0,l898ee
+; v2 : single-length , v0 : single-length
+l898e8:
+.line 686
+	invoke-direct	{v1,v3},com/actionbarsherlock/internal/ActionBarSherlockCompat/updateProgressBars	; updateProgressBars(I)V
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v3 : single-length
+l898ee:
+.line 688
+	return-void	
+.end method
+
+.method private preparePanel()Z
+.limit registers 7
+; this: v6 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+	const/4	v5,0
+; v5 : single-length
+	const/4	v2,1
+; v2 : single-length
+	const/4	v1,0
+; v1 : single-length
+.line 462
+	iget-boolean	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuIsPrepared Z
+; v3 : single-length , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v3,l89912
+; v3 : single-length
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+l89910:
+.line 529
+	return	v1
+; v1 : single-length
+l89912:
+.line 467
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v3,l89922
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	iget-boolean	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuRefreshContent Z
+; v3 : single-length , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v3,l8998a
+; v3 : single-length
+l89922:
+.line 468
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v3,l8993e
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 469
+	invoke-direct	{v6},com/actionbarsherlock/internal/ActionBarSherlockCompat/initializePanelMenu	; initializePanelMenu()Z
+; v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l89910
+; v3 : single-length
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v3,l89910
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+l8993e:
+.line 474
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v3,l89954
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+.line 475
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	iget-object	v4,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v3,v4,v6},com/actionbarsherlock/internal/widget/ActionBarView/setMenu	; setMenu(Lcom/actionbarsherlock/view/Menu;Lcom/actionbarsherlock/internal/view/menu/MenuPresenter$Callback;)V
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l89954:
+.line 482
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v3},com/actionbarsherlock/internal/view/menu/MenuBuilder/stopDispatchingItemsChanged	; stopDispatchingItemsChanged()V
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 483
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v6,v3},com/actionbarsherlock/internal/ActionBarSherlockCompat/callbackCreateOptionsMenu	; callbackCreateOptionsMenu(Lcom/actionbarsherlock/view/Menu;)Z
+; v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result	v3
+; v3 : single-length
+	if-nez	v3,l89986
+; v3 : single-length
+.line 485
+	iput-object	v5,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v5 : single-length , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 487
+	iget-object	v2,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v2 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v2,l89910
+; v2 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+.line 489
+	iget-object	v2,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v2 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v2,v5,v6},com/actionbarsherlock/internal/widget/ActionBarView/setMenu	; setMenu(Lcom/actionbarsherlock/view/Menu;Lcom/actionbarsherlock/internal/view/menu/MenuPresenter$Callback;)V
+; v2 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v5 : single-length , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	goto	l89910
+l89986:
+.line 495
+	iput-boolean	v1,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuRefreshContent Z
+; v1 : single-length , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l8998a:
+.line 502
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v3},com/actionbarsherlock/internal/view/menu/MenuBuilder/stopDispatchingItemsChanged	; stopDispatchingItemsChanged()V
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 506
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuFrozenActionViewState Landroid/os/Bundle;
+; v3 : Landroid/os/Bundle; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v3,l899ae
+; v3 : Landroid/os/Bundle;
+.line 507
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	iget-object	v4,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuFrozenActionViewState Landroid/os/Bundle;
+; v4 : Landroid/os/Bundle; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v3,v4},com/actionbarsherlock/internal/view/menu/MenuBuilder/restoreActionViewStates	; restoreActionViewStates(Landroid/os/Bundle;)V
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v4 : Landroid/os/Bundle;
+.line 508
+	iput-object	v5,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuFrozenActionViewState Landroid/os/Bundle;
+; v5 : single-length , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l899ae:
+.line 511
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v6,v3},com/actionbarsherlock/internal/ActionBarSherlockCompat/callbackPrepareOptionsMenu	; callbackPrepareOptionsMenu(Lcom/actionbarsherlock/view/Menu;)Z
+; v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result	v3
+; v3 : single-length
+	if-nez	v3,l899dc
+; v3 : single-length
+.line 512
+	iget-object	v2,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v2 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v2,l899d0
+; v2 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+.line 515
+	iget-object	v2,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v2 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v2,v5,v6},com/actionbarsherlock/internal/widget/ActionBarView/setMenu	; setMenu(Lcom/actionbarsherlock/view/Menu;Lcom/actionbarsherlock/internal/view/menu/MenuPresenter$Callback;)V
+; v2 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v5 : single-length , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l899d0:
+.line 517
+	iget-object	v2,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v2},com/actionbarsherlock/internal/view/menu/MenuBuilder/startDispatchingItemsChanged	; startDispatchingItemsChanged()V
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	goto	l89910
+l899dc:
+.line 522
+	const/4	v3,15
+; v3 : single-length
+	invoke-static	{v3},android/view/KeyCharacterMap/load	; load(I)Landroid/view/KeyCharacterMap;
+; v3 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/KeyCharacterMap;
+.line 523
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},android/view/KeyCharacterMap/getKeyboardType	; getKeyboardType()I
+; v0 : Landroid/view/KeyCharacterMap;
+	move-result	v4
+; v4 : single-length
+	if-eq	v4,v2,l899f8
+; v4 : single-length , v2 : single-length
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+l899f8:
+	invoke-virtual	{v3,v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/setQwertyMode	; setQwertyMode(Z)V
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length
+.line 524
+	iget-object	v1,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/startDispatchingItemsChanged	; startDispatchingItemsChanged()V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 527
+	iput-boolean	v2,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuIsPrepared Z
+; v2 : single-length , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+.line 529
+	goto	l89910
+.end method
+
+.method private reopenMenu(Z)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (Z)
+.line 541
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l89a76
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ActionBarView/isOverflowReserved	; isOverflowReserved()Z
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l89a76
+; v0 : single-length
+.line 542
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ActionBarView/isOverflowMenuShowing	; isOverflowMenuShowing()Z
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l89a4c
+; v0 : single-length
+	if-nez	v2,l89a78
+; v2 : single-length
+l89a4c:
+.line 543
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ActionBarView/getVisibility	; getVisibility()I
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l89a76
+; v0 : single-length
+.line 544
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/ActionBarSherlockCompat/callbackPrepareOptionsMenu	; callbackPrepareOptionsMenu(Lcom/actionbarsherlock/view/Menu;)Z
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l89a76
+; v0 : single-length
+.line 545
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ActionBarView/showOverflowMenu	; showOverflowMenu()Z
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+l89a76:
+.line 553
+	return-void	
+l89a78:
+.line 549
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ActionBarView/hideOverflowMenu	; hideOverflowMenu()Z
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	goto	l89a76
+.end method
+
+.method private setFeatureInt(II)V
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+.line 665
+	const/4	v0,0
+; v0 : single-length
+	invoke-direct	{v1,v2,v3,v0},com/actionbarsherlock/internal/ActionBarSherlockCompat/updateInt	; updateInt(IIZ)V
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v2 : single-length , v3 : single-length , v0 : single-length
+.line 666
+	return-void	
+.end method
+
+.method private showProgressBars(Lcom/actionbarsherlock/internal/widget/IcsProgressBar;Lcom/actionbarsherlock/internal/widget/IcsProgressBar;)V
+.limit registers 7
+; this: v4 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v5 (Lcom/actionbarsherlock/internal/widget/IcsProgressBar;)
+; parameter[1] : v6 (Lcom/actionbarsherlock/internal/widget/IcsProgressBar;)
+	const/4	v3,0
+; v3 : single-length
+.line 735
+	iget	v0,v4,com/actionbarsherlock/internal/ActionBarSherlockCompat.mFeatures I
+; v0 : single-length , v4 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 736
+	and-int/lit8	v1,v0,32
+; v1 : single-length , v0 : single-length
+	if-eqz	v1,l89ad2
+; v1 : single-length
+	invoke-virtual	{v6},com/actionbarsherlock/internal/widget/IcsProgressBar/getVisibility	; getVisibility()I
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+	move-result	v1
+; v1 : single-length
+	const/4	v2,4
+; v2 : single-length
+	if-ne	v1,v2,l89ad2
+; v1 : single-length , v2 : single-length
+.line 738
+	invoke-virtual	{v6,v3},com/actionbarsherlock/internal/widget/IcsProgressBar/setVisibility	; setVisibility(I)V
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v3 : single-length
+l89ad2:
+.line 741
+	and-int/lit8	v1,v0,4
+; v1 : single-length , v0 : single-length
+	if-eqz	v1,l89af0
+; v1 : single-length
+	invoke-virtual	{v5},com/actionbarsherlock/internal/widget/IcsProgressBar/getProgress	; getProgress()I
+; v5 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+	move-result	v1
+; v1 : single-length
+	const/16	v2,10000
+; v2 : single-length
+	if-ge	v1,v2,l89af0
+; v1 : single-length , v2 : single-length
+.line 743
+	invoke-virtual	{v5,v3},com/actionbarsherlock/internal/widget/IcsProgressBar/setVisibility	; setVisibility(I)V
+; v5 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v3 : single-length
+l89af0:
+.line 745
+	return-void	
+.end method
+
+.method private updateInt(IIZ)V
+.limit registers 6
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (I)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (Z)
+.line 671
+	iget-object	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v1 : Landroid/view/ViewGroup; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v1,l89b0e
+; v1 : Landroid/view/ViewGroup;
+l89b0c:
+.line 682
+	return-void	
+l89b0e:
+.line 675
+	const/4	v1,1
+; v1 : single-length
+	shl-int	v0,v1,v3
+; v0 : single-length , v1 : single-length , v3 : single-length
+.line 677
+	invoke-direct	{v2},com/actionbarsherlock/internal/ActionBarSherlockCompat/getFeatures	; getFeatures()I
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	move-result	v1
+; v1 : single-length
+	and-int/2addr	v1,v0
+; v1 : single-length , v0 : single-length
+	if-nez	v1,l89b26
+; v1 : single-length
+	if-eqz	v5,l89b0c
+; v5 : single-length
+l89b26:
+.line 681
+	invoke-direct	{v2,v3,v4},com/actionbarsherlock/internal/ActionBarSherlockCompat/onIntChanged	; onIntChanged(II)V
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v3 : single-length , v4 : single-length
+	goto	l89b0c
+.end method
+
+.method private updateProgressBars(I)V
+.limit registers 12
+; this: v10 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v11 (I)
+.var 3 is level I from l89b76 to l89b8e
+.var 4 is visibility I from l89b88 to l89b8e
+.var 3 is level I from l89b9e to l89ba2
+	const/16	v9,8
+; v9 : single-length
+	const/16	v8,10000
+; v8 : single-length
+	const/4	v7,1
+; v7 : single-length
+	const/4	v5,0
+; v5 : single-length
+.line 691
+	invoke-direct	{v10,v7},com/actionbarsherlock/internal/ActionBarSherlockCompat/getCircularProgressBar	; getCircularProgressBar(Z)Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v10 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v7 : single-length
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+.line 692
+	invoke-direct	{v10,v7},com/actionbarsherlock/internal/ActionBarSherlockCompat/getHorizontalProgressBar	; getHorizontalProgressBar(Z)Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+; v10 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v7 : single-length
+	move-result-object	v2
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+.line 694
+	iget	v1,v10,com/actionbarsherlock/internal/ActionBarSherlockCompat.mFeatures I
+; v1 : single-length , v10 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 695
+	const/4	v6,15
+; v6 : single-length
+	if-ne	v11,v6,l89ba2
+; v11 : single-length , v6 : single-length
+.line 696
+	and-int/lit8	v6,v1,4
+; v6 : single-length , v1 : single-length
+	if-eqz	v6,l89b8e
+; v6 : single-length
+.line 697
+	invoke-virtual	{v2},com/actionbarsherlock/internal/widget/IcsProgressBar/getProgress	; getProgress()I
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+	move-result	v3
+; v3 : single-length
+.line 698
+	invoke-virtual	{v2},com/actionbarsherlock/internal/widget/IcsProgressBar/isIndeterminate	; isIndeterminate()Z
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+	move-result	v6
+; v6 : single-length
+	if-nez	v6,l89b86
+; v6 : single-length
+	if-ge	v3,v8,l89b9e
+; v3 : single-length , v8 : single-length
+l89b86:
+	move	v4,v5
+; v4 : single-length , v5 : single-length
+l89b88:
+.line 700
+	invoke-virtual	{v2,v4},com/actionbarsherlock/internal/widget/IcsProgressBar/setVisibility	; setVisibility(I)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v4 : single-length
+l89b8e:
+.line 702
+	and-int/lit8	v6,v1,32
+; v6 : single-length , v1 : single-length
+	if-eqz	v6,l89b9c
+; v6 : single-length
+.line 703
+	invoke-virtual	{v0,v5},com/actionbarsherlock/internal/widget/IcsProgressBar/setVisibility	; setVisibility(I)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v5 : single-length
+l89b9c:
+.line 732
+	return-void	
+l89b9e:
+.line 698
+	const/4	v4,4
+; v4 : single-length
+	goto	l89b88
+l89ba2:
+.line 705
+	const/4	v6,14
+; v6 : single-length
+	if-ne	v11,v6,l89bc6
+; v11 : single-length , v6 : single-length
+.line 706
+	and-int/lit8	v5,v1,4
+; v5 : single-length , v1 : single-length
+	if-eqz	v5,l89bb6
+; v5 : single-length
+.line 707
+	invoke-virtual	{v2,v9},com/actionbarsherlock/internal/widget/IcsProgressBar/setVisibility	; setVisibility(I)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v9 : single-length
+l89bb6:
+.line 709
+	and-int/lit8	v5,v1,32
+; v5 : single-length , v1 : single-length
+	if-eqz	v5,l89b9c
+; v5 : single-length
+.line 710
+	invoke-virtual	{v0,v9},com/actionbarsherlock/internal/widget/IcsProgressBar/setVisibility	; setVisibility(I)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v9 : single-length
+	goto	l89b9c
+l89bc6:
+.line 712
+	const/4	v6,13
+; v6 : single-length
+	if-ne	v11,v6,l89bd4
+; v11 : single-length , v6 : single-length
+.line 713
+	invoke-virtual	{v2,v7},com/actionbarsherlock/internal/widget/IcsProgressBar/setIndeterminate	; setIndeterminate(Z)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v7 : single-length
+	goto	l89b9c
+l89bd4:
+.line 714
+	const/4	v6,12
+; v6 : single-length
+	if-ne	v11,v6,l89be2
+; v11 : single-length , v6 : single-length
+.line 715
+	invoke-virtual	{v2,v5},com/actionbarsherlock/internal/widget/IcsProgressBar/setIndeterminate	; setIndeterminate(Z)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v5 : single-length
+	goto	l89b9c
+l89be2:
+.line 716
+	if-ltz	v11,l89c08
+; v11 : single-length
+	if-gt	v11,v8,l89c08
+; v11 : single-length , v8 : single-length
+.line 720
+	add-int/lit8	v5,v11,0
+; v5 : single-length , v11 : single-length
+	invoke-virtual	{v2,v5},com/actionbarsherlock/internal/widget/IcsProgressBar/setProgress	; setProgress(I)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v5 : single-length
+.line 722
+	if-ge	v11,v8,l89c00
+; v11 : single-length , v8 : single-length
+.line 723
+	invoke-direct	{v10,v2,v0},com/actionbarsherlock/internal/ActionBarSherlockCompat/showProgressBars	; showProgressBars(Lcom/actionbarsherlock/internal/widget/IcsProgressBar;Lcom/actionbarsherlock/internal/widget/IcsProgressBar;)V
+; v10 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v2 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+	goto	l89b9c
+l89c00:
+.line 725
+	invoke-direct	{v10,v2,v0},com/actionbarsherlock/internal/ActionBarSherlockCompat/hideProgressBars	; hideProgressBars(Lcom/actionbarsherlock/internal/widget/IcsProgressBar;Lcom/actionbarsherlock/internal/widget/IcsProgressBar;)V
+; v10 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v2 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+	goto	l89b9c
+l89c08:
+.line 727
+	const/16	v5,20000
+; v5 : single-length
+	if-gt	v5,v11,l89b9c
+; v5 : single-length , v11 : single-length
+	const/16	v5,30000
+; v5 : single-length
+	if-gt	v11,v5,l89b9c
+; v11 : single-length , v5 : single-length
+.line 728
+	add-int/lit16	v5,v11,45536
+; v5 : single-length , v11 : single-length
+	invoke-virtual	{v2,v5},com/actionbarsherlock/internal/widget/IcsProgressBar/setSecondaryProgress	; setSecondaryProgress(I)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v5 : single-length
+.line 730
+	invoke-direct	{v10,v2,v0},com/actionbarsherlock/internal/ActionBarSherlockCompat/showProgressBars	; showProgressBars(Lcom/actionbarsherlock/internal/widget/IcsProgressBar;Lcom/actionbarsherlock/internal/widget/IcsProgressBar;)V
+; v10 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v2 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar; , v0 : Lcom/actionbarsherlock/internal/widget/IcsProgressBar;
+	goto	l89b9c
+.end method
+
+.method public addContentView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (Landroid/view/View;)
+; parameter[1] : v3 (Landroid/view/ViewGroup$LayoutParams;)
+.line 890
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v0 : Landroid/view/ViewGroup; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v0,l89c4a
+; v0 : Landroid/view/ViewGroup;
+.line 891
+	invoke-direct	{v1},com/actionbarsherlock/internal/ActionBarSherlockCompat/installDecor	; installDecor()V
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l89c4a:
+.line 893
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v0 : Landroid/view/ViewGroup; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0,v2,v3},android/view/ViewGroup/addView	; addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+; v0 : Landroid/view/ViewGroup; , v2 : Landroid/view/View; , v3 : Landroid/view/ViewGroup$LayoutParams;
+.line 895
+	invoke-direct	{v1},com/actionbarsherlock/internal/ActionBarSherlockCompat/initActionBar	; initActionBar()V
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 896
+	return-void	
+.end method
+
+.method checkCloseActionMenu(Lcom/actionbarsherlock/view/Menu;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (Lcom/actionbarsherlock/view/Menu;)
+.line 578
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mClosingActionMenu Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l89c76
+; v0 : single-length
+l89c74:
+.line 589
+	return-void	
+l89c76:
+.line 582
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mClosingActionMenu Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 583
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ActionBarView/dismissPopupMenus	; dismissPopupMenus()V
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+.line 588
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mClosingActionMenu Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	goto	l89c74
+.end method
+
+.method public dispatchCloseOptionsMenu()Z
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 292
+	invoke-direct	{v1},com/actionbarsherlock/internal/ActionBarSherlockCompat/isReservingOverflow	; isReservingOverflow()Z
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l89cb0
+; v0 : single-length
+.line 293
+	const/4	v0,0
+; v0 : single-length
+l89cae:
+.line 296
+	return	v0
+; v0 : single-length
+l89cb0:
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ActionBarView/hideOverflowMenu	; hideOverflowMenu()Z
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	move-result	v0
+; v0 : single-length
+	goto	l89cae
+.end method
+
+.method public dispatchConfigurationChanged(Landroid/content/res/Configuration;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (Landroid/content/res/Configuration;)
+.line 221
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l89ce2
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+.line 222
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0,v2},com/actionbarsherlock/internal/app/ActionBarImpl/onConfigurationChanged	; onConfigurationChanged(Landroid/content/res/Configuration;)V
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v2 : Landroid/content/res/Configuration;
+l89ce2:
+.line 224
+	return-void	
+.end method
+
+.method public dispatchCreateOptionsMenu(Landroid/view/Menu;)Z
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (Landroid/view/Menu;)
+.line 318
+	const/4	v0,1
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public dispatchDestroy()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 452
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mIsDestroyed Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 453
+	return-void	
+.end method
+
+.method public dispatchInvalidateOptionsMenu()V
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.var 0 is savedActionViewStates Landroid/os/Bundle; from l89d22 to l89d2e
+.line 257
+	const/4	v0,0
+; v0 : single-length
+.line 258
+	iget-object	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v1,l89d62
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 259
+	new-instance	v0,android/os/Bundle
+; v0 : Landroid/os/Bundle;
+l89d2e:
+	invoke-direct	{v0},android/os/Bundle/<init>	; <init>()V
+; v0 : Landroid/os/Bundle;
+.line 260
+	iget-object	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/saveActionViewStates	; saveActionViewStates(Landroid/os/Bundle;)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : Landroid/os/Bundle;
+.line 261
+	invoke-virtual	{v0},android/os/Bundle/size	; size()I
+; v0 : Landroid/os/Bundle;
+	move-result	v1
+; v1 : single-length
+	if-lez	v1,l89d4e
+; v1 : single-length
+.line 262
+	iput-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuFrozenActionViewState Landroid/os/Bundle;
+; v0 : Landroid/os/Bundle; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l89d4e:
+.line 265
+	iget-object	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/stopDispatchingItemsChanged	; stopDispatchingItemsChanged()V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 266
+	iget-object	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/clear	; clear()V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+l89d62:
+.line 268
+	const/4	v1,1
+; v1 : single-length
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuRefreshContent Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 271
+	iget-object	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v1 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v1,l89d7c
+; v1 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+.line 272
+	const/4	v1,0
+; v1 : single-length
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuIsPrepared Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 273
+	invoke-direct	{v2},com/actionbarsherlock/internal/ActionBarSherlockCompat/preparePanel	; preparePanel()Z
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l89d7c:
+.line 275
+	return-void	
+.end method
+
+.method public dispatchKeyEvent(Landroid/view/KeyEvent;)Z
+.limit registers 7
+; this: v5 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v6 (Landroid/view/KeyEvent;)
+.var 0 is action I from l89da8 to l89dc0
+.var 0 is action I from l89dc2 to l89dec
+	const/4	v3,1
+; v3 : single-length
+.line 402
+	invoke-virtual	{v6},android/view/KeyEvent/getKeyCode	; getKeyCode()I
+; v6 : Landroid/view/KeyEvent;
+	move-result	v1
+; v1 : single-length
+.line 406
+	const/4	v4,4
+; v4 : single-length
+	if-ne	v1,v4,l89dec
+; v1 : single-length , v4 : single-length
+.line 407
+	invoke-virtual	{v6},android/view/KeyEvent/getAction	; getAction()I
+; v6 : Landroid/view/KeyEvent;
+	move-result	v0
+; v0 : single-length
+.line 409
+	iget-object	v4,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v4 : Lcom/actionbarsherlock/view/ActionMode; , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v4,l89dc2
+; v4 : Lcom/actionbarsherlock/view/ActionMode;
+.line 410
+	if-ne	v0,v3,l89dbe
+; v0 : single-length , v3 : single-length
+.line 411
+	iget-object	v4,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v4 : Lcom/actionbarsherlock/view/ActionMode; , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v4},com/actionbarsherlock/view/ActionMode/finish	; finish()V
+; v4 : Lcom/actionbarsherlock/view/ActionMode;
+l89dbe:
+	move	v2,v3
+; v2 : single-length , v3 : single-length
+l89dc0:
+.line 447
+	return	v2
+; v2 : single-length
+l89dc2:
+.line 418
+	iget-object	v4,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v4 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v4,l89dec
+; v4 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	iget-object	v4,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v4 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v4},com/actionbarsherlock/internal/widget/ActionBarView/hasExpandedActionView	; hasExpandedActionView()Z
+; v4 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l89dec
+; v4 : single-length
+.line 419
+	if-ne	v0,v3,l89de8
+; v0 : single-length , v3 : single-length
+.line 420
+	iget-object	v4,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v4 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v4},com/actionbarsherlock/internal/widget/ActionBarView/collapseActionView	; collapseActionView()V
+; v4 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+l89de8:
+	move	v2,v3
+; v2 : single-length , v3 : single-length
+.line 423
+	goto	l89dc0
+l89dec:
+.line 427
+	const/4	v2,0
+; v2 : single-length
+.line 428
+	const/16	v4,82
+; v4 : single-length
+	if-ne	v1,v4,l89dc0
+; v1 : single-length , v4 : single-length
+	invoke-direct	{v5},com/actionbarsherlock/internal/ActionBarSherlockCompat/isReservingOverflow	; isReservingOverflow()Z
+; v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l89dc0
+; v4 : single-length
+.line 429
+	invoke-virtual	{v6},android/view/KeyEvent/getAction	; getAction()I
+; v6 : Landroid/view/KeyEvent;
+	move-result	v4
+; v4 : single-length
+	if-nez	v4,l89e20
+; v4 : single-length
+	invoke-virtual	{v6},android/view/KeyEvent/isLongPress	; isLongPress()Z
+; v6 : Landroid/view/KeyEvent;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l89e20
+; v4 : single-length
+.line 430
+	iput-boolean	v3,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuKeyIsLongPress Z
+; v3 : single-length , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	goto	l89dc0
+l89e20:
+.line 431
+	invoke-virtual	{v6},android/view/KeyEvent/getAction	; getAction()I
+; v6 : Landroid/view/KeyEvent;
+	move-result	v4
+; v4 : single-length
+	if-ne	v4,v3,l89dc0
+; v4 : single-length , v3 : single-length
+.line 432
+	iget-boolean	v3,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuKeyIsLongPress Z
+; v3 : single-length , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v3,l89e60
+; v3 : single-length
+.line 433
+	iget-object	v3,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v3 : Lcom/actionbarsherlock/view/ActionMode; , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v3,l89e5e
+; v3 : Lcom/actionbarsherlock/view/ActionMode;
+	iget-object	v3,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v3,l89e5e
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+.line 434
+	iget-object	v3,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/ActionBarView/isOverflowMenuShowing	; isOverflowMenuShowing()Z
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l89e68
+; v3 : single-length
+.line 435
+	iget-object	v3,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/ActionBarView/hideOverflowMenu	; hideOverflowMenu()Z
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+l89e5e:
+.line 440
+	const/4	v2,1
+; v2 : single-length
+l89e60:
+.line 442
+	const/4	v3,0
+; v3 : single-length
+	iput-boolean	v3,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuKeyIsLongPress Z
+; v3 : single-length , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	goto	l89dc0
+l89e68:
+.line 437
+	iget-object	v3,v5,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v5 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/ActionBarView/showOverflowMenu	; showOverflowMenu()Z
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	goto	l89e5e
+.end method
+
+.method public dispatchMenuOpened(ILandroid/view/Menu;)Z
+.limit registers 5
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (I)
+; parameter[1] : v4 (Landroid/view/Menu;)
+	const/4	v0,1
+; v0 : single-length
+.line 362
+	const/16	v1,8
+; v1 : single-length
+	if-eq	v3,v1,l89e92
+; v3 : single-length , v1 : single-length
+	if-nez	v3,l89ea6
+; v3 : single-length
+l89e92:
+.line 363
+	iget-object	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v1 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v1,l89ea4
+; v1 : Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+.line 364
+	iget-object	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v1 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/app/ActionBarImpl/dispatchMenuVisibilityChanged	; dispatchMenuVisibilityChanged(Z)V
+; v1 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v0 : single-length
+l89ea4:
+.line 369
+	return	v0
+; v0 : single-length
+l89ea6:
+	const/4	v0,0
+; v0 : single-length
+	goto	l89ea4
+.end method
+
+.method public dispatchOpenOptionsMenu()Z
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 281
+	invoke-direct	{v1},com/actionbarsherlock/internal/ActionBarSherlockCompat/isReservingOverflow	; isReservingOverflow()Z
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l89ecc
+; v0 : single-length
+.line 282
+	const/4	v0,0
+; v0 : single-length
+l89eca:
+.line 285
+	return	v0
+; v0 : single-length
+l89ecc:
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ActionBarView/showOverflowMenu	; showOverflowMenu()Z
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	move-result	v0
+; v0 : single-length
+	goto	l89eca
+.end method
+
+.method public dispatchOptionsItemSelected(Landroid/view/MenuItem;)Z
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (Landroid/view/MenuItem;)
+.line 355
+	new-instance	v0,java/lang/IllegalStateException
+; v0 : Ljava/lang/IllegalStateException;
+	const-string	v1,"Native callback invoked. Create a test case and report!"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalStateException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalStateException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalStateException;
+.end method
+
+.method public dispatchPanelClosed(ILandroid/view/Menu;)V
+.limit registers 5
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (I)
+; parameter[1] : v4 (Landroid/view/Menu;)
+.line 376
+	const/16	v0,8
+; v0 : single-length
+	if-eq	v3,v0,l89f18
+; v3 : single-length , v0 : single-length
+	if-nez	v3,l89f2c
+; v3 : single-length
+l89f18:
+.line 377
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l89f2c
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+.line 378
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/app/ActionBarImpl/dispatchMenuVisibilityChanged	; dispatchMenuVisibilityChanged(Z)V
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v1 : single-length
+l89f2c:
+.line 381
+	return-void	
+.end method
+
+.method public dispatchPause()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 239
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l89f62
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ActionBarView/isOverflowMenuShowing	; isOverflowMenuShowing()Z
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l89f62
+; v0 : single-length
+.line 240
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ActionBarView/hideOverflowMenu	; hideOverflowMenu()Z
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+l89f62:
+.line 242
+	return-void	
+.end method
+
+.method public dispatchPostCreate(Landroid/os/Bundle;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (Landroid/os/Bundle;)
+.line 303
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mIsDelegate Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l89f82
+; v0 : single-length
+.line 304
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mIsTitleReady Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l89f82:
+.line 307
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v0 : Landroid/view/ViewGroup; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v0,l89f90
+; v0 : Landroid/view/ViewGroup;
+.line 308
+	invoke-direct	{v1},com/actionbarsherlock/internal/ActionBarSherlockCompat/initActionBar	; initActionBar()V
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l89f90:
+.line 310
+	return-void	
+.end method
+
+.method public dispatchPostResume()V
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 230
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l89fb8
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+.line 231
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	const/4	v1,1
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/app/ActionBarImpl/setShowHideAnimationEnabled	; setShowHideAnimationEnabled(Z)V
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v1 : single-length
+l89fb8:
+.line 233
+	return-void	
+.end method
+
+.method public dispatchPrepareOptionsMenu(Landroid/view/Menu;)Z
+.limit registers 5
+; this: v3 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v4 (Landroid/view/Menu;)
+.var 0 is result Z from l8a022 to l8a024
+	const/4	v0,0
+; v0 : single-length
+.line 325
+	iget-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v1 : Lcom/actionbarsherlock/view/ActionMode; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v1,l89fd8
+; v1 : Lcom/actionbarsherlock/view/ActionMode;
+l89fd6:
+.line 350
+	return	v0
+; v0 : single-length
+l89fd8:
+.line 329
+	iput-boolean	v0,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenuIsPrepared Z
+; v0 : single-length , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 330
+	invoke-direct	{v3},com/actionbarsherlock/internal/ActionBarSherlockCompat/preparePanel	; preparePanel()Z
+; v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l89fd6
+; v1 : single-length
+.line 334
+	invoke-direct	{v3},com/actionbarsherlock/internal/ActionBarSherlockCompat/isReservingOverflow	; isReservingOverflow()Z
+; v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l89fd6
+; v1 : single-length
+.line 338
+	iget-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mNativeItemMap Ljava/util/HashMap;
+; v1 : Ljava/util/HashMap; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v1,l8a024
+; v1 : Ljava/util/HashMap;
+.line 339
+	new-instance	v1,java/util/HashMap
+; v1 : Ljava/util/HashMap;
+	invoke-direct	{v1},java/util/HashMap/<init>	; <init>()V
+; v1 : Ljava/util/HashMap;
+	iput-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mNativeItemMap Ljava/util/HashMap;
+; v1 : Ljava/util/HashMap; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l8a00a:
+.line 344
+	iget-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v1,l89fd6
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 348
+	iget-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mMenu Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	iget-object	v2,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mNativeItemMap Ljava/util/HashMap;
+; v2 : Ljava/util/HashMap; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1,v4,v3,v2},com/actionbarsherlock/internal/view/menu/MenuBuilder/bindNativeOverflow	; bindNativeOverflow(Landroid/view/Menu;Landroid/view/MenuItem$OnMenuItemClickListener;Ljava/util/HashMap;)Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v4 : Landroid/view/Menu; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v2 : Ljava/util/HashMap;
+	move-result	v0
+; v0 : single-length
+.line 350
+	goto	l89fd6
+l8a024:
+.line 341
+	iget-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mNativeItemMap Ljava/util/HashMap;
+; v1 : Ljava/util/HashMap; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1},java/util/HashMap/clear	; clear()V
+; v1 : Ljava/util/HashMap;
+	goto	l8a00a
+.end method
+
+.method public dispatchStop()V
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 248
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l8a054
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+.line 249
+	iget-object	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/app/ActionBarImpl/setShowHideAnimationEnabled	; setShowHideAnimationEnabled(Z)V
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v1 : single-length
+l8a054:
+.line 251
+	return-void	
+.end method
+
+.method public dispatchTitleChanged(Ljava/lang/CharSequence;I)V
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (Ljava/lang/CharSequence;)
+; parameter[1] : v3 (I)
+.line 387
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mIsDelegate Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l8a078
+; v0 : single-length
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mIsTitleReady Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l8a08a
+; v0 : single-length
+l8a078:
+.line 388
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mTitleView Landroid/widget/TextView;
+; v0 : Landroid/widget/TextView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l8a090
+; v0 : Landroid/widget/TextView;
+.line 389
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mTitleView Landroid/widget/TextView;
+; v0 : Landroid/widget/TextView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0,v2},android/widget/TextView/setText	; setText(Ljava/lang/CharSequence;)V
+; v0 : Landroid/widget/TextView; , v2 : Ljava/lang/CharSequence;
+l8a08a:
+.line 395
+	iput-object	v2,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.mTitle Ljava/lang/CharSequence;
+; v2 : Ljava/lang/CharSequence; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 396
+	return-void	
+l8a090:
+.line 390
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v0,l8a08a
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView;
+.line 391
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.wActionBar Lcom/actionbarsherlock/internal/widget/ActionBarView;
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0,v2},com/actionbarsherlock/internal/widget/ActionBarView/setWindowTitle	; setWindowTitle(Ljava/lang/CharSequence;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/ActionBarView; , v2 : Ljava/lang/CharSequence;
+	goto	l8a08a
+.end method
+
+.method public getActionBar()Lcom/actionbarsherlock/app/ActionBar;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 129
+	invoke-direct	{v1},com/actionbarsherlock/internal/ActionBarSherlockCompat/initActionBar	; initActionBar()V
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 130
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+.end method
+
+.method protected getThemedContext()Landroid/content/Context;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+.line 156
+	iget-object	v0,v1,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/app/ActionBarImpl/getThemedContext	; getThemedContext()Landroid/content/Context;
+; v0 : Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+	move-result-object	v0
+; v0 : Landroid/content/Context;
+	return-object	v0
+; v0 : Landroid/content/Context;
+.end method
+
+.method public hasFeature(I)Z
+.limit registers 5
+; this: v3 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v4 (I)
+.var 0 is result Z from l8a100 to l8a102
+	const/4	v0,1
+; v0 : single-length
+.line 806
+	iget	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mFeatures I
+; v1 : single-length , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	shl-int	v2,v0,v4
+; v2 : single-length , v0 : single-length , v4 : single-length
+	and-int/2addr	v1,v2
+; v1 : single-length , v2 : single-length
+	if-eqz	v1,l8a102
+; v1 : single-length
+l8a100:
+.line 808
+	return	v0
+; v0 : single-length
+l8a102:
+.line 806
+	const/4	v0,0
+; v0 : single-length
+	goto	l8a100
+.end method
+
+.method public onCloseMenu(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;Z)V
+.limit registers 3
+; this: v0 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[1] : v2 (Z)
+.line 598
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/ActionBarSherlockCompat/checkCloseActionMenu	; checkCloseActionMenu(Lcom/actionbarsherlock/view/Menu;)V
+; v0 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 599
+	return-void	
+.end method
+
+.method public onMenuItemClick(Landroid/view/MenuItem;)Z
+.limit registers 6
+; this: v4 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v5 (Landroid/view/MenuItem;)
+.line 605
+	iget-object	v1,v4,com/actionbarsherlock/internal/ActionBarSherlockCompat.mNativeItemMap Ljava/util/HashMap;
+; v1 : Ljava/util/HashMap; , v4 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1,v5},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/HashMap; , v5 : Landroid/view/MenuItem;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 606
+	if-eqz	v0,l8a14e
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 607
+	invoke-virtual	{v0},com/actionbarsherlock/internal/view/menu/MenuItemImpl/invoke	; invoke()Z
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+l8a14a:
+.line 612
+	const/4	v1,1
+; v1 : single-length
+	return	v1
+; v1 : single-length
+l8a14e:
+.line 609
+	const-string	v1,"ActionBarSherlock"
+; v1 : Ljava/lang/String;
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"Options item ""
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v5},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v5 : Landroid/view/MenuItem;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"" not found in mapping"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-static	{v1,v2},android/util/Log/e	; e(Ljava/lang/String;Ljava/lang/String;)I
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	goto	l8a14a
+.end method
+
+.method public onMenuItemSelected(ILcom/actionbarsherlock/view/MenuItem;)Z
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (Lcom/actionbarsherlock/view/MenuItem;)
+.line 617
+	invoke-virtual	{v1,v3},com/actionbarsherlock/internal/ActionBarSherlockCompat/callbackOptionsItemSelected	; callbackOptionsItemSelected(Lcom/actionbarsherlock/view/MenuItem;)Z
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v3 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public onMenuItemSelected(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;Lcom/actionbarsherlock/view/MenuItem;)Z
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[1] : v3 (Lcom/actionbarsherlock/view/MenuItem;)
+.line 533
+	invoke-virtual	{v1,v3},com/actionbarsherlock/internal/ActionBarSherlockCompat/callbackOptionsItemSelected	; callbackOptionsItemSelected(Lcom/actionbarsherlock/view/MenuItem;)Z
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v3 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public onMenuModeChange(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 537
+	const/4	v0,1
+; v0 : single-length
+	invoke-direct	{v1,v0},com/actionbarsherlock/internal/ActionBarSherlockCompat/reopenMenu	; reopenMenu(Z)V
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v0 : single-length
+.line 538
+	return-void	
+.end method
+
+.method public onOpenSubMenu(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)Z
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 593
+	const/4	v0,1
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public requestFeature(I)Z
+.limit registers 5
+; this: v3 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v4 (I)
+	const/4	v0,1
+; v0 : single-length
+.line 815
+	iget-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v1 : Landroid/view/ViewGroup; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v1,l8a21e
+; v1 : Landroid/view/ViewGroup;
+.line 816
+	new-instance	v0,android/util/AndroidRuntimeException
+; v0 : Landroid/util/AndroidRuntimeException;
+	const-string	v1,"requestFeature() must be called before adding content"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},android/util/AndroidRuntimeException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Landroid/util/AndroidRuntimeException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Landroid/util/AndroidRuntimeException;
+l8a21e:
+.line 819
+	packed-switch	v4,1
+		ps8a21e_8a228	; case 1
+		ps8a21e_8a228	; case 2
+		ps8a21e_8a224	; case 3
+		ps8a21e_8a224	; case 4
+		ps8a21e_8a228	; case 5
+		ps8a21e_8a224	; case 6
+		ps8a21e_8a224	; case 7
+		ps8a21e_8a228	; case 8
+		ps8a21e_8a228	; case 9
+		ps8a21e_8a228	; case 10
+		default: ps8a21e_default
+; v4 : single-length
+ps8a21e_default:
+.line 830
+	const/4	v0,0
+; v0 : single-length
+l8a226:
+	return	v0
+; v0 : single-length
+ps8a21e_8a228:
+.line 826
+	iget	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mFeatures I
+; v1 : single-length , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	shl-int	v2,v0,v4
+; v2 : single-length , v0 : single-length , v4 : single-length
+	or-int/2addr	v1,v2
+; v1 : single-length , v2 : single-length
+	iput	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mFeatures I
+; v1 : single-length , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	goto	l8a226
+.line 819
+.end method
+
+.method public setContentView(I)V
+.limit registers 5
+; this: v3 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v4 (I)
+.var 0 is callback Landroid/view/Window$Callback; from l8a2b0 to l8a2c2
+.line 852
+	iget-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v1 : Landroid/view/ViewGroup; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v1,l8a2c2
+; v1 : Landroid/view/ViewGroup;
+.line 853
+	invoke-direct	{v3},com/actionbarsherlock/internal/ActionBarSherlockCompat/installDecor	; installDecor()V
+; v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l8a286:
+.line 857
+	iget-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v1 : Landroid/app/Activity; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1},android/app/Activity/getLayoutInflater	; getLayoutInflater()Landroid/view/LayoutInflater;
+; v1 : Landroid/app/Activity;
+	move-result-object	v1
+; v1 : Landroid/view/LayoutInflater;
+	iget-object	v2,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v2 : Landroid/view/ViewGroup; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1,v4,v2},android/view/LayoutInflater/inflate	; inflate(ILandroid/view/ViewGroup;)Landroid/view/View;
+; v1 : Landroid/view/LayoutInflater; , v4 : single-length , v2 : Landroid/view/ViewGroup;
+.line 859
+	iget-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v1 : Landroid/app/Activity; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1},android/app/Activity/getWindow	; getWindow()Landroid/view/Window;
+; v1 : Landroid/app/Activity;
+	move-result-object	v1
+; v1 : Landroid/view/Window;
+	invoke-virtual	{v1},android/view/Window/getCallback	; getCallback()Landroid/view/Window$Callback;
+; v1 : Landroid/view/Window;
+	move-result-object	v0
+; v0 : Landroid/view/Window$Callback;
+.line 860
+	if-eqz	v0,l8a2ba
+; v0 : Landroid/view/Window$Callback;
+.line 861
+	invoke-interface	{v0},android/view/Window$Callback/onContentChanged	; onContentChanged()V
+; v0 : Landroid/view/Window$Callback;
+l8a2ba:
+.line 864
+	invoke-direct	{v3},com/actionbarsherlock/internal/ActionBarSherlockCompat/initActionBar	; initActionBar()V
+; v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 865
+	return-void	
+l8a2c2:
+.line 855
+	iget-object	v1,v3,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v1 : Landroid/view/ViewGroup; , v3 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1},android/view/ViewGroup/removeAllViews	; removeAllViews()V
+; v1 : Landroid/view/ViewGroup;
+	goto	l8a286
+.end method
+
+.method public setContentView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+.limit registers 5
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (Landroid/view/View;)
+; parameter[1] : v4 (Landroid/view/ViewGroup$LayoutParams;)
+.var 0 is callback Landroid/view/Window$Callback; from l8a30c to l8a31e
+.line 871
+	iget-object	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v1 : Landroid/view/ViewGroup; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v1,l8a31e
+; v1 : Landroid/view/ViewGroup;
+.line 872
+	invoke-direct	{v2},com/actionbarsherlock/internal/ActionBarSherlockCompat/installDecor	; installDecor()V
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l8a2ee:
+.line 876
+	iget-object	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v1 : Landroid/view/ViewGroup; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1,v3,v4},android/view/ViewGroup/addView	; addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+; v1 : Landroid/view/ViewGroup; , v3 : Landroid/view/View; , v4 : Landroid/view/ViewGroup$LayoutParams;
+.line 878
+	iget-object	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v1 : Landroid/app/Activity; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1},android/app/Activity/getWindow	; getWindow()Landroid/view/Window;
+; v1 : Landroid/app/Activity;
+	move-result-object	v1
+; v1 : Landroid/view/Window;
+	invoke-virtual	{v1},android/view/Window/getCallback	; getCallback()Landroid/view/Window$Callback;
+; v1 : Landroid/view/Window;
+	move-result-object	v0
+; v0 : Landroid/view/Window$Callback;
+.line 879
+	if-eqz	v0,l8a316
+; v0 : Landroid/view/Window$Callback;
+.line 880
+	invoke-interface	{v0},android/view/Window$Callback/onContentChanged	; onContentChanged()V
+; v0 : Landroid/view/Window$Callback;
+l8a316:
+.line 883
+	invoke-direct	{v2},com/actionbarsherlock/internal/ActionBarSherlockCompat/initActionBar	; initActionBar()V
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 884
+	return-void	
+l8a31e:
+.line 874
+	iget-object	v1,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mContentParent Landroid/view/ViewGroup;
+; v1 : Landroid/view/ViewGroup; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v1},android/view/ViewGroup/removeAllViews	; removeAllViews()V
+; v1 : Landroid/view/ViewGroup;
+	goto	l8a2ee
+.end method
+
+.method public setProgress(I)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (I)
+.line 653
+	const/4	v0,2
+; v0 : single-length
+	add-int/lit8	v1,v3,0
+; v1 : single-length , v3 : single-length
+	invoke-direct	{v2,v0,v1},com/actionbarsherlock/internal/ActionBarSherlockCompat/setFeatureInt	; setFeatureInt(II)V
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v0 : single-length , v1 : single-length
+.line 654
+	return-void	
+.end method
+
+.method public setProgressBarIndeterminate(Z)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (Z)
+.line 645
+	const/4	v1,2
+; v1 : single-length
+	if-eqz	v3,l8a36c
+; v3 : single-length
+	const/4	v0,13
+; v0 : single-length
+l8a364:
+	invoke-direct	{v2,v1,v0},com/actionbarsherlock/internal/ActionBarSherlockCompat/setFeatureInt	; setFeatureInt(II)V
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v1 : single-length , v0 : single-length
+.line 647
+	return-void	
+l8a36c:
+.line 645
+	const/4	v0,12
+; v0 : single-length
+	goto	l8a364
+.end method
+
+.method public setProgressBarIndeterminateVisibility(Z)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (Z)
+.line 637
+	const/4	v1,5
+; v1 : single-length
+	if-eqz	v3,l8a390
+; v3 : single-length
+	const/4	v0,15
+; v0 : single-length
+l8a388:
+	invoke-direct	{v2,v1,v0},com/actionbarsherlock/internal/ActionBarSherlockCompat/setFeatureInt	; setFeatureInt(II)V
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v1 : single-length , v0 : single-length
+.line 639
+	return-void	
+l8a390:
+.line 637
+	const/4	v0,14
+; v0 : single-length
+	goto	l8a388
+.end method
+
+.method public setProgressBarVisibility(Z)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (Z)
+.line 629
+	const/4	v1,2
+; v1 : single-length
+	if-eqz	v3,l8a3b4
+; v3 : single-length
+	const/4	v0,15
+; v0 : single-length
+l8a3ac:
+	invoke-direct	{v2,v1,v0},com/actionbarsherlock/internal/ActionBarSherlockCompat/setFeatureInt	; setFeatureInt(II)V
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v1 : single-length , v0 : single-length
+.line 631
+	return-void	
+l8a3b4:
+.line 629
+	const/4	v0,14
+; v0 : single-length
+	goto	l8a3ac
+.end method
+
+.method public setSecondaryProgress(I)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (I)
+.line 660
+	const/4	v0,2
+; v0 : single-length
+	add-int/lit16	v1,v3,20000
+; v1 : single-length , v3 : single-length
+	invoke-direct	{v2,v0,v1},com/actionbarsherlock/internal/ActionBarSherlockCompat/setFeatureInt	; setFeatureInt(II)V
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v0 : single-length , v1 : single-length
+.line 662
+	return-void	
+.end method
+
+.method public setTitle(Ljava/lang/CharSequence;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v2 (Ljava/lang/CharSequence;)
+.line 163
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v1,v2,v0},com/actionbarsherlock/internal/ActionBarSherlockCompat/dispatchTitleChanged	; dispatchTitleChanged(Ljava/lang/CharSequence;I)V
+; v1 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v2 : Ljava/lang/CharSequence; , v0 : single-length
+.line 164
+	return-void	
+.end method
+
+.method public setUiOptions(I)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v1 (I)
+.line 838
+	iput	v1,v0,com/actionbarsherlock/internal/ActionBarSherlockCompat.mUiOptions I
+; v1 : single-length , v0 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 839
+	return-void	
+.end method
+
+.method public setUiOptions(II)V
+.limit registers 5
+; this: v2 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v3 (I)
+; parameter[1] : v4 (I)
+.line 845
+	iget	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mUiOptions I
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	xor-int/lit8	v1,v4,255
+; v1 : single-length , v4 : single-length
+	and-int/2addr	v0,v1
+; v0 : single-length , v1 : single-length
+	and-int	v1,v3,v4
+; v1 : single-length , v3 : single-length , v4 : single-length
+	or-int/2addr	v0,v1
+; v0 : single-length , v1 : single-length
+	iput	v0,v2,com/actionbarsherlock/internal/ActionBarSherlockCompat.mUiOptions I
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 846
+	return-void	
+.end method
+
+.method public startActionMode(Lcom/actionbarsherlock/view/ActionMode$Callback;)Lcom/actionbarsherlock/view/ActionMode;
+.limit registers 8
+; this: v6 (Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;)
+; parameter[0] : v7 (Lcom/actionbarsherlock/view/ActionMode$Callback;)
+.var 1 is stub Landroid/view/ViewStub; from l8a4cc to l8a4e0
+.var 0 is mode Lcom/actionbarsherlock/view/ActionMode; from l8a462 to l8a4f6
+.line 170
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v3 : Lcom/actionbarsherlock/view/ActionMode; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v3,l8a456
+; v3 : Lcom/actionbarsherlock/view/ActionMode;
+.line 171
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v3 : Lcom/actionbarsherlock/view/ActionMode; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v3},com/actionbarsherlock/view/ActionMode/finish	; finish()V
+; v3 : Lcom/actionbarsherlock/view/ActionMode;
+l8a456:
+.line 174
+	new-instance	v2,com/actionbarsherlock/internal/ActionBarSherlockCompat$ActionModeCallbackWrapper
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat$ActionModeCallbackWrapper;
+	invoke-direct	{v2,v6,v7},com/actionbarsherlock/internal/ActionBarSherlockCompat$ActionModeCallbackWrapper/<init>	; <init>(Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;Lcom/actionbarsherlock/view/ActionMode$Callback;)V
+; v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat$ActionModeCallbackWrapper; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat; , v7 : Lcom/actionbarsherlock/view/ActionMode$Callback;
+.line 175
+	const/4	v0,0
+; v0 : single-length
+.line 178
+	invoke-direct	{v6},com/actionbarsherlock/internal/ActionBarSherlockCompat/initActionBar	; initActionBar()V
+; v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 179
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v3 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v3,l8a47c
+; v3 : Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+.line 180
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.aActionBar Lcom/actionbarsherlock/internal/app/ActionBarImpl;
+; v3 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v3,v2},com/actionbarsherlock/internal/app/ActionBarImpl/startActionMode	; startActionMode(Lcom/actionbarsherlock/view/ActionMode$Callback;)Lcom/actionbarsherlock/view/ActionMode;
+; v3 : Lcom/actionbarsherlock/internal/app/ActionBarImpl; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat$ActionModeCallbackWrapper;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/ActionMode;
+l8a47c:
+.line 183
+	if-eqz	v0,l8a4b0
+; v0 : Lcom/actionbarsherlock/view/ActionMode;
+.line 184
+	iput-object	v0,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v0 : Lcom/actionbarsherlock/view/ActionMode; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l8a484:
+.line 206
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v3 : Lcom/actionbarsherlock/view/ActionMode; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v3,l8a4aa
+; v3 : Lcom/actionbarsherlock/view/ActionMode;
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v3 : Landroid/app/Activity; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	instance-of	v3,v3,com/actionbarsherlock/ActionBarSherlock$OnActionModeStartedListener
+; v3 : single-length , v3 : single-length
+	if-eqz	v3,l8a4aa
+; v3 : single-length
+.line 207
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v3 : Landroid/app/Activity; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	check-cast	v3,com/actionbarsherlock/ActionBarSherlock$OnActionModeStartedListener
+; v3 : Lcom/actionbarsherlock/ActionBarSherlock$OnActionModeStartedListener;
+	iget-object	v4,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v4 : Lcom/actionbarsherlock/view/ActionMode; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-interface	{v3,v4},com/actionbarsherlock/ActionBarSherlock$OnActionModeStartedListener/onActionModeStarted	; onActionModeStarted(Lcom/actionbarsherlock/view/ActionMode;)V
+; v3 : Lcom/actionbarsherlock/ActionBarSherlock$OnActionModeStartedListener; , v4 : Lcom/actionbarsherlock/view/ActionMode;
+l8a4aa:
+.line 209
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v3 : Lcom/actionbarsherlock/view/ActionMode; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	return-object	v3
+; v3 : Lcom/actionbarsherlock/view/ActionMode;
+l8a4b0:
+.line 186
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-nez	v3,l8a4e0
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+.line 187
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mDecor Landroid/view/ViewGroup;
+; v3 : Landroid/view/ViewGroup; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	sget	v4,com/actionbarsherlock/R$id.abs__action_mode_bar_stub I
+; v4 : single-length
+	invoke-virtual	{v3,v4},android/view/ViewGroup/findViewById	; findViewById(I)Landroid/view/View;
+; v3 : Landroid/view/ViewGroup; , v4 : single-length
+	move-result-object	v1
+; v1 : Landroid/view/View;
+	check-cast	v1,android/view/ViewStub
+; v1 : Landroid/view/ViewStub;
+.line 188
+	if-eqz	v1,l8a4e0
+; v1 : Landroid/view/ViewStub;
+.line 189
+	invoke-virtual	{v1},android/view/ViewStub/inflate	; inflate()Landroid/view/View;
+; v1 : Landroid/view/ViewStub;
+	move-result-object	v3
+; v3 : Landroid/view/View;
+	check-cast	v3,com/actionbarsherlock/internal/widget/ActionBarContextView
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+	iput-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+l8a4e0:
+.line 192
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	if-eqz	v3,l8a484
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+.line 193
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/ActionBarContextView/killMode	; killMode()V
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+.line 194
+	new-instance	v0,com/actionbarsherlock/internal/view/StandaloneActionMode
+; v0 : Lcom/actionbarsherlock/internal/view/StandaloneActionMode;
+l8a4f6:
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActivity Landroid/app/Activity;
+; v3 : Landroid/app/Activity; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	iget-object	v4,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v4 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	const/4	v5,1
+; v5 : single-length
+	invoke-direct	{v0,v3,v4,v2,v5},com/actionbarsherlock/internal/view/StandaloneActionMode/<init>	; <init>(Landroid/content/Context;Lcom/actionbarsherlock/internal/widget/ActionBarContextView;Lcom/actionbarsherlock/view/ActionMode$Callback;Z)V
+; v0 : Lcom/actionbarsherlock/internal/view/StandaloneActionMode; , v3 : Landroid/app/Activity; , v4 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v2 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat$ActionModeCallbackWrapper; , v5 : single-length
+.line 195
+	invoke-virtual	{v0},com/actionbarsherlock/view/ActionMode/getMenu	; getMenu()Lcom/actionbarsherlock/view/Menu;
+; v0 : Lcom/actionbarsherlock/internal/view/StandaloneActionMode;
+	move-result-object	v3
+; v3 : Lcom/actionbarsherlock/view/Menu;
+	invoke-interface	{v7,v0,v3},com/actionbarsherlock/view/ActionMode$Callback/onCreateActionMode	; onCreateActionMode(Lcom/actionbarsherlock/view/ActionMode;Lcom/actionbarsherlock/view/Menu;)Z
+; v7 : Lcom/actionbarsherlock/view/ActionMode$Callback; , v0 : Lcom/actionbarsherlock/internal/view/StandaloneActionMode; , v3 : Lcom/actionbarsherlock/view/Menu;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l8a54a
+; v3 : single-length
+.line 196
+	invoke-virtual	{v0},com/actionbarsherlock/view/ActionMode/invalidate	; invalidate()V
+; v0 : Lcom/actionbarsherlock/internal/view/StandaloneActionMode;
+.line 197
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	invoke-virtual	{v3,v0},com/actionbarsherlock/internal/widget/ActionBarContextView/initForMode	; initForMode(Lcom/actionbarsherlock/view/ActionMode;)V
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v0 : Lcom/actionbarsherlock/internal/view/StandaloneActionMode;
+.line 198
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	const/4	v4,0
+; v4 : single-length
+	invoke-virtual	{v3,v4},com/actionbarsherlock/internal/widget/ActionBarContextView/setVisibility	; setVisibility(I)V
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v4 : single-length
+.line 199
+	iput-object	v0,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v0 : Lcom/actionbarsherlock/internal/view/StandaloneActionMode; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+.line 200
+	iget-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionModeView Lcom/actionbarsherlock/internal/widget/ActionBarContextView;
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	const/16	v4,32
+; v4 : single-length
+	invoke-virtual	{v3,v4},com/actionbarsherlock/internal/widget/ActionBarContextView/sendAccessibilityEvent	; sendAccessibilityEvent(I)V
+; v3 : Lcom/actionbarsherlock/internal/widget/ActionBarContextView; , v4 : single-length
+	goto	l8a484
+l8a54a:
+.line 202
+	const/4	v3,0
+; v3 : single-length
+	iput-object	v3,v6,com/actionbarsherlock/internal/ActionBarSherlockCompat.mActionMode Lcom/actionbarsherlock/view/ActionMode;
+; v3 : single-length , v6 : Lcom/actionbarsherlock/internal/ActionBarSherlockCompat;
+	goto	l8a484
+.end method
+
+
