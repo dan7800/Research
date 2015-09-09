@@ -1,0 +1,587 @@
+.class public com/actionbarsherlock/internal/view/menu/MenuWrapper
+.super java/lang/Object
+.source MenuWrapper.java
+.implements com/actionbarsherlock/view/Menu
+
+.field private final mNativeMap Ljava/util/WeakHashMap;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/WeakHashMap" , "<" , "Landroid/view/MenuItem;" , "Lcom/actionbarsherlock/view/MenuItem;" , ">;" }
+  .end annotation
+.end field
+.field private final mNativeMenu Landroid/view/Menu;
+
+.method public <init>(Landroid/view/Menu;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (Landroid/view/Menu;)
+.line 18
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+.line 14
+	new-instance	v0,java/util/WeakHashMap
+; v0 : Ljava/util/WeakHashMap;
+	invoke-direct	{v0},java/util/WeakHashMap/<init>	; <init>()V
+; v0 : Ljava/util/WeakHashMap;
+	iput-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMap Ljava/util/WeakHashMap;
+; v0 : Ljava/util/WeakHashMap; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+.line 19
+	iput-object	v2,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v2 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+.line 20
+	return-void	
+.end method
+
+.method private addInternal(Landroid/view/MenuItem;)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v3 (Landroid/view/MenuItem;)
+.line 27
+	new-instance	v0,com/actionbarsherlock/internal/view/menu/MenuItemWrapper
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemWrapper;
+	invoke-direct	{v0,v3},com/actionbarsherlock/internal/view/menu/MenuItemWrapper/<init>	; <init>(Landroid/view/MenuItem;)V
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemWrapper; , v3 : Landroid/view/MenuItem;
+.line 28
+	iget-object	v1,v2,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMap Ljava/util/WeakHashMap;
+; v1 : Ljava/util/WeakHashMap; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-virtual	{v1,v3,v0},java/util/WeakHashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/WeakHashMap; , v3 : Landroid/view/MenuItem; , v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemWrapper;
+.line 29
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemWrapper;
+.end method
+
+.method private addInternal(Landroid/view/SubMenu;)Lcom/actionbarsherlock/view/SubMenu;
+.limit registers 6
+; this: v4 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v5 (Landroid/view/SubMenu;)
+.line 53
+	new-instance	v2,com/actionbarsherlock/internal/view/menu/SubMenuWrapper
+; v2 : Lcom/actionbarsherlock/internal/view/menu/SubMenuWrapper;
+	invoke-direct	{v2,v5},com/actionbarsherlock/internal/view/menu/SubMenuWrapper/<init>	; <init>(Landroid/view/SubMenu;)V
+; v2 : Lcom/actionbarsherlock/internal/view/menu/SubMenuWrapper; , v5 : Landroid/view/SubMenu;
+.line 54
+	invoke-interface	{v5},android/view/SubMenu/getItem	; getItem()Landroid/view/MenuItem;
+; v5 : Landroid/view/SubMenu;
+	move-result-object	v1
+; v1 : Landroid/view/MenuItem;
+.line 55
+	invoke-interface	{v2},com/actionbarsherlock/view/SubMenu/getItem	; getItem()Lcom/actionbarsherlock/view/MenuItem;
+; v2 : Lcom/actionbarsherlock/internal/view/menu/SubMenuWrapper;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+.line 56
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMap Ljava/util/WeakHashMap;
+; v3 : Ljava/util/WeakHashMap; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-virtual	{v3,v1,v0},java/util/WeakHashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v3 : Ljava/util/WeakHashMap; , v1 : Landroid/view/MenuItem; , v0 : Lcom/actionbarsherlock/view/MenuItem;
+.line 57
+	return-object	v2
+; v2 : Lcom/actionbarsherlock/internal/view/menu/SubMenuWrapper;
+.end method
+
+.method public add(I)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+.line 39
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2},android/view/Menu/add	; add(I)Landroid/view/MenuItem;
+; v0 : Landroid/view/Menu; , v2 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/MenuItem;
+	invoke-direct	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuWrapper/addInternal	; addInternal(Landroid/view/MenuItem;)Lcom/actionbarsherlock/view/MenuItem;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper; , v0 : Landroid/view/MenuItem;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+.end method
+
+.method public add(IIII)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 6
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+; parameter[3] : v5 (I)
+.line 49
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2,v3,v4,v5},android/view/Menu/add	; add(IIII)Landroid/view/MenuItem;
+; v0 : Landroid/view/Menu; , v2 : single-length , v3 : single-length , v4 : single-length , v5 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/MenuItem;
+	invoke-direct	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuWrapper/addInternal	; addInternal(Landroid/view/MenuItem;)Lcom/actionbarsherlock/view/MenuItem;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper; , v0 : Landroid/view/MenuItem;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+.end method
+
+.method public add(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 6
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+; parameter[3] : v5 (Ljava/lang/CharSequence;)
+.line 44
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2,v3,v4,v5},android/view/Menu/add	; add(IIILjava/lang/CharSequence;)Landroid/view/MenuItem;
+; v0 : Landroid/view/Menu; , v2 : single-length , v3 : single-length , v4 : single-length , v5 : Ljava/lang/CharSequence;
+	move-result-object	v0
+; v0 : Landroid/view/MenuItem;
+	invoke-direct	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuWrapper/addInternal	; addInternal(Landroid/view/MenuItem;)Lcom/actionbarsherlock/view/MenuItem;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper; , v0 : Landroid/view/MenuItem;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+.end method
+
+.method public add(Ljava/lang/CharSequence;)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (Ljava/lang/CharSequence;)
+.line 34
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2},android/view/Menu/add	; add(Ljava/lang/CharSequence;)Landroid/view/MenuItem;
+; v0 : Landroid/view/Menu; , v2 : Ljava/lang/CharSequence;
+	move-result-object	v0
+; v0 : Landroid/view/MenuItem;
+	invoke-direct	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuWrapper/addInternal	; addInternal(Landroid/view/MenuItem;)Lcom/actionbarsherlock/view/MenuItem;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper; , v0 : Landroid/view/MenuItem;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+.end method
+
+.method public addIntentOptions(IIILandroid/content/ComponentName;[Landroid/content/Intent;Landroid/content/Intent;I[Lcom/actionbarsherlock/view/MenuItem;)I
+.limit registers 22
+; this: v13 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v14 (I)
+; parameter[1] : v15 (I)
+; parameter[2] : v16 (I)
+; parameter[3] : v17 (Landroid/content/ComponentName;)
+; parameter[4] : v18 ([Landroid/content/Intent;)
+; parameter[5] : v19 (Landroid/content/Intent;)
+; parameter[6] : v20 (I)
+; parameter[7] : v21 ([Lcom/actionbarsherlock/view/MenuItem;)
+.line 82
+	move-object/from16	v0,v21
+; v0 : [Lcom/actionbarsherlock/view/MenuItem; , v21 : [Lcom/actionbarsherlock/view/MenuItem;
+	array-length	v1,v0
+; v1 : single-length , v0 : [Lcom/actionbarsherlock/view/MenuItem;
+	new-array	v9,v1,[Landroid/view/MenuItem;
+; v9 : [Landroid/view/MenuItem; , v1 : single-length
+.line 83
+	iget-object	v1,v13,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v1 : Landroid/view/Menu; , v13 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	move	v2,v14
+; v2 : single-length , v14 : single-length
+	move	v3,v15
+; v3 : single-length , v15 : single-length
+	move/from16	v4,v16
+; v4 : single-length , v16 : single-length
+	move-object/from16	v5,v17
+; v5 : Landroid/content/ComponentName; , v17 : Landroid/content/ComponentName;
+	move-object/from16	v6,v18
+; v6 : [Landroid/content/Intent; , v18 : [Landroid/content/Intent;
+	move-object/from16	v7,v19
+; v7 : Landroid/content/Intent; , v19 : Landroid/content/Intent;
+	move/from16	v8,v20
+; v8 : single-length , v20 : single-length
+	invoke-interface/range	{v1..v9},android/view/Menu/addIntentOptions;	addIntentOptions(IIILandroid/content/ComponentName;[Landroid/content/Intent;Landroid/content/Intent;I[Landroid/view/MenuItem;)I
+; v1 : Landroid/view/Menu; , v2 : single-length , v3 : single-length , v4 : single-length , v5 : Landroid/content/ComponentName; , v6 : [Landroid/content/Intent; , v7 : Landroid/content/Intent; , v8 : single-length , v9 : [Landroid/view/MenuItem;
+	move-result	v12
+; v12 : single-length
+.line 84
+	const/4	v10,0
+; v10 : single-length
+	move-object/from16	v0,v21
+; v0 : [Lcom/actionbarsherlock/view/MenuItem; , v21 : [Lcom/actionbarsherlock/view/MenuItem;
+	array-length	v11,v0
+; v11 : single-length , v0 : [Lcom/actionbarsherlock/view/MenuItem;
+l9ad6e:
+	if-ge	v10,v11,l9ad8a
+; v10 : single-length , v11 : single-length
+.line 85
+	new-instance	v1,com/actionbarsherlock/internal/view/menu/MenuItemWrapper
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemWrapper;
+	aget-object	v2,v9,v10
+; v2 : Landroid/view/MenuItem; , v9 : [Landroid/view/MenuItem; , v10 : single-length
+	invoke-direct	{v1,v2},com/actionbarsherlock/internal/view/menu/MenuItemWrapper/<init>	; <init>(Landroid/view/MenuItem;)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemWrapper; , v2 : Landroid/view/MenuItem;
+	aput-object	v1,v21,v10
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemWrapper; , v21 : [Lcom/actionbarsherlock/view/MenuItem; , v10 : single-length
+.line 84
+	add-int/lit8	v10,v10,1
+; v10 : single-length , v10 : single-length
+	goto	l9ad6e
+l9ad8a:
+.line 87
+	return	v12
+; v12 : single-length
+.end method
+
+.method public addSubMenu(I)Lcom/actionbarsherlock/view/SubMenu;
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+.line 67
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2},android/view/Menu/addSubMenu	; addSubMenu(I)Landroid/view/SubMenu;
+; v0 : Landroid/view/Menu; , v2 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/SubMenu;
+	invoke-direct	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuWrapper/addInternal	; addInternal(Landroid/view/SubMenu;)Lcom/actionbarsherlock/view/SubMenu;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper; , v0 : Landroid/view/SubMenu;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+.end method
+
+.method public addSubMenu(IIII)Lcom/actionbarsherlock/view/SubMenu;
+.limit registers 6
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+; parameter[3] : v5 (I)
+.line 77
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2,v3,v4,v5},android/view/Menu/addSubMenu	; addSubMenu(IIII)Landroid/view/SubMenu;
+; v0 : Landroid/view/Menu; , v2 : single-length , v3 : single-length , v4 : single-length , v5 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/SubMenu;
+	invoke-direct	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuWrapper/addInternal	; addInternal(Landroid/view/SubMenu;)Lcom/actionbarsherlock/view/SubMenu;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper; , v0 : Landroid/view/SubMenu;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+.end method
+
+.method public addSubMenu(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/SubMenu;
+.limit registers 6
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+; parameter[3] : v5 (Ljava/lang/CharSequence;)
+.line 72
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2,v3,v4,v5},android/view/Menu/addSubMenu	; addSubMenu(IIILjava/lang/CharSequence;)Landroid/view/SubMenu;
+; v0 : Landroid/view/Menu; , v2 : single-length , v3 : single-length , v4 : single-length , v5 : Ljava/lang/CharSequence;
+	move-result-object	v0
+; v0 : Landroid/view/SubMenu;
+	invoke-direct	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuWrapper/addInternal	; addInternal(Landroid/view/SubMenu;)Lcom/actionbarsherlock/view/SubMenu;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper; , v0 : Landroid/view/SubMenu;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+.end method
+
+.method public addSubMenu(Ljava/lang/CharSequence;)Lcom/actionbarsherlock/view/SubMenu;
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (Ljava/lang/CharSequence;)
+.line 62
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2},android/view/Menu/addSubMenu	; addSubMenu(Ljava/lang/CharSequence;)Landroid/view/SubMenu;
+; v0 : Landroid/view/Menu; , v2 : Ljava/lang/CharSequence;
+	move-result-object	v0
+; v0 : Landroid/view/SubMenu;
+	invoke-direct	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuWrapper/addInternal	; addInternal(Landroid/view/SubMenu;)Lcom/actionbarsherlock/view/SubMenu;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper; , v0 : Landroid/view/SubMenu;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+.end method
+
+.method public clear()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+.line 102
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMap Ljava/util/WeakHashMap;
+; v0 : Ljava/util/WeakHashMap; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-virtual	{v0},java/util/WeakHashMap/clear	; clear()V
+; v0 : Ljava/util/WeakHashMap;
+.line 103
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0},android/view/Menu/clear	; clear()V
+; v0 : Landroid/view/Menu;
+.line 104
+	return-void	
+.end method
+
+.method public close()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+.line 158
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0},android/view/Menu/close	; close()V
+; v0 : Landroid/view/Menu;
+.line 159
+	return-void	
+.end method
+
+.method public findItem(I)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v3 (I)
+.line 128
+	iget-object	v1,v2,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v1 : Landroid/view/Menu; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v1,v3},android/view/Menu/findItem	; findItem(I)Landroid/view/MenuItem;
+; v1 : Landroid/view/Menu; , v3 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/MenuItem;
+.line 129
+	invoke-virtual	{v2,v0},com/actionbarsherlock/internal/view/menu/MenuWrapper/findItem	; findItem(Landroid/view/MenuItem;)Lcom/actionbarsherlock/view/MenuItem;
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper; , v0 : Landroid/view/MenuItem;
+	move-result-object	v1
+; v1 : Lcom/actionbarsherlock/view/MenuItem;
+	return-object	v1
+; v1 : Lcom/actionbarsherlock/view/MenuItem;
+.end method
+
+.method public findItem(Landroid/view/MenuItem;)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v3 (Landroid/view/MenuItem;)
+.line 133
+	if-nez	v3,l9aeb0
+; v3 : Landroid/view/MenuItem;
+.line 134
+	const/4	v0,0
+; v0 : single-length
+l9aeae:
+.line 142
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+l9aeb0:
+.line 137
+	iget-object	v1,v2,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMap Ljava/util/WeakHashMap;
+; v1 : Ljava/util/WeakHashMap; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-virtual	{v1,v3},java/util/WeakHashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/WeakHashMap; , v3 : Landroid/view/MenuItem;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/actionbarsherlock/view/MenuItem
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+.line 138
+	if-nez	v0,l9aeae
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+.line 142
+	invoke-direct	{v2,v3},com/actionbarsherlock/internal/view/menu/MenuWrapper/addInternal	; addInternal(Landroid/view/MenuItem;)Lcom/actionbarsherlock/view/MenuItem;
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper; , v3 : Landroid/view/MenuItem;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+	goto	l9aeae
+.end method
+
+.method public getItem(I)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v3 (I)
+.line 152
+	iget-object	v1,v2,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v1 : Landroid/view/Menu; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v1,v3},android/view/Menu/getItem	; getItem(I)Landroid/view/MenuItem;
+; v1 : Landroid/view/Menu; , v3 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/MenuItem;
+.line 153
+	invoke-virtual	{v2,v0},com/actionbarsherlock/internal/view/menu/MenuWrapper/findItem	; findItem(Landroid/view/MenuItem;)Lcom/actionbarsherlock/view/MenuItem;
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper; , v0 : Landroid/view/MenuItem;
+	move-result-object	v1
+; v1 : Lcom/actionbarsherlock/view/MenuItem;
+	return-object	v1
+; v1 : Lcom/actionbarsherlock/view/MenuItem;
+.end method
+
+.method public hasVisibleItems()Z
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+.line 123
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0},android/view/Menu/hasVisibleItems	; hasVisibleItems()Z
+; v0 : Landroid/view/Menu;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public isShortcutKey(ILandroid/view/KeyEvent;)Z
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (Landroid/view/KeyEvent;)
+.line 168
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2,v3},android/view/Menu/isShortcutKey	; isShortcutKey(ILandroid/view/KeyEvent;)Z
+; v0 : Landroid/view/Menu; , v2 : single-length , v3 : Landroid/view/KeyEvent;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public performIdentifierAction(II)Z
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+.line 173
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2,v3},android/view/Menu/performIdentifierAction	; performIdentifierAction(II)Z
+; v0 : Landroid/view/Menu; , v2 : single-length , v3 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public performShortcut(ILandroid/view/KeyEvent;I)Z
+.limit registers 5
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (Landroid/view/KeyEvent;)
+; parameter[2] : v4 (I)
+.line 163
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2,v3,v4},android/view/Menu/performShortcut	; performShortcut(ILandroid/view/KeyEvent;I)Z
+; v0 : Landroid/view/Menu; , v2 : single-length , v3 : Landroid/view/KeyEvent; , v4 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public removeGroup(I)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+.line 97
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2},android/view/Menu/removeGroup	; removeGroup(I)V
+; v0 : Landroid/view/Menu; , v2 : single-length
+.line 98
+	return-void	
+.end method
+
+.method public removeItem(I)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+.line 92
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2},android/view/Menu/removeItem	; removeItem(I)V
+; v0 : Landroid/view/Menu; , v2 : single-length
+.line 93
+	return-void	
+.end method
+
+.method public setGroupCheckable(IZZ)V
+.limit registers 5
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (Z)
+; parameter[2] : v4 (Z)
+.line 108
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2,v3,v4},android/view/Menu/setGroupCheckable	; setGroupCheckable(IZZ)V
+; v0 : Landroid/view/Menu; , v2 : single-length , v3 : single-length , v4 : single-length
+.line 109
+	return-void	
+.end method
+
+.method public setGroupEnabled(IZ)V
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (Z)
+.line 118
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2,v3},android/view/Menu/setGroupEnabled	; setGroupEnabled(IZ)V
+; v0 : Landroid/view/Menu; , v2 : single-length , v3 : single-length
+.line 119
+	return-void	
+.end method
+
+.method public setGroupVisible(IZ)V
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (Z)
+.line 113
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2,v3},android/view/Menu/setGroupVisible	; setGroupVisible(IZ)V
+; v0 : Landroid/view/Menu; , v2 : single-length , v3 : single-length
+.line 114
+	return-void	
+.end method
+
+.method public setQwertyMode(Z)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+; parameter[0] : v2 (Z)
+.line 178
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0,v2},android/view/Menu/setQwertyMode	; setQwertyMode(Z)V
+; v0 : Landroid/view/Menu; , v2 : single-length
+.line 179
+	return-void	
+.end method
+
+.method public size()I
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+.line 147
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	invoke-interface	{v0},android/view/Menu/size	; size()I
+; v0 : Landroid/view/Menu;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public unwrap()Landroid/view/Menu;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;)
+.line 23
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuWrapper.mNativeMenu Landroid/view/Menu;
+; v0 : Landroid/view/Menu; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuWrapper;
+	return-object	v0
+; v0 : Landroid/view/Menu;
+.end method
+
+

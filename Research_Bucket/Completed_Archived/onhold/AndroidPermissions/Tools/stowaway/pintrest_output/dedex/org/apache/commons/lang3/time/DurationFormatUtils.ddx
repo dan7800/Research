@@ -1,0 +1,1655 @@
+.class public org/apache/commons/lang3/time/DurationFormatUtils
+.super java/lang/Object
+.source DurationFormatUtils.java
+
+.inner class Token inner org/apache/commons/lang3/time/DurationFormatUtils$Token outer org/apache/commons/lang3/time/DurationFormatUtils
+.field static final H Ljava/lang/Object; = null
+.field public static final ISO_EXTENDED_FORMAT_PATTERN Ljava/lang/String; = "'P'yyyy'Y'M'M'd'DT'H'H'm'M's.S'S'"
+.field static final M Ljava/lang/Object;
+.field static final S Ljava/lang/Object;
+.field static final d Ljava/lang/Object;
+.field static final m Ljava/lang/Object;
+.field static final s Ljava/lang/Object;
+.field static final y Ljava/lang/Object;
+
+.method static <clinit>()V
+.limit registers 1
+.line 469
+	const-string	v0,"y"
+; v0 : Ljava/lang/String;
+	sput-object	v0,org/apache/commons/lang3/time/DurationFormatUtils.y Ljava/lang/Object;
+; v0 : Ljava/lang/Object;
+.line 470
+	const-string	v0,"M"
+; v0 : Ljava/lang/String;
+	sput-object	v0,org/apache/commons/lang3/time/DurationFormatUtils.M Ljava/lang/Object;
+; v0 : Ljava/lang/Object;
+.line 471
+	const-string	v0,"d"
+; v0 : Ljava/lang/String;
+	sput-object	v0,org/apache/commons/lang3/time/DurationFormatUtils.d Ljava/lang/Object;
+; v0 : Ljava/lang/Object;
+.line 472
+	const-string	v0,"H"
+; v0 : Ljava/lang/String;
+	sput-object	v0,org/apache/commons/lang3/time/DurationFormatUtils.H Ljava/lang/Object;
+; v0 : Ljava/lang/Object;
+.line 473
+	const-string	v0,"m"
+; v0 : Ljava/lang/String;
+	sput-object	v0,org/apache/commons/lang3/time/DurationFormatUtils.m Ljava/lang/Object;
+; v0 : Ljava/lang/Object;
+.line 474
+	const-string	v0,"s"
+; v0 : Ljava/lang/String;
+	sput-object	v0,org/apache/commons/lang3/time/DurationFormatUtils.s Ljava/lang/Object;
+; v0 : Ljava/lang/Object;
+.line 475
+	const-string	v0,"S"
+; v0 : Ljava/lang/String;
+	sput-object	v0,org/apache/commons/lang3/time/DurationFormatUtils.S Ljava/lang/Object;
+; v0 : Ljava/lang/Object;
+	return-void	
+.end method
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/lang3/time/DurationFormatUtils;)
+.line 53
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/lang3/time/DurationFormatUtils;
+.line 54
+	return-void	
+.end method
+
+.method static format([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;IIIIIIIZ)Ljava/lang/String;
+.limit registers 20
+; parameter[0] : v11 ([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;)
+; parameter[1] : v12 (I)
+; parameter[2] : v13 (I)
+; parameter[3] : v14 (I)
+; parameter[4] : v15 (I)
+; parameter[5] : v16 (I)
+; parameter[6] : v17 (I)
+; parameter[7] : v18 (I)
+; parameter[8] : v19 (Z)
+.var 5 is str Ljava/lang/String; from l145bae to l145bbe
+.var 2 is count I from l145a28 to l145bf8
+.var 7 is token Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; from l145a18 to l145bf8
+.var 8 is value Ljava/lang/Object; from l145a20 to l145bf8
+.line 416
+	new-instance	v1,java/lang/StringBuffer
+; v1 : Ljava/lang/StringBuffer;
+	invoke-direct	{v1},java/lang/StringBuffer/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuffer;
+.line 417
+	const/4	v4,0
+; v4 : single-length
+.line 418
+	array-length	v6,v11
+; v6 : single-length , v11 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+.line 419
+	const/4	v3,0
+; v3 : single-length
+l145a10:
+	if-ge	v3,v6,l145bf8
+; v3 : single-length , v6 : single-length
+.line 420
+	aget-object	v7,v11,v3
+; v7 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v11 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v3 : single-length
+.line 421
+	invoke-virtual	{v7},org/apache/commons/lang3/time/DurationFormatUtils$Token/getValue	; getValue()Ljava/lang/Object;
+; v7 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+.line 422
+	invoke-virtual	{v7},org/apache/commons/lang3/time/DurationFormatUtils$Token/getCount	; getCount()I
+; v7 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+	move-result	v2
+; v2 : single-length
+.line 423
+	instance-of	v9,v8,java/lang/StringBuffer
+; v9 : single-length , v8 : Ljava/lang/Object;
+	if-eqz	v9,l145a44
+; v9 : single-length
+.line 424
+	invoke-virtual	{v8},java/lang/Object/toString	; toString()Ljava/lang/String;
+; v8 : Ljava/lang/Object;
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	invoke-virtual	{v1,v9},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v1 : Ljava/lang/StringBuffer; , v9 : Ljava/lang/String;
+l145a3e:
+.line 419
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	l145a10
+l145a44:
+.line 426
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.y Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	if-ne	v8,v9,l145a78
+; v8 : Ljava/lang/Object; , v9 : Ljava/lang/Object;
+.line 427
+	if-eqz	v19,l145a6e
+; v19 : single-length
+	invoke-static	{v12},java/lang/Integer/toString	; toString(I)Ljava/lang/String;
+; v12 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	const/16	v10,48
+; v10 : single-length
+	invoke-static	{v9,v2,v10},org/apache/commons/lang3/StringUtils/leftPad	; leftPad(Ljava/lang/String;IC)Ljava/lang/String;
+; v9 : Ljava/lang/String; , v2 : single-length , v10 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+l145a64:
+	invoke-virtual	{v1,v9},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v1 : Ljava/lang/StringBuffer; , v9 : Ljava/lang/String;
+.line 429
+	const/4	v4,0
+; v4 : single-length
+	goto	l145a3e
+l145a6e:
+.line 427
+	invoke-static	{v12},java/lang/Integer/toString	; toString(I)Ljava/lang/String;
+; v12 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	goto	l145a64
+l145a78:
+.line 430
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.M Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	if-ne	v8,v9,l145aac
+; v8 : Ljava/lang/Object; , v9 : Ljava/lang/Object;
+.line 431
+	if-eqz	v19,l145aa2
+; v19 : single-length
+	invoke-static	{v13},java/lang/Integer/toString	; toString(I)Ljava/lang/String;
+; v13 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	const/16	v10,48
+; v10 : single-length
+	invoke-static	{v9,v2,v10},org/apache/commons/lang3/StringUtils/leftPad	; leftPad(Ljava/lang/String;IC)Ljava/lang/String;
+; v9 : Ljava/lang/String; , v2 : single-length , v10 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+l145a98:
+	invoke-virtual	{v1,v9},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v1 : Ljava/lang/StringBuffer; , v9 : Ljava/lang/String;
+.line 433
+	const/4	v4,0
+; v4 : single-length
+	goto	l145a3e
+l145aa2:
+.line 431
+	invoke-static	{v13},java/lang/Integer/toString	; toString(I)Ljava/lang/String;
+; v13 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	goto	l145a98
+l145aac:
+.line 434
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.d Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	if-ne	v8,v9,l145ae0
+; v8 : Ljava/lang/Object; , v9 : Ljava/lang/Object;
+.line 435
+	if-eqz	v19,l145ad6
+; v19 : single-length
+	invoke-static	{v14},java/lang/Integer/toString	; toString(I)Ljava/lang/String;
+; v14 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	const/16	v10,48
+; v10 : single-length
+	invoke-static	{v9,v2,v10},org/apache/commons/lang3/StringUtils/leftPad	; leftPad(Ljava/lang/String;IC)Ljava/lang/String;
+; v9 : Ljava/lang/String; , v2 : single-length , v10 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+l145acc:
+	invoke-virtual	{v1,v9},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v1 : Ljava/lang/StringBuffer; , v9 : Ljava/lang/String;
+.line 437
+	const/4	v4,0
+; v4 : single-length
+	goto	l145a3e
+l145ad6:
+.line 435
+	invoke-static	{v14},java/lang/Integer/toString	; toString(I)Ljava/lang/String;
+; v14 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	goto	l145acc
+l145ae0:
+.line 438
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.H Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	if-ne	v8,v9,l145b14
+; v8 : Ljava/lang/Object; , v9 : Ljava/lang/Object;
+.line 439
+	if-eqz	v19,l145b0a
+; v19 : single-length
+	invoke-static	{v15},java/lang/Integer/toString	; toString(I)Ljava/lang/String;
+; v15 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	const/16	v10,48
+; v10 : single-length
+	invoke-static	{v9,v2,v10},org/apache/commons/lang3/StringUtils/leftPad	; leftPad(Ljava/lang/String;IC)Ljava/lang/String;
+; v9 : Ljava/lang/String; , v2 : single-length , v10 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+l145b00:
+	invoke-virtual	{v1,v9},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v1 : Ljava/lang/StringBuffer; , v9 : Ljava/lang/String;
+.line 441
+	const/4	v4,0
+; v4 : single-length
+	goto	l145a3e
+l145b0a:
+.line 439
+	invoke-static	{v15},java/lang/Integer/toString	; toString(I)Ljava/lang/String;
+; v15 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	goto	l145b00
+l145b14:
+.line 442
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.m Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	if-ne	v8,v9,l145b48
+; v8 : Ljava/lang/Object; , v9 : Ljava/lang/Object;
+.line 443
+	if-eqz	v19,l145b3e
+; v19 : single-length
+	invoke-static/range	{v16},java/lang/Integer/toString;	toString(I)Ljava/lang/String;
+; v16 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	const/16	v10,48
+; v10 : single-length
+	invoke-static	{v9,v2,v10},org/apache/commons/lang3/StringUtils/leftPad	; leftPad(Ljava/lang/String;IC)Ljava/lang/String;
+; v9 : Ljava/lang/String; , v2 : single-length , v10 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+l145b34:
+	invoke-virtual	{v1,v9},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v1 : Ljava/lang/StringBuffer; , v9 : Ljava/lang/String;
+.line 445
+	const/4	v4,0
+; v4 : single-length
+	goto	l145a3e
+l145b3e:
+.line 443
+	invoke-static/range	{v16},java/lang/Integer/toString;	toString(I)Ljava/lang/String;
+; v16 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	goto	l145b34
+l145b48:
+.line 446
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.s Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	if-ne	v8,v9,l145b7e
+; v8 : Ljava/lang/Object; , v9 : Ljava/lang/Object;
+.line 447
+	if-eqz	v19,l145b74
+; v19 : single-length
+	invoke-static/range	{v17},java/lang/Integer/toString;	toString(I)Ljava/lang/String;
+; v17 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	const/16	v10,48
+; v10 : single-length
+	invoke-static	{v9,v2,v10},org/apache/commons/lang3/StringUtils/leftPad	; leftPad(Ljava/lang/String;IC)Ljava/lang/String;
+; v9 : Ljava/lang/String; , v2 : single-length , v10 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+l145b68:
+	invoke-virtual	{v1,v9},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v1 : Ljava/lang/StringBuffer; , v9 : Ljava/lang/String;
+.line 449
+	const/4	v4,1
+; v4 : single-length
+	goto/16	l145a3e
+l145b74:
+.line 447
+	invoke-static/range	{v17},java/lang/Integer/toString;	toString(I)Ljava/lang/String;
+; v17 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	goto	l145b68
+l145b7e:
+.line 450
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.S Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	if-ne	v8,v9,l145a3e
+; v8 : Ljava/lang/Object; , v9 : Ljava/lang/Object;
+.line 451
+	if-eqz	v4,l145bce
+; v4 : single-length
+.line 452
+	move/from16	v0,v18
+; v0 : single-length , v18 : single-length
+	add-int/lit16	v0,v0,1000
+; v0 : single-length , v0 : single-length
+	move/from16	v18,v0
+; v18 : single-length , v0 : single-length
+.line 453
+	if-eqz	v19,l145bc4
+; v19 : single-length
+	invoke-static/range	{v18},java/lang/Integer/toString;	toString(I)Ljava/lang/String;
+; v18 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	const/16	v10,48
+; v10 : single-length
+	invoke-static	{v9,v2,v10},org/apache/commons/lang3/StringUtils/leftPad	; leftPad(Ljava/lang/String;IC)Ljava/lang/String;
+; v9 : Ljava/lang/String; , v2 : single-length , v10 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+l145bae:
+.line 456
+	const/4	v9,1
+; v9 : single-length
+	invoke-virtual	{v5,v9},java/lang/String/substring	; substring(I)Ljava/lang/String;
+; v5 : Ljava/lang/String; , v9 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	invoke-virtual	{v1,v9},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v1 : Ljava/lang/StringBuffer; , v9 : Ljava/lang/String;
+l145bbe:
+.line 462
+	const/4	v4,0
+; v4 : single-length
+	goto/16	l145a3e
+l145bc4:
+.line 453
+	invoke-static/range	{v18},java/lang/Integer/toString;	toString(I)Ljava/lang/String;
+; v18 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	goto	l145bae
+l145bce:
+.line 458
+	if-eqz	v19,l145bee
+; v19 : single-length
+	invoke-static/range	{v18},java/lang/Integer/toString;	toString(I)Ljava/lang/String;
+; v18 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	const/16	v10,48
+; v10 : single-length
+	invoke-static	{v9,v2,v10},org/apache/commons/lang3/StringUtils/leftPad	; leftPad(Ljava/lang/String;IC)Ljava/lang/String;
+; v9 : Ljava/lang/String; , v2 : single-length , v10 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+l145be6:
+	invoke-virtual	{v1,v9},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v1 : Ljava/lang/StringBuffer; , v9 : Ljava/lang/String;
+	goto	l145bbe
+l145bee:
+	invoke-static/range	{v18},java/lang/Integer/toString;	toString(I)Ljava/lang/String;
+; v18 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	goto	l145be6
+l145bf8:
+.line 466
+	invoke-virtual	{v1},java/lang/StringBuffer/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuffer;
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	return-object	v9
+; v9 : Ljava/lang/String;
+.end method
+
+.method public static formatDuration(JLjava/lang/String;)Ljava/lang/String;
+.limit registers 4
+; parameter[0] : v1 (J)
+; parameter[1] : v3 (Ljava/lang/String;)
+.line 106
+	const/4	v0,1
+; v0 : single-length
+	invoke-static	{v1,v2,v3,v0},org/apache/commons/lang3/time/DurationFormatUtils/formatDuration	; formatDuration(JLjava/lang/String;Z)Ljava/lang/String;
+; v1 : double-length , v3 : Ljava/lang/String; , v0 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static formatDuration(JLjava/lang/String;Z)Ljava/lang/String;
+.limit registers 14
+; parameter[0] : v10 (J)
+; parameter[1] : v12 (Ljava/lang/String;)
+; parameter[2] : v13 (Z)
+.line 124
+	invoke-static	{v12},org/apache/commons/lang3/time/DurationFormatUtils/lexx	; lexx(Ljava/lang/String;)[Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+; v12 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+.line 126
+	const/4	v3,0
+; v3 : single-length
+.line 127
+	const/4	v4,0
+; v4 : single-length
+.line 128
+	const/4	v5,0
+; v5 : single-length
+.line 129
+	const/4	v6,0
+; v6 : single-length
+.line 130
+	const/4	v7,0
+; v7 : single-length
+.line 132
+	sget-object	v1,org/apache/commons/lang3/time/DurationFormatUtils.d Ljava/lang/Object;
+; v1 : Ljava/lang/Object;
+	invoke-static	{v0,v1},org/apache/commons/lang3/time/DurationFormatUtils$Token/containsTokenWithValue	; containsTokenWithValue([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;Ljava/lang/Object;)Z
+; v0 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v1 : Ljava/lang/Object;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l145c6a
+; v1 : single-length
+.line 133
+	const-wide/32	v1,86400000	; 0x5265c00
+; v1 : double-length
+	div-long	v1,v10,v1
+; v1 : double-length , v10 : double-length , v1 : double-length
+	long-to-int	v3,v1
+; v3 : single-length , v1 : double-length
+.line 134
+	int-to-long	v1,v3
+; v1 : double-length , v3 : single-length
+	const-wide/32	v8,86400000	; 0x5265c00
+; v8 : double-length
+	mul-long/2addr	v1,v8
+; v1 : double-length , v8 : double-length
+	sub-long/2addr	v10,v1
+; v10 : double-length , v1 : double-length
+l145c6a:
+.line 136
+	sget-object	v1,org/apache/commons/lang3/time/DurationFormatUtils.H Ljava/lang/Object;
+; v1 : Ljava/lang/Object;
+	invoke-static	{v0,v1},org/apache/commons/lang3/time/DurationFormatUtils$Token/containsTokenWithValue	; containsTokenWithValue([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;Ljava/lang/Object;)Z
+; v0 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v1 : Ljava/lang/Object;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l145c92
+; v1 : single-length
+.line 137
+	const-wide/32	v1,3600000	; 0x36ee80
+; v1 : double-length
+	div-long	v1,v10,v1
+; v1 : double-length , v10 : double-length , v1 : double-length
+	long-to-int	v4,v1
+; v4 : single-length , v1 : double-length
+.line 138
+	int-to-long	v1,v4
+; v1 : double-length , v4 : single-length
+	const-wide/32	v8,3600000	; 0x36ee80
+; v8 : double-length
+	mul-long/2addr	v1,v8
+; v1 : double-length , v8 : double-length
+	sub-long/2addr	v10,v1
+; v10 : double-length , v1 : double-length
+l145c92:
+.line 140
+	sget-object	v1,org/apache/commons/lang3/time/DurationFormatUtils.m Ljava/lang/Object;
+; v1 : Ljava/lang/Object;
+	invoke-static	{v0,v1},org/apache/commons/lang3/time/DurationFormatUtils$Token/containsTokenWithValue	; containsTokenWithValue([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;Ljava/lang/Object;)Z
+; v0 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v1 : Ljava/lang/Object;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l145cba
+; v1 : single-length
+.line 141
+	const-wide/32	v1,60000	; 0xea60
+; v1 : double-length
+	div-long	v1,v10,v1
+; v1 : double-length , v10 : double-length , v1 : double-length
+	long-to-int	v5,v1
+; v5 : single-length , v1 : double-length
+.line 142
+	int-to-long	v1,v5
+; v1 : double-length , v5 : single-length
+	const-wide/32	v8,60000	; 0xea60
+; v8 : double-length
+	mul-long/2addr	v1,v8
+; v1 : double-length , v8 : double-length
+	sub-long/2addr	v10,v1
+; v10 : double-length , v1 : double-length
+l145cba:
+.line 144
+	sget-object	v1,org/apache/commons/lang3/time/DurationFormatUtils.s Ljava/lang/Object;
+; v1 : Ljava/lang/Object;
+	invoke-static	{v0,v1},org/apache/commons/lang3/time/DurationFormatUtils$Token/containsTokenWithValue	; containsTokenWithValue([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;Ljava/lang/Object;)Z
+; v0 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v1 : Ljava/lang/Object;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l145cde
+; v1 : single-length
+.line 145
+	const-wide/16	v1,1000
+; v1 : double-length
+	div-long	v1,v10,v1
+; v1 : double-length , v10 : double-length , v1 : double-length
+	long-to-int	v6,v1
+; v6 : single-length , v1 : double-length
+.line 146
+	int-to-long	v1,v6
+; v1 : double-length , v6 : single-length
+	const-wide/16	v8,1000
+; v8 : double-length
+	mul-long/2addr	v1,v8
+; v1 : double-length , v8 : double-length
+	sub-long/2addr	v10,v1
+; v10 : double-length , v1 : double-length
+l145cde:
+.line 148
+	sget-object	v1,org/apache/commons/lang3/time/DurationFormatUtils.S Ljava/lang/Object;
+; v1 : Ljava/lang/Object;
+	invoke-static	{v0,v1},org/apache/commons/lang3/time/DurationFormatUtils$Token/containsTokenWithValue	; containsTokenWithValue([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;Ljava/lang/Object;)Z
+; v0 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v1 : Ljava/lang/Object;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l145cf0
+; v1 : single-length
+.line 149
+	long-to-int	v7,v10
+; v7 : single-length , v10 : double-length
+l145cf0:
+.line 152
+	const/4	v1,0
+; v1 : single-length
+	const/4	v2,0
+; v2 : single-length
+	move	v8,v13
+; v8 : single-length , v13 : single-length
+	invoke-static/range	{v0..v8},org/apache/commons/lang3/time/DurationFormatUtils/format;	format([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;IIIIIIIZ)Ljava/lang/String;
+; v0 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v1 : single-length , v2 : single-length , v3 : single-length , v4 : single-length , v5 : single-length , v6 : single-length , v7 : single-length , v8 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	return-object	v1
+; v1 : Ljava/lang/String;
+.end method
+
+.method public static formatDurationHMS(J)Ljava/lang/String;
+.limit registers 3
+; parameter[0] : v1 (J)
+.line 76
+	const-string	v0,"H:mm:ss.SSS"
+; v0 : Ljava/lang/String;
+	invoke-static	{v1,v2,v0},org/apache/commons/lang3/time/DurationFormatUtils/formatDuration	; formatDuration(JLjava/lang/String;)Ljava/lang/String;
+; v1 : double-length , v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static formatDurationISO(J)Ljava/lang/String;
+.limit registers 4
+; parameter[0] : v2 (J)
+.line 91
+	const-string	v0,"'P'yyyy'Y'M'M'd'DT'H'H'm'M's.S'S'"
+; v0 : Ljava/lang/String;
+	const/4	v1,0
+; v1 : single-length
+	invoke-static	{v2,v3,v0,v1},org/apache/commons/lang3/time/DurationFormatUtils/formatDuration	; formatDuration(JLjava/lang/String;Z)Ljava/lang/String;
+; v2 : double-length , v0 : Ljava/lang/String; , v1 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static formatDurationWords(JZZ)Ljava/lang/String;
+.limit registers 8
+; parameter[0] : v4 (J)
+; parameter[1] : v6 (Z)
+; parameter[2] : v7 (Z)
+.var 1 is tmp Ljava/lang/String; from l145d96 to l145e1e
+.var 1 is tmp Ljava/lang/String; from l145e32 to l145ea2
+.line 174
+	const-string	v2,"d' days 'H' hours 'm' minutes 's' seconds'"
+; v2 : Ljava/lang/String;
+	invoke-static	{v4,v5,v2},org/apache/commons/lang3/time/DurationFormatUtils/formatDuration	; formatDuration(JLjava/lang/String;)Ljava/lang/String;
+; v4 : double-length , v2 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 175
+	if-eqz	v6,l145e1e
+; v6 : single-length
+.line 177
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3," "
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 178
+	const-string	v2," 0 days"
+; v2 : Ljava/lang/String;
+	const-string	v3,""
+; v3 : Ljava/lang/String;
+	invoke-static	{v0,v2,v3},org/apache/commons/lang3/StringUtils/replaceOnce	; replaceOnce(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 179
+	invoke-virtual	{v1},java/lang/String/length	; length()I
+; v1 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v0},java/lang/String/length	; length()I
+; v0 : Ljava/lang/String;
+	move-result	v3
+; v3 : single-length
+	if-eq	v2,v3,l145e08
+; v2 : single-length , v3 : single-length
+.line 180
+	move-object	v0,v1
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 181
+	const-string	v2," 0 hours"
+; v2 : Ljava/lang/String;
+	const-string	v3,""
+; v3 : Ljava/lang/String;
+	invoke-static	{v0,v2,v3},org/apache/commons/lang3/StringUtils/replaceOnce	; replaceOnce(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 182
+	invoke-virtual	{v1},java/lang/String/length	; length()I
+; v1 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v0},java/lang/String/length	; length()I
+; v0 : Ljava/lang/String;
+	move-result	v3
+; v3 : single-length
+	if-eq	v2,v3,l145e08
+; v2 : single-length , v3 : single-length
+.line 183
+	move-object	v0,v1
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 184
+	const-string	v2," 0 minutes"
+; v2 : Ljava/lang/String;
+	const-string	v3,""
+; v3 : Ljava/lang/String;
+	invoke-static	{v0,v2,v3},org/apache/commons/lang3/StringUtils/replaceOnce	; replaceOnce(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 185
+	move-object	v0,v1
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 186
+	invoke-virtual	{v1},java/lang/String/length	; length()I
+; v1 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v0},java/lang/String/length	; length()I
+; v0 : Ljava/lang/String;
+	move-result	v3
+; v3 : single-length
+	if-eq	v2,v3,l145e08
+; v2 : single-length , v3 : single-length
+.line 187
+	const-string	v2," 0 seconds"
+; v2 : Ljava/lang/String;
+	const-string	v3,""
+; v3 : Ljava/lang/String;
+	invoke-static	{v1,v2,v3},org/apache/commons/lang3/StringUtils/replaceOnce	; replaceOnce(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+l145e08:
+.line 191
+	invoke-virtual	{v0},java/lang/String/length	; length()I
+; v0 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,l145e1e
+; v2 : single-length
+.line 193
+	const/4	v2,1
+; v2 : single-length
+	invoke-virtual	{v0,v2},java/lang/String/substring	; substring(I)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+l145e1e:
+.line 196
+	if-eqz	v7,l145ea2
+; v7 : single-length
+.line 197
+	const-string	v2," 0 seconds"
+; v2 : Ljava/lang/String;
+	const-string	v3,""
+; v3 : Ljava/lang/String;
+	invoke-static	{v0,v2,v3},org/apache/commons/lang3/StringUtils/replaceOnce	; replaceOnce(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 198
+	invoke-virtual	{v1},java/lang/String/length	; length()I
+; v1 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v0},java/lang/String/length	; length()I
+; v0 : Ljava/lang/String;
+	move-result	v3
+; v3 : single-length
+	if-eq	v2,v3,l145ea2
+; v2 : single-length , v3 : single-length
+.line 199
+	move-object	v0,v1
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 200
+	const-string	v2," 0 minutes"
+; v2 : Ljava/lang/String;
+	const-string	v3,""
+; v3 : Ljava/lang/String;
+	invoke-static	{v0,v2,v3},org/apache/commons/lang3/StringUtils/replaceOnce	; replaceOnce(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 201
+	invoke-virtual	{v1},java/lang/String/length	; length()I
+; v1 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v0},java/lang/String/length	; length()I
+; v0 : Ljava/lang/String;
+	move-result	v3
+; v3 : single-length
+	if-eq	v2,v3,l145ea2
+; v2 : single-length , v3 : single-length
+.line 202
+	move-object	v0,v1
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 203
+	const-string	v2," 0 hours"
+; v2 : Ljava/lang/String;
+	const-string	v3,""
+; v3 : Ljava/lang/String;
+	invoke-static	{v0,v2,v3},org/apache/commons/lang3/StringUtils/replaceOnce	; replaceOnce(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 204
+	invoke-virtual	{v1},java/lang/String/length	; length()I
+; v1 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v0},java/lang/String/length	; length()I
+; v0 : Ljava/lang/String;
+	move-result	v3
+; v3 : single-length
+	if-eq	v2,v3,l145ea2
+; v2 : single-length , v3 : single-length
+.line 205
+	const-string	v2," 0 days"
+; v2 : Ljava/lang/String;
+	const-string	v3,""
+; v3 : Ljava/lang/String;
+	invoke-static	{v1,v2,v3},org/apache/commons/lang3/StringUtils/replaceOnce	; replaceOnce(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+l145ea2:
+.line 211
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3," "
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 212
+	const-string	v2," 1 seconds"
+; v2 : Ljava/lang/String;
+	const-string	v3," 1 second"
+; v3 : Ljava/lang/String;
+	invoke-static	{v0,v2,v3},org/apache/commons/lang3/StringUtils/replaceOnce	; replaceOnce(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 213
+	const-string	v2," 1 minutes"
+; v2 : Ljava/lang/String;
+	const-string	v3," 1 minute"
+; v3 : Ljava/lang/String;
+	invoke-static	{v0,v2,v3},org/apache/commons/lang3/StringUtils/replaceOnce	; replaceOnce(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 214
+	const-string	v2," 1 hours"
+; v2 : Ljava/lang/String;
+	const-string	v3," 1 hour"
+; v3 : Ljava/lang/String;
+	invoke-static	{v0,v2,v3},org/apache/commons/lang3/StringUtils/replaceOnce	; replaceOnce(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 215
+	const-string	v2," 1 days"
+; v2 : Ljava/lang/String;
+	const-string	v3," 1 day"
+; v3 : Ljava/lang/String;
+	invoke-static	{v0,v2,v3},org/apache/commons/lang3/StringUtils/replaceOnce	; replaceOnce(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 216
+	invoke-virtual	{v0},java/lang/String/trim	; trim()Ljava/lang/String;
+; v0 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	return-object	v2
+; v2 : Ljava/lang/String;
+.end method
+
+.method public static formatPeriod(JJLjava/lang/String;)Ljava/lang/String;
+.limit registers 12
+; parameter[0] : v7 (J)
+; parameter[1] : v9 (J)
+; parameter[2] : v11 (Ljava/lang/String;)
+.line 243
+	const/4	v5,1
+; v5 : single-length
+	invoke-static	{},java/util/TimeZone/getDefault	; getDefault()Ljava/util/TimeZone;
+; 
+	nop	
+	move-result-object	v6
+; v6 : Ljava/util/TimeZone;
+	move-wide	v0,v7
+; v0 : double-length , v7 : double-length
+	move-wide	v2,v9
+; v2 : double-length , v9 : double-length
+	move-object	v4,v11
+; v4 : Ljava/lang/String; , v11 : Ljava/lang/String;
+	invoke-static/range	{v0..v6},org/apache/commons/lang3/time/DurationFormatUtils/formatPeriod;	formatPeriod(JJLjava/lang/String;ZLjava/util/TimeZone;)Ljava/lang/String;
+; v0 : double-length , v2 : double-length , v4 : Ljava/lang/String; , v5 : single-length , v6 : Ljava/util/TimeZone;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static formatPeriod(JJLjava/lang/String;ZLjava/util/TimeZone;)Ljava/lang/String;
+.limit registers 22
+; parameter[0] : v15 (J)
+; parameter[1] : v17 (J)
+; parameter[2] : v19 (Ljava/lang/String;)
+; parameter[3] : v20 (Z)
+; parameter[4] : v21 (Ljava/util/TimeZone;)
+.var 13 is target I from l1460f8 to l14616e
+.line 278
+	invoke-static/range	{v19},org/apache/commons/lang3/time/DurationFormatUtils/lexx;	lexx(Ljava/lang/String;)[Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+; v19 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+.line 282
+	invoke-static/range	{v21},java/util/Calendar/getInstance;	getInstance(Ljava/util/TimeZone;)Ljava/util/Calendar;
+; v21 : Ljava/util/TimeZone;
+	move-result-object	v12
+; v12 : Ljava/util/Calendar;
+.line 283
+	new-instance	v10,java/util/Date
+; v10 : Ljava/util/Date;
+	move-wide	v0,v15
+; v0 : double-length , v15 : double-length
+	invoke-direct	{v10,v0,v1},java/util/Date/<init>	; <init>(J)V
+; v10 : Ljava/util/Date; , v0 : double-length
+	invoke-virtual	{v12,v10},java/util/Calendar/setTime	; setTime(Ljava/util/Date;)V
+; v12 : Ljava/util/Calendar; , v10 : Ljava/util/Date;
+.line 284
+	invoke-static/range	{v21},java/util/Calendar/getInstance;	getInstance(Ljava/util/TimeZone;)Ljava/util/Calendar;
+; v21 : Ljava/util/TimeZone;
+	move-result-object	v11
+; v11 : Ljava/util/Calendar;
+.line 285
+	new-instance	v10,java/util/Date
+; v10 : Ljava/util/Date;
+	move-wide/from16	v0,v17
+; v0 : double-length , v17 : double-length
+	invoke-direct	{v10,v0,v1},java/util/Date/<init>	; <init>(J)V
+; v10 : Ljava/util/Date; , v0 : double-length
+	invoke-virtual	{v11,v10},java/util/Calendar/setTime	; setTime(Ljava/util/Date;)V
+; v11 : Ljava/util/Calendar; , v10 : Ljava/util/Date;
+.line 288
+	const/16	v10,14
+; v10 : single-length
+	invoke-virtual	{v11,v10},java/util/Calendar/get	; get(I)I
+; v11 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	const/16	v14,14
+; v14 : single-length
+	invoke-virtual	{v12,v14},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v14 : single-length
+	move-result	v14
+; v14 : single-length
+	sub-int	v9,v10,v14
+; v9 : single-length , v10 : single-length , v14 : single-length
+.line 289
+	const/16	v10,13
+; v10 : single-length
+	invoke-virtual	{v11,v10},java/util/Calendar/get	; get(I)I
+; v11 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	const/16	v14,13
+; v14 : single-length
+	invoke-virtual	{v12,v14},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v14 : single-length
+	move-result	v14
+; v14 : single-length
+	sub-int	v8,v10,v14
+; v8 : single-length , v10 : single-length , v14 : single-length
+.line 290
+	const/16	v10,12
+; v10 : single-length
+	invoke-virtual	{v11,v10},java/util/Calendar/get	; get(I)I
+; v11 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	const/16	v14,12
+; v14 : single-length
+	invoke-virtual	{v12,v14},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v14 : single-length
+	move-result	v14
+; v14 : single-length
+	sub-int	v7,v10,v14
+; v7 : single-length , v10 : single-length , v14 : single-length
+.line 291
+	const/16	v10,11
+; v10 : single-length
+	invoke-virtual	{v11,v10},java/util/Calendar/get	; get(I)I
+; v11 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	const/16	v14,11
+; v14 : single-length
+	invoke-virtual	{v12,v14},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v14 : single-length
+	move-result	v14
+; v14 : single-length
+	sub-int	v6,v10,v14
+; v6 : single-length , v10 : single-length , v14 : single-length
+.line 292
+	const/4	v10,5
+; v10 : single-length
+	invoke-virtual	{v11,v10},java/util/Calendar/get	; get(I)I
+; v11 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	const/4	v14,5
+; v14 : single-length
+	invoke-virtual	{v12,v14},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v14 : single-length
+	move-result	v14
+; v14 : single-length
+	sub-int	v5,v10,v14
+; v5 : single-length , v10 : single-length , v14 : single-length
+.line 293
+	const/4	v10,2
+; v10 : single-length
+	invoke-virtual	{v11,v10},java/util/Calendar/get	; get(I)I
+; v11 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	const/4	v14,2
+; v14 : single-length
+	invoke-virtual	{v12,v14},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v14 : single-length
+	move-result	v14
+; v14 : single-length
+	sub-int	v4,v10,v14
+; v4 : single-length , v10 : single-length , v14 : single-length
+.line 294
+	const/4	v10,1
+; v10 : single-length
+	invoke-virtual	{v11,v10},java/util/Calendar/get	; get(I)I
+; v11 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	const/4	v14,1
+; v14 : single-length
+	invoke-virtual	{v12,v14},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v14 : single-length
+	move-result	v14
+; v14 : single-length
+	sub-int	v3,v10,v14
+; v3 : single-length , v10 : single-length , v14 : single-length
+l146046:
+.line 297
+	if-gez	v9,l146054
+; v9 : single-length
+.line 298
+	add-int/lit16	v9,v9,1000
+; v9 : single-length , v9 : single-length
+.line 299
+	add-int/lit8	v8,v8,255
+; v8 : single-length , v8 : single-length
+	goto	l146046
+l146054:
+.line 301
+	if-gez	v8,l146062
+; v8 : single-length
+.line 302
+	add-int/lit8	v8,v8,60
+; v8 : single-length , v8 : single-length
+.line 303
+	add-int/lit8	v7,v7,255
+; v7 : single-length , v7 : single-length
+	goto	l146054
+l146062:
+.line 305
+	if-gez	v7,l146070
+; v7 : single-length
+.line 306
+	add-int/lit8	v7,v7,60
+; v7 : single-length , v7 : single-length
+.line 307
+	add-int/lit8	v6,v6,255
+; v6 : single-length , v6 : single-length
+	goto	l146062
+l146070:
+.line 309
+	if-gez	v6,l14607e
+; v6 : single-length
+.line 310
+	add-int/lit8	v6,v6,24
+; v6 : single-length , v6 : single-length
+.line 311
+	add-int/lit8	v5,v5,255
+; v5 : single-length , v5 : single-length
+	goto	l146070
+l14607e:
+.line 314
+	sget-object	v10,org/apache/commons/lang3/time/DurationFormatUtils.M Ljava/lang/Object;
+; v10 : Ljava/lang/Object;
+	invoke-static	{v2,v10},org/apache/commons/lang3/time/DurationFormatUtils$Token/containsTokenWithValue	; containsTokenWithValue([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;Ljava/lang/Object;)Z
+; v2 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v10 : Ljava/lang/Object;
+	move-result	v10
+; v10 : single-length
+	if-eqz	v10,l1460de
+; v10 : single-length
+l14608e:
+.line 315
+	if-gez	v5,l1460ae
+; v5 : single-length
+.line 316
+	const/4	v10,5
+; v10 : single-length
+	invoke-virtual	{v12,v10},java/util/Calendar/getActualMaximum	; getActualMaximum(I)I
+; v12 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	add-int/2addr	v5,v10
+; v5 : single-length , v10 : single-length
+.line 317
+	add-int/lit8	v4,v4,255
+; v4 : single-length , v4 : single-length
+.line 318
+	const/4	v10,2
+; v10 : single-length
+	const/4	v14,1
+; v14 : single-length
+	invoke-virtual	{v12,v10,v14},java/util/Calendar/add	; add(II)V
+; v12 : Ljava/util/Calendar; , v10 : single-length , v14 : single-length
+	goto	l14608e
+l1460ae:
+.line 321
+	if-gez	v4,l1460bc
+; v4 : single-length
+.line 322
+	add-int/lit8	v4,v4,12
+; v4 : single-length , v4 : single-length
+.line 323
+	add-int/lit8	v3,v3,255
+; v3 : single-length , v3 : single-length
+	goto	l1460ae
+l1460bc:
+.line 326
+	sget-object	v10,org/apache/commons/lang3/time/DurationFormatUtils.y Ljava/lang/Object;
+; v10 : Ljava/lang/Object;
+	invoke-static	{v2,v10},org/apache/commons/lang3/time/DurationFormatUtils$Token/containsTokenWithValue	; containsTokenWithValue([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;Ljava/lang/Object;)Z
+; v2 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v10 : Ljava/lang/Object;
+	move-result	v10
+; v10 : single-length
+	if-nez	v10,l1461c0
+; v10 : single-length
+	if-eqz	v3,l1461c0
+; v3 : single-length
+l1460d0:
+.line 327
+	if-eqz	v3,l1461c0
+; v3 : single-length
+.line 328
+	mul-int/lit-8	v10,v3,12
+; v10 : single-length , v3 : single-length
+	add-int/2addr	v4,v10
+; v4 : single-length , v10 : single-length
+.line 329
+	const/4	v3,0
+; v3 : single-length
+	goto	l1460d0
+l1460de:
+.line 335
+	sget-object	v10,org/apache/commons/lang3/time/DurationFormatUtils.y Ljava/lang/Object;
+; v10 : Ljava/lang/Object;
+	invoke-static	{v2,v10},org/apache/commons/lang3/time/DurationFormatUtils$Token/containsTokenWithValue	; containsTokenWithValue([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;Ljava/lang/Object;)Z
+; v2 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v10 : Ljava/lang/Object;
+	move-result	v10
+; v10 : single-length
+	if-nez	v10,l14616e
+; v10 : single-length
+.line 336
+	const/4	v10,1
+; v10 : single-length
+	invoke-virtual	{v11,v10},java/util/Calendar/get	; get(I)I
+; v11 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v13
+; v13 : single-length
+.line 337
+	if-gez	v4,l146100
+; v4 : single-length
+.line 339
+	add-int/lit8	v13,v13,255
+; v13 : single-length , v13 : single-length
+l146100:
+.line 342
+	const/4	v10,1
+; v10 : single-length
+	invoke-virtual	{v12,v10},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	if-eq	v10,v13,l14616c
+; v10 : single-length , v13 : single-length
+.line 343
+	const/4	v10,6
+; v10 : single-length
+	invoke-virtual	{v12,v10},java/util/Calendar/getActualMaximum	; getActualMaximum(I)I
+; v12 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	const/4	v14,6
+; v14 : single-length
+	invoke-virtual	{v12,v14},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v14 : single-length
+	move-result	v14
+; v14 : single-length
+	sub-int/2addr	v10,v14
+; v10 : single-length , v14 : single-length
+	add-int/2addr	v5,v10
+; v5 : single-length , v10 : single-length
+.line 346
+	instance-of	v10,v12,java/util/GregorianCalendar
+; v10 : single-length , v12 : Ljava/util/Calendar;
+	if-eqz	v10,l146154
+; v10 : single-length
+	const/4	v10,2
+; v10 : single-length
+	invoke-virtual	{v12,v10},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	const/4	v14,1
+; v14 : single-length
+	if-ne	v10,v14,l146154
+; v10 : single-length , v14 : single-length
+	const/4	v10,5
+; v10 : single-length
+	invoke-virtual	{v12,v10},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	const/16	v14,29
+; v14 : single-length
+	if-ne	v10,v14,l146154
+; v10 : single-length , v14 : single-length
+.line 349
+	add-int/lit8	v5,v5,1
+; v5 : single-length , v5 : single-length
+l146154:
+.line 352
+	const/4	v10,1
+; v10 : single-length
+	const/4	v14,1
+; v14 : single-length
+	invoke-virtual	{v12,v10,v14},java/util/Calendar/add	; add(II)V
+; v12 : Ljava/util/Calendar; , v10 : single-length , v14 : single-length
+.line 354
+	const/4	v10,6
+; v10 : single-length
+	invoke-virtual	{v12,v10},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	add-int/2addr	v5,v10
+; v5 : single-length , v10 : single-length
+	goto	l146100
+l14616c:
+.line 357
+	const/4	v3,0
+; v3 : single-length
+l14616e:
+.line 360
+	const/4	v10,2
+; v10 : single-length
+	invoke-virtual	{v12,v10},java/util/Calendar/get	; get(I)I
+; v12 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	const/4	v14,2
+; v14 : single-length
+	invoke-virtual	{v11,v14},java/util/Calendar/get	; get(I)I
+; v11 : Ljava/util/Calendar; , v14 : single-length
+	move-result	v14
+; v14 : single-length
+	if-eq	v10,v14,l14619e
+; v10 : single-length , v14 : single-length
+.line 361
+	const/4	v10,5
+; v10 : single-length
+	invoke-virtual	{v12,v10},java/util/Calendar/getActualMaximum	; getActualMaximum(I)I
+; v12 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	add-int/2addr	v5,v10
+; v5 : single-length , v10 : single-length
+.line 362
+	const/4	v10,2
+; v10 : single-length
+	const/4	v14,1
+; v14 : single-length
+	invoke-virtual	{v12,v10,v14},java/util/Calendar/add	; add(II)V
+; v12 : Ljava/util/Calendar; , v10 : single-length , v14 : single-length
+	goto	l14616e
+l14619e:
+.line 365
+	const/4	v4,0
+; v4 : single-length
+l1461a0:
+.line 367
+	if-gez	v5,l1461c0
+; v5 : single-length
+.line 368
+	const/4	v10,5
+; v10 : single-length
+	invoke-virtual	{v12,v10},java/util/Calendar/getActualMaximum	; getActualMaximum(I)I
+; v12 : Ljava/util/Calendar; , v10 : single-length
+	move-result	v10
+; v10 : single-length
+	add-int/2addr	v5,v10
+; v5 : single-length , v10 : single-length
+.line 369
+	add-int/lit8	v4,v4,255
+; v4 : single-length , v4 : single-length
+.line 370
+	const/4	v10,2
+; v10 : single-length
+	const/4	v14,1
+; v14 : single-length
+	invoke-virtual	{v12,v10,v14},java/util/Calendar/add	; add(II)V
+; v12 : Ljava/util/Calendar; , v10 : single-length , v14 : single-length
+	goto	l1461a0
+l1461c0:
+.line 379
+	sget-object	v10,org/apache/commons/lang3/time/DurationFormatUtils.d Ljava/lang/Object;
+; v10 : Ljava/lang/Object;
+	invoke-static	{v2,v10},org/apache/commons/lang3/time/DurationFormatUtils$Token/containsTokenWithValue	; containsTokenWithValue([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;Ljava/lang/Object;)Z
+; v2 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v10 : Ljava/lang/Object;
+	move-result	v10
+; v10 : single-length
+	if-nez	v10,l1461d8
+; v10 : single-length
+.line 380
+	mul-int/lit-8	v10,v5,24
+; v10 : single-length , v5 : single-length
+	add-int/2addr	v6,v10
+; v6 : single-length , v10 : single-length
+.line 381
+	const/4	v5,0
+; v5 : single-length
+l1461d8:
+.line 383
+	sget-object	v10,org/apache/commons/lang3/time/DurationFormatUtils.H Ljava/lang/Object;
+; v10 : Ljava/lang/Object;
+	invoke-static	{v2,v10},org/apache/commons/lang3/time/DurationFormatUtils$Token/containsTokenWithValue	; containsTokenWithValue([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;Ljava/lang/Object;)Z
+; v2 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v10 : Ljava/lang/Object;
+	move-result	v10
+; v10 : single-length
+	if-nez	v10,l1461f0
+; v10 : single-length
+.line 384
+	mul-int/lit-8	v10,v6,60
+; v10 : single-length , v6 : single-length
+	add-int/2addr	v7,v10
+; v7 : single-length , v10 : single-length
+.line 385
+	const/4	v6,0
+; v6 : single-length
+l1461f0:
+.line 387
+	sget-object	v10,org/apache/commons/lang3/time/DurationFormatUtils.m Ljava/lang/Object;
+; v10 : Ljava/lang/Object;
+	invoke-static	{v2,v10},org/apache/commons/lang3/time/DurationFormatUtils$Token/containsTokenWithValue	; containsTokenWithValue([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;Ljava/lang/Object;)Z
+; v2 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v10 : Ljava/lang/Object;
+	move-result	v10
+; v10 : single-length
+	if-nez	v10,l146208
+; v10 : single-length
+.line 388
+	mul-int/lit-8	v10,v7,60
+; v10 : single-length , v7 : single-length
+	add-int/2addr	v8,v10
+; v8 : single-length , v10 : single-length
+.line 389
+	const/4	v7,0
+; v7 : single-length
+l146208:
+.line 391
+	sget-object	v10,org/apache/commons/lang3/time/DurationFormatUtils.s Ljava/lang/Object;
+; v10 : Ljava/lang/Object;
+	invoke-static	{v2,v10},org/apache/commons/lang3/time/DurationFormatUtils$Token/containsTokenWithValue	; containsTokenWithValue([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;Ljava/lang/Object;)Z
+; v2 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v10 : Ljava/lang/Object;
+	move-result	v10
+; v10 : single-length
+	if-nez	v10,l146220
+; v10 : single-length
+.line 392
+	mul-int/lit16	v10,v8,1000
+; v10 : single-length , v8 : single-length
+	add-int/2addr	v9,v10
+; v9 : single-length , v10 : single-length
+.line 393
+	const/4	v8,0
+; v8 : single-length
+l146220:
+	move/from16	v10,v20
+; v10 : single-length , v20 : single-length
+.line 396
+	invoke-static/range	{v2..v10},org/apache/commons/lang3/time/DurationFormatUtils/format;	format([Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;IIIIIIIZ)Ljava/lang/String;
+; v2 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v3 : single-length , v4 : single-length , v5 : single-length , v6 : single-length , v7 : single-length , v8 : single-length , v9 : single-length , v10 : single-length
+	move-result-object	v10
+; v10 : Ljava/lang/String;
+	return-object	v10
+; v10 : Ljava/lang/String;
+.end method
+
+.method public static formatPeriodISO(JJ)Ljava/lang/String;
+.limit registers 11
+; parameter[0] : v7 (J)
+; parameter[1] : v9 (J)
+.line 230
+	const-string	v4,"'P'yyyy'Y'M'M'd'DT'H'H'm'M's.S'S'"
+; v4 : Ljava/lang/String;
+	const/4	v5,0
+; v5 : single-length
+	invoke-static	{},java/util/TimeZone/getDefault	; getDefault()Ljava/util/TimeZone;
+; 
+	nop	
+	move-result-object	v6
+; v6 : Ljava/util/TimeZone;
+	move-wide	v0,v7
+; v0 : double-length , v7 : double-length
+	move-wide	v2,v9
+; v2 : double-length , v9 : double-length
+	invoke-static/range	{v0..v6},org/apache/commons/lang3/time/DurationFormatUtils/formatPeriod;	formatPeriod(JJLjava/lang/String;ZLjava/util/TimeZone;)Ljava/lang/String;
+; v0 : double-length , v2 : double-length , v4 : Ljava/lang/String; , v5 : single-length , v6 : Ljava/util/TimeZone;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method static lexx(Ljava/lang/String;)[Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+.limit registers 12
+; parameter[0] : v11 (Ljava/lang/String;)
+.var 1 is buffer Ljava/lang/StringBuffer; from l146284 to l1462ba
+.var 9 is value Ljava/lang/Object; from l1462ac to l1462d6
+.var 1 is buffer Ljava/lang/StringBuffer; from l1462c0 to l146302
+.var 9 is value Ljava/lang/Object; from l1462f4 to l146346
+.var 2 is ch C from l146292 to l14635a
+.var 8 is token Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; from l146350 to l14635a
+.line 484
+	invoke-virtual	{v11},java/lang/String/toCharArray	; toCharArray()[C
+; v11 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : [C
+.line 485
+	new-instance	v5,java/util/ArrayList
+; v5 : Ljava/util/ArrayList;
+	array-length	v10,v0
+; v10 : single-length , v0 : [C
+	invoke-direct	{v5,v10},java/util/ArrayList/<init>	; <init>(I)V
+; v5 : Ljava/util/ArrayList; , v10 : single-length
+.line 487
+	const/4	v4,0
+; v4 : single-length
+.line 488
+	const/4	v1,0
+; v1 : single-length
+.line 489
+	const/4	v6,0
+; v6 : single-length
+.line 490
+	array-length	v7,v0
+; v7 : single-length , v0 : [C
+.line 491
+	const/4	v3,0
+; v3 : single-length
+l14628a:
+	if-ge	v3,v7,l14635a
+; v3 : single-length , v7 : single-length
+.line 492
+	aget-char	v2,v0,v3
+; v2 : single-length , v0 : [C , v3 : single-length
+.line 493
+	if-eqz	v4,l1462aa
+; v4 : single-length
+	const/16	v10,39
+; v10 : single-length
+	if-eq	v2,v10,l1462aa
+; v2 : single-length , v10 : single-length
+.line 494
+	invoke-virtual	{v1,v2},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v1 : single-length , v2 : single-length
+l1462a4:
+.line 491
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	l14628a
+l1462aa:
+.line 497
+	const/4	v9,0
+; v9 : single-length
+.line 498
+	sparse-switch	v2
+		39 : sp1462ac_1462f4
+		72 : sp1462ac_14632e
+		77 : sp1462ac_146322
+		83 : sp1462ac_146340
+		100 : sp1462ac_146328
+		109 : sp1462ac_146334
+		115 : sp1462ac_14633a
+		121 : sp1462ac_14631c
+		default: sp1462ac_default
+; v2 : single-length
+sp1462ac_default:
+.line 518
+	if-nez	v1,l1462d0
+; v1 : single-length
+.line 519
+	new-instance	v1,java/lang/StringBuffer
+; v1 : Ljava/lang/StringBuffer;
+l1462ba:
+	invoke-direct	{v1},java/lang/StringBuffer/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuffer;
+.line 520
+	new-instance	v10,org/apache/commons/lang3/time/DurationFormatUtils$Token
+; v10 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+	invoke-direct	{v10,v1},org/apache/commons/lang3/time/DurationFormatUtils$Token/<init>	; <init>(Ljava/lang/Object;)V
+; v10 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v1 : Ljava/lang/StringBuffer;
+	invoke-virtual	{v5,v10},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v5 : Ljava/util/ArrayList; , v10 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+l1462d0:
+.line 522
+	invoke-virtual	{v1,v2},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v1 : Ljava/lang/StringBuffer; , v2 : single-length
+l1462d6:
+.line 525
+	if-eqz	v9,l1462a4
+; v9 : Ljava/lang/Object;
+.line 526
+	if-eqz	v6,l146346
+; v6 : single-length
+	invoke-virtual	{v6},org/apache/commons/lang3/time/DurationFormatUtils$Token/getValue	; getValue()Ljava/lang/Object;
+; v6 : single-length
+	move-result-object	v10
+; v10 : Ljava/lang/Object;
+	if-ne	v10,v9,l146346
+; v10 : Ljava/lang/Object; , v9 : Ljava/lang/Object;
+.line 527
+	invoke-virtual	{v6},org/apache/commons/lang3/time/DurationFormatUtils$Token/increment	; increment()V
+; v6 : single-length
+l1462f0:
+.line 533
+	const/4	v1,0
+; v1 : single-length
+	goto	l1462a4
+sp1462ac_1462f4:
+.line 501
+	if-eqz	v4,l1462fe
+; v4 : single-length
+.line 502
+	const/4	v1,0
+; v1 : single-length
+.line 503
+	const/4	v4,0
+; v4 : single-length
+	goto	l1462d6
+l1462fe:
+.line 505
+	new-instance	v1,java/lang/StringBuffer
+; v1 : Ljava/lang/StringBuffer;
+l146302:
+	invoke-direct	{v1},java/lang/StringBuffer/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuffer;
+.line 506
+	new-instance	v10,org/apache/commons/lang3/time/DurationFormatUtils$Token
+; v10 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+	invoke-direct	{v10,v1},org/apache/commons/lang3/time/DurationFormatUtils$Token/<init>	; <init>(Ljava/lang/Object;)V
+; v10 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v1 : Ljava/lang/StringBuffer;
+	invoke-virtual	{v5,v10},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v5 : Ljava/util/ArrayList; , v10 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+.line 507
+	const/4	v4,1
+; v4 : single-length
+.line 509
+	goto	l1462d6
+sp1462ac_14631c:
+.line 510
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.y Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	goto	l1462d6
+sp1462ac_146322:
+.line 511
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.M Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	goto	l1462d6
+sp1462ac_146328:
+.line 512
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.d Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	goto	l1462d6
+sp1462ac_14632e:
+.line 513
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.H Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	goto	l1462d6
+sp1462ac_146334:
+.line 514
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.m Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	goto	l1462d6
+sp1462ac_14633a:
+.line 515
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.s Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	goto	l1462d6
+sp1462ac_146340:
+.line 516
+	sget-object	v9,org/apache/commons/lang3/time/DurationFormatUtils.S Ljava/lang/Object;
+; v9 : Ljava/lang/Object;
+	goto	l1462d6
+l146346:
+.line 529
+	new-instance	v8,org/apache/commons/lang3/time/DurationFormatUtils$Token
+; v8 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+	invoke-direct	{v8,v9},org/apache/commons/lang3/time/DurationFormatUtils$Token/<init>	; <init>(Ljava/lang/Object;)V
+; v8 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v9 : single-length
+.line 530
+	invoke-virtual	{v5,v8},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v5 : Ljava/util/ArrayList; , v8 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+.line 531
+	move-object	v6,v8
+; v6 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v8 : Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+	goto	l1462f0
+l14635a:
+.line 536
+	invoke-virtual	{v5},java/util/ArrayList/size	; size()I
+; v5 : Ljava/util/ArrayList;
+	move-result	v10
+; v10 : single-length
+	new-array	v10,v10,[Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+; v10 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token; , v10 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+	invoke-virtual	{v5,v10},java/util/ArrayList/toArray	; toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+; v5 : Ljava/util/ArrayList; , v10 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token;
+	move-result-object	v10
+; v10 : [Ljava/lang/Object;
+	check-cast	v10,[Lorg/apache/commons/lang3/time/DurationFormatUtils$Token
+; v10 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token
+	return-object	v10
+; v10 : [Lorg/apache/commons/lang3/time/DurationFormatUtils$Token
+.line 498
+.end method
+
+

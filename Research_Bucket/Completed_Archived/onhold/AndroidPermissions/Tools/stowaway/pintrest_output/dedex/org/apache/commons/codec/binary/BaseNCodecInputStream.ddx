@@ -1,0 +1,239 @@
+.class public org/apache/commons/codec/binary/BaseNCodecInputStream
+.super java/io/FilterInputStream
+.source BaseNCodecInputStream.java
+
+.field private final baseNCodec Lorg/apache/commons/codec/binary/BaseNCodec;
+.field private final doEncode Z
+.field private final singleByte [B
+
+.method protected <init>(Ljava/io/InputStream;Lorg/apache/commons/codec/binary/BaseNCodec;Z)V
+.limit registers 5
+; this: v1 (Lorg/apache/commons/codec/binary/BaseNCodecInputStream;)
+; parameter[0] : v2 (Ljava/io/InputStream;)
+; parameter[1] : v3 (Lorg/apache/commons/codec/binary/BaseNCodec;)
+; parameter[2] : v4 (Z)
+.line 38
+	invoke-direct	{v1,v2},java/io/FilterInputStream/<init>	; <init>(Ljava/io/InputStream;)V
+; v1 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream; , v2 : Ljava/io/InputStream;
+.line 35
+	const/4	v0,1
+; v0 : single-length
+	new-array	v0,v0,[B
+; v0 : [B , v0 : [B
+	iput-object	v0,v1,org/apache/commons/codec/binary/BaseNCodecInputStream.singleByte [B
+; v0 : [B , v1 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+.line 39
+	iput-boolean	v4,v1,org/apache/commons/codec/binary/BaseNCodecInputStream.doEncode Z
+; v4 : single-length , v1 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+.line 40
+	iput-object	v3,v1,org/apache/commons/codec/binary/BaseNCodecInputStream.baseNCodec Lorg/apache/commons/codec/binary/BaseNCodec;
+; v3 : Lorg/apache/commons/codec/binary/BaseNCodec; , v1 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+.line 41
+	return-void	
+.end method
+
+.method public markSupported()Z
+.limit registers 2
+; this: v1 (Lorg/apache/commons/codec/binary/BaseNCodecInputStream;)
+.line 131
+	const/4	v0,0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public read()I
+.throws Ljava/io/IOException;
+.limit registers 5
+; this: v4 (Lorg/apache/commons/codec/binary/BaseNCodecInputStream;)
+	const/4	v3,1
+; v3 : single-length
+	const/4	v2,0
+; v2 : single-length
+.line 52
+	iget-object	v1,v4,org/apache/commons/codec/binary/BaseNCodecInputStream.singleByte [B
+; v1 : [B , v4 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+	invoke-virtual	{v4,v1,v2,v3},org/apache/commons/codec/binary/BaseNCodecInputStream/read	; read([BII)I
+; v4 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream; , v1 : [B , v2 : single-length , v3 : single-length
+	move-result	v0
+; v0 : single-length
+l10645c:
+.line 53
+	if-nez	v0,l10646e
+; v0 : single-length
+.line 54
+	iget-object	v1,v4,org/apache/commons/codec/binary/BaseNCodecInputStream.singleByte [B
+; v1 : [B , v4 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+	invoke-virtual	{v4,v1,v2,v3},org/apache/commons/codec/binary/BaseNCodecInputStream/read	; read([BII)I
+; v4 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream; , v1 : [B , v2 : single-length , v3 : single-length
+	move-result	v0
+; v0 : single-length
+	goto	l10645c
+l10646e:
+.line 56
+	if-lez	v0,l106496
+; v0 : single-length
+.line 57
+	iget-object	v1,v4,org/apache/commons/codec/binary/BaseNCodecInputStream.singleByte [B
+; v1 : [B , v4 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+	aget-byte	v1,v1,v2
+; v1 : single-length , v1 : single-length , v2 : single-length
+	if-gez	v1,l10648c
+; v1 : single-length
+	iget-object	v1,v4,org/apache/commons/codec/binary/BaseNCodecInputStream.singleByte [B
+; v1 : [B , v4 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+	aget-byte	v1,v1,v2
+; v1 : single-length , v1 : single-length , v2 : single-length
+	add-int/lit16	v1,v1,256
+; v1 : single-length , v1 : single-length
+l10648a:
+.line 59
+	return	v1
+; v1 : single-length
+l10648c:
+.line 57
+	iget-object	v1,v4,org/apache/commons/codec/binary/BaseNCodecInputStream.singleByte [B
+; v1 : [B , v4 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+	aget-byte	v1,v1,v2
+; v1 : single-length , v1 : single-length , v2 : single-length
+	goto	l10648a
+l106496:
+.line 59
+	const/4	v1,15
+; v1 : single-length
+	goto	l10648a
+.end method
+
+.method public read([BII)I
+.throws Ljava/io/IOException;
+.limit registers 10
+; this: v6 (Lorg/apache/commons/codec/binary/BaseNCodecInputStream;)
+; parameter[0] : v7 ([B)
+; parameter[1] : v8 (I)
+; parameter[2] : v9 (I)
+.var 0 is buf [B from l10651c to l10653a
+.var 1 is c I from l106528 to l10653a
+	const/4	v4,0
+; v4 : single-length
+.line 83
+	if-nez	v7,l1064be
+; v7 : [B
+.line 84
+	new-instance	v3,java/lang/NullPointerException
+; v3 : Ljava/lang/NullPointerException;
+	invoke-direct	{v3},java/lang/NullPointerException/<init>	; <init>()V
+; v3 : Ljava/lang/NullPointerException;
+	throw	v3
+; v3 : Ljava/lang/NullPointerException;
+l1064be:
+.line 85
+	if-ltz	v8,l1064c6
+; v8 : single-length
+	if-gez	v9,l1064d2
+; v9 : single-length
+l1064c6:
+.line 86
+	new-instance	v3,java/lang/IndexOutOfBoundsException
+; v3 : Ljava/lang/IndexOutOfBoundsException;
+	invoke-direct	{v3},java/lang/IndexOutOfBoundsException/<init>	; <init>()V
+; v3 : Ljava/lang/IndexOutOfBoundsException;
+	throw	v3
+; v3 : Ljava/lang/IndexOutOfBoundsException;
+l1064d2:
+.line 87
+	array-length	v3,v7
+; v3 : single-length , v7 : [B
+	if-gt	v8,v3,l1064e2
+; v8 : single-length , v3 : single-length
+	add-int	v3,v8,v9
+; v3 : single-length , v8 : single-length , v9 : single-length
+	array-length	v5,v7
+; v5 : single-length , v7 : [B
+	if-le	v3,v5,l1064ee
+; v3 : single-length , v5 : single-length
+l1064e2:
+.line 88
+	new-instance	v3,java/lang/IndexOutOfBoundsException
+; v3 : Ljava/lang/IndexOutOfBoundsException;
+	invoke-direct	{v3},java/lang/IndexOutOfBoundsException/<init>	; <init>()V
+; v3 : Ljava/lang/IndexOutOfBoundsException;
+	throw	v3
+; v3 : Ljava/lang/IndexOutOfBoundsException;
+l1064ee:
+.line 89
+	if-nez	v9,l1064f6
+; v9 : single-length
+	move	v2,v4
+; v2 : single-length , v4 : single-length
+l1064f4:
+.line 121
+	return	v2
+; v2 : single-length
+l1064f6:
+.line 92
+	const/4	v2,0
+; v2 : single-length
+l1064f8:
+.line 109
+	if-nez	v2,l1064f4
+; v2 : single-length
+.line 110
+	iget-object	v3,v6,org/apache/commons/codec/binary/BaseNCodecInputStream.baseNCodec Lorg/apache/commons/codec/binary/BaseNCodec;
+; v3 : Lorg/apache/commons/codec/binary/BaseNCodec; , v6 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+	invoke-virtual	{v3},org/apache/commons/codec/binary/BaseNCodec/hasData	; hasData()Z
+; v3 : Lorg/apache/commons/codec/binary/BaseNCodec;
+	move-result	v3
+; v3 : single-length
+	if-nez	v3,l10653a
+; v3 : single-length
+.line 111
+	iget-boolean	v3,v6,org/apache/commons/codec/binary/BaseNCodecInputStream.doEncode Z
+; v3 : single-length , v6 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+	if-eqz	v3,l106548
+; v3 : single-length
+	const/16	v3,4096
+; v3 : single-length
+l106518:
+	new-array	v0,v3,[B
+; v0 : [B , v3 : single-length
+.line 112
+	iget-object	v3,v6,org/apache/commons/codec/binary/BaseNCodecInputStream.in Ljava/io/InputStream;
+; v3 : Ljava/io/InputStream; , v6 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+	invoke-virtual	{v3,v0},java/io/InputStream/read	; read([B)I
+; v3 : Ljava/io/InputStream; , v0 : [B
+	move-result	v1
+; v1 : single-length
+.line 113
+	iget-boolean	v3,v6,org/apache/commons/codec/binary/BaseNCodecInputStream.doEncode Z
+; v3 : single-length , v6 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+	if-eqz	v3,l10654e
+; v3 : single-length
+.line 114
+	iget-object	v3,v6,org/apache/commons/codec/binary/BaseNCodecInputStream.baseNCodec Lorg/apache/commons/codec/binary/BaseNCodec;
+; v3 : Lorg/apache/commons/codec/binary/BaseNCodec; , v6 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+	invoke-virtual	{v3,v0,v4,v1},org/apache/commons/codec/binary/BaseNCodec/encode	; encode([BII)V
+; v3 : Lorg/apache/commons/codec/binary/BaseNCodec; , v0 : [B , v4 : single-length , v1 : single-length
+l10653a:
+.line 119
+	iget-object	v3,v6,org/apache/commons/codec/binary/BaseNCodecInputStream.baseNCodec Lorg/apache/commons/codec/binary/BaseNCodec;
+; v3 : Lorg/apache/commons/codec/binary/BaseNCodec; , v6 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+	invoke-virtual	{v3,v7,v8,v9},org/apache/commons/codec/binary/BaseNCodec/readResults	; readResults([BII)I
+; v3 : Lorg/apache/commons/codec/binary/BaseNCodec; , v7 : [B , v8 : single-length , v9 : single-length
+	move-result	v2
+; v2 : single-length
+	goto	l1064f8
+l106548:
+.line 111
+	const/16	v3,8192
+; v3 : single-length
+	goto	l106518
+l10654e:
+.line 116
+	iget-object	v3,v6,org/apache/commons/codec/binary/BaseNCodecInputStream.baseNCodec Lorg/apache/commons/codec/binary/BaseNCodec;
+; v3 : Lorg/apache/commons/codec/binary/BaseNCodec; , v6 : Lorg/apache/commons/codec/binary/BaseNCodecInputStream;
+	invoke-virtual	{v3,v0,v4,v1},org/apache/commons/codec/binary/BaseNCodec/decode	; decode([BII)V
+; v3 : Lorg/apache/commons/codec/binary/BaseNCodec; , v0 : [B , v4 : single-length , v1 : single-length
+	goto	l10653a
+.end method
+
+

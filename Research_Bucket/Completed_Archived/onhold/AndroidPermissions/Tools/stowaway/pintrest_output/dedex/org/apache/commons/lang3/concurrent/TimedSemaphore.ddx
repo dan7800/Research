@@ -1,0 +1,600 @@
+.class public org/apache/commons/lang3/concurrent/TimedSemaphore
+.super java/lang/Object
+.source TimedSemaphore.java
+
+.field public static final NO_LIMIT I = 0	; 0x0
+.field private static final THREAD_POOL_SIZE I = 1	; 0x1
+.field private acquireCount I
+.field private final executorService Ljava/util/concurrent/ScheduledExecutorService;
+.field private lastCallsPerPeriod I
+.field private limit I
+.field private final ownExecutor Z
+.field private final period J
+.field private periodCount J
+.field private shutdown Z
+.field private task Ljava/util/concurrent/ScheduledFuture;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/concurrent/ScheduledFuture" , "<*>;" }
+  .end annotation
+.end field
+.field private totalAcquireCount J
+.field private final unit Ljava/util/concurrent/TimeUnit;
+
+.method public <init>(JLjava/util/concurrent/TimeUnit;I)V
+.limit registers 11
+; this: v6 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+; parameter[0] : v7 (J)
+; parameter[1] : v9 (Ljava/util/concurrent/TimeUnit;)
+; parameter[2] : v10 (I)
+.line 185
+	const/4	v1,0
+; v1 : single-length
+	move-object	v0,v6
+; v0 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore; , v6 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	move-wide	v2,v7
+; v2 : double-length , v7 : double-length
+	move-object	v4,v9
+; v4 : Ljava/util/concurrent/TimeUnit; , v9 : Ljava/util/concurrent/TimeUnit;
+	move	v5,v10
+; v5 : single-length , v10 : single-length
+	invoke-direct/range	{v0..v5},org/apache/commons/lang3/concurrent/TimedSemaphore/<init>;	<init>(Ljava/util/concurrent/ScheduledExecutorService;JLjava/util/concurrent/TimeUnit;I)V
+; v0 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore; , v1 : single-length , v2 : double-length , v4 : Ljava/util/concurrent/TimeUnit; , v5 : single-length
+.line 186
+	return-void	
+.end method
+
+.method public <init>(Ljava/util/concurrent/ScheduledExecutorService;JLjava/util/concurrent/TimeUnit;I)V
+.limit registers 11
+; this: v5 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+; parameter[0] : v6 (Ljava/util/concurrent/ScheduledExecutorService;)
+; parameter[1] : v7 (J)
+; parameter[2] : v9 (Ljava/util/concurrent/TimeUnit;)
+; parameter[3] : v10 (I)
+	const/4	v4,1
+; v4 : single-length
+	const/4	v3,0
+; v3 : single-length
+.line 201
+	invoke-direct	{v5},java/lang/Object/<init>	; <init>()V
+; v5 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+.line 202
+	const-wide/16	v1,0
+; v1 : double-length
+	cmp-long	v1,v7,v1
+; v1 : single-length , v7 : double-length , v1 : single-length
+	if-gtz	v1,l1348fe
+; v1 : single-length
+.line 203
+	new-instance	v1,java/lang/IllegalArgumentException
+; v1 : Ljava/lang/IllegalArgumentException;
+	const-string	v2,"Time period must be greater 0!"
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/lang/IllegalArgumentException; , v2 : Ljava/lang/String;
+	throw	v1
+; v1 : Ljava/lang/IllegalArgumentException;
+l1348fe:
+.line 206
+	iput-wide	v7,v5,org/apache/commons/lang3/concurrent/TimedSemaphore.period J
+; v7 : double-length , v5 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+.line 207
+	iput-object	v9,v5,org/apache/commons/lang3/concurrent/TimedSemaphore.unit Ljava/util/concurrent/TimeUnit;
+; v9 : Ljava/util/concurrent/TimeUnit; , v5 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+.line 209
+	if-eqz	v6,l13491a
+; v6 : Ljava/util/concurrent/ScheduledExecutorService;
+.line 210
+	iput-object	v6,v5,org/apache/commons/lang3/concurrent/TimedSemaphore.executorService Ljava/util/concurrent/ScheduledExecutorService;
+; v6 : Ljava/util/concurrent/ScheduledExecutorService; , v5 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+.line 211
+	iput-boolean	v3,v5,org/apache/commons/lang3/concurrent/TimedSemaphore.ownExecutor Z
+; v3 : single-length , v5 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134912:
+.line 221
+	invoke-virtual	{v5,v10},org/apache/commons/lang3/concurrent/TimedSemaphore/setLimit	; setLimit(I)V
+; v5 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore; , v10 : single-length
+.line 222
+	return-void	
+l13491a:
+.line 213
+	new-instance	v0,java/util/concurrent/ScheduledThreadPoolExecutor
+; v0 : Ljava/util/concurrent/ScheduledThreadPoolExecutor;
+	invoke-direct	{v0,v4},java/util/concurrent/ScheduledThreadPoolExecutor/<init>	; <init>(I)V
+; v0 : Ljava/util/concurrent/ScheduledThreadPoolExecutor; , v4 : single-length
+.line 215
+	invoke-virtual	{v0,v3},java/util/concurrent/ScheduledThreadPoolExecutor/setContinueExistingPeriodicTasksAfterShutdownPolicy	; setContinueExistingPeriodicTasksAfterShutdownPolicy(Z)V
+; v0 : Ljava/util/concurrent/ScheduledThreadPoolExecutor; , v3 : single-length
+.line 216
+	invoke-virtual	{v0,v3},java/util/concurrent/ScheduledThreadPoolExecutor/setExecuteExistingDelayedTasksAfterShutdownPolicy	; setExecuteExistingDelayedTasksAfterShutdownPolicy(Z)V
+; v0 : Ljava/util/concurrent/ScheduledThreadPoolExecutor; , v3 : single-length
+.line 217
+	iput-object	v0,v5,org/apache/commons/lang3/concurrent/TimedSemaphore.executorService Ljava/util/concurrent/ScheduledExecutorService;
+; v0 : Ljava/util/concurrent/ScheduledThreadPoolExecutor; , v5 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+.line 218
+	iput-boolean	v4,v5,org/apache/commons/lang3/concurrent/TimedSemaphore.ownExecutor Z
+; v4 : single-length , v5 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	goto	l134912
+.end method
+
+.method public synchronized acquire()V
+.throws Ljava/lang/InterruptedException;
+.limit registers 4
+; this: v3 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.catch java/lang/Exception from l1349ba to l1349c6 using l13496a
+.catch java/lang/Exception from l134970 to l1349ae using l13496a
+.catch java/lang/Exception from l13494e to l13496a using l13496a
+.line 293
+	monitor-enter	v3
+; v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l13494e:
+	invoke-virtual	{v3},org/apache/commons/lang3/concurrent/TimedSemaphore/isShutdown	; isShutdown()Z
+; v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l134970
+; v1 : single-length
+.line 294
+	new-instance	v1,java/lang/IllegalStateException
+; v1 : Ljava/lang/IllegalStateException;
+	const-string	v2,"TimedSemaphore is shut down!"
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},java/lang/IllegalStateException/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/lang/IllegalStateException; , v2 : Ljava/lang/String;
+	throw	v1
+; v1 : Ljava/lang/IllegalStateException;
+l13496a:
+.line 293
+	move-exception	v1
+; v1 : java/lang/Exception
+	monitor-exit	v3
+; v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	throw	v1
+; v1 : java/lang/Exception
+l134970:
+.line 297
+	iget-object	v1,v3,org/apache/commons/lang3/concurrent/TimedSemaphore.task Ljava/util/concurrent/ScheduledFuture;
+; v1 : Ljava/util/concurrent/ScheduledFuture; , v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	if-nez	v1,l134984
+; v1 : Ljava/util/concurrent/ScheduledFuture;
+.line 298
+	invoke-virtual	{v3},org/apache/commons/lang3/concurrent/TimedSemaphore/startTimer	; startTimer()Ljava/util/concurrent/ScheduledFuture;
+; v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	move-result-object	v1
+; v1 : Ljava/util/concurrent/ScheduledFuture;
+	iput-object	v1,v3,org/apache/commons/lang3/concurrent/TimedSemaphore.task Ljava/util/concurrent/ScheduledFuture;
+; v1 : Ljava/util/concurrent/ScheduledFuture; , v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134984:
+.line 301
+	const/4	v0,0
+; v0 : single-length
+l134986:
+.line 303
+	invoke-virtual	{v3},org/apache/commons/lang3/concurrent/TimedSemaphore/getLimit	; getLimit()I
+; v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	move-result	v1
+; v1 : single-length
+	if-lez	v1,l1349a2
+; v1 : single-length
+	iget	v1,v3,org/apache/commons/lang3/concurrent/TimedSemaphore.acquireCount I
+; v1 : single-length , v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	invoke-virtual	{v3},org/apache/commons/lang3/concurrent/TimedSemaphore/getLimit	; getLimit()I
+; v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	move-result	v2
+; v2 : single-length
+	if-ge	v1,v2,l1349b6
+; v1 : single-length , v2 : single-length
+l1349a2:
+	const/4	v0,1
+; v0 : single-length
+l1349a4:
+.line 304
+	if-nez	v0,l1349ba
+; v0 : single-length
+.line 305
+	invoke-virtual	{v3},java/lang/Object/wait	; wait()V
+; v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l1349ae:
+.line 309
+	if-eqz	v0,l134986
+; v0 : single-length
+.line 310
+	monitor-exit	v3
+; v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return-void	
+l1349b6:
+.line 303
+	const/4	v0,0
+; v0 : single-length
+	goto	l1349a4
+l1349ba:
+.line 307
+	iget	v1,v3,org/apache/commons/lang3/concurrent/TimedSemaphore.acquireCount I
+; v1 : single-length , v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	iput	v1,v3,org/apache/commons/lang3/concurrent/TimedSemaphore.acquireCount I
+; v1 : single-length , v3 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l1349c6:
+	goto	l1349ae
+.end method
+
+.method synchronized endOfPeriod()V
+.limit registers 5
+; this: v4 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.catch java/lang/Exception from l1349f6 to l134a28 using l134a2c
+.line 415
+	monitor-enter	v4
+; v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l1349f6:
+	iget	v0,v4,org/apache/commons/lang3/concurrent/TimedSemaphore.acquireCount I
+; v0 : single-length , v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	iput	v0,v4,org/apache/commons/lang3/concurrent/TimedSemaphore.lastCallsPerPeriod I
+; v0 : single-length , v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+.line 416
+	iget-wide	v0,v4,org/apache/commons/lang3/concurrent/TimedSemaphore.totalAcquireCount J
+; v0 : double-length , v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	iget	v2,v4,org/apache/commons/lang3/concurrent/TimedSemaphore.acquireCount I
+; v2 : single-length , v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	int-to-long	v2,v2
+; v2 : double-length , v2 : double-length
+	add-long/2addr	v0,v2
+; v0 : double-length , v2 : double-length
+	iput-wide	v0,v4,org/apache/commons/lang3/concurrent/TimedSemaphore.totalAcquireCount J
+; v0 : double-length , v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+.line 417
+	iget-wide	v0,v4,org/apache/commons/lang3/concurrent/TimedSemaphore.periodCount J
+; v0 : double-length , v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	const-wide/16	v2,1
+; v2 : double-length
+	add-long/2addr	v0,v2
+; v0 : double-length , v2 : double-length
+	iput-wide	v0,v4,org/apache/commons/lang3/concurrent/TimedSemaphore.periodCount J
+; v0 : double-length , v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+.line 418
+	const/4	v0,0
+; v0 : single-length
+	iput	v0,v4,org/apache/commons/lang3/concurrent/TimedSemaphore.acquireCount I
+; v0 : single-length , v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+.line 419
+	invoke-virtual	{v4},java/lang/Object/notifyAll	; notifyAll()V
+; v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134a28:
+.line 420
+	monitor-exit	v4
+; v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return-void	
+l134a2c:
+.line 415
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v4
+; v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public synchronized getAcquireCount()I
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.catch java/lang/Exception from l134a52 to l134a56 using l134a5a
+.line 333
+	monitor-enter	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134a52:
+	iget	v0,v1,org/apache/commons/lang3/concurrent/TimedSemaphore.acquireCount I
+; v0 : single-length , v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134a56:
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return	v0
+; v0 : single-length
+l134a5a:
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public synchronized getAvailablePermits()I
+.limit registers 3
+; this: v2 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.catch java/lang/Exception from l134a7e to l134a8c using l134a94
+.line 348
+	monitor-enter	v2
+; v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134a7e:
+	invoke-virtual	{v2},org/apache/commons/lang3/concurrent/TimedSemaphore/getLimit	; getLimit()I
+; v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	move-result	v0
+; v0 : single-length
+	invoke-virtual	{v2},org/apache/commons/lang3/concurrent/TimedSemaphore/getAcquireCount	; getAcquireCount()I
+; v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134a8c:
+	move-result	v1
+; v1 : single-length
+	sub-int/2addr	v0,v1
+; v0 : single-length , v1 : single-length
+	monitor-exit	v2
+; v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return	v0
+; v0 : single-length
+l134a94:
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v2
+; v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public synchronized getAverageCallsPerPeriod()D
+.limit registers 5
+; this: v4 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.catch java/lang/Exception from l134ad2 to l134adc using l134ae2
+.catch java/lang/Exception from l134aba to l134abe using l134ae2
+.line 361
+	monitor-enter	v4
+; v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134aba:
+	iget-wide	v0,v4,org/apache/commons/lang3/concurrent/TimedSemaphore.periodCount J
+; v0 : double-length , v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134abe:
+	const-wide/16	v2,0
+; v2 : double-length
+	cmp-long	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : double-length
+	if-nez	v0,l134ad2
+; v0 : single-length
+	const-wide/16	v0,0
+; v0 : double-length
+l134ace:
+	monitor-exit	v4
+; v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return-wide	v0
+; v0 : double-length
+l134ad2:
+	iget-wide	v0,v4,org/apache/commons/lang3/concurrent/TimedSemaphore.totalAcquireCount J
+; v0 : double-length , v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	long-to-double	v0,v0
+; v0 : double-length , v0 : double-length
+	iget-wide	v2,v4,org/apache/commons/lang3/concurrent/TimedSemaphore.periodCount J
+; v2 : double-length , v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134adc:
+	long-to-double	v2,v2
+; v2 : double-length , v2 : double-length
+	div-double/2addr	v0,v2
+; v0 : double-length , v2 : double-length
+	goto	l134ace
+l134ae2:
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v4
+; v4 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method protected getExecutorService()Ljava/util/concurrent/ScheduledExecutorService;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.line 391
+	iget-object	v0,v1,org/apache/commons/lang3/concurrent/TimedSemaphore.executorService Ljava/util/concurrent/ScheduledExecutorService;
+; v0 : Ljava/util/concurrent/ScheduledExecutorService; , v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return-object	v0
+; v0 : Ljava/util/concurrent/ScheduledExecutorService;
+.end method
+
+.method public synchronized getLastAcquiresPerPeriod()I
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.catch java/lang/Exception from l134b26 to l134b2a using l134b2e
+.line 323
+	monitor-enter	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134b26:
+	iget	v0,v1,org/apache/commons/lang3/concurrent/TimedSemaphore.lastCallsPerPeriod I
+; v0 : single-length , v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134b2a:
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return	v0
+; v0 : single-length
+l134b2e:
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public final synchronized getLimit()I
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.catch java/lang/Exception from l134b52 to l134b56 using l134b5a
+.line 232
+	monitor-enter	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134b52:
+	iget	v0,v1,org/apache/commons/lang3/concurrent/TimedSemaphore.limit I
+; v0 : single-length , v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134b56:
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return	v0
+; v0 : single-length
+l134b5a:
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public getPeriod()J
+.limit registers 3
+; this: v2 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.line 373
+	iget-wide	v0,v2,org/apache/commons/lang3/concurrent/TimedSemaphore.period J
+; v0 : double-length , v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return-wide	v0
+; v0 : double-length
+.end method
+
+.method public getUnit()Ljava/util/concurrent/TimeUnit;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.line 382
+	iget-object	v0,v1,org/apache/commons/lang3/concurrent/TimedSemaphore.unit Ljava/util/concurrent/TimeUnit;
+; v0 : Ljava/util/concurrent/TimeUnit; , v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return-object	v0
+; v0 : Ljava/util/concurrent/TimeUnit;
+.end method
+
+.method public synchronized isShutdown()Z
+.limit registers 2
+; this: v1 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.catch java/lang/Exception from l134bae to l134bb2 using l134bb6
+.line 278
+	monitor-enter	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134bae:
+	iget-boolean	v0,v1,org/apache/commons/lang3/concurrent/TimedSemaphore.shutdown Z
+; v0 : single-length , v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134bb2:
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return	v0
+; v0 : single-length
+l134bb6:
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public final synchronized setLimit(I)V
+.limit registers 3
+; this: v1 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+; parameter[0] : v2 (I)
+.catch java/lang/Exception from l134bda to l134bde using l134be2
+.line 246
+	monitor-enter	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134bda:
+	iput	v2,v1,org/apache/commons/lang3/concurrent/TimedSemaphore.limit I
+; v2 : single-length , v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134bde:
+.line 247
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return-void	
+l134be2:
+.line 246
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public synchronized shutdown()V
+.limit registers 3
+; this: v2 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.catch java/lang/Exception from l134c06 to l134c3e using l134c42
+.line 255
+	monitor-enter	v2
+; v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134c06:
+	iget-boolean	v0,v2,org/apache/commons/lang3/concurrent/TimedSemaphore.shutdown Z
+; v0 : single-length , v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	if-nez	v0,l134c3e
+; v0 : single-length
+.line 257
+	iget-boolean	v0,v2,org/apache/commons/lang3/concurrent/TimedSemaphore.ownExecutor Z
+; v0 : single-length , v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	if-eqz	v0,l134c24
+; v0 : single-length
+.line 260
+	invoke-virtual	{v2},org/apache/commons/lang3/concurrent/TimedSemaphore/getExecutorService	; getExecutorService()Ljava/util/concurrent/ScheduledExecutorService;
+; v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	move-result-object	v0
+; v0 : Ljava/util/concurrent/ScheduledExecutorService;
+	invoke-interface	{v0},java/util/concurrent/ScheduledExecutorService/shutdownNow	; shutdownNow()Ljava/util/List;
+; v0 : Ljava/util/concurrent/ScheduledExecutorService;
+l134c24:
+.line 262
+	iget-object	v0,v2,org/apache/commons/lang3/concurrent/TimedSemaphore.task Ljava/util/concurrent/ScheduledFuture;
+; v0 : Ljava/util/concurrent/ScheduledFuture; , v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	if-eqz	v0,l134c38
+; v0 : Ljava/util/concurrent/ScheduledFuture;
+.line 263
+	iget-object	v0,v2,org/apache/commons/lang3/concurrent/TimedSemaphore.task Ljava/util/concurrent/ScheduledFuture;
+; v0 : Ljava/util/concurrent/ScheduledFuture; , v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	const/4	v1,0
+; v1 : single-length
+	invoke-interface	{v0,v1},java/util/concurrent/ScheduledFuture/cancel	; cancel(Z)Z
+; v0 : Ljava/util/concurrent/ScheduledFuture; , v1 : single-length
+l134c38:
+.line 266
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v2,org/apache/commons/lang3/concurrent/TimedSemaphore.shutdown Z
+; v0 : single-length , v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+l134c3e:
+.line 268
+	monitor-exit	v2
+; v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	return-void	
+l134c42:
+.line 255
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v2
+; v2 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method protected startTimer()Ljava/util/concurrent/ScheduledFuture;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "()" , "Ljava/util/concurrent/ScheduledFuture" , "<*>;" }
+.end annotation
+.limit registers 8
+; this: v7 (Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)
+.line 402
+	invoke-virtual	{v7},org/apache/commons/lang3/concurrent/TimedSemaphore/getExecutorService	; getExecutorService()Ljava/util/concurrent/ScheduledExecutorService;
+; v7 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	move-result-object	v0
+; v0 : Ljava/util/concurrent/ScheduledExecutorService;
+	new-instance	v1,org/apache/commons/lang3/concurrent/TimedSemaphore$1
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore$1;
+	invoke-direct	{v1,v7},org/apache/commons/lang3/concurrent/TimedSemaphore$1/<init>	; <init>(Lorg/apache/commons/lang3/concurrent/TimedSemaphore;)V
+; v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore$1; , v7 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	invoke-virtual	{v7},org/apache/commons/lang3/concurrent/TimedSemaphore/getPeriod	; getPeriod()J
+; v7 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	move-result-wide	v2
+; v2 : double-length
+	invoke-virtual	{v7},org/apache/commons/lang3/concurrent/TimedSemaphore/getPeriod	; getPeriod()J
+; v7 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	move-result-wide	v4
+; v4 : double-length
+	invoke-virtual	{v7},org/apache/commons/lang3/concurrent/TimedSemaphore/getUnit	; getUnit()Ljava/util/concurrent/TimeUnit;
+; v7 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore;
+	move-result-object	v6
+; v6 : Ljava/util/concurrent/TimeUnit;
+	invoke-interface/range	{v0..v6},java/util/concurrent/ScheduledExecutorService/scheduleAtFixedRate;	scheduleAtFixedRate(Ljava/lang/Runnable;JJLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;
+; v0 : Ljava/util/concurrent/ScheduledExecutorService; , v1 : Lorg/apache/commons/lang3/concurrent/TimedSemaphore$1; , v2 : double-length , v4 : double-length , v6 : Ljava/util/concurrent/TimeUnit;
+	move-result-object	v0
+; v0 : Ljava/util/concurrent/ScheduledFuture;
+	return-object	v0
+; v0 : Ljava/util/concurrent/ScheduledFuture;
+.end method
+
+

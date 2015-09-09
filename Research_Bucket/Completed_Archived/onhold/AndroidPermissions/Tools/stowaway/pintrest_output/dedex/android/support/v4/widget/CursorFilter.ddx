@@ -1,0 +1,121 @@
+.class android/support/v4/widget/CursorFilter
+.super android/widget/Filter
+.source CursorFilter.java
+
+.inner class CursorFilterClient inner android/support/v4/widget/CursorFilter$CursorFilterClient outer android/support/v4/widget/CursorFilter
+.field mClient Landroid/support/v4/widget/CursorFilter$CursorFilterClient;
+
+.method <init>(Landroid/support/v4/widget/CursorFilter$CursorFilterClient;)V
+.limit registers 2
+; this: v0 (Landroid/support/v4/widget/CursorFilter;)
+; parameter[0] : v1 (Landroid/support/v4/widget/CursorFilter$CursorFilterClient;)
+.line 39
+	invoke-direct	{v0},android/widget/Filter/<init>	; <init>()V
+; v0 : Landroid/support/v4/widget/CursorFilter;
+.line 40
+	iput-object	v1,v0,android/support/v4/widget/CursorFilter.mClient Landroid/support/v4/widget/CursorFilter$CursorFilterClient;
+; v1 : Landroid/support/v4/widget/CursorFilter$CursorFilterClient; , v0 : Landroid/support/v4/widget/CursorFilter;
+.line 41
+	return-void	
+.end method
+
+.method public convertResultToString(Ljava/lang/Object;)Ljava/lang/CharSequence;
+.limit registers 3
+; this: v1 (Landroid/support/v4/widget/CursorFilter;)
+; parameter[0] : v2 (Ljava/lang/Object;)
+.line 45
+	iget-object	v0,v1,android/support/v4/widget/CursorFilter.mClient Landroid/support/v4/widget/CursorFilter$CursorFilterClient;
+; v0 : Landroid/support/v4/widget/CursorFilter$CursorFilterClient; , v1 : Landroid/support/v4/widget/CursorFilter;
+	check-cast	v2,android/database/Cursor
+; v2 : Landroid/database/Cursor;
+	invoke-interface	{v0,v2},android/support/v4/widget/CursorFilter$CursorFilterClient/convertToString	; convertToString(Landroid/database/Cursor;)Ljava/lang/CharSequence;
+; v0 : Landroid/support/v4/widget/CursorFilter$CursorFilterClient; , v2 : Landroid/database/Cursor;
+	move-result-object	v0
+; v0 : Ljava/lang/CharSequence;
+	return-object	v0
+; v0 : Ljava/lang/CharSequence;
+.end method
+
+.method protected performFiltering(Ljava/lang/CharSequence;)Landroid/widget/Filter$FilterResults;
+.limit registers 5
+; this: v3 (Landroid/support/v4/widget/CursorFilter;)
+; parameter[0] : v4 (Ljava/lang/CharSequence;)
+.line 50
+	iget-object	v2,v3,android/support/v4/widget/CursorFilter.mClient Landroid/support/v4/widget/CursorFilter$CursorFilterClient;
+; v2 : Landroid/support/v4/widget/CursorFilter$CursorFilterClient; , v3 : Landroid/support/v4/widget/CursorFilter;
+	invoke-interface	{v2,v4},android/support/v4/widget/CursorFilter$CursorFilterClient/runQueryOnBackgroundThread	; runQueryOnBackgroundThread(Ljava/lang/CharSequence;)Landroid/database/Cursor;
+; v2 : Landroid/support/v4/widget/CursorFilter$CursorFilterClient; , v4 : Ljava/lang/CharSequence;
+	move-result-object	v0
+; v0 : Landroid/database/Cursor;
+.line 52
+	new-instance	v1,android/widget/Filter$FilterResults
+; v1 : Landroid/widget/Filter$FilterResults;
+	invoke-direct	{v1},android/widget/Filter$FilterResults/<init>	; <init>()V
+; v1 : Landroid/widget/Filter$FilterResults;
+.line 53
+	if-eqz	v0,l8161c
+; v0 : Landroid/database/Cursor;
+.line 54
+	invoke-interface	{v0},android/database/Cursor/getCount	; getCount()I
+; v0 : Landroid/database/Cursor;
+	move-result	v2
+; v2 : single-length
+	iput	v2,v1,android/widget/Filter$FilterResults.count I
+; v2 : single-length , v1 : Landroid/widget/Filter$FilterResults;
+.line 55
+	iput-object	v0,v1,android/widget/Filter$FilterResults.values Ljava/lang/Object;
+; v0 : Landroid/database/Cursor; , v1 : Landroid/widget/Filter$FilterResults;
+l8161a:
+.line 60
+	return-object	v1
+; v1 : Landroid/widget/Filter$FilterResults;
+l8161c:
+.line 57
+	const/4	v2,0
+; v2 : single-length
+	iput	v2,v1,android/widget/Filter$FilterResults.count I
+; v2 : single-length , v1 : Landroid/widget/Filter$FilterResults;
+.line 58
+	const/4	v2,0
+; v2 : single-length
+	iput-object	v2,v1,android/widget/Filter$FilterResults.values Ljava/lang/Object;
+; v2 : single-length , v1 : Landroid/widget/Filter$FilterResults;
+	goto	l8161a
+.end method
+
+.method protected publishResults(Ljava/lang/CharSequence;Landroid/widget/Filter$FilterResults;)V
+.limit registers 6
+; this: v3 (Landroid/support/v4/widget/CursorFilter;)
+; parameter[0] : v4 (Ljava/lang/CharSequence;)
+; parameter[1] : v5 (Landroid/widget/Filter$FilterResults;)
+.line 65
+	iget-object	v1,v3,android/support/v4/widget/CursorFilter.mClient Landroid/support/v4/widget/CursorFilter$CursorFilterClient;
+; v1 : Landroid/support/v4/widget/CursorFilter$CursorFilterClient; , v3 : Landroid/support/v4/widget/CursorFilter;
+	invoke-interface	{v1},android/support/v4/widget/CursorFilter$CursorFilterClient/getCursor	; getCursor()Landroid/database/Cursor;
+; v1 : Landroid/support/v4/widget/CursorFilter$CursorFilterClient;
+	move-result-object	v0
+; v0 : Landroid/database/Cursor;
+.line 67
+	iget-object	v1,v5,android/widget/Filter$FilterResults.values Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v5 : Landroid/widget/Filter$FilterResults;
+	if-eqz	v1,l8166a
+; v1 : Ljava/lang/Object;
+	iget-object	v1,v5,android/widget/Filter$FilterResults.values Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v5 : Landroid/widget/Filter$FilterResults;
+	if-eq	v1,v0,l8166a
+; v1 : Ljava/lang/Object; , v0 : Landroid/database/Cursor;
+.line 68
+	iget-object	v2,v3,android/support/v4/widget/CursorFilter.mClient Landroid/support/v4/widget/CursorFilter$CursorFilterClient;
+; v2 : Landroid/support/v4/widget/CursorFilter$CursorFilterClient; , v3 : Landroid/support/v4/widget/CursorFilter;
+	iget-object	v1,v5,android/widget/Filter$FilterResults.values Ljava/lang/Object;
+; v1 : Ljava/lang/Object; , v5 : Landroid/widget/Filter$FilterResults;
+	check-cast	v1,android/database/Cursor
+; v1 : Landroid/database/Cursor;
+	invoke-interface	{v2,v1},android/support/v4/widget/CursorFilter$CursorFilterClient/changeCursor	; changeCursor(Landroid/database/Cursor;)V
+; v2 : Landroid/support/v4/widget/CursorFilter$CursorFilterClient; , v1 : Landroid/database/Cursor;
+l8166a:
+.line 70
+	return-void	
+.end method
+
+

@@ -1,0 +1,454 @@
+.class public final org/apache/commons/io/IOCase
+.super java/lang/Object
+.source IOCase.java
+.implements java/io/Serializable
+
+.field public static final INSENSITIVE Lorg/apache/commons/io/IOCase; = null
+.field public static final SENSITIVE Lorg/apache/commons/io/IOCase; = null
+.field public static final SYSTEM Lorg/apache/commons/io/IOCase; = null
+.field private static final serialVersionUID J = -1073940109	; 0xffffffffbffcf973
+.field private final name Ljava/lang/String;
+.field private final transient sensitive Z
+
+.method static <clinit>()V
+.limit registers 5
+	const/4	v0,1
+; v0 : single-length
+	const/4	v1,0
+; v1 : single-length
+.line 43
+	new-instance	v2,org/apache/commons/io/IOCase
+; v2 : Lorg/apache/commons/io/IOCase;
+	const-string	v3,"Sensitive"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3,v0},org/apache/commons/io/IOCase/<init>	; <init>(Ljava/lang/String;Z)V
+; v2 : Lorg/apache/commons/io/IOCase; , v3 : Ljava/lang/String; , v0 : single-length
+	sput-object	v2,org/apache/commons/io/IOCase.SENSITIVE Lorg/apache/commons/io/IOCase;
+; v2 : Lorg/apache/commons/io/IOCase;
+.line 48
+	new-instance	v2,org/apache/commons/io/IOCase
+; v2 : Lorg/apache/commons/io/IOCase;
+	const-string	v3,"Insensitive"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3,v1},org/apache/commons/io/IOCase/<init>	; <init>(Ljava/lang/String;Z)V
+; v2 : Lorg/apache/commons/io/IOCase; , v3 : Ljava/lang/String; , v1 : single-length
+	sput-object	v2,org/apache/commons/io/IOCase.INSENSITIVE Lorg/apache/commons/io/IOCase;
+; v2 : Lorg/apache/commons/io/IOCase;
+.line 62
+	new-instance	v2,org/apache/commons/io/IOCase
+; v2 : Lorg/apache/commons/io/IOCase;
+	const-string	v3,"System"
+; v3 : Ljava/lang/String;
+	invoke-static	{},org/apache/commons/io/FilenameUtils/isSystemWindows	; isSystemWindows()Z
+; 
+	nop	
+	move-result	v4
+; v4 : single-length
+	if-nez	v4,l115ccc
+; v4 : single-length
+l115cc0:
+	invoke-direct	{v2,v3,v0},org/apache/commons/io/IOCase/<init>	; <init>(Ljava/lang/String;Z)V
+; v2 : Lorg/apache/commons/io/IOCase; , v3 : Ljava/lang/String; , v0 : single-length
+	sput-object	v2,org/apache/commons/io/IOCase.SYSTEM Lorg/apache/commons/io/IOCase;
+; v2 : Lorg/apache/commons/io/IOCase;
+	return-void	
+l115ccc:
+	move	v0,v1
+; v0 : single-length , v1 : single-length
+	goto	l115cc0
+.end method
+
+.method private <init>(Ljava/lang/String;Z)V
+.limit registers 3
+; this: v0 (Lorg/apache/commons/io/IOCase;)
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (Z)
+.line 101
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/IOCase;
+.line 102
+	iput-object	v1,v0,org/apache/commons/io/IOCase.name Ljava/lang/String;
+; v1 : Ljava/lang/String; , v0 : Lorg/apache/commons/io/IOCase;
+.line 103
+	iput-boolean	v2,v0,org/apache/commons/io/IOCase.sensitive Z
+; v2 : single-length , v0 : Lorg/apache/commons/io/IOCase;
+.line 104
+	return-void	
+.end method
+
+.method public static forName(Ljava/lang/String;)Lorg/apache/commons/io/IOCase;
+.limit registers 4
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 82
+	sget-object	v0,org/apache/commons/io/IOCase.SENSITIVE Lorg/apache/commons/io/IOCase;
+; v0 : Lorg/apache/commons/io/IOCase;
+	iget-object	v0,v0,org/apache/commons/io/IOCase.name Ljava/lang/String;
+; v0 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	invoke-virtual	{v0,v3},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v0 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l115d1a
+; v0 : single-length
+.line 83
+	sget-object	v0,org/apache/commons/io/IOCase.SENSITIVE Lorg/apache/commons/io/IOCase;
+; v0 : Lorg/apache/commons/io/IOCase;
+l115d18:
+.line 89
+	return-object	v0
+; v0 : Lorg/apache/commons/io/IOCase;
+l115d1a:
+.line 85
+	sget-object	v0,org/apache/commons/io/IOCase.INSENSITIVE Lorg/apache/commons/io/IOCase;
+; v0 : Lorg/apache/commons/io/IOCase;
+	iget-object	v0,v0,org/apache/commons/io/IOCase.name Ljava/lang/String;
+; v0 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	invoke-virtual	{v0,v3},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v0 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l115d34
+; v0 : single-length
+.line 86
+	sget-object	v0,org/apache/commons/io/IOCase.INSENSITIVE Lorg/apache/commons/io/IOCase;
+; v0 : Lorg/apache/commons/io/IOCase;
+	goto	l115d18
+l115d34:
+.line 88
+	sget-object	v0,org/apache/commons/io/IOCase.SYSTEM Lorg/apache/commons/io/IOCase;
+; v0 : Lorg/apache/commons/io/IOCase;
+	iget-object	v0,v0,org/apache/commons/io/IOCase.name Ljava/lang/String;
+; v0 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	invoke-virtual	{v0,v3},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v0 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l115d4e
+; v0 : single-length
+.line 89
+	sget-object	v0,org/apache/commons/io/IOCase.SYSTEM Lorg/apache/commons/io/IOCase;
+; v0 : Lorg/apache/commons/io/IOCase;
+	goto	l115d18
+l115d4e:
+.line 91
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"Invalid IOCase name: "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+.end method
+
+.method private readResolve()Ljava/lang/Object;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/IOCase;)
+.line 113
+	iget-object	v0,v1,org/apache/commons/io/IOCase.name Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/apache/commons/io/IOCase;
+	invoke-static	{v0},org/apache/commons/io/IOCase/forName	; forName(Ljava/lang/String;)Lorg/apache/commons/io/IOCase;
+; v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/io/IOCase;
+	return-object	v0
+; v0 : Lorg/apache/commons/io/IOCase;
+.end method
+
+.method public checkCompareTo(Ljava/lang/String;Ljava/lang/String;)I
+.limit registers 5
+; this: v2 (Lorg/apache/commons/io/IOCase;)
+; parameter[0] : v3 (Ljava/lang/String;)
+; parameter[1] : v4 (Ljava/lang/String;)
+.line 148
+	if-eqz	v3,l115db8
+; v3 : Ljava/lang/String;
+	if-nez	v4,l115dc8
+; v4 : Ljava/lang/String;
+l115db8:
+.line 149
+	new-instance	v0,java/lang/NullPointerException
+; v0 : Ljava/lang/NullPointerException;
+	const-string	v1,"The strings must not be null"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/NullPointerException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/NullPointerException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/NullPointerException;
+l115dc8:
+.line 151
+	iget-boolean	v0,v2,org/apache/commons/io/IOCase.sensitive Z
+; v0 : single-length , v2 : Lorg/apache/commons/io/IOCase;
+	if-eqz	v0,l115dda
+; v0 : single-length
+	invoke-virtual	{v3,v4},java/lang/String/compareTo	; compareTo(Ljava/lang/String;)I
+; v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+l115dd8:
+	return	v0
+; v0 : single-length
+l115dda:
+	invoke-virtual	{v3,v4},java/lang/String/compareToIgnoreCase	; compareToIgnoreCase(Ljava/lang/String;)I
+; v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	goto	l115dd8
+.end method
+
+.method public checkEndsWith(Ljava/lang/String;Ljava/lang/String;)Z
+.limit registers 9
+; this: v6 (Lorg/apache/commons/io/IOCase;)
+; parameter[0] : v7 (Ljava/lang/String;)
+; parameter[1] : v8 (Ljava/lang/String;)
+	const/4	v4,0
+; v4 : single-length
+.line 199
+	invoke-virtual	{v8},java/lang/String/length	; length()I
+; v8 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+.line 200
+	iget-boolean	v0,v6,org/apache/commons/io/IOCase.sensitive Z
+; v0 : single-length , v6 : Lorg/apache/commons/io/IOCase;
+	if-nez	v0,l115e22
+; v0 : single-length
+	const/4	v1,1
+; v1 : single-length
+l115e08:
+	invoke-virtual	{v7},java/lang/String/length	; length()I
+; v7 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	sub-int	v2,v0,v5
+; v2 : single-length , v0 : single-length , v5 : single-length
+	move-object	v0,v7
+; v0 : Ljava/lang/String; , v7 : Ljava/lang/String;
+	move-object	v3,v8
+; v3 : Ljava/lang/String; , v8 : Ljava/lang/String;
+	invoke-virtual/range	{v0..v5},java/lang/String/regionMatches;	regionMatches(ZILjava/lang/String;II)Z
+; v0 : Ljava/lang/String; , v1 : single-length , v2 : single-length , v3 : Ljava/lang/String; , v4 : single-length , v5 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+l115e22:
+	move	v1,v4
+; v1 : single-length , v4 : single-length
+	goto	l115e08
+.end method
+
+.method public checkEquals(Ljava/lang/String;Ljava/lang/String;)Z
+.limit registers 5
+; this: v2 (Lorg/apache/commons/io/IOCase;)
+; parameter[0] : v3 (Ljava/lang/String;)
+; parameter[1] : v4 (Ljava/lang/String;)
+.line 166
+	if-eqz	v3,l115e40
+; v3 : Ljava/lang/String;
+	if-nez	v4,l115e50
+; v4 : Ljava/lang/String;
+l115e40:
+.line 167
+	new-instance	v0,java/lang/NullPointerException
+; v0 : Ljava/lang/NullPointerException;
+	const-string	v1,"The strings must not be null"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/NullPointerException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/NullPointerException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/NullPointerException;
+l115e50:
+.line 169
+	iget-boolean	v0,v2,org/apache/commons/io/IOCase.sensitive Z
+; v0 : single-length , v2 : Lorg/apache/commons/io/IOCase;
+	if-eqz	v0,l115e62
+; v0 : single-length
+	invoke-virtual	{v3,v4},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+l115e60:
+	return	v0
+; v0 : single-length
+l115e62:
+	invoke-virtual	{v3,v4},java/lang/String/equalsIgnoreCase	; equalsIgnoreCase(Ljava/lang/String;)Z
+; v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	goto	l115e60
+.end method
+
+.method public checkIndexOf(Ljava/lang/String;ILjava/lang/String;)I
+.limit registers 8
+; this: v4 (Lorg/apache/commons/io/IOCase;)
+; parameter[0] : v5 (Ljava/lang/String;)
+; parameter[1] : v6 (I)
+; parameter[2] : v7 (Ljava/lang/String;)
+.var 1 is i I from l115e96 to l115ea6
+.var 1 is i I from l115ea8 to l115eae
+.line 219
+	invoke-virtual	{v5},java/lang/String/length	; length()I
+; v5 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v7},java/lang/String/length	; length()I
+; v7 : Ljava/lang/String;
+	move-result	v3
+; v3 : single-length
+	sub-int	v0,v2,v3
+; v0 : single-length , v2 : single-length , v3 : single-length
+.line 220
+	if-lt	v0,v6,l115eae
+; v0 : single-length , v6 : single-length
+.line 221
+	move	v1,v6
+; v1 : single-length , v6 : single-length
+l115e96:
+	if-gt	v1,v0,l115eae
+; v1 : single-length , v0 : single-length
+.line 222
+	invoke-virtual	{v4,v5,v1,v7},org/apache/commons/io/IOCase/checkRegionMatches	; checkRegionMatches(Ljava/lang/String;ILjava/lang/String;)Z
+; v4 : Lorg/apache/commons/io/IOCase; , v5 : Ljava/lang/String; , v1 : single-length , v7 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,l115ea8
+; v2 : single-length
+l115ea6:
+.line 227
+	return	v1
+; v1 : single-length
+l115ea8:
+.line 221
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	l115e96
+l115eae:
+.line 227
+	const/4	v1,15
+; v1 : single-length
+	goto	l115ea6
+.end method
+
+.method public checkRegionMatches(Ljava/lang/String;ILjava/lang/String;)Z
+.limit registers 10
+; this: v6 (Lorg/apache/commons/io/IOCase;)
+; parameter[0] : v7 (Ljava/lang/String;)
+; parameter[1] : v8 (I)
+; parameter[2] : v9 (Ljava/lang/String;)
+	const/4	v4,0
+; v4 : single-length
+.line 243
+	iget-boolean	v0,v6,org/apache/commons/io/IOCase.sensitive Z
+; v0 : single-length , v6 : Lorg/apache/commons/io/IOCase;
+	if-nez	v0,l115ee8
+; v0 : single-length
+	const/4	v1,1
+; v1 : single-length
+l115ed0:
+	invoke-virtual	{v9},java/lang/String/length	; length()I
+; v9 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	move-object	v0,v7
+; v0 : Ljava/lang/String; , v7 : Ljava/lang/String;
+	move	v2,v8
+; v2 : single-length , v8 : single-length
+	move-object	v3,v9
+; v3 : Ljava/lang/String; , v9 : Ljava/lang/String;
+	invoke-virtual/range	{v0..v5},java/lang/String/regionMatches;	regionMatches(ZILjava/lang/String;II)Z
+; v0 : Ljava/lang/String; , v1 : single-length , v2 : single-length , v3 : Ljava/lang/String; , v4 : single-length , v5 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+l115ee8:
+	move	v1,v4
+; v1 : single-length , v4 : single-length
+	goto	l115ed0
+.end method
+
+.method public checkStartsWith(Ljava/lang/String;Ljava/lang/String;)Z
+.limit registers 9
+; this: v6 (Lorg/apache/commons/io/IOCase;)
+; parameter[0] : v7 (Ljava/lang/String;)
+; parameter[1] : v8 (Ljava/lang/String;)
+	const/4	v2,0
+; v2 : single-length
+.line 184
+	iget-boolean	v0,v6,org/apache/commons/io/IOCase.sensitive Z
+; v0 : single-length , v6 : Lorg/apache/commons/io/IOCase;
+	if-nez	v0,l115f20
+; v0 : single-length
+	const/4	v1,1
+; v1 : single-length
+l115f08:
+	invoke-virtual	{v8},java/lang/String/length	; length()I
+; v8 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	move-object	v0,v7
+; v0 : Ljava/lang/String; , v7 : Ljava/lang/String;
+	move-object	v3,v8
+; v3 : Ljava/lang/String; , v8 : Ljava/lang/String;
+	move	v4,v2
+; v4 : single-length , v2 : single-length
+	invoke-virtual/range	{v0..v5},java/lang/String/regionMatches;	regionMatches(ZILjava/lang/String;II)Z
+; v0 : Ljava/lang/String; , v1 : single-length , v2 : single-length , v3 : Ljava/lang/String; , v4 : single-length , v5 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+l115f20:
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+	goto	l115f08
+.end method
+
+.method public getName()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/IOCase;)
+.line 123
+	iget-object	v0,v1,org/apache/commons/io/IOCase.name Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/apache/commons/io/IOCase;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public isCaseSensitive()Z
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/IOCase;)
+.line 132
+	iget-boolean	v0,v1,org/apache/commons/io/IOCase.sensitive Z
+; v0 : single-length , v1 : Lorg/apache/commons/io/IOCase;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public toString()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/IOCase;)
+.line 254
+	iget-object	v0,v1,org/apache/commons/io/IOCase.name Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/apache/commons/io/IOCase;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+

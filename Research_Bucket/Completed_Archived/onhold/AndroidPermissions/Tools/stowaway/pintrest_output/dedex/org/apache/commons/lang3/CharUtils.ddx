@@ -1,0 +1,743 @@
+.class public org/apache/commons/lang3/CharUtils
+.super java/lang/Object
+.source CharUtils.java
+
+.field private static final CHAR_STRING_ARRAY [Ljava/lang/String; = null
+.field public static final CR C = ''
+.field public static final LF C = '
+'
+
+.method static <clinit>()V
+.limit registers 3
+.line 32
+	const/16	v1,128
+; v1 : single-length
+	new-array	v1,v1,[Ljava/lang/String;
+; v1 : [Ljava/lang/String; , v1 : [Ljava/lang/String;
+	sput-object	v1,org/apache/commons/lang3/CharUtils.CHAR_STRING_ARRAY [Ljava/lang/String;
+; v1 : [Ljava/lang/String;
+.line 54
+	const/4	v0,0
+; v0 : single-length
+l127a66:
+	sget-object	v1,org/apache/commons/lang3/CharUtils.CHAR_STRING_ARRAY [Ljava/lang/String;
+; v1 : [Ljava/lang/String;
+	array-length	v1,v1
+; v1 : single-length , v1 : single-length
+	if-ge	v0,v1,l127a88
+; v0 : single-length , v1 : single-length
+.line 55
+	sget-object	v1,org/apache/commons/lang3/CharUtils.CHAR_STRING_ARRAY [Ljava/lang/String;
+; v1 : [Ljava/lang/String;
+	invoke-static	{v0},java/lang/String/valueOf	; valueOf(C)Ljava/lang/String;
+; v0 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	aput-object	v2,v1,v0
+; v2 : Ljava/lang/String; , v1 : [Ljava/lang/String; , v0 : single-length
+.line 54
+	add-int/lit8	v1,v0,1
+; v1 : single-length , v0 : single-length
+	int-to-char	v0,v1
+; v0 : single-length , v1 : single-length
+	goto	l127a66
+l127a88:
+.line 57
+	return-void	
+.end method
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/lang3/CharUtils;)
+.line 67
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/lang3/CharUtils;
+.line 68
+	return-void	
+.end method
+
+.method public static isAscii(C)Z
+.limit registers 2
+; parameter[0] : v1 (C)
+.line 403
+	const/16	v0,128
+; v0 : single-length
+	if-ge	v1,v0,l127ac0
+; v1 : single-length , v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l127abe:
+	return	v0
+; v0 : single-length
+l127ac0:
+	const/4	v0,0
+; v0 : single-length
+	goto	l127abe
+.end method
+
+.method public static isAsciiAlpha(C)Z
+.limit registers 2
+; parameter[0] : v1 (C)
+.line 460
+	const/16	v0,65
+; v0 : single-length
+	if-lt	v1,v0,l127ae4
+; v1 : single-length , v0 : single-length
+	const/16	v0,90
+; v0 : single-length
+	if-le	v1,v0,l127af4
+; v1 : single-length , v0 : single-length
+l127ae4:
+	const/16	v0,97
+; v0 : single-length
+	if-lt	v1,v0,l127af8
+; v1 : single-length , v0 : single-length
+	const/16	v0,122
+; v0 : single-length
+	if-gt	v1,v0,l127af8
+; v1 : single-length , v0 : single-length
+l127af4:
+	const/4	v0,1
+; v0 : single-length
+l127af6:
+	return	v0
+; v0 : single-length
+l127af8:
+	const/4	v0,0
+; v0 : single-length
+	goto	l127af6
+.end method
+
+.method public static isAsciiAlphaLower(C)Z
+.limit registers 2
+; parameter[0] : v1 (C)
+.line 498
+	const/16	v0,97
+; v0 : single-length
+	if-lt	v1,v0,l127b20
+; v1 : single-length , v0 : single-length
+	const/16	v0,122
+; v0 : single-length
+	if-gt	v1,v0,l127b20
+; v1 : single-length , v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l127b1e:
+	return	v0
+; v0 : single-length
+l127b20:
+	const/4	v0,0
+; v0 : single-length
+	goto	l127b1e
+.end method
+
+.method public static isAsciiAlphaUpper(C)Z
+.limit registers 2
+; parameter[0] : v1 (C)
+.line 479
+	const/16	v0,65
+; v0 : single-length
+	if-lt	v1,v0,l127b48
+; v1 : single-length , v0 : single-length
+	const/16	v0,90
+; v0 : single-length
+	if-gt	v1,v0,l127b48
+; v1 : single-length , v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l127b46:
+	return	v0
+; v0 : single-length
+l127b48:
+	const/4	v0,0
+; v0 : single-length
+	goto	l127b46
+.end method
+
+.method public static isAsciiAlphanumeric(C)Z
+.limit registers 2
+; parameter[0] : v1 (C)
+.line 536
+	const/16	v0,65
+; v0 : single-length
+	if-lt	v1,v0,l127b6c
+; v1 : single-length , v0 : single-length
+	const/16	v0,90
+; v0 : single-length
+	if-le	v1,v0,l127b8c
+; v1 : single-length , v0 : single-length
+l127b6c:
+	const/16	v0,97
+; v0 : single-length
+	if-lt	v1,v0,l127b7c
+; v1 : single-length , v0 : single-length
+	const/16	v0,122
+; v0 : single-length
+	if-le	v1,v0,l127b8c
+; v1 : single-length , v0 : single-length
+l127b7c:
+	const/16	v0,48
+; v0 : single-length
+	if-lt	v1,v0,l127b90
+; v1 : single-length , v0 : single-length
+	const/16	v0,57
+; v0 : single-length
+	if-gt	v1,v0,l127b90
+; v1 : single-length , v0 : single-length
+l127b8c:
+	const/4	v0,1
+; v0 : single-length
+l127b8e:
+	return	v0
+; v0 : single-length
+l127b90:
+	const/4	v0,0
+; v0 : single-length
+	goto	l127b8e
+.end method
+
+.method public static isAsciiControl(C)Z
+.limit registers 2
+; parameter[0] : v1 (C)
+.line 441
+	const/16	v0,32
+; v0 : single-length
+	if-lt	v1,v0,l127bb4
+; v1 : single-length , v0 : single-length
+	const/16	v0,127
+; v0 : single-length
+	if-ne	v1,v0,l127bb8
+; v1 : single-length , v0 : single-length
+l127bb4:
+	const/4	v0,1
+; v0 : single-length
+l127bb6:
+	return	v0
+; v0 : single-length
+l127bb8:
+	const/4	v0,0
+; v0 : single-length
+	goto	l127bb6
+.end method
+
+.method public static isAsciiNumeric(C)Z
+.limit registers 2
+; parameter[0] : v1 (C)
+.line 517
+	const/16	v0,48
+; v0 : single-length
+	if-lt	v1,v0,l127be0
+; v1 : single-length , v0 : single-length
+	const/16	v0,57
+; v0 : single-length
+	if-gt	v1,v0,l127be0
+; v1 : single-length , v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l127bde:
+	return	v0
+; v0 : single-length
+l127be0:
+	const/4	v0,0
+; v0 : single-length
+	goto	l127bde
+.end method
+
+.method public static isAsciiPrintable(C)Z
+.limit registers 2
+; parameter[0] : v1 (C)
+.line 422
+	const/16	v0,32
+; v0 : single-length
+	if-lt	v1,v0,l127c08
+; v1 : single-length , v0 : single-length
+	const/16	v0,127
+; v0 : single-length
+	if-ge	v1,v0,l127c08
+; v1 : single-length , v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l127c06:
+	return	v0
+; v0 : single-length
+l127c08:
+	const/4	v0,0
+; v0 : single-length
+	goto	l127c06
+.end method
+
+.method public static toChar(Ljava/lang/Character;)C
+.limit registers 3
+; parameter[0] : v2 (Ljava/lang/Character;)
+.line 130
+	if-nez	v2,l127c30
+; v2 : Ljava/lang/Character;
+.line 131
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"The Character must not be null"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l127c30:
+.line 133
+	invoke-virtual	{v2},java/lang/Character/charValue	; charValue()C
+; v2 : Ljava/lang/Character;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public static toChar(Ljava/lang/Character;C)C
+.limit registers 2
+; parameter[0] : v0 (Ljava/lang/Character;)
+; parameter[1] : v1 (C)
+.line 150
+	if-nez	v0,l127c52
+; v0 : Ljava/lang/Character;
+l127c50:
+.line 153
+	return	v1
+; v1 : single-length
+l127c52:
+	invoke-virtual	{v0},java/lang/Character/charValue	; charValue()C
+; v0 : Ljava/lang/Character;
+	move-result	v1
+; v1 : single-length
+	goto	l127c50
+.end method
+
+.method public static toChar(Ljava/lang/String;)C
+.limit registers 3
+; parameter[0] : v2 (Ljava/lang/String;)
+.line 173
+	invoke-static	{v2},org/apache/commons/lang3/StringUtils/isEmpty	; isEmpty(Ljava/lang/CharSequence;)Z
+; v2 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l127c88
+; v0 : single-length
+.line 174
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"The String must not be empty"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l127c88:
+.line 176
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v2,v0},java/lang/String/charAt	; charAt(I)C
+; v2 : Ljava/lang/String; , v0 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public static toChar(Ljava/lang/String;C)C
+.limit registers 3
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (C)
+.line 195
+	invoke-static	{v1},org/apache/commons/lang3/StringUtils/isEmpty	; isEmpty(Ljava/lang/CharSequence;)Z
+; v1 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l127cb2
+; v0 : single-length
+l127cb0:
+.line 198
+	return	v2
+; v2 : single-length
+l127cb2:
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v1,v0},java/lang/String/charAt	; charAt(I)C
+; v1 : Ljava/lang/String; , v0 : single-length
+	move-result	v2
+; v2 : single-length
+	goto	l127cb0
+.end method
+
+.method public static toCharacterObject(C)Ljava/lang/Character;
+.annotation runtimeVisibility Ljava/lang/Deprecated;
+.end annotation
+.limit registers 2
+; parameter[0] : v1 (C)
+.line 88
+	invoke-static	{v1},java/lang/Character/valueOf	; valueOf(C)Ljava/lang/Character;
+; v1 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Character;
+	return-object	v0
+; v0 : Ljava/lang/Character;
+.end method
+
+.method public static toCharacterObject(Ljava/lang/String;)Ljava/lang/Character;
+.annotation runtimeVisibility Ljava/lang/Deprecated;
+.end annotation
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 109
+	invoke-static	{v1},org/apache/commons/lang3/StringUtils/isEmpty	; isEmpty(Ljava/lang/CharSequence;)Z
+; v1 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l127cfc
+; v0 : single-length
+.line 110
+	const/4	v0,0
+; v0 : single-length
+l127cfa:
+.line 112
+	return-object	v0
+; v0 : Ljava/lang/Character;
+l127cfc:
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v1,v0},java/lang/String/charAt	; charAt(I)C
+; v1 : Ljava/lang/String; , v0 : single-length
+	move-result	v0
+; v0 : single-length
+	invoke-static	{v0},java/lang/Character/valueOf	; valueOf(C)Ljava/lang/Character;
+; v0 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Character;
+	goto	l127cfa
+.end method
+
+.method public static toIntValue(C)I
+.limit registers 4
+; parameter[0] : v3 (C)
+.line 218
+	invoke-static	{v3},org/apache/commons/lang3/CharUtils/isAsciiNumeric	; isAsciiNumeric(C)Z
+; v3 : single-length
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l127d6a
+; v0 : single-length
+.line 219
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"The character "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1,v3},java/lang/StringBuilder/append	; append(C)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v3 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2," is not in the range '0' - '9'"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l127d6a:
+.line 221
+	add-int/lit8	v0,v3,208
+; v0 : single-length , v3 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public static toIntValue(CI)I
+.limit registers 3
+; parameter[0] : v1 (C)
+; parameter[1] : v2 (I)
+.line 240
+	invoke-static	{v1},org/apache/commons/lang3/CharUtils/isAsciiNumeric	; isAsciiNumeric(C)Z
+; v1 : single-length
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l127d8e
+; v0 : single-length
+l127d8c:
+.line 243
+	return	v2
+; v2 : single-length
+l127d8e:
+	add-int/lit8	v2,v1,208
+; v2 : single-length , v1 : single-length
+	goto	l127d8c
+.end method
+
+.method public static toIntValue(Ljava/lang/Character;)I
+.limit registers 3
+; parameter[0] : v2 (Ljava/lang/Character;)
+.line 263
+	if-nez	v2,l127db8
+; v2 : Ljava/lang/Character;
+.line 264
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"The character must not be null"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l127db8:
+.line 266
+	invoke-virtual	{v2},java/lang/Character/charValue	; charValue()C
+; v2 : Ljava/lang/Character;
+	move-result	v0
+; v0 : single-length
+	invoke-static	{v0},org/apache/commons/lang3/CharUtils/toIntValue	; toIntValue(C)I
+; v0 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public static toIntValue(Ljava/lang/Character;I)I
+.limit registers 3
+; parameter[0] : v1 (Ljava/lang/Character;)
+; parameter[1] : v2 (I)
+.line 286
+	if-nez	v1,l127de2
+; v1 : Ljava/lang/Character;
+l127de0:
+.line 289
+	return	v2
+; v2 : single-length
+l127de2:
+	invoke-virtual	{v1},java/lang/Character/charValue	; charValue()C
+; v1 : Ljava/lang/Character;
+	move-result	v0
+; v0 : single-length
+	invoke-static	{v0,v2},org/apache/commons/lang3/CharUtils/toIntValue	; toIntValue(CI)I
+; v0 : single-length , v2 : single-length
+	move-result	v2
+; v2 : single-length
+	goto	l127de0
+.end method
+
+.method public static toString(C)Ljava/lang/String;
+.limit registers 4
+; parameter[0] : v3 (C)
+.line 308
+	const/16	v0,128
+; v0 : single-length
+	if-ge	v3,v0,l127e16
+; v3 : single-length , v0 : single-length
+.line 309
+	sget-object	v0,org/apache/commons/lang3/CharUtils.CHAR_STRING_ARRAY [Ljava/lang/String;
+; v0 : [Ljava/lang/String;
+	aget-object	v0,v0,v3
+; v0 : Ljava/lang/String; , v0 : Ljava/lang/String; , v3 : single-length
+l127e14:
+.line 311
+	return-object	v0
+; v0 : Ljava/lang/String;
+l127e16:
+	new-instance	v0,java/lang/String
+; v0 : Ljava/lang/String;
+	const/4	v1,1
+; v1 : single-length
+	new-array	v1,v1,[C
+; v1 : [C , v1 : [C
+	const/4	v2,0
+; v2 : single-length
+	aput-char	v3,v1,v2
+; v3 : single-length , v1 : [C , v2 : single-length
+	invoke-direct	{v0,v1},java/lang/String/<init>	; <init>([C)V
+; v0 : Ljava/lang/String; , v1 : [C
+	goto	l127e14
+.end method
+
+.method public static toString(Ljava/lang/Character;)Ljava/lang/String;
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/Character;)
+.line 332
+	if-nez	v1,l127e48
+; v1 : Ljava/lang/Character;
+.line 333
+	const/4	v0,0
+; v0 : single-length
+l127e46:
+.line 335
+	return-object	v0
+; v0 : Ljava/lang/String;
+l127e48:
+	invoke-virtual	{v1},java/lang/Character/charValue	; charValue()C
+; v1 : Ljava/lang/Character;
+	move-result	v0
+; v0 : single-length
+	invoke-static	{v0},org/apache/commons/lang3/CharUtils/toString	; toString(C)Ljava/lang/String;
+; v0 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l127e46
+.end method
+
+.method public static unicodeEscaped(C)Ljava/lang/String;
+.limit registers 3
+; parameter[0] : v2 (C)
+.line 353
+	const/16	v0,16
+; v0 : single-length
+	if-ge	v2,v0,l127ea4
+; v2 : single-length , v0 : single-length
+.line 354
+	new-instance	v0,java/lang/StringBuilder
+; v0 : Ljava/lang/StringBuilder;
+	invoke-direct	{v0},java/lang/StringBuilder/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,"\u000"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-static	{v2},java/lang/Integer/toHexString	; toHexString(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+l127ea2:
+.line 360
+	return-object	v0
+; v0 : Ljava/lang/String;
+l127ea4:
+.line 355
+	const/16	v0,256
+; v0 : single-length
+	if-ge	v2,v0,l127edc
+; v2 : single-length , v0 : single-length
+.line 356
+	new-instance	v0,java/lang/StringBuilder
+; v0 : Ljava/lang/StringBuilder;
+	invoke-direct	{v0},java/lang/StringBuilder/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,"\u00"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-static	{v2},java/lang/Integer/toHexString	; toHexString(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l127ea2
+l127edc:
+.line 357
+	const/16	v0,4096
+; v0 : single-length
+	if-ge	v2,v0,l127f14
+; v2 : single-length , v0 : single-length
+.line 358
+	new-instance	v0,java/lang/StringBuilder
+; v0 : Ljava/lang/StringBuilder;
+	invoke-direct	{v0},java/lang/StringBuilder/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,"\u0"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-static	{v2},java/lang/Integer/toHexString	; toHexString(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l127ea2
+l127f14:
+.line 360
+	new-instance	v0,java/lang/StringBuilder
+; v0 : Ljava/lang/StringBuilder;
+	invoke-direct	{v0},java/lang/StringBuilder/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,"\u"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-static	{v2},java/lang/Integer/toHexString	; toHexString(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l127ea2
+.end method
+
+.method public static unicodeEscaped(Ljava/lang/Character;)Ljava/lang/String;
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/Character;)
+.line 380
+	if-nez	v1,l127f5c
+; v1 : Ljava/lang/Character;
+.line 381
+	const/4	v0,0
+; v0 : single-length
+l127f5a:
+.line 383
+	return-object	v0
+; v0 : Ljava/lang/String;
+l127f5c:
+	invoke-virtual	{v1},java/lang/Character/charValue	; charValue()C
+; v1 : Ljava/lang/Character;
+	move-result	v0
+; v0 : single-length
+	invoke-static	{v0},org/apache/commons/lang3/CharUtils/unicodeEscaped	; unicodeEscaped(C)Ljava/lang/String;
+; v0 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l127f5a
+.end method
+
+

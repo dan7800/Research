@@ -1,0 +1,407 @@
+.class public org/apache/commons/lang3/concurrent/ConcurrentUtils
+.super java/lang/Object
+.source ConcurrentUtils.java
+
+.inner class ConstantFuture inner org/apache/commons/lang3/concurrent/ConcurrentUtils$ConstantFuture outer org/apache/commons/lang3/concurrent/ConcurrentUtils
+
+.method private <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/lang3/concurrent/ConcurrentUtils;)
+.line 39
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentUtils;
+.line 40
+	return-void	
+.end method
+
+.method static checkedException(Ljava/lang/Throwable;)Ljava/lang/Throwable;
+.limit registers 4
+; parameter[0] : v3 (Ljava/lang/Throwable;)
+.line 144
+	if-eqz	v3,l1340ce
+; v3 : Ljava/lang/Throwable;
+	instance-of	v0,v3,java/lang/RuntimeException
+; v0 : single-length , v3 : Ljava/lang/Throwable;
+	if-nez	v0,l1340ce
+; v0 : single-length
+	instance-of	v0,v3,java/lang/Error
+; v0 : single-length , v3 : Ljava/lang/Throwable;
+	if-nez	v0,l1340ce
+; v0 : single-length
+.line 146
+	return-object	v3
+; v3 : Ljava/lang/Throwable;
+l1340ce:
+.line 148
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"Not a checked exception: "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1,v3},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/Throwable;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+.end method
+
+.method public static constantFuture(Ljava/lang/Object;)Ljava/util/concurrent/Future;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<T:" , "Ljava/lang/Object;" , ">(TT;)" , "Ljava/util/concurrent/Future" , "<TT;>;" }
+.end annotation
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/Object;)
+.line 324
+	new-instance	v0,org/apache/commons/lang3/concurrent/ConcurrentUtils$ConstantFuture
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentUtils$ConstantFuture;
+	invoke-direct	{v0,v1},org/apache/commons/lang3/concurrent/ConcurrentUtils$ConstantFuture/<init>	; <init>(Ljava/lang/Object;)V
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentUtils$ConstantFuture; , v1 : Ljava/lang/Object;
+	return-object	v0
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentUtils$ConstantFuture;
+.end method
+
+.method public static createIfAbsent(Ljava/util/concurrent/ConcurrentMap;Ljava/lang/Object;Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;)Ljava/lang/Object;
+.throws Lorg/apache/commons/lang3/concurrent/ConcurrentException;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<K:" , "Ljava/lang/Object;" , "V:" , "Ljava/lang/Object;" , ">(" , "Ljava/util/concurrent/ConcurrentMap" , "<TK;TV;>;TK;" , "Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer" , "<TV;>;)TV;" }
+.end annotation
+.limit registers 5
+; parameter[0] : v2 (Ljava/util/concurrent/ConcurrentMap;)
+; parameter[1] : v3 (Ljava/lang/Object;)
+; parameter[2] : v4 (Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;)
+.line 272
+	if-eqz	v2,l134134
+; v2 : Ljava/util/concurrent/ConcurrentMap;
+	if-nez	v4,l134138
+; v4 : Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;
+l134134:
+.line 273
+	const/4	v0,0
+; v0 : single-length
+l134136:
+.line 280
+	return-object	v0
+; v0 : Ljava/lang/Object;
+l134138:
+.line 276
+	invoke-interface	{v2,v3},java/util/concurrent/ConcurrentMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v2 : Ljava/util/concurrent/ConcurrentMap; , v3 : Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+.line 277
+	if-nez	v0,l134136
+; v0 : Ljava/lang/Object;
+.line 278
+	invoke-interface	{v4},org/apache/commons/lang3/concurrent/ConcurrentInitializer/get	; get()Ljava/lang/Object;
+; v4 : Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	invoke-static	{v2,v3,v1},org/apache/commons/lang3/concurrent/ConcurrentUtils/putIfAbsent	; putIfAbsent(Ljava/util/concurrent/ConcurrentMap;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v2 : Ljava/util/concurrent/ConcurrentMap; , v3 : Ljava/lang/Object; , v1 : Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	goto	l134136
+.end method
+
+.method public static createIfAbsentUnchecked(Ljava/util/concurrent/ConcurrentMap;Ljava/lang/Object;Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;)Ljava/lang/Object;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<K:" , "Ljava/lang/Object;" , "V:" , "Ljava/lang/Object;" , ">(" , "Ljava/util/concurrent/ConcurrentMap" , "<TK;TV;>;TK;" , "Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer" , "<TV;>;)TV;" }
+.end annotation
+.limit registers 6
+; parameter[0] : v3 (Ljava/util/concurrent/ConcurrentMap;)
+; parameter[1] : v4 (Ljava/lang/Object;)
+; parameter[2] : v5 (Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;)
+.catch org/apache/commons/lang3/concurrent/ConcurrentException from l134168 to l13416e using l134172
+l134168:
+.line 301
+	invoke-static	{v3,v4,v5},org/apache/commons/lang3/concurrent/ConcurrentUtils/createIfAbsent	; createIfAbsent(Ljava/util/concurrent/ConcurrentMap;Ljava/lang/Object;Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;)Ljava/lang/Object;
+; v3 : Ljava/util/concurrent/ConcurrentMap; , v4 : Ljava/lang/Object; , v5 : Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;
+l13416e:
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	return-object	v1
+; v1 : Ljava/lang/Object;
+l134172:
+.line 302
+	move-exception	v0
+; v0 : org/apache/commons/lang3/concurrent/ConcurrentException
+.line 303
+	new-instance	v1,org/apache/commons/lang3/concurrent/ConcurrentRuntimeException
+; v1 : Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException;
+	invoke-virtual	{v0},org/apache/commons/lang3/concurrent/ConcurrentException/getCause	; getCause()Ljava/lang/Throwable;
+; v0 : org/apache/commons/lang3/concurrent/ConcurrentException
+	move-result-object	v2
+; v2 : Ljava/lang/Throwable;
+	invoke-direct	{v1,v2},org/apache/commons/lang3/concurrent/ConcurrentRuntimeException/<init>	; <init>(Ljava/lang/Throwable;)V
+; v1 : Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException; , v2 : Ljava/lang/Throwable;
+	throw	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException;
+.end method
+
+.method public static extractCause(Ljava/util/concurrent/ExecutionException;)Lorg/apache/commons/lang3/concurrent/ConcurrentException;
+.limit registers 4
+; parameter[0] : v3 (Ljava/util/concurrent/ExecutionException;)
+.line 61
+	if-eqz	v3,l1341b8
+; v3 : Ljava/util/concurrent/ExecutionException;
+	invoke-virtual	{v3},java/util/concurrent/ExecutionException/getCause	; getCause()Ljava/lang/Throwable;
+; v3 : Ljava/util/concurrent/ExecutionException;
+	move-result-object	v0
+; v0 : Ljava/lang/Throwable;
+	if-nez	v0,l1341bc
+; v0 : Ljava/lang/Throwable;
+l1341b8:
+.line 62
+	const/4	v0,0
+; v0 : single-length
+l1341ba:
+.line 66
+	return-object	v0
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentException;
+l1341bc:
+.line 65
+	invoke-static	{v3},org/apache/commons/lang3/concurrent/ConcurrentUtils/throwCause	; throwCause(Ljava/util/concurrent/ExecutionException;)V
+; v3 : Ljava/util/concurrent/ExecutionException;
+.line 66
+	new-instance	v0,org/apache/commons/lang3/concurrent/ConcurrentException
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentException;
+	invoke-virtual	{v3},java/util/concurrent/ExecutionException/getMessage	; getMessage()Ljava/lang/String;
+; v3 : Ljava/util/concurrent/ExecutionException;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v3},java/util/concurrent/ExecutionException/getCause	; getCause()Ljava/lang/Throwable;
+; v3 : Ljava/util/concurrent/ExecutionException;
+	move-result-object	v2
+; v2 : Ljava/lang/Throwable;
+	invoke-direct	{v0,v1,v2},org/apache/commons/lang3/concurrent/ConcurrentException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentException; , v1 : Ljava/lang/String; , v2 : Ljava/lang/Throwable;
+	goto	l1341ba
+.end method
+
+.method public static extractCauseUnchecked(Ljava/util/concurrent/ExecutionException;)Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException;
+.limit registers 4
+; parameter[0] : v3 (Ljava/util/concurrent/ExecutionException;)
+.line 83
+	if-eqz	v3,l134200
+; v3 : Ljava/util/concurrent/ExecutionException;
+	invoke-virtual	{v3},java/util/concurrent/ExecutionException/getCause	; getCause()Ljava/lang/Throwable;
+; v3 : Ljava/util/concurrent/ExecutionException;
+	move-result-object	v0
+; v0 : Ljava/lang/Throwable;
+	if-nez	v0,l134204
+; v0 : Ljava/lang/Throwable;
+l134200:
+.line 84
+	const/4	v0,0
+; v0 : single-length
+l134202:
+.line 88
+	return-object	v0
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException;
+l134204:
+.line 87
+	invoke-static	{v3},org/apache/commons/lang3/concurrent/ConcurrentUtils/throwCause	; throwCause(Ljava/util/concurrent/ExecutionException;)V
+; v3 : Ljava/util/concurrent/ExecutionException;
+.line 88
+	new-instance	v0,org/apache/commons/lang3/concurrent/ConcurrentRuntimeException
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException;
+	invoke-virtual	{v3},java/util/concurrent/ExecutionException/getMessage	; getMessage()Ljava/lang/String;
+; v3 : Ljava/util/concurrent/ExecutionException;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v3},java/util/concurrent/ExecutionException/getCause	; getCause()Ljava/lang/Throwable;
+; v3 : Ljava/util/concurrent/ExecutionException;
+	move-result-object	v2
+; v2 : Ljava/lang/Throwable;
+	invoke-direct	{v0,v1,v2},org/apache/commons/lang3/concurrent/ConcurrentRuntimeException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException; , v1 : Ljava/lang/String; , v2 : Ljava/lang/Throwable;
+	goto	l134202
+.end method
+
+.method public static handleCause(Ljava/util/concurrent/ExecutionException;)V
+.throws Lorg/apache/commons/lang3/concurrent/ConcurrentException;
+.limit registers 2
+; parameter[0] : v1 (Ljava/util/concurrent/ExecutionException;)
+.line 106
+	invoke-static	{v1},org/apache/commons/lang3/concurrent/ConcurrentUtils/extractCause	; extractCause(Ljava/util/concurrent/ExecutionException;)Lorg/apache/commons/lang3/concurrent/ConcurrentException;
+; v1 : Ljava/util/concurrent/ExecutionException;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentException;
+.line 108
+	if-eqz	v0,l134246
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentException;
+.line 109
+	throw	v0
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentException;
+l134246:
+.line 111
+	return-void	
+.end method
+
+.method public static handleCauseUnchecked(Ljava/util/concurrent/ExecutionException;)V
+.limit registers 2
+; parameter[0] : v1 (Ljava/util/concurrent/ExecutionException;)
+.line 127
+	invoke-static	{v1},org/apache/commons/lang3/concurrent/ConcurrentUtils/extractCauseUnchecked	; extractCauseUnchecked(Ljava/util/concurrent/ExecutionException;)Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException;
+; v1 : Ljava/util/concurrent/ExecutionException;
+	move-result-object	v0
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException;
+.line 129
+	if-eqz	v0,l134266
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException;
+.line 130
+	throw	v0
+; v0 : Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException;
+l134266:
+.line 132
+	return-void	
+.end method
+
+.method public static initialize(Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;)Ljava/lang/Object;
+.throws Lorg/apache/commons/lang3/concurrent/ConcurrentException;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<T:" , "Ljava/lang/Object;" , ">(" , "Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer" , "<TT;>;)TT;" }
+.end annotation
+.limit registers 2
+; parameter[0] : v1 (Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;)
+.line 184
+	if-eqz	v1,l134286
+; v1 : Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;
+	invoke-interface	{v1},org/apache/commons/lang3/concurrent/ConcurrentInitializer/get	; get()Ljava/lang/Object;
+; v1 : Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+l134284:
+	return-object	v0
+; v0 : single-length
+l134286:
+	const/4	v0,0
+; v0 : single-length
+	goto	l134284
+.end method
+
+.method public static initializeUnchecked(Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;)Ljava/lang/Object;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<T:" , "Ljava/lang/Object;" , ">(" , "Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer" , "<TT;>;)TT;" }
+.end annotation
+.limit registers 4
+; parameter[0] : v3 (Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;)
+.catch org/apache/commons/lang3/concurrent/ConcurrentException from l13429c to l1342a2 using l1342a6
+l13429c:
+.line 202
+	invoke-static	{v3},org/apache/commons/lang3/concurrent/ConcurrentUtils/initialize	; initialize(Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;)Ljava/lang/Object;
+; v3 : Lorg/apache/commons/lang3/concurrent/ConcurrentInitializer;
+l1342a2:
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	return-object	v1
+; v1 : Ljava/lang/Object;
+l1342a6:
+.line 203
+	move-exception	v0
+; v0 : org/apache/commons/lang3/concurrent/ConcurrentException
+.line 204
+	new-instance	v1,org/apache/commons/lang3/concurrent/ConcurrentRuntimeException
+; v1 : Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException;
+	invoke-virtual	{v0},org/apache/commons/lang3/concurrent/ConcurrentException/getCause	; getCause()Ljava/lang/Throwable;
+; v0 : org/apache/commons/lang3/concurrent/ConcurrentException
+	move-result-object	v2
+; v2 : Ljava/lang/Throwable;
+	invoke-direct	{v1,v2},org/apache/commons/lang3/concurrent/ConcurrentRuntimeException/<init>	; <init>(Ljava/lang/Throwable;)V
+; v1 : Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException; , v2 : Ljava/lang/Throwable;
+	throw	v1
+; v1 : Lorg/apache/commons/lang3/concurrent/ConcurrentRuntimeException;
+.end method
+
+.method public static putIfAbsent(Ljava/util/concurrent/ConcurrentMap;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<K:" , "Ljava/lang/Object;" , "V:" , "Ljava/lang/Object;" , ">(" , "Ljava/util/concurrent/ConcurrentMap" , "<TK;TV;>;TK;TV;)TV;" }
+.end annotation
+.limit registers 4
+; parameter[0] : v1 (Ljava/util/concurrent/ConcurrentMap;)
+; parameter[1] : v2 (Ljava/lang/Object;)
+; parameter[2] : v3 (Ljava/lang/Object;)
+.line 242
+	if-nez	v1,l1342e4
+; v1 : Ljava/util/concurrent/ConcurrentMap;
+.line 243
+	const/4	v0,0
+; v0 : single-length
+l1342e2:
+.line 247
+	return-object	v0
+; v0 : Ljava/lang/Object;
+l1342e4:
+.line 246
+	invoke-interface	{v1,v2,v3},java/util/concurrent/ConcurrentMap/putIfAbsent	; putIfAbsent(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/concurrent/ConcurrentMap; , v2 : Ljava/lang/Object; , v3 : Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+.line 247
+	if-nez	v0,l1342e2
+; v0 : Ljava/lang/Object;
+	move-object	v0,v3
+; v0 : Ljava/lang/Object; , v3 : Ljava/lang/Object;
+	goto	l1342e2
+.end method
+
+.method private static throwCause(Ljava/util/concurrent/ExecutionException;)V
+.limit registers 2
+; parameter[0] : v1 (Ljava/util/concurrent/ExecutionException;)
+.line 159
+	invoke-virtual	{v1},java/util/concurrent/ExecutionException/getCause	; getCause()Ljava/lang/Throwable;
+; v1 : Ljava/util/concurrent/ExecutionException;
+	move-result-object	v0
+; v0 : Ljava/lang/Throwable;
+	instance-of	v0,v0,java/lang/RuntimeException
+; v0 : single-length , v0 : single-length
+	if-eqz	v0,l134322
+; v0 : single-length
+.line 160
+	invoke-virtual	{v1},java/util/concurrent/ExecutionException/getCause	; getCause()Ljava/lang/Throwable;
+; v1 : Ljava/util/concurrent/ExecutionException;
+	move-result-object	v0
+; v0 : Ljava/lang/Throwable;
+	check-cast	v0,java/lang/RuntimeException
+; v0 : Ljava/lang/RuntimeException;
+	throw	v0
+; v0 : Ljava/lang/RuntimeException;
+l134322:
+.line 163
+	invoke-virtual	{v1},java/util/concurrent/ExecutionException/getCause	; getCause()Ljava/lang/Throwable;
+; v1 : Ljava/util/concurrent/ExecutionException;
+	move-result-object	v0
+; v0 : Ljava/lang/Throwable;
+	instance-of	v0,v0,java/lang/Error
+; v0 : single-length , v0 : single-length
+	if-eqz	v0,l134340
+; v0 : single-length
+.line 164
+	invoke-virtual	{v1},java/util/concurrent/ExecutionException/getCause	; getCause()Ljava/lang/Throwable;
+; v1 : Ljava/util/concurrent/ExecutionException;
+	move-result-object	v0
+; v0 : Ljava/lang/Throwable;
+	check-cast	v0,java/lang/Error
+; v0 : Ljava/lang/Error;
+	throw	v0
+; v0 : Ljava/lang/Error;
+l134340:
+.line 166
+	return-void	
+.end method
+
+

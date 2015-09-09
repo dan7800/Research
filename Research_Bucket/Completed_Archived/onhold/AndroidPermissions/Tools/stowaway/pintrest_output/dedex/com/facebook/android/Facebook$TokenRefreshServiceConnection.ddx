@@ -1,0 +1,154 @@
+.class com/facebook/android/Facebook$TokenRefreshServiceConnection
+.super java/lang/Object
+.source Facebook.java
+.implements android/content/ServiceConnection
+
+.inner class TokenRefreshServiceConnection inner com/facebook/android/Facebook$TokenRefreshServiceConnection outer com/facebook/android/Facebook
+.field final applicationsContext Landroid/content/Context;
+.field final messageReceiver Landroid/os/Messenger;
+.field messageSender Landroid/os/Messenger;
+.field final serviceListener Lcom/facebook/android/Facebook$ServiceListener;
+.field final this$0 Lcom/facebook/android/Facebook;
+
+.method public <init>(Lcom/facebook/android/Facebook;Landroid/content/Context;Lcom/facebook/android/Facebook$ServiceListener;)V
+.limit registers 6
+; this: v2 (Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;)
+; parameter[0] : v3 (Lcom/facebook/android/Facebook;)
+; parameter[1] : v4 (Landroid/content/Context;)
+; parameter[2] : v5 (Lcom/facebook/android/Facebook$ServiceListener;)
+.line 571
+	iput-object	v3,v2,com/facebook/android/Facebook$TokenRefreshServiceConnection.this$0 Lcom/facebook/android/Facebook;
+; v3 : Lcom/facebook/android/Facebook; , v2 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+	invoke-direct	{v2},java/lang/Object/<init>	; <init>()V
+; v2 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+.line 530
+	new-instance	v0,android/os/Messenger
+; v0 : Landroid/os/Messenger;
+	new-instance	v1,com/facebook/android/Facebook$TokenRefreshServiceConnection$1
+; v1 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection$1;
+	invoke-direct	{v1,v2},com/facebook/android/Facebook$TokenRefreshServiceConnection$1/<init>	; <init>(Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;)V
+; v1 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection$1; , v2 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+	invoke-direct	{v0,v1},android/os/Messenger/<init>	; <init>(Landroid/os/Handler;)V
+; v0 : Landroid/os/Messenger; , v1 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection$1;
+	iput-object	v0,v2,com/facebook/android/Facebook$TokenRefreshServiceConnection.messageReceiver Landroid/os/Messenger;
+; v0 : Landroid/os/Messenger; , v2 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+.line 568
+	const/4	v0,0
+; v0 : single-length
+	iput-object	v0,v2,com/facebook/android/Facebook$TokenRefreshServiceConnection.messageSender Landroid/os/Messenger;
+; v0 : single-length , v2 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+.line 572
+	iput-object	v4,v2,com/facebook/android/Facebook$TokenRefreshServiceConnection.applicationsContext Landroid/content/Context;
+; v4 : Landroid/content/Context; , v2 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+.line 573
+	iput-object	v5,v2,com/facebook/android/Facebook$TokenRefreshServiceConnection.serviceListener Lcom/facebook/android/Facebook$ServiceListener;
+; v5 : Lcom/facebook/android/Facebook$ServiceListener; , v2 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+.line 574
+	return-void	
+.end method
+
+.method private refreshToken()V
+.limit registers 7
+; this: v6 (Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;)
+.catch android/os/RemoteException from laddbe to laddc8 using laddca
+.line 591
+	new-instance	v2,android/os/Bundle
+; v2 : Landroid/os/Bundle;
+	invoke-direct	{v2},android/os/Bundle/<init>	; <init>()V
+; v2 : Landroid/os/Bundle;
+.line 592
+	const-string	v3,"access_token"
+; v3 : Ljava/lang/String;
+	iget-object	v4,v6,com/facebook/android/Facebook$TokenRefreshServiceConnection.this$0 Lcom/facebook/android/Facebook;
+; v4 : Lcom/facebook/android/Facebook; , v6 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+	invoke-static	{v4},com/facebook/android/Facebook/access$100	; access$100(Lcom/facebook/android/Facebook;)Ljava/lang/String;
+; v4 : Lcom/facebook/android/Facebook;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v2,v3,v4},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Landroid/os/Bundle; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+.line 594
+	invoke-static	{},android/os/Message/obtain	; obtain()Landroid/os/Message;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Landroid/os/Message;
+.line 595
+	invoke-virtual	{v1,v2},android/os/Message/setData	; setData(Landroid/os/Bundle;)V
+; v1 : Landroid/os/Message; , v2 : Landroid/os/Bundle;
+.line 596
+	iget-object	v3,v6,com/facebook/android/Facebook$TokenRefreshServiceConnection.messageReceiver Landroid/os/Messenger;
+; v3 : Landroid/os/Messenger; , v6 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+	iput-object	v3,v1,android/os/Message.replyTo Landroid/os/Messenger;
+; v3 : Landroid/os/Messenger; , v1 : Landroid/os/Message;
+laddbe:
+.line 599
+	iget-object	v3,v6,com/facebook/android/Facebook$TokenRefreshServiceConnection.messageSender Landroid/os/Messenger;
+; v3 : Landroid/os/Messenger; , v6 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+	invoke-virtual	{v3,v1},android/os/Messenger/send	; send(Landroid/os/Message;)V
+; v3 : Landroid/os/Messenger; , v1 : Landroid/os/Message;
+laddc8:
+.line 603
+	return-void	
+laddca:
+.line 600
+	move-exception	v0
+; v0 : android/os/RemoteException
+.line 601
+	iget-object	v3,v6,com/facebook/android/Facebook$TokenRefreshServiceConnection.serviceListener Lcom/facebook/android/Facebook$ServiceListener;
+; v3 : Lcom/facebook/android/Facebook$ServiceListener; , v6 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+	new-instance	v4,java/lang/Error
+; v4 : Ljava/lang/Error;
+	const-string	v5,"Service connection error"
+; v5 : Ljava/lang/String;
+	invoke-direct	{v4,v5},java/lang/Error/<init>	; <init>(Ljava/lang/String;)V
+; v4 : Ljava/lang/Error; , v5 : Ljava/lang/String;
+	invoke-interface	{v3,v4},com/facebook/android/Facebook$ServiceListener/onError	; onError(Ljava/lang/Error;)V
+; v3 : Lcom/facebook/android/Facebook$ServiceListener; , v4 : Ljava/lang/Error;
+	goto	laddc8
+.end method
+
+.method public onServiceConnected(Landroid/content/ComponentName;Landroid/os/IBinder;)V
+.limit registers 4
+; this: v1 (Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;)
+; parameter[0] : v2 (Landroid/content/ComponentName;)
+; parameter[1] : v3 (Landroid/os/IBinder;)
+.line 578
+	new-instance	v0,android/os/Messenger
+; v0 : Landroid/os/Messenger;
+	invoke-direct	{v0,v3},android/os/Messenger/<init>	; <init>(Landroid/os/IBinder;)V
+; v0 : Landroid/os/Messenger; , v3 : Landroid/os/IBinder;
+	iput-object	v0,v1,com/facebook/android/Facebook$TokenRefreshServiceConnection.messageSender Landroid/os/Messenger;
+; v0 : Landroid/os/Messenger; , v1 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+.line 579
+	invoke-direct	{v1},com/facebook/android/Facebook$TokenRefreshServiceConnection/refreshToken	; refreshToken()V
+; v1 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+.line 580
+	return-void	
+.end method
+
+.method public onServiceDisconnected(Landroid/content/ComponentName;)V
+.limit registers 5
+; this: v3 (Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;)
+; parameter[0] : v4 (Landroid/content/ComponentName;)
+.line 584
+	iget-object	v0,v3,com/facebook/android/Facebook$TokenRefreshServiceConnection.serviceListener Lcom/facebook/android/Facebook$ServiceListener;
+; v0 : Lcom/facebook/android/Facebook$ServiceListener; , v3 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+	new-instance	v1,java/lang/Error
+; v1 : Ljava/lang/Error;
+	const-string	v2,"Service disconnected"
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},java/lang/Error/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/lang/Error; , v2 : Ljava/lang/String;
+	invoke-interface	{v0,v1},com/facebook/android/Facebook$ServiceListener/onError	; onError(Ljava/lang/Error;)V
+; v0 : Lcom/facebook/android/Facebook$ServiceListener; , v1 : Ljava/lang/Error;
+.line 587
+	iget-object	v0,v3,com/facebook/android/Facebook$TokenRefreshServiceConnection.applicationsContext Landroid/content/Context;
+; v0 : Landroid/content/Context; , v3 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+	invoke-virtual	{v0,v3},android/content/Context/unbindService	; unbindService(Landroid/content/ServiceConnection;)V
+; v0 : Landroid/content/Context; , v3 : Lcom/facebook/android/Facebook$TokenRefreshServiceConnection;
+.line 588
+	return-void	
+.end method
+
+

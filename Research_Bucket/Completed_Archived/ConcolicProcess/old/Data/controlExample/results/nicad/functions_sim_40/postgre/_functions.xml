@@ -1,0 +1,3987 @@
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="62" endline="79">
+static List *new_list (NodeTag type) {
+    List *new_list;
+    ListCell *new_head;
+    new_head = (ListCell *) palloc (sizeof (*new_head));
+    new_head->next = NULL;
+    new_list = (List *) palloc (sizeof (*new_list));
+    new_list->type = type;
+    new_list->length = 1;
+    new_list->head = new_head;
+    new_list->tail = new_head;
+    return new_list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="88" endline="98">
+static void new_head_cell (List *list) {
+    ListCell *new_head;
+    new_head = (ListCell *) palloc (sizeof (*new_head));
+    new_head->next = list->head;
+    list->head = new_head;
+    list->length++;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="107" endline="118">
+static void new_tail_cell (List *list) {
+    ListCell *new_tail;
+    new_tail = (ListCell *) palloc (sizeof (*new_tail));
+    new_tail->next = NULL;
+    list->tail->next = new_tail;
+    list->tail = new_tail;
+    list->length++;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="127" endline="140">
+List *lappend (List *list, void *datum) {
+    Assert (IsPointerList (list));
+    if (list == NIL)
+        list = new_list (T_List);
+    else
+        new_tail_cell (list);
+    lfirst (list->tail) = datum;
+    check_list_invariants (list);
+    return list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="145" endline="158">
+List *lappend_int (List *list, int datum) {
+    Assert (IsIntegerList (list));
+    if (list == NIL)
+        list = new_list (T_IntList);
+    else
+        new_tail_cell (list);
+    lfirst_int (list->tail) = datum;
+    check_list_invariants (list);
+    return list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="163" endline="176">
+List *lappend_oid (List *list, Oid datum) {
+    Assert (IsOidList (list));
+    if (list == NIL)
+        list = new_list (T_OidList);
+    else
+        new_tail_cell (list);
+    lfirst_oid (list->tail) = datum;
+    check_list_invariants (list);
+    return list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="184" endline="200">
+static ListCell *add_new_cell (List *list, ListCell *prev_cell) {
+    ListCell *new_cell;
+    new_cell = (ListCell *) palloc (sizeof (*new_cell));
+    new_cell->next = prev_cell->next;
+    prev_cell->next = new_cell;
+    if (list->tail == prev_cell)
+        list->tail = new_cell;
+    list->length++;
+    return new_cell;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="208" endline="219">
+ListCell *lappend_cell (List *list, ListCell *prev, void *datum) {
+    ListCell *new_cell;
+    Assert (IsPointerList (list));
+    new_cell = add_new_cell (list, prev);
+    lfirst (new_cell) = datum;
+    check_list_invariants (list);
+    return new_cell;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="221" endline="232">
+ListCell *lappend_cell_int (List *list, ListCell *prev, int datum) {
+    ListCell *new_cell;
+    Assert (IsIntegerList (list));
+    new_cell = add_new_cell (list, prev);
+    lfirst_int (new_cell) = datum;
+    check_list_invariants (list);
+    return new_cell;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="234" endline="245">
+ListCell *lappend_cell_oid (List *list, ListCell *prev, Oid datum) {
+    ListCell *new_cell;
+    Assert (IsOidList (list));
+    new_cell = add_new_cell (list, prev);
+    lfirst_oid (new_cell) = datum;
+    check_list_invariants (list);
+    return new_cell;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="258" endline="271">
+List *lcons (void *datum, List *list) {
+    Assert (IsPointerList (list));
+    if (list == NIL)
+        list = new_list (T_List);
+    else
+        new_head_cell (list);
+    lfirst (list->head) = datum;
+    check_list_invariants (list);
+    return list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="276" endline="289">
+List *lcons_int (int datum, List *list) {
+    Assert (IsIntegerList (list));
+    if (list == NIL)
+        list = new_list (T_IntList);
+    else
+        new_head_cell (list);
+    lfirst_int (list->head) = datum;
+    check_list_invariants (list);
+    return list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="294" endline="307">
+List *lcons_oid (Oid datum, List *list) {
+    Assert (IsOidList (list));
+    if (list == NIL)
+        list = new_list (T_OidList);
+    else
+        new_head_cell (list);
+    lfirst_oid (list->head) = datum;
+    check_list_invariants (list);
+    return list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="320" endline="338">
+List *list_concat (List *list1, List *list2) {
+    if (list1 == NIL)
+        return list2;
+    if (list2 == NIL)
+        return list1;
+    if (list1 == list2)
+        elog (ERROR, "cannot list_concat() a list to itself");
+    Assert (list1 -> type == list2 -> type);
+    list1->length += list2->length;
+    list1->tail->next = list2->head;
+    list1->tail = list2->tail;
+    check_list_invariants (list1);
+    return list1;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="349" endline="379">
+List *list_truncate (List *list, int new_size) {
+    ListCell *cell;
+    int n;
+    if (new_size <= 0)
+        return NIL;
+    if (new_size >= list_length (list))
+        return list;
+    n = 1;
+    foreach (cell, list) {
+        if (n == new_size) {
+            cell->next = NULL;
+            list->tail = cell;
+            list->length = new_size;
+            check_list_invariants (list);
+            return list;
+        }
+        n++;
+    }
+    Assert (false);
+    return list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="385" endline="403">
+static ListCell *list_nth_cell (List *list, int n) {
+    ListCell *match;
+    Assert (list != NIL);
+    Assert (n >= 0);
+    Assert (n < list -> length);
+    check_list_invariants (list);
+    if (n == list->length - 1)
+        return list->tail;
+    for (match = list->head; n-- > 0; match = match->next)
+        ;
+    return match;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="409" endline="414">
+void *list_nth (List *list, int n) {
+    Assert (IsPointerList (list));
+    return lfirst (list_nth_cell (list, n));
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="420" endline="425">
+int list_nth_int (List *list, int n) {
+    Assert (IsIntegerList (list));
+    return lfirst_int (list_nth_cell (list, n));
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="431" endline="436">
+Oid list_nth_oid (List *list, int n) {
+    Assert (IsOidList (list));
+    return lfirst_oid (list_nth_cell (list, n));
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="443" endline="458">
+bool list_member (List *list, void *datum) {
+    ListCell *cell;
+    Assert (IsPointerList (list));
+    check_list_invariants (list);
+    foreach (cell, list) {
+        if (equal (lfirst (cell), datum))
+            return true;
+    }
+    return false;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="464" endline="479">
+bool list_member_ptr (List *list, void *datum) {
+    ListCell *cell;
+    Assert (IsPointerList (list));
+    check_list_invariants (list);
+    foreach (cell, list) {
+        if (lfirst (cell) == datum)
+            return true;
+    }
+    return false;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="484" endline="499">
+bool list_member_int (List *list, int datum) {
+    ListCell *cell;
+    Assert (IsIntegerList (list));
+    check_list_invariants (list);
+    foreach (cell, list) {
+        if (lfirst_int (cell) == datum)
+            return true;
+    }
+    return false;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="504" endline="519">
+bool list_member_oid (List *list, Oid datum) {
+    ListCell *cell;
+    Assert (IsOidList (list));
+    check_list_invariants (list);
+    foreach (cell, list) {
+        if (lfirst_oid (cell) == datum)
+            return true;
+    }
+    return false;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="527" endline="560">
+List *list_delete_cell (List *list, ListCell *cell, ListCell *prev) {
+    check_list_invariants (list);
+    Assert (prev != NULL ? lnext (prev) == cell : list_head (list) == cell);
+    if (list->length == 1) {
+        list_free (list);
+        return NIL;
+    }
+    list->length--;
+    if (prev)
+        prev->next = cell->next;
+    else
+        list->head = cell->next;
+    if (list->tail == cell)
+        list->tail = prev;
+    pfree (cell);
+    return list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="566" endline="586">
+List *list_delete (List *list, void *datum) {
+    ListCell *cell;
+    ListCell *prev;
+    Assert (IsPointerList (list));
+    check_list_invariants (list);
+    prev = NULL;
+    foreach (cell, list) {
+        if (equal (lfirst (cell), datum))
+            return list_delete_cell (list, cell, prev);
+        prev = cell;
+    }
+    return list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="589" endline="609">
+List *list_delete_ptr (List *list, void *datum) {
+    ListCell *cell;
+    ListCell *prev;
+    Assert (IsPointerList (list));
+    check_list_invariants (list);
+    prev = NULL;
+    foreach (cell, list) {
+        if (lfirst (cell) == datum)
+            return list_delete_cell (list, cell, prev);
+        prev = cell;
+    }
+    return list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="612" endline="632">
+List *list_delete_int (List *list, int datum) {
+    ListCell *cell;
+    ListCell *prev;
+    Assert (IsIntegerList (list));
+    check_list_invariants (list);
+    prev = NULL;
+    foreach (cell, list) {
+        if (lfirst_int (cell) == datum)
+            return list_delete_cell (list, cell, prev);
+        prev = cell;
+    }
+    return list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="635" endline="655">
+List *list_delete_oid (List *list, Oid datum) {
+    ListCell *cell;
+    ListCell *prev;
+    Assert (IsOidList (list));
+    check_list_invariants (list);
+    prev = NULL;
+    foreach (cell, list) {
+        if (lfirst_oid (cell) == datum)
+            return list_delete_cell (list, cell, prev);
+        prev = cell;
+    }
+    return list;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="665" endline="674">
+List *list_delete_first (List *list) {
+    check_list_invariants (list);
+    if (list == NIL)
+        return NIL;
+    return list_delete_cell (list, list_head (list), NULL);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="696" endline="714">
+List *list_union (List *list1, List *list2) {
+    List *result;
+    ListCell *cell;
+    Assert (IsPointerList (list1));
+    Assert (IsPointerList (list2));
+    result = list_copy (list1);
+    foreach (cell, list2) {
+        if (!list_member (result, lfirst (cell)))
+            result = lappend (result, lfirst (cell));
+    }
+    check_list_invariants (result);
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="720" endline="738">
+List *list_union_ptr (List *list1, List *list2) {
+    List *result;
+    ListCell *cell;
+    Assert (IsPointerList (list1));
+    Assert (IsPointerList (list2));
+    result = list_copy (list1);
+    foreach (cell, list2) {
+        if (!list_member_ptr (result, lfirst (cell)))
+            result = lappend (result, lfirst (cell));
+    }
+    check_list_invariants (result);
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="743" endline="761">
+List *list_union_int (List *list1, List *list2) {
+    List *result;
+    ListCell *cell;
+    Assert (IsIntegerList (list1));
+    Assert (IsIntegerList (list2));
+    result = list_copy (list1);
+    foreach (cell, list2) {
+        if (!list_member_int (result, lfirst_int (cell)))
+            result = lappend_int (result, lfirst_int (cell));
+    }
+    check_list_invariants (result);
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="766" endline="784">
+List *list_union_oid (List *list1, List *list2) {
+    List *result;
+    ListCell *cell;
+    Assert (IsOidList (list1));
+    Assert (IsOidList (list2));
+    result = list_copy (list1);
+    foreach (cell, list2) {
+        if (!list_member_oid (result, lfirst_oid (cell)))
+            result = lappend_oid (result, lfirst_oid (cell));
+    }
+    check_list_invariants (result);
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="799" endline="820">
+List *list_intersection (List *list1, List *list2) {
+    List *result;
+    ListCell *cell;
+    if (list1 == NIL || list2 == NIL)
+        return NIL;
+    Assert (IsPointerList (list1));
+    Assert (IsPointerList (list2));
+    result = NIL;
+    foreach (cell, list1) {
+        if (list_member (list2, lfirst (cell)))
+            result = lappend (result, lfirst (cell));
+    }
+    check_list_invariants (result);
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="831" endline="851">
+List *list_difference (List *list1, List *list2) {
+    ListCell *cell;
+    List *result = NIL;
+    Assert (IsPointerList (list1));
+    Assert (IsPointerList (list2));
+    if (list2 == NIL)
+        return list_copy (list1);
+    foreach (cell, list1) {
+        if (!list_member (list2, lfirst (cell)))
+            result = lappend (result, lfirst (cell));
+    }
+    check_list_invariants (result);
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="857" endline="877">
+List *list_difference_ptr (List *list1, List *list2) {
+    ListCell *cell;
+    List *result = NIL;
+    Assert (IsPointerList (list1));
+    Assert (IsPointerList (list2));
+    if (list2 == NIL)
+        return list_copy (list1);
+    foreach (cell, list1) {
+        if (!list_member_ptr (list2, lfirst (cell)))
+            result = lappend (result, lfirst (cell));
+    }
+    check_list_invariants (result);
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="882" endline="902">
+List *list_difference_int (List *list1, List *list2) {
+    ListCell *cell;
+    List *result = NIL;
+    Assert (IsIntegerList (list1));
+    Assert (IsIntegerList (list2));
+    if (list2 == NIL)
+        return list_copy (list1);
+    foreach (cell, list1) {
+        if (!list_member_int (list2, lfirst_int (cell)))
+            result = lappend_int (result, lfirst_int (cell));
+    }
+    check_list_invariants (result);
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="907" endline="927">
+List *list_difference_oid (List *list1, List *list2) {
+    ListCell *cell;
+    List *result = NIL;
+    Assert (IsOidList (list1));
+    Assert (IsOidList (list2));
+    if (list2 == NIL)
+        return list_copy (list1);
+    foreach (cell, list1) {
+        if (!list_member_oid (list2, lfirst_oid (cell)))
+            result = lappend_oid (result, lfirst_oid (cell));
+    }
+    check_list_invariants (result);
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="935" endline="942">
+List *list_append_unique (List *list, void *datum) {
+    if (list_member (list, datum))
+        return list;
+    else
+        return lappend (list, datum);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="948" endline="955">
+List *list_append_unique_ptr (List *list, void *datum) {
+    if (list_member_ptr (list, datum))
+        return list;
+    else
+        return lappend (list, datum);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="960" endline="967">
+List *list_append_unique_int (List *list, int datum) {
+    if (list_member_int (list, datum))
+        return list;
+    else
+        return lappend_int (list, datum);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="972" endline="979">
+List *list_append_unique_oid (List *list, Oid datum) {
+    if (list_member_oid (list, datum))
+        return list;
+    else
+        return lappend_oid (list, datum);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="991" endline="1007">
+List *list_concat_unique (List *list1, List *list2) {
+    ListCell *cell;
+    Assert (IsPointerList (list1));
+    Assert (IsPointerList (list2));
+    foreach (cell, list2) {
+        if (!list_member (list1, lfirst (cell)))
+            list1 = lappend (list1, lfirst (cell));
+    }
+    check_list_invariants (list1);
+    return list1;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="1013" endline="1029">
+List *list_concat_unique_ptr (List *list1, List *list2) {
+    ListCell *cell;
+    Assert (IsPointerList (list1));
+    Assert (IsPointerList (list2));
+    foreach (cell, list2) {
+        if (!list_member_ptr (list1, lfirst (cell)))
+            list1 = lappend (list1, lfirst (cell));
+    }
+    check_list_invariants (list1);
+    return list1;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="1034" endline="1050">
+List *list_concat_unique_int (List *list1, List *list2) {
+    ListCell *cell;
+    Assert (IsIntegerList (list1));
+    Assert (IsIntegerList (list2));
+    foreach (cell, list2) {
+        if (!list_member_int (list1, lfirst_int (cell)))
+            list1 = lappend_int (list1, lfirst_int (cell));
+    }
+    check_list_invariants (list1);
+    return list1;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="1055" endline="1071">
+List *list_concat_unique_oid (List *list1, List *list2) {
+    ListCell *cell;
+    Assert (IsOidList (list1));
+    Assert (IsOidList (list2));
+    foreach (cell, list2) {
+        if (!list_member_oid (list1, lfirst_oid (cell)))
+            list1 = lappend_oid (list1, lfirst_oid (cell));
+    }
+    check_list_invariants (list1);
+    return list1;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="1076" endline="1096">
+static void list_free_private (List *list, bool deep) {
+    ListCell *cell;
+    check_list_invariants (list);
+    cell = list_head (list);
+    while (cell != NULL) {
+        ListCell *tmp = cell;
+        cell = lnext (cell);
+        if (deep)
+            pfree (lfirst (tmp));
+        pfree (tmp);
+    }
+    if (list)
+        pfree (list);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="1106" endline="1110">
+void list_free (List *list) {
+    list_free_private (list, false);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="1120" endline="1128">
+void list_free_deep (List *list) {
+    Assert (IsPointerList (list));
+    list_free_private (list, true);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="1133" endline="1171">
+List *list_copy (List *oldlist) {
+    List *newlist;
+    ListCell *newlist_prev;
+    ListCell *oldlist_cur;
+    if (oldlist == NIL)
+        return NIL;
+    newlist = new_list (oldlist->type);
+    newlist->length = oldlist->length;
+    newlist->head->data = oldlist->head->data;
+    newlist_prev = newlist->head;
+    oldlist_cur = oldlist->head->next;
+    while (oldlist_cur) {
+        ListCell *newlist_cur;
+        newlist_cur = (ListCell *) palloc (sizeof (*newlist_cur));
+        newlist_cur->data = oldlist_cur->data;
+        newlist_prev->next = newlist_cur;
+        newlist_prev = newlist_cur;
+        oldlist_cur = oldlist_cur->next;
+    }
+    newlist_prev->next = NULL;
+    newlist->tail = newlist_prev;
+    check_list_invariants (newlist);
+    return newlist;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="1176" endline="1224">
+List *list_copy_tail (List *oldlist, int nskip) {
+    List *newlist;
+    ListCell *newlist_prev;
+    ListCell *oldlist_cur;
+    if (nskip < 0)
+        nskip = 0;
+    if (oldlist == NIL || nskip >= oldlist->length)
+        return NIL;
+    newlist = new_list (oldlist->type);
+    newlist->length = oldlist->length - nskip;
+    oldlist_cur = oldlist->head;
+    while (nskip-- > 0)
+        oldlist_cur = oldlist_cur->next;
+    newlist->head->data = oldlist_cur->data;
+    newlist_prev = newlist->head;
+    oldlist_cur = oldlist_cur->next;
+    while (oldlist_cur) {
+        ListCell *newlist_cur;
+        newlist_cur = (ListCell *) palloc (sizeof (*newlist_cur));
+        newlist_cur->data = oldlist_cur->data;
+        newlist_prev->next = newlist_cur;
+        newlist_prev = newlist_cur;
+        oldlist_cur = oldlist_cur->next;
+    }
+    newlist_prev->next = NULL;
+    newlist->tail = newlist_prev;
+    check_list_invariants (newlist);
+    return newlist;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="1234" endline="1238">
+ListCell *list_head (List *l) {
+    return l ? l->head : NULL;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="1240" endline="1244">
+ListCell *list_tail (List *l) {
+    return l ? l->tail : NULL;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="1246" endline="1250">
+int list_length (List *l) {
+    return l ? l->length : 0;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/list.c.ifdefed" startline="1271" endline="1275">
+int length (List *list) {
+    return list_length (list);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="109" endline="139">
+static void _outToken (StringInfo str, char *s) {
+    if (s == NULL || *s == '\0') {
+        appendStringInfo (str, "<>");
+        return;
+    }
+    if (*s == '<' || *s == '\"' || isdigit ((unsigned char) *s) || ((*s == '+' || *s == '-') && (isdigit ((unsigned char) s[1]) || s[1] == '.')))
+        appendStringInfoChar (str, '\\');
+    while (*s) {
+        if (*s == ' ' || *s == '\n' || *s == '\t' || *s == '(' || *s == ')' || *s == '{' || *s == '}' || *s == '\\')
+            appendStringInfoChar (str, '\\');
+        appendStringInfoChar (str, * s ++);
+    }
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="141" endline="176">
+static void _outList (StringInfo str, List *node) {
+    ListCell *lc;
+    appendStringInfoChar (str, '(');
+    if (IsA (node, IntList))
+        appendStringInfoChar (str, 'i');
+    else if (IsA (node, OidList))
+        appendStringInfoChar (str, 'o');
+    foreach (lc, node) {
+        if (IsA (node, List)) {
+            _outNode (str, lfirst (lc));
+            if (lnext (lc))
+                appendStringInfoChar (str, ' ');
+        }
+        else if (IsA (node, IntList))
+            appendStringInfo (str, " %d", lfirst_int (lc));
+        else if (IsA (node, OidList))
+            appendStringInfo (str, " %u", lfirst_oid (lc));
+        else
+            elog (ERROR, "unrecognized list node type: %d", (int) node->type);
+    }
+    appendStringInfoChar (str, ')');
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="184" endline="197">
+static void _outBitmapset (StringInfo str, Bitmapset *bms) {
+    Bitmapset *tmpset;
+    int x;
+    appendStringInfoChar (str, '(');
+    appendStringInfoChar (str, 'b');
+    tmpset = bms_copy (bms);
+    while ((x = bms_first_member (tmpset)) >= 0)
+        appendStringInfo (str, " %d", x);
+    bms_free (tmpset);
+    appendStringInfoChar (str, ')');
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="202" endline="232">
+static void _outDatum (StringInfo str, Datum value, int typlen, bool typbyval) {
+    Size length, i;
+    char *s;
+    length = datumGetSize (value, typbyval, typlen);
+    if (typbyval) {
+        s = (char *) (&value);
+        appendStringInfo (str, "%u [ ", (unsigned int) length);
+        for (i = 0; i < (Size) sizeof (Datum); i++)
+            appendStringInfo (str, "%d ", (int) (s[i]));
+        appendStringInfo (str, "]");
+    }
+    else {
+        s = (char *) DatumGetPointer (value);
+        if (!PointerIsValid (s))
+            appendStringInfo (str, "0 [ ]");
+        else {
+            appendStringInfo (str, "%u [ ", (unsigned int) length);
+            for (i = 0; i < length; i++)
+                appendStringInfo (str, "%d ", (int) (s[i]));
+            appendStringInfo (str, "]");
+        }
+    }
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="239" endline="259">
+static void _outPlannedStmt (StringInfo str, PlannedStmt *node) {
+    WRITE_NODE_TYPE ("PLANNEDSTMT");
+    WRITE_ENUM_FIELD (commandType, CmdType);
+    WRITE_BOOL_FIELD (canSetTag);
+    WRITE_BOOL_FIELD (transientPlan);
+    WRITE_NODE_FIELD (planTree);
+    WRITE_NODE_FIELD (rtable);
+    WRITE_NODE_FIELD (resultRelations);
+    WRITE_NODE_FIELD (utilityStmt);
+    WRITE_NODE_FIELD (intoClause);
+    WRITE_NODE_FIELD (subplans);
+    WRITE_BITMAPSET_FIELD (rewindPlanIDs);
+    WRITE_NODE_FIELD (returningLists);
+    WRITE_NODE_FIELD (rowMarks);
+    WRITE_NODE_FIELD (relationOids);
+    WRITE_NODE_FIELD (invalItems);
+    WRITE_INT_FIELD (nParamExec);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="264" endline="278">
+static void _outPlanInfo (StringInfo str, Plan *node) {
+    WRITE_FLOAT_FIELD (startup_cost, "%.2f");
+    WRITE_FLOAT_FIELD (total_cost, "%.2f");
+    WRITE_FLOAT_FIELD (plan_rows, "%.0f");
+    WRITE_INT_FIELD (plan_width);
+    WRITE_NODE_FIELD (targetlist);
+    WRITE_NODE_FIELD (qual);
+    WRITE_NODE_FIELD (lefttree);
+    WRITE_NODE_FIELD (righttree);
+    WRITE_NODE_FIELD (initPlan);
+    WRITE_BITMAPSET_FIELD (extParam);
+    WRITE_BITMAPSET_FIELD (allParam);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="283" endline="289">
+static void _outScanInfo (StringInfo str, Scan *node) {
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_UINT_FIELD (scanrelid);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="294" endline="301">
+static void _outJoinPlanInfo (StringInfo str, Join *node) {
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_ENUM_FIELD (jointype, JoinType);
+    WRITE_NODE_FIELD (joinqual);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="304" endline="310">
+static void _outPlan (StringInfo str, Plan *node) {
+    WRITE_NODE_TYPE ("PLAN");
+    _outPlanInfo (str, (Plan *) node);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="312" endline="320">
+static void _outResult (StringInfo str, Result *node) {
+    WRITE_NODE_TYPE ("RESULT");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_NODE_FIELD (resconstantqual);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="322" endline="331">
+static void _outAppend (StringInfo str, Append *node) {
+    WRITE_NODE_TYPE ("APPEND");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_NODE_FIELD (appendplans);
+    WRITE_BOOL_FIELD (isTarget);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="333" endline="354">
+static void _outRecursiveUnion (StringInfo str, RecursiveUnion *node) {
+    int i;
+    WRITE_NODE_TYPE ("RECURSIVEUNION");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_INT_FIELD (wtParam);
+    WRITE_INT_FIELD (numCols);
+    appendStringInfo (str, " :dupColIdx");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %d", node->dupColIdx[i]);
+    appendStringInfo (str, " :dupOperators");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %u", node->dupOperators[i]);
+    WRITE_LONG_FIELD (numGroups);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="356" endline="364">
+static void _outBitmapAnd (StringInfo str, BitmapAnd *node) {
+    WRITE_NODE_TYPE ("BITMAPAND");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_NODE_FIELD (bitmapplans);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="366" endline="374">
+static void _outBitmapOr (StringInfo str, BitmapOr *node) {
+    WRITE_NODE_TYPE ("BITMAPOR");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_NODE_FIELD (bitmapplans);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="376" endline="382">
+static void _outScan (StringInfo str, Scan *node) {
+    WRITE_NODE_TYPE ("SCAN");
+    _outScanInfo (str, (Scan *) node);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="384" endline="390">
+static void _outSeqScan (StringInfo str, SeqScan *node) {
+    WRITE_NODE_TYPE ("SEQSCAN");
+    _outScanInfo (str, (Scan *) node);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="392" endline="403">
+static void _outIndexScan (StringInfo str, IndexScan *node) {
+    WRITE_NODE_TYPE ("INDEXSCAN");
+    _outScanInfo (str, (Scan *) node);
+    WRITE_OID_FIELD (indexid);
+    WRITE_NODE_FIELD (indexqual);
+    WRITE_NODE_FIELD (indexqualorig);
+    WRITE_ENUM_FIELD (indexorderdir, ScanDirection);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="405" endline="415">
+static void _outBitmapIndexScan (StringInfo str, BitmapIndexScan *node) {
+    WRITE_NODE_TYPE ("BITMAPINDEXSCAN");
+    _outScanInfo (str, (Scan *) node);
+    WRITE_OID_FIELD (indexid);
+    WRITE_NODE_FIELD (indexqual);
+    WRITE_NODE_FIELD (indexqualorig);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="417" endline="425">
+static void _outBitmapHeapScan (StringInfo str, BitmapHeapScan *node) {
+    WRITE_NODE_TYPE ("BITMAPHEAPSCAN");
+    _outScanInfo (str, (Scan *) node);
+    WRITE_NODE_FIELD (bitmapqualorig);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="427" endline="435">
+static void _outTidScan (StringInfo str, TidScan *node) {
+    WRITE_NODE_TYPE ("TIDSCAN");
+    _outScanInfo (str, (Scan *) node);
+    WRITE_NODE_FIELD (tidquals);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="437" endline="446">
+static void _outSubqueryScan (StringInfo str, SubqueryScan *node) {
+    WRITE_NODE_TYPE ("SUBQUERYSCAN");
+    _outScanInfo (str, (Scan *) node);
+    WRITE_NODE_FIELD (subplan);
+    WRITE_NODE_FIELD (subrtable);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="448" endline="459">
+static void _outFunctionScan (StringInfo str, FunctionScan *node) {
+    WRITE_NODE_TYPE ("FUNCTIONSCAN");
+    _outScanInfo (str, (Scan *) node);
+    WRITE_NODE_FIELD (funcexpr);
+    WRITE_NODE_FIELD (funccolnames);
+    WRITE_NODE_FIELD (funccoltypes);
+    WRITE_NODE_FIELD (funccoltypmods);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="461" endline="469">
+static void _outValuesScan (StringInfo str, ValuesScan *node) {
+    WRITE_NODE_TYPE ("VALUESSCAN");
+    _outScanInfo (str, (Scan *) node);
+    WRITE_NODE_FIELD (values_lists);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="471" endline="480">
+static void _outCteScan (StringInfo str, CteScan *node) {
+    WRITE_NODE_TYPE ("CTESCAN");
+    _outScanInfo (str, (Scan *) node);
+    WRITE_INT_FIELD (ctePlanId);
+    WRITE_INT_FIELD (cteParam);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="482" endline="490">
+static void _outWorkTableScan (StringInfo str, WorkTableScan *node) {
+    WRITE_NODE_TYPE ("WORKTABLESCAN");
+    _outScanInfo (str, (Scan *) node);
+    WRITE_INT_FIELD (wtParam);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="492" endline="498">
+static void _outJoin (StringInfo str, Join *node) {
+    WRITE_NODE_TYPE ("JOIN");
+    _outJoinPlanInfo (str, (Join *) node);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="500" endline="506">
+static void _outNestLoop (StringInfo str, NestLoop *node) {
+    WRITE_NODE_TYPE ("NESTLOOP");
+    _outJoinPlanInfo (str, (Join *) node);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="508" endline="533">
+static void _outMergeJoin (StringInfo str, MergeJoin *node) {
+    int numCols;
+    int i;
+    WRITE_NODE_TYPE ("MERGEJOIN");
+    _outJoinPlanInfo (str, (Join *) node);
+    WRITE_NODE_FIELD (mergeclauses);
+    numCols = list_length (node->mergeclauses);
+    appendStringInfo (str, " :mergeFamilies");
+    for (i = 0; i < numCols; i++)
+        appendStringInfo (str, " %u", node->mergeFamilies[i]);
+    appendStringInfo (str, " :mergeStrategies");
+    for (i = 0; i < numCols; i++)
+        appendStringInfo (str, " %d", node->mergeStrategies[i]);
+    appendStringInfo (str, " :mergeNullsFirst");
+    for (i = 0; i < numCols; i++)
+        appendStringInfo (str, " %d", (int) node->mergeNullsFirst[i]);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="535" endline="543">
+static void _outHashJoin (StringInfo str, HashJoin *node) {
+    WRITE_NODE_TYPE ("HASHJOIN");
+    _outJoinPlanInfo (str, (Join *) node);
+    WRITE_NODE_FIELD (hashclauses);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="545" endline="566">
+static void _outAgg (StringInfo str, Agg *node) {
+    int i;
+    WRITE_NODE_TYPE ("AGG");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_ENUM_FIELD (aggstrategy, AggStrategy);
+    WRITE_INT_FIELD (numCols);
+    appendStringInfo (str, " :grpColIdx");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %d", node->grpColIdx[i]);
+    appendStringInfo (str, " :grpOperators");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %u", node->grpOperators[i]);
+    WRITE_LONG_FIELD (numGroups);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="568" endline="599">
+static void _outWindowAgg (StringInfo str, WindowAgg *node) {
+    int i;
+    WRITE_NODE_TYPE ("WINDOWAGG");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_UINT_FIELD (winref);
+    WRITE_INT_FIELD (partNumCols);
+    appendStringInfo (str, " :partColIdx");
+    for (i = 0; i < node->partNumCols; i++)
+        appendStringInfo (str, " %d", node->partColIdx[i]);
+    appendStringInfo (str, " :partOperations");
+    for (i = 0; i < node->partNumCols; i++)
+        appendStringInfo (str, " %u", node->partOperators[i]);
+    WRITE_INT_FIELD (ordNumCols);
+    appendStringInfo (str, " :ordColIdx");
+    for (i = 0; i < node->ordNumCols; i++)
+        appendStringInfo (str, " %d", node->ordColIdx[i]);
+    appendStringInfo (str, " :ordOperations");
+    for (i = 0; i < node->ordNumCols; i++)
+        appendStringInfo (str, " %u", node->ordOperators[i]);
+    WRITE_INT_FIELD (frameOptions);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="601" endline="619">
+static void _outGroup (StringInfo str, Group *node) {
+    int i;
+    WRITE_NODE_TYPE ("GROUP");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_INT_FIELD (numCols);
+    appendStringInfo (str, " :grpColIdx");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %d", node->grpColIdx[i]);
+    appendStringInfo (str, " :grpOperators");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %u", node->grpOperators[i]);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="621" endline="627">
+static void _outMaterial (StringInfo str, Material *node) {
+    WRITE_NODE_TYPE ("MATERIAL");
+    _outPlanInfo (str, (Plan *) node);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="629" endline="651">
+static void _outSort (StringInfo str, Sort *node) {
+    int i;
+    WRITE_NODE_TYPE ("SORT");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_INT_FIELD (numCols);
+    appendStringInfo (str, " :sortColIdx");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %d", node->sortColIdx[i]);
+    appendStringInfo (str, " :sortOperators");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %u", node->sortOperators[i]);
+    appendStringInfo (str, " :nullsFirst");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %s", booltostr (node->nullsFirst[i]));
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="653" endline="671">
+static void _outUnique (StringInfo str, Unique *node) {
+    int i;
+    WRITE_NODE_TYPE ("UNIQUE");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_INT_FIELD (numCols);
+    appendStringInfo (str, " :uniqColIdx");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %d", node->uniqColIdx[i]);
+    appendStringInfo (str, " :uniqOperators");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %u", node->uniqOperators[i]);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="673" endline="684">
+static void _outHash (StringInfo str, Hash *node) {
+    WRITE_NODE_TYPE ("HASH");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_OID_FIELD (skewTable);
+    WRITE_INT_FIELD (skewColumn);
+    WRITE_OID_FIELD (skewColType);
+    WRITE_INT_FIELD (skewColTypmod);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="686" endline="710">
+static void _outSetOp (StringInfo str, SetOp *node) {
+    int i;
+    WRITE_NODE_TYPE ("SETOP");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_ENUM_FIELD (cmd, SetOpCmd);
+    WRITE_ENUM_FIELD (strategy, SetOpStrategy);
+    WRITE_INT_FIELD (numCols);
+    appendStringInfo (str, " :dupColIdx");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %d", node->dupColIdx[i]);
+    appendStringInfo (str, " :dupOperators");
+    for (i = 0; i < node->numCols; i++)
+        appendStringInfo (str, " %u", node->dupOperators[i]);
+    WRITE_INT_FIELD (flagColIdx);
+    WRITE_INT_FIELD (firstFlag);
+    WRITE_LONG_FIELD (numGroups);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="712" endline="721">
+static void _outLimit (StringInfo str, Limit *node) {
+    WRITE_NODE_TYPE ("LIMIT");
+    _outPlanInfo (str, (Plan *) node);
+    WRITE_NODE_FIELD (limitOffset);
+    WRITE_NODE_FIELD (limitCount);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="723" endline="732">
+static void _outPlanInvalItem (StringInfo str, PlanInvalItem *node) {
+    WRITE_NODE_TYPE ("PLANINVALITEM");
+    WRITE_INT_FIELD (cacheId);
+    appendStringInfo (str, " :tupleId (%u,%u)", ItemPointerGetBlockNumber (& node -> tupleId), ItemPointerGetOffsetNumber (& node -> tupleId));
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="740" endline="747">
+static void _outAlias (StringInfo str, Alias *node) {
+    WRITE_NODE_TYPE ("ALIAS");
+    WRITE_STRING_FIELD (aliasname);
+    WRITE_NODE_FIELD (colnames);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="749" endline="764">
+static void _outRangeVar (StringInfo str, RangeVar *node) {
+    WRITE_NODE_TYPE ("RANGEVAR");
+    WRITE_STRING_FIELD (schemaname);
+    WRITE_STRING_FIELD (relname);
+    WRITE_ENUM_FIELD (inhOpt, InhOption);
+    WRITE_BOOL_FIELD (istemp);
+    WRITE_NODE_FIELD (alias);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="766" endline="776">
+static void _outIntoClause (StringInfo str, IntoClause *node) {
+    WRITE_NODE_TYPE ("INTOCLAUSE");
+    WRITE_NODE_FIELD (rel);
+    WRITE_NODE_FIELD (colNames);
+    WRITE_NODE_FIELD (options);
+    WRITE_ENUM_FIELD (onCommit, OnCommitAction);
+    WRITE_STRING_FIELD (tableSpaceName);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="778" endline="791">
+static void _outVar (StringInfo str, Var *node) {
+    WRITE_NODE_TYPE ("VAR");
+    WRITE_UINT_FIELD (varno);
+    WRITE_INT_FIELD (varattno);
+    WRITE_OID_FIELD (vartype);
+    WRITE_INT_FIELD (vartypmod);
+    WRITE_UINT_FIELD (varlevelsup);
+    WRITE_UINT_FIELD (varnoold);
+    WRITE_INT_FIELD (varoattno);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="793" endline="810">
+static void _outConst (StringInfo str, Const *node) {
+    WRITE_NODE_TYPE ("CONST");
+    WRITE_OID_FIELD (consttype);
+    WRITE_INT_FIELD (consttypmod);
+    WRITE_INT_FIELD (constlen);
+    WRITE_BOOL_FIELD (constbyval);
+    WRITE_BOOL_FIELD (constisnull);
+    WRITE_LOCATION_FIELD (location);
+    appendStringInfo (str, " :constvalue ");
+    if (node->constisnull)
+        appendStringInfo (str, "<>");
+    else
+        _outDatum (str, node->constvalue, node->constlen, node->constbyval);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="812" endline="822">
+static void _outParam (StringInfo str, Param *node) {
+    WRITE_NODE_TYPE ("PARAM");
+    WRITE_ENUM_FIELD (paramkind, ParamKind);
+    WRITE_INT_FIELD (paramid);
+    WRITE_OID_FIELD (paramtype);
+    WRITE_INT_FIELD (paramtypmod);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="824" endline="836">
+static void _outAggref (StringInfo str, Aggref *node) {
+    WRITE_NODE_TYPE ("AGGREF");
+    WRITE_OID_FIELD (aggfnoid);
+    WRITE_OID_FIELD (aggtype);
+    WRITE_NODE_FIELD (args);
+    WRITE_UINT_FIELD (agglevelsup);
+    WRITE_BOOL_FIELD (aggstar);
+    WRITE_BOOL_FIELD (aggdistinct);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="838" endline="850">
+static void _outWindowFunc (StringInfo str, WindowFunc *node) {
+    WRITE_NODE_TYPE ("WINDOWFUNC");
+    WRITE_OID_FIELD (winfnoid);
+    WRITE_OID_FIELD (wintype);
+    WRITE_NODE_FIELD (args);
+    WRITE_UINT_FIELD (winref);
+    WRITE_BOOL_FIELD (winstar);
+    WRITE_BOOL_FIELD (winagg);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="852" endline="864">
+static void _outArrayRef (StringInfo str, ArrayRef *node) {
+    WRITE_NODE_TYPE ("ARRAYREF");
+    WRITE_OID_FIELD (refarraytype);
+    WRITE_OID_FIELD (refelemtype);
+    WRITE_INT_FIELD (reftypmod);
+    WRITE_NODE_FIELD (refupperindexpr);
+    WRITE_NODE_FIELD (reflowerindexpr);
+    WRITE_NODE_FIELD (refexpr);
+    WRITE_NODE_FIELD (refassgnexpr);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="866" endline="877">
+static void _outFuncExpr (StringInfo str, FuncExpr *node) {
+    WRITE_NODE_TYPE ("FUNCEXPR");
+    WRITE_OID_FIELD (funcid);
+    WRITE_OID_FIELD (funcresulttype);
+    WRITE_BOOL_FIELD (funcretset);
+    WRITE_ENUM_FIELD (funcformat, CoercionForm);
+    WRITE_NODE_FIELD (args);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="879" endline="890">
+static void _outOpExpr (StringInfo str, OpExpr *node) {
+    WRITE_NODE_TYPE ("OPEXPR");
+    WRITE_OID_FIELD (opno);
+    WRITE_OID_FIELD (opfuncid);
+    WRITE_OID_FIELD (opresulttype);
+    WRITE_BOOL_FIELD (opretset);
+    WRITE_NODE_FIELD (args);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="892" endline="903">
+static void _outDistinctExpr (StringInfo str, DistinctExpr *node) {
+    WRITE_NODE_TYPE ("DISTINCTEXPR");
+    WRITE_OID_FIELD (opno);
+    WRITE_OID_FIELD (opfuncid);
+    WRITE_OID_FIELD (opresulttype);
+    WRITE_BOOL_FIELD (opretset);
+    WRITE_NODE_FIELD (args);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="905" endline="915">
+static void _outScalarArrayOpExpr (StringInfo str, ScalarArrayOpExpr *node) {
+    WRITE_NODE_TYPE ("SCALARARRAYOPEXPR");
+    WRITE_OID_FIELD (opno);
+    WRITE_OID_FIELD (opfuncid);
+    WRITE_BOOL_FIELD (useOr);
+    WRITE_NODE_FIELD (args);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="917" endline="942">
+static void _outBoolExpr (StringInfo str, BoolExpr *node) {
+    char *opstr = NULL;
+    WRITE_NODE_TYPE ("BOOLEXPR");
+    switch (node->boolop) {
+    case AND_EXPR :
+        opstr = "and";
+        break;
+    case OR_EXPR :
+        opstr = "or";
+        break;
+    case NOT_EXPR :
+        opstr = "not";
+        break;
+    }
+    appendStringInfo (str, " :boolop ");
+    _outToken (str, opstr);
+    WRITE_NODE_FIELD (args);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="944" endline="954">
+static void _outSubLink (StringInfo str, SubLink *node) {
+    WRITE_NODE_TYPE ("SUBLINK");
+    WRITE_ENUM_FIELD (subLinkType, SubLinkType);
+    WRITE_NODE_FIELD (testexpr);
+    WRITE_NODE_FIELD (operName);
+    WRITE_NODE_FIELD (subselect);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="956" endline="975">
+static void _outSubPlan (StringInfo str, SubPlan *node) {
+    WRITE_NODE_TYPE ("SUBPLAN");
+    WRITE_ENUM_FIELD (subLinkType, SubLinkType);
+    WRITE_NODE_FIELD (testexpr);
+    WRITE_NODE_FIELD (paramIds);
+    WRITE_INT_FIELD (plan_id);
+    WRITE_STRING_FIELD (plan_name);
+    WRITE_OID_FIELD (firstColType);
+    WRITE_INT_FIELD (firstColTypmod);
+    WRITE_BOOL_FIELD (useHashTable);
+    WRITE_BOOL_FIELD (unknownEqFalse);
+    WRITE_NODE_FIELD (setParam);
+    WRITE_NODE_FIELD (parParam);
+    WRITE_NODE_FIELD (args);
+    WRITE_FLOAT_FIELD (startup_cost, "%.2f");
+    WRITE_FLOAT_FIELD (per_call_cost, "%.2f");
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="977" endline="983">
+static void _outAlternativeSubPlan (StringInfo str, AlternativeSubPlan *node) {
+    WRITE_NODE_TYPE ("ALTERNATIVESUBPLAN");
+    WRITE_NODE_FIELD (subplans);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="985" endline="994">
+static void _outFieldSelect (StringInfo str, FieldSelect *node) {
+    WRITE_NODE_TYPE ("FIELDSELECT");
+    WRITE_NODE_FIELD (arg);
+    WRITE_INT_FIELD (fieldnum);
+    WRITE_OID_FIELD (resulttype);
+    WRITE_INT_FIELD (resulttypmod);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="996" endline="1005">
+static void _outFieldStore (StringInfo str, FieldStore *node) {
+    WRITE_NODE_TYPE ("FIELDSTORE");
+    WRITE_NODE_FIELD (arg);
+    WRITE_NODE_FIELD (newvals);
+    WRITE_NODE_FIELD (fieldnums);
+    WRITE_OID_FIELD (resulttype);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1007" endline="1017">
+static void _outRelabelType (StringInfo str, RelabelType *node) {
+    WRITE_NODE_TYPE ("RELABELTYPE");
+    WRITE_NODE_FIELD (arg);
+    WRITE_OID_FIELD (resulttype);
+    WRITE_INT_FIELD (resulttypmod);
+    WRITE_ENUM_FIELD (relabelformat, CoercionForm);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1019" endline="1028">
+static void _outCoerceViaIO (StringInfo str, CoerceViaIO *node) {
+    WRITE_NODE_TYPE ("COERCEVIAIO");
+    WRITE_NODE_FIELD (arg);
+    WRITE_OID_FIELD (resulttype);
+    WRITE_ENUM_FIELD (coerceformat, CoercionForm);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1030" endline="1042">
+static void _outArrayCoerceExpr (StringInfo str, ArrayCoerceExpr *node) {
+    WRITE_NODE_TYPE ("ARRAYCOERCEEXPR");
+    WRITE_NODE_FIELD (arg);
+    WRITE_OID_FIELD (elemfuncid);
+    WRITE_OID_FIELD (resulttype);
+    WRITE_INT_FIELD (resulttypmod);
+    WRITE_BOOL_FIELD (isExplicit);
+    WRITE_ENUM_FIELD (coerceformat, CoercionForm);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1044" endline="1053">
+static void _outConvertRowtypeExpr (StringInfo str, ConvertRowtypeExpr *node) {
+    WRITE_NODE_TYPE ("CONVERTROWTYPEEXPR");
+    WRITE_NODE_FIELD (arg);
+    WRITE_OID_FIELD (resulttype);
+    WRITE_ENUM_FIELD (convertformat, CoercionForm);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1055" endline="1065">
+static void _outCaseExpr (StringInfo str, CaseExpr *node) {
+    WRITE_NODE_TYPE ("CASE");
+    WRITE_OID_FIELD (casetype);
+    WRITE_NODE_FIELD (arg);
+    WRITE_NODE_FIELD (args);
+    WRITE_NODE_FIELD (defresult);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1067" endline="1075">
+static void _outCaseWhen (StringInfo str, CaseWhen *node) {
+    WRITE_NODE_TYPE ("WHEN");
+    WRITE_NODE_FIELD (expr);
+    WRITE_NODE_FIELD (result);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1077" endline="1084">
+static void _outCaseTestExpr (StringInfo str, CaseTestExpr *node) {
+    WRITE_NODE_TYPE ("CASETESTEXPR");
+    WRITE_OID_FIELD (typeId);
+    WRITE_INT_FIELD (typeMod);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1086" endline="1096">
+static void _outArrayExpr (StringInfo str, ArrayExpr *node) {
+    WRITE_NODE_TYPE ("ARRAY");
+    WRITE_OID_FIELD (array_typeid);
+    WRITE_OID_FIELD (element_typeid);
+    WRITE_NODE_FIELD (elements);
+    WRITE_BOOL_FIELD (multidims);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1098" endline="1108">
+static void _outRowExpr (StringInfo str, RowExpr *node) {
+    WRITE_NODE_TYPE ("ROW");
+    WRITE_NODE_FIELD (args);
+    WRITE_OID_FIELD (row_typeid);
+    WRITE_ENUM_FIELD (row_format, CoercionForm);
+    WRITE_NODE_FIELD (colnames);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1110" endline="1120">
+static void _outRowCompareExpr (StringInfo str, RowCompareExpr *node) {
+    WRITE_NODE_TYPE ("ROWCOMPARE");
+    WRITE_ENUM_FIELD (rctype, RowCompareType);
+    WRITE_NODE_FIELD (opnos);
+    WRITE_NODE_FIELD (opfamilies);
+    WRITE_NODE_FIELD (largs);
+    WRITE_NODE_FIELD (rargs);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1122" endline="1130">
+static void _outCoalesceExpr (StringInfo str, CoalesceExpr *node) {
+    WRITE_NODE_TYPE ("COALESCE");
+    WRITE_OID_FIELD (coalescetype);
+    WRITE_NODE_FIELD (args);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1132" endline="1141">
+static void _outMinMaxExpr (StringInfo str, MinMaxExpr *node) {
+    WRITE_NODE_TYPE ("MINMAX");
+    WRITE_OID_FIELD (minmaxtype);
+    WRITE_ENUM_FIELD (op, MinMaxOp);
+    WRITE_NODE_FIELD (args);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1143" endline="1157">
+static void _outXmlExpr (StringInfo str, XmlExpr *node) {
+    WRITE_NODE_TYPE ("XMLEXPR");
+    WRITE_ENUM_FIELD (op, XmlExprOp);
+    WRITE_STRING_FIELD (name);
+    WRITE_NODE_FIELD (named_args);
+    WRITE_NODE_FIELD (arg_names);
+    WRITE_NODE_FIELD (args);
+    WRITE_ENUM_FIELD (xmloption, XmlOptionType);
+    WRITE_OID_FIELD (type);
+    WRITE_INT_FIELD (typmod);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1159" endline="1170">
+static void _outNullIfExpr (StringInfo str, NullIfExpr *node) {
+    WRITE_NODE_TYPE ("NULLIFEXPR");
+    WRITE_OID_FIELD (opno);
+    WRITE_OID_FIELD (opfuncid);
+    WRITE_OID_FIELD (opresulttype);
+    WRITE_BOOL_FIELD (opretset);
+    WRITE_NODE_FIELD (args);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1172" endline="1179">
+static void _outNullTest (StringInfo str, NullTest *node) {
+    WRITE_NODE_TYPE ("NULLTEST");
+    WRITE_NODE_FIELD (arg);
+    WRITE_ENUM_FIELD (nulltesttype, NullTestType);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1181" endline="1188">
+static void _outBooleanTest (StringInfo str, BooleanTest *node) {
+    WRITE_NODE_TYPE ("BOOLEANTEST");
+    WRITE_NODE_FIELD (arg);
+    WRITE_ENUM_FIELD (booltesttype, BoolTestType);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1190" endline="1200">
+static void _outCoerceToDomain (StringInfo str, CoerceToDomain *node) {
+    WRITE_NODE_TYPE ("COERCETODOMAIN");
+    WRITE_NODE_FIELD (arg);
+    WRITE_OID_FIELD (resulttype);
+    WRITE_INT_FIELD (resulttypmod);
+    WRITE_ENUM_FIELD (coercionformat, CoercionForm);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1202" endline="1210">
+static void _outCoerceToDomainValue (StringInfo str, CoerceToDomainValue *node) {
+    WRITE_NODE_TYPE ("COERCETODOMAINVALUE");
+    WRITE_OID_FIELD (typeId);
+    WRITE_INT_FIELD (typeMod);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1212" endline="1220">
+static void _outSetToDefault (StringInfo str, SetToDefault *node) {
+    WRITE_NODE_TYPE ("SETTODEFAULT");
+    WRITE_OID_FIELD (typeId);
+    WRITE_INT_FIELD (typeMod);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1222" endline="1230">
+static void _outCurrentOfExpr (StringInfo str, CurrentOfExpr *node) {
+    WRITE_NODE_TYPE ("CURRENTOFEXPR");
+    WRITE_UINT_FIELD (cvarno);
+    WRITE_STRING_FIELD (cursor_name);
+    WRITE_INT_FIELD (cursor_param);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1232" endline="1244">
+static void _outTargetEntry (StringInfo str, TargetEntry *node) {
+    WRITE_NODE_TYPE ("TARGETENTRY");
+    WRITE_NODE_FIELD (expr);
+    WRITE_INT_FIELD (resno);
+    WRITE_STRING_FIELD (resname);
+    WRITE_UINT_FIELD (ressortgroupref);
+    WRITE_OID_FIELD (resorigtbl);
+    WRITE_INT_FIELD (resorigcol);
+    WRITE_BOOL_FIELD (resjunk);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1246" endline="1252">
+static void _outRangeTblRef (StringInfo str, RangeTblRef *node) {
+    WRITE_NODE_TYPE ("RANGETBLREF");
+    WRITE_INT_FIELD (rtindex);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1254" endline="1267">
+static void _outJoinExpr (StringInfo str, JoinExpr *node) {
+    WRITE_NODE_TYPE ("JOINEXPR");
+    WRITE_ENUM_FIELD (jointype, JoinType);
+    WRITE_BOOL_FIELD (isNatural);
+    WRITE_NODE_FIELD (larg);
+    WRITE_NODE_FIELD (rarg);
+    WRITE_NODE_FIELD (using);
+    WRITE_NODE_FIELD (quals);
+    WRITE_NODE_FIELD (alias);
+    WRITE_INT_FIELD (rtindex);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1269" endline="1276">
+static void _outFromExpr (StringInfo str, FromExpr *node) {
+    WRITE_NODE_TYPE ("FROMEXPR");
+    WRITE_NODE_FIELD (fromlist);
+    WRITE_NODE_FIELD (quals);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1289" endline="1296">
+static void _outPathInfo (StringInfo str, Path *node) {
+    WRITE_ENUM_FIELD (pathtype, NodeTag);
+    WRITE_FLOAT_FIELD (startup_cost, "%.2f");
+    WRITE_FLOAT_FIELD (total_cost, "%.2f");
+    WRITE_NODE_FIELD (pathkeys);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1301" endline="1310">
+static void _outJoinPathInfo (StringInfo str, JoinPath *node) {
+    _outPathInfo (str, (Path *) node);
+    WRITE_ENUM_FIELD (jointype, JoinType);
+    WRITE_NODE_FIELD (outerjoinpath);
+    WRITE_NODE_FIELD (innerjoinpath);
+    WRITE_NODE_FIELD (joinrestrictinfo);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1312" endline="1318">
+static void _outPath (StringInfo str, Path *node) {
+    WRITE_NODE_TYPE ("PATH");
+    _outPathInfo (str, (Path *) node);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1320" endline="1335">
+static void _outIndexPath (StringInfo str, IndexPath *node) {
+    WRITE_NODE_TYPE ("INDEXPATH");
+    _outPathInfo (str, (Path *) node);
+    WRITE_NODE_FIELD (indexinfo);
+    WRITE_NODE_FIELD (indexclauses);
+    WRITE_NODE_FIELD (indexquals);
+    WRITE_BOOL_FIELD (isjoininner);
+    WRITE_ENUM_FIELD (indexscandir, ScanDirection);
+    WRITE_FLOAT_FIELD (indextotalcost, "%.2f");
+    WRITE_FLOAT_FIELD (indexselectivity, "%.4f");
+    WRITE_FLOAT_FIELD (rows, "%.0f");
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1337" endline="1347">
+static void _outBitmapHeapPath (StringInfo str, BitmapHeapPath *node) {
+    WRITE_NODE_TYPE ("BITMAPHEAPPATH");
+    _outPathInfo (str, (Path *) node);
+    WRITE_NODE_FIELD (bitmapqual);
+    WRITE_BOOL_FIELD (isjoininner);
+    WRITE_FLOAT_FIELD (rows, "%.0f");
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1349" endline="1358">
+static void _outBitmapAndPath (StringInfo str, BitmapAndPath *node) {
+    WRITE_NODE_TYPE ("BITMAPANDPATH");
+    _outPathInfo (str, (Path *) node);
+    WRITE_NODE_FIELD (bitmapquals);
+    WRITE_FLOAT_FIELD (bitmapselectivity, "%.4f");
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1360" endline="1369">
+static void _outBitmapOrPath (StringInfo str, BitmapOrPath *node) {
+    WRITE_NODE_TYPE ("BITMAPORPATH");
+    _outPathInfo (str, (Path *) node);
+    WRITE_NODE_FIELD (bitmapquals);
+    WRITE_FLOAT_FIELD (bitmapselectivity, "%.4f");
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1371" endline="1379">
+static void _outTidPath (StringInfo str, TidPath *node) {
+    WRITE_NODE_TYPE ("TIDPATH");
+    _outPathInfo (str, (Path *) node);
+    WRITE_NODE_FIELD (tidquals);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1381" endline="1389">
+static void _outAppendPath (StringInfo str, AppendPath *node) {
+    WRITE_NODE_TYPE ("APPENDPATH");
+    _outPathInfo (str, (Path *) node);
+    WRITE_NODE_FIELD (subpaths);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1391" endline="1399">
+static void _outResultPath (StringInfo str, ResultPath *node) {
+    WRITE_NODE_TYPE ("RESULTPATH");
+    _outPathInfo (str, (Path *) node);
+    WRITE_NODE_FIELD (quals);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1401" endline="1409">
+static void _outMaterialPath (StringInfo str, MaterialPath *node) {
+    WRITE_NODE_TYPE ("MATERIALPATH");
+    _outPathInfo (str, (Path *) node);
+    WRITE_NODE_FIELD (subpath);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1411" endline="1423">
+static void _outUniquePath (StringInfo str, UniquePath *node) {
+    WRITE_NODE_TYPE ("UNIQUEPATH");
+    _outPathInfo (str, (Path *) node);
+    WRITE_NODE_FIELD (subpath);
+    WRITE_ENUM_FIELD (umethod, UniquePathMethod);
+    WRITE_NODE_FIELD (in_operators);
+    WRITE_NODE_FIELD (uniq_exprs);
+    WRITE_FLOAT_FIELD (rows, "%.0f");
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1425" endline="1431">
+static void _outNestPath (StringInfo str, NestPath *node) {
+    WRITE_NODE_TYPE ("NESTPATH");
+    _outJoinPathInfo (str, (JoinPath *) node);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1433" endline="1443">
+static void _outMergePath (StringInfo str, MergePath *node) {
+    WRITE_NODE_TYPE ("MERGEPATH");
+    _outJoinPathInfo (str, (JoinPath *) node);
+    WRITE_NODE_FIELD (path_mergeclauses);
+    WRITE_NODE_FIELD (outersortkeys);
+    WRITE_NODE_FIELD (innersortkeys);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1445" endline="1454">
+static void _outHashPath (StringInfo str, HashPath *node) {
+    WRITE_NODE_TYPE ("HASHPATH");
+    _outJoinPathInfo (str, (JoinPath *) node);
+    WRITE_NODE_FIELD (path_hashclauses);
+    WRITE_INT_FIELD (num_batches);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1456" endline="1471">
+static void _outPlannerGlobal (StringInfo str, PlannerGlobal *node) {
+    WRITE_NODE_TYPE ("PLANNERGLOBAL");
+    WRITE_NODE_FIELD (paramlist);
+    WRITE_NODE_FIELD (subplans);
+    WRITE_NODE_FIELD (subrtables);
+    WRITE_BITMAPSET_FIELD (rewindPlanIDs);
+    WRITE_NODE_FIELD (finalrtable);
+    WRITE_NODE_FIELD (relationOids);
+    WRITE_NODE_FIELD (invalItems);
+    WRITE_UINT_FIELD (lastPHId);
+    WRITE_BOOL_FIELD (transientPlan);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1473" endline="1508">
+static void _outPlannerInfo (StringInfo str, PlannerInfo *node) {
+    WRITE_NODE_TYPE ("PLANNERINFO");
+    WRITE_NODE_FIELD (parse);
+    WRITE_NODE_FIELD (glob);
+    WRITE_UINT_FIELD (query_level);
+    WRITE_NODE_FIELD (join_rel_list);
+    WRITE_NODE_FIELD (resultRelations);
+    WRITE_NODE_FIELD (returningLists);
+    WRITE_NODE_FIELD (init_plans);
+    WRITE_NODE_FIELD (cte_plan_ids);
+    WRITE_NODE_FIELD (eq_classes);
+    WRITE_NODE_FIELD (canon_pathkeys);
+    WRITE_NODE_FIELD (left_join_clauses);
+    WRITE_NODE_FIELD (right_join_clauses);
+    WRITE_NODE_FIELD (full_join_clauses);
+    WRITE_NODE_FIELD (join_info_list);
+    WRITE_NODE_FIELD (append_rel_list);
+    WRITE_NODE_FIELD (placeholder_list);
+    WRITE_NODE_FIELD (query_pathkeys);
+    WRITE_NODE_FIELD (group_pathkeys);
+    WRITE_NODE_FIELD (window_pathkeys);
+    WRITE_NODE_FIELD (distinct_pathkeys);
+    WRITE_NODE_FIELD (sort_pathkeys);
+    WRITE_FLOAT_FIELD (total_table_pages, "%.0f");
+    WRITE_FLOAT_FIELD (tuple_fraction, "%.4f");
+    WRITE_BOOL_FIELD (hasInheritedTarget);
+    WRITE_BOOL_FIELD (hasJoinRTEs);
+    WRITE_BOOL_FIELD (hasHavingQual);
+    WRITE_BOOL_FIELD (hasPseudoConstantQuals);
+    WRITE_BOOL_FIELD (hasRecursion);
+    WRITE_INT_FIELD (wt_param_id);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1510" endline="1539">
+static void _outRelOptInfo (StringInfo str, RelOptInfo *node) {
+    WRITE_NODE_TYPE ("RELOPTINFO");
+    WRITE_ENUM_FIELD (reloptkind, RelOptKind);
+    WRITE_BITMAPSET_FIELD (relids);
+    WRITE_FLOAT_FIELD (rows, "%.0f");
+    WRITE_INT_FIELD (width);
+    WRITE_NODE_FIELD (reltargetlist);
+    WRITE_NODE_FIELD (pathlist);
+    WRITE_NODE_FIELD (cheapest_startup_path);
+    WRITE_NODE_FIELD (cheapest_total_path);
+    WRITE_NODE_FIELD (cheapest_unique_path);
+    WRITE_UINT_FIELD (relid);
+    WRITE_ENUM_FIELD (rtekind, RTEKind);
+    WRITE_INT_FIELD (min_attr);
+    WRITE_INT_FIELD (max_attr);
+    WRITE_NODE_FIELD (indexlist);
+    WRITE_UINT_FIELD (pages);
+    WRITE_FLOAT_FIELD (tuples, "%.0f");
+    WRITE_NODE_FIELD (subplan);
+    WRITE_NODE_FIELD (subrtable);
+    WRITE_NODE_FIELD (baserestrictinfo);
+    WRITE_NODE_FIELD (joininfo);
+    WRITE_BOOL_FIELD (has_eclass_joins);
+    WRITE_BITMAPSET_FIELD (index_outer_relids);
+    WRITE_NODE_FIELD (index_inner_paths);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1541" endline="1556">
+static void _outIndexOptInfo (StringInfo str, IndexOptInfo *node) {
+    WRITE_NODE_TYPE ("INDEXOPTINFO");
+    WRITE_OID_FIELD (indexoid);
+    WRITE_UINT_FIELD (pages);
+    WRITE_FLOAT_FIELD (tuples, "%.0f");
+    WRITE_INT_FIELD (ncolumns);
+    WRITE_NODE_FIELD (indexprs);
+    WRITE_NODE_FIELD (indpred);
+    WRITE_BOOL_FIELD (predOK);
+    WRITE_BOOL_FIELD (unique);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1558" endline="1580">
+static void _outEquivalenceClass (StringInfo str, EquivalenceClass *node) {
+    while (node->ec_merged)
+        node = node->ec_merged;
+    WRITE_NODE_TYPE ("EQUIVALENCECLASS");
+    WRITE_NODE_FIELD (ec_opfamilies);
+    WRITE_NODE_FIELD (ec_members);
+    WRITE_NODE_FIELD (ec_sources);
+    WRITE_NODE_FIELD (ec_derives);
+    WRITE_BITMAPSET_FIELD (ec_relids);
+    WRITE_BOOL_FIELD (ec_has_const);
+    WRITE_BOOL_FIELD (ec_has_volatile);
+    WRITE_BOOL_FIELD (ec_below_outer_join);
+    WRITE_BOOL_FIELD (ec_broken);
+    WRITE_UINT_FIELD (ec_sortref);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1582" endline="1592">
+static void _outEquivalenceMember (StringInfo str, EquivalenceMember *node) {
+    WRITE_NODE_TYPE ("EQUIVALENCEMEMBER");
+    WRITE_NODE_FIELD (em_expr);
+    WRITE_BITMAPSET_FIELD (em_relids);
+    WRITE_BOOL_FIELD (em_is_const);
+    WRITE_BOOL_FIELD (em_is_child);
+    WRITE_OID_FIELD (em_datatype);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1594" endline="1603">
+static void _outPathKey (StringInfo str, PathKey *node) {
+    WRITE_NODE_TYPE ("PATHKEY");
+    WRITE_NODE_FIELD (pk_eclass);
+    WRITE_OID_FIELD (pk_opfamily);
+    WRITE_INT_FIELD (pk_strategy);
+    WRITE_BOOL_FIELD (pk_nulls_first);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1605" endline="1632">
+static void _outRestrictInfo (StringInfo str, RestrictInfo *node) {
+    WRITE_NODE_TYPE ("RESTRICTINFO");
+    WRITE_NODE_FIELD (clause);
+    WRITE_BOOL_FIELD (is_pushed_down);
+    WRITE_BOOL_FIELD (outerjoin_delayed);
+    WRITE_BOOL_FIELD (can_join);
+    WRITE_BOOL_FIELD (pseudoconstant);
+    WRITE_BITMAPSET_FIELD (clause_relids);
+    WRITE_BITMAPSET_FIELD (required_relids);
+    WRITE_BITMAPSET_FIELD (nullable_relids);
+    WRITE_BITMAPSET_FIELD (left_relids);
+    WRITE_BITMAPSET_FIELD (right_relids);
+    WRITE_NODE_FIELD (orclause);
+    WRITE_FLOAT_FIELD (norm_selec, "%.4f");
+    WRITE_FLOAT_FIELD (outer_selec, "%.4f");
+    WRITE_NODE_FIELD (mergeopfamilies);
+    WRITE_NODE_FIELD (left_em);
+    WRITE_NODE_FIELD (right_em);
+    WRITE_BOOL_FIELD (outer_is_left);
+    WRITE_OID_FIELD (hashjoinoperator);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1634" endline="1642">
+static void _outInnerIndexscanInfo (StringInfo str, InnerIndexscanInfo *node) {
+    WRITE_NODE_TYPE ("INNERINDEXSCANINFO");
+    WRITE_BITMAPSET_FIELD (other_relids);
+    WRITE_BOOL_FIELD (isouterjoin);
+    WRITE_NODE_FIELD (cheapest_startup_innerpath);
+    WRITE_NODE_FIELD (cheapest_total_innerpath);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1644" endline="1653">
+static void _outPlaceHolderVar (StringInfo str, PlaceHolderVar *node) {
+    WRITE_NODE_TYPE ("PLACEHOLDERVAR");
+    WRITE_NODE_FIELD (phexpr);
+    WRITE_BITMAPSET_FIELD (phrels);
+    WRITE_UINT_FIELD (phid);
+    WRITE_UINT_FIELD (phlevelsup);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1655" endline="1668">
+static void _outSpecialJoinInfo (StringInfo str, SpecialJoinInfo *node) {
+    WRITE_NODE_TYPE ("SPECIALJOININFO");
+    WRITE_BITMAPSET_FIELD (min_lefthand);
+    WRITE_BITMAPSET_FIELD (min_righthand);
+    WRITE_BITMAPSET_FIELD (syn_lefthand);
+    WRITE_BITMAPSET_FIELD (syn_righthand);
+    WRITE_ENUM_FIELD (jointype, JoinType);
+    WRITE_BOOL_FIELD (lhs_strict);
+    WRITE_BOOL_FIELD (delay_upper_joins);
+    WRITE_NODE_FIELD (join_quals);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1670" endline="1681">
+static void _outAppendRelInfo (StringInfo str, AppendRelInfo *node) {
+    WRITE_NODE_TYPE ("APPENDRELINFO");
+    WRITE_UINT_FIELD (parent_relid);
+    WRITE_UINT_FIELD (child_relid);
+    WRITE_OID_FIELD (parent_reltype);
+    WRITE_OID_FIELD (child_reltype);
+    WRITE_NODE_FIELD (translated_vars);
+    WRITE_OID_FIELD (parent_reloid);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1683" endline="1694">
+static void _outPlaceHolderInfo (StringInfo str, PlaceHolderInfo *node) {
+    WRITE_NODE_TYPE ("PLACEHOLDERINFO");
+    WRITE_UINT_FIELD (phid);
+    WRITE_NODE_FIELD (ph_var);
+    WRITE_BITMAPSET_FIELD (ph_eval_at);
+    WRITE_BITMAPSET_FIELD (ph_needed);
+    WRITE_BITMAPSET_FIELD (ph_may_need);
+    WRITE_INT_FIELD (ph_width);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1696" endline="1703">
+static void _outPlannerParamItem (StringInfo str, PlannerParamItem *node) {
+    WRITE_NODE_TYPE ("PLANNERPARAMITEM");
+    WRITE_NODE_FIELD (item);
+    WRITE_UINT_FIELD (abslevel);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1711" endline="1723">
+static void _outCreateStmt (StringInfo str, CreateStmt *node) {
+    WRITE_NODE_TYPE ("CREATESTMT");
+    WRITE_NODE_FIELD (relation);
+    WRITE_NODE_FIELD (tableElts);
+    WRITE_NODE_FIELD (inhRelations);
+    WRITE_NODE_FIELD (constraints);
+    WRITE_NODE_FIELD (options);
+    WRITE_ENUM_FIELD (oncommit, OnCommitAction);
+    WRITE_STRING_FIELD (tablespacename);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1725" endline="1741">
+static void _outIndexStmt (StringInfo str, IndexStmt *node) {
+    WRITE_NODE_TYPE ("INDEXSTMT");
+    WRITE_STRING_FIELD (idxname);
+    WRITE_NODE_FIELD (relation);
+    WRITE_STRING_FIELD (accessMethod);
+    WRITE_STRING_FIELD (tableSpace);
+    WRITE_NODE_FIELD (indexParams);
+    WRITE_NODE_FIELD (options);
+    WRITE_NODE_FIELD (whereClause);
+    WRITE_BOOL_FIELD (unique);
+    WRITE_BOOL_FIELD (primary);
+    WRITE_BOOL_FIELD (isconstraint);
+    WRITE_BOOL_FIELD (concurrent);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1743" endline="1749">
+static void _outNotifyStmt (StringInfo str, NotifyStmt *node) {
+    WRITE_NODE_TYPE ("NOTIFY");
+    WRITE_STRING_FIELD (conditionname);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1751" endline="1759">
+static void _outDeclareCursorStmt (StringInfo str, DeclareCursorStmt *node) {
+    WRITE_NODE_TYPE ("DECLARECURSOR");
+    WRITE_STRING_FIELD (portalname);
+    WRITE_INT_FIELD (options);
+    WRITE_NODE_FIELD (query);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1761" endline="1784">
+static void _outSelectStmt (StringInfo str, SelectStmt *node) {
+    WRITE_NODE_TYPE ("SELECT");
+    WRITE_NODE_FIELD (distinctClause);
+    WRITE_NODE_FIELD (intoClause);
+    WRITE_NODE_FIELD (targetList);
+    WRITE_NODE_FIELD (fromClause);
+    WRITE_NODE_FIELD (whereClause);
+    WRITE_NODE_FIELD (groupClause);
+    WRITE_NODE_FIELD (havingClause);
+    WRITE_NODE_FIELD (windowClause);
+    WRITE_NODE_FIELD (withClause);
+    WRITE_NODE_FIELD (valuesLists);
+    WRITE_NODE_FIELD (sortClause);
+    WRITE_NODE_FIELD (limitOffset);
+    WRITE_NODE_FIELD (limitCount);
+    WRITE_NODE_FIELD (lockingClause);
+    WRITE_ENUM_FIELD (op, SetOperation);
+    WRITE_BOOL_FIELD (all);
+    WRITE_NODE_FIELD (larg);
+    WRITE_NODE_FIELD (rarg);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1786" endline="1798">
+static void _outFuncCall (StringInfo str, FuncCall *node) {
+    WRITE_NODE_TYPE ("FUNCCALL");
+    WRITE_NODE_FIELD (funcname);
+    WRITE_NODE_FIELD (args);
+    WRITE_BOOL_FIELD (agg_star);
+    WRITE_BOOL_FIELD (agg_distinct);
+    WRITE_BOOL_FIELD (func_variadic);
+    WRITE_NODE_FIELD (over);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1800" endline="1809">
+static void _outDefElem (StringInfo str, DefElem *node) {
+    WRITE_NODE_TYPE ("DEFELEM");
+    WRITE_STRING_FIELD (defnamespace);
+    WRITE_STRING_FIELD (defname);
+    WRITE_NODE_FIELD (arg);
+    WRITE_ENUM_FIELD (defaction, DefElemAction);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1811" endline="1818">
+static void _outInhRelation (StringInfo str, InhRelation *node) {
+    WRITE_NODE_TYPE ("INHRELATION");
+    WRITE_NODE_FIELD (relation);
+    WRITE_NODE_FIELD (options);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1820" endline="1828">
+static void _outLockingClause (StringInfo str, LockingClause *node) {
+    WRITE_NODE_TYPE ("LOCKINGCLAUSE");
+    WRITE_NODE_FIELD (lockedRels);
+    WRITE_BOOL_FIELD (forUpdate);
+    WRITE_BOOL_FIELD (noWait);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1830" endline="1839">
+static void _outXmlSerialize (StringInfo str, XmlSerialize *node) {
+    WRITE_NODE_TYPE ("XMLSERIALIZE");
+    WRITE_ENUM_FIELD (xmloption, XmlOptionType);
+    WRITE_NODE_FIELD (expr);
+    WRITE_NODE_FIELD (typename);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1841" endline="1854">
+static void _outColumnDef (StringInfo str, ColumnDef *node) {
+    WRITE_NODE_TYPE ("COLUMNDEF");
+    WRITE_STRING_FIELD (colname);
+    WRITE_NODE_FIELD (typename);
+    WRITE_INT_FIELD (inhcount);
+    WRITE_BOOL_FIELD (is_local);
+    WRITE_BOOL_FIELD (is_not_null);
+    WRITE_NODE_FIELD (raw_default);
+    WRITE_NODE_FIELD (cooked_default);
+    WRITE_NODE_FIELD (constraints);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1856" endline="1869">
+static void _outTypeName (StringInfo str, TypeName *node) {
+    WRITE_NODE_TYPE ("TYPENAME");
+    WRITE_NODE_FIELD (names);
+    WRITE_OID_FIELD (typeid);
+    WRITE_BOOL_FIELD (setof);
+    WRITE_BOOL_FIELD (pct_type);
+    WRITE_NODE_FIELD (typmods);
+    WRITE_INT_FIELD (typemod);
+    WRITE_NODE_FIELD (arrayBounds);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1871" endline="1879">
+static void _outTypeCast (StringInfo str, TypeCast *node) {
+    WRITE_NODE_TYPE ("TYPECAST");
+    WRITE_NODE_FIELD (arg);
+    WRITE_NODE_FIELD (typename);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1881" endline="1891">
+static void _outIndexElem (StringInfo str, IndexElem *node) {
+    WRITE_NODE_TYPE ("INDEXELEM");
+    WRITE_STRING_FIELD (name);
+    WRITE_NODE_FIELD (expr);
+    WRITE_NODE_FIELD (opclass);
+    WRITE_ENUM_FIELD (ordering, SortByDir);
+    WRITE_ENUM_FIELD (nulls_ordering, SortByNulls);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1893" endline="1948">
+static void _outQuery (StringInfo str, Query *node) {
+    WRITE_NODE_TYPE ("QUERY");
+    WRITE_ENUM_FIELD (commandType, CmdType);
+    WRITE_ENUM_FIELD (querySource, QuerySource);
+    WRITE_BOOL_FIELD (canSetTag);
+    if (node->utilityStmt) {
+        switch (nodeTag (node->utilityStmt)) {
+        case T_CreateStmt :
+        case T_IndexStmt :
+        case T_NotifyStmt :
+        case T_DeclareCursorStmt :
+            WRITE_NODE_FIELD (utilityStmt);
+            break;
+        default :
+            appendStringInfo (str, " :utilityStmt ?");
+            break;
+        }
+    }
+    else
+        appendStringInfo (str, " :utilityStmt <>");
+    WRITE_INT_FIELD (resultRelation);
+    WRITE_NODE_FIELD (intoClause);
+    WRITE_BOOL_FIELD (hasAggs);
+    WRITE_BOOL_FIELD (hasWindowFuncs);
+    WRITE_BOOL_FIELD (hasSubLinks);
+    WRITE_BOOL_FIELD (hasDistinctOn);
+    WRITE_BOOL_FIELD (hasRecursive);
+    WRITE_NODE_FIELD (cteList);
+    WRITE_NODE_FIELD (rtable);
+    WRITE_NODE_FIELD (jointree);
+    WRITE_NODE_FIELD (targetList);
+    WRITE_NODE_FIELD (returningList);
+    WRITE_NODE_FIELD (groupClause);
+    WRITE_NODE_FIELD (havingQual);
+    WRITE_NODE_FIELD (windowClause);
+    WRITE_NODE_FIELD (distinctClause);
+    WRITE_NODE_FIELD (sortClause);
+    WRITE_NODE_FIELD (limitOffset);
+    WRITE_NODE_FIELD (limitCount);
+    WRITE_NODE_FIELD (rowMarks);
+    WRITE_NODE_FIELD (setOperations);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1950" endline="1959">
+static void _outSortGroupClause (StringInfo str, SortGroupClause *node) {
+    WRITE_NODE_TYPE ("SORTGROUPCLAUSE");
+    WRITE_UINT_FIELD (tleSortGroupRef);
+    WRITE_OID_FIELD (eqop);
+    WRITE_OID_FIELD (sortop);
+    WRITE_BOOL_FIELD (nulls_first);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1961" endline="1973">
+static void _outWindowClause (StringInfo str, WindowClause *node) {
+    WRITE_NODE_TYPE ("WINDOWCLAUSE");
+    WRITE_STRING_FIELD (name);
+    WRITE_STRING_FIELD (refname);
+    WRITE_NODE_FIELD (partitionClause);
+    WRITE_NODE_FIELD (orderClause);
+    WRITE_INT_FIELD (frameOptions);
+    WRITE_UINT_FIELD (winref);
+    WRITE_BOOL_FIELD (copiedOrder);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1975" endline="1985">
+static void _outRowMarkClause (StringInfo str, RowMarkClause *node) {
+    WRITE_NODE_TYPE ("ROWMARKCLAUSE");
+    WRITE_UINT_FIELD (rti);
+    WRITE_UINT_FIELD (prti);
+    WRITE_BOOL_FIELD (forUpdate);
+    WRITE_BOOL_FIELD (noWait);
+    WRITE_BOOL_FIELD (isParent);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1987" endline="1995">
+static void _outWithClause (StringInfo str, WithClause *node) {
+    WRITE_NODE_TYPE ("WITHCLAUSE");
+    WRITE_NODE_FIELD (ctes);
+    WRITE_BOOL_FIELD (recursive);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="1997" endline="2011">
+static void _outCommonTableExpr (StringInfo str, CommonTableExpr *node) {
+    WRITE_NODE_TYPE ("COMMONTABLEEXPR");
+    WRITE_STRING_FIELD (ctename);
+    WRITE_NODE_FIELD (aliascolnames);
+    WRITE_NODE_FIELD (ctequery);
+    WRITE_LOCATION_FIELD (location);
+    WRITE_BOOL_FIELD (cterecursive);
+    WRITE_INT_FIELD (cterefcount);
+    WRITE_NODE_FIELD (ctecolnames);
+    WRITE_NODE_FIELD (ctecoltypes);
+    WRITE_NODE_FIELD (ctecoltypmods);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2013" endline="2025">
+static void _outSetOperationStmt (StringInfo str, SetOperationStmt *node) {
+    WRITE_NODE_TYPE ("SETOPERATIONSTMT");
+    WRITE_ENUM_FIELD (op, SetOperation);
+    WRITE_BOOL_FIELD (all);
+    WRITE_NODE_FIELD (larg);
+    WRITE_NODE_FIELD (rarg);
+    WRITE_NODE_FIELD (colTypes);
+    WRITE_NODE_FIELD (colTypmods);
+    WRITE_NODE_FIELD (groupClauses);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2027" endline="2076">
+static void _outRangeTblEntry (StringInfo str, RangeTblEntry *node) {
+    WRITE_NODE_TYPE ("RTE");
+    WRITE_NODE_FIELD (alias);
+    WRITE_NODE_FIELD (eref);
+    WRITE_ENUM_FIELD (rtekind, RTEKind);
+    switch (node->rtekind) {
+    case RTE_RELATION :
+    case RTE_SPECIAL :
+        WRITE_OID_FIELD (relid);
+        break;
+    case RTE_SUBQUERY :
+        WRITE_NODE_FIELD (subquery);
+        break;
+    case RTE_JOIN :
+        WRITE_ENUM_FIELD (jointype, JoinType);
+        WRITE_NODE_FIELD (joinaliasvars);
+        break;
+    case RTE_FUNCTION :
+        WRITE_NODE_FIELD (funcexpr);
+        WRITE_NODE_FIELD (funccoltypes);
+        WRITE_NODE_FIELD (funccoltypmods);
+        break;
+    case RTE_VALUES :
+        WRITE_NODE_FIELD (values_lists);
+        break;
+    case RTE_CTE :
+        WRITE_STRING_FIELD (ctename);
+        WRITE_UINT_FIELD (ctelevelsup);
+        WRITE_BOOL_FIELD (self_reference);
+        WRITE_NODE_FIELD (ctecoltypes);
+        WRITE_NODE_FIELD (ctecoltypmods);
+        break;
+    default :
+        elog (ERROR, "unrecognized RTE kind: %d", (int) node->rtekind);
+        break;
+    }
+    WRITE_BOOL_FIELD (inh);
+    WRITE_BOOL_FIELD (inFromCl);
+    WRITE_UINT_FIELD (requiredPerms);
+    WRITE_OID_FIELD (checkAsUser);
+    WRITE_BITMAPSET_FIELD (selectedCols);
+    WRITE_BITMAPSET_FIELD (modifiedCols);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2078" endline="2132">
+static void _outAExpr (StringInfo str, A_Expr *node) {
+    WRITE_NODE_TYPE ("AEXPR");
+    switch (node->kind) {
+    case AEXPR_OP :
+        appendStringInfo (str, " ");
+        WRITE_NODE_FIELD (name);
+        break;
+    case AEXPR_AND :
+        appendStringInfo (str, " AND");
+        break;
+    case AEXPR_OR :
+        appendStringInfo (str, " OR");
+        break;
+    case AEXPR_NOT :
+        appendStringInfo (str, " NOT");
+        break;
+    case AEXPR_OP_ANY :
+        appendStringInfo (str, " ");
+        WRITE_NODE_FIELD (name);
+        appendStringInfo (str, " ANY ");
+        break;
+    case AEXPR_OP_ALL :
+        appendStringInfo (str, " ");
+        WRITE_NODE_FIELD (name);
+        appendStringInfo (str, " ALL ");
+        break;
+    case AEXPR_DISTINCT :
+        appendStringInfo (str, " DISTINCT ");
+        WRITE_NODE_FIELD (name);
+        break;
+    case AEXPR_NULLIF :
+        appendStringInfo (str, " NULLIF ");
+        WRITE_NODE_FIELD (name);
+        break;
+    case AEXPR_OF :
+        appendStringInfo (str, " OF ");
+        WRITE_NODE_FIELD (name);
+        break;
+    case AEXPR_IN :
+        appendStringInfo (str, " IN ");
+        WRITE_NODE_FIELD (name);
+        break;
+    default :
+        appendStringInfo (str, " ??");
+        break;
+    }
+    WRITE_NODE_FIELD (lexpr);
+    WRITE_NODE_FIELD (rexpr);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2134" endline="2167">
+static void _outValue (StringInfo str, Value *value) {
+    switch (value->type) {
+    case T_Integer :
+        appendStringInfo (str, "%ld", value->val.ival);
+        break;
+    case T_Float :
+        appendStringInfoString (str, value->val.str);
+        break;
+    case T_String :
+        appendStringInfoChar (str, '"');
+        _outToken (str, value -> val.str);
+        appendStringInfoChar (str, '"');
+        break;
+    case T_BitString :
+        appendStringInfoString (str, value->val.str);
+        break;
+    case T_Null :
+        appendStringInfoString (str, "NULL");
+        break;
+    default :
+        elog (ERROR, "unrecognized node type: %d", (int) value->type);
+        break;
+    }
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2169" endline="2176">
+static void _outColumnRef (StringInfo str, ColumnRef *node) {
+    WRITE_NODE_TYPE ("COLUMNREF");
+    WRITE_NODE_FIELD (fields);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2178" endline="2185">
+static void _outParamRef (StringInfo str, ParamRef *node) {
+    WRITE_NODE_TYPE ("PARAMREF");
+    WRITE_INT_FIELD (number);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2187" endline="2195">
+static void _outAConst (StringInfo str, A_Const *node) {
+    WRITE_NODE_TYPE ("A_CONST");
+    appendStringInfo (str, " :val ");
+    _outValue (str, & (node -> val));
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2197" endline="2201">
+static void _outA_Star (StringInfo str, A_Star *node) {
+    WRITE_NODE_TYPE ("A_STAR");
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2203" endline="2210">
+static void _outA_Indices (StringInfo str, A_Indices *node) {
+    WRITE_NODE_TYPE ("A_INDICES");
+    WRITE_NODE_FIELD (lidx);
+    WRITE_NODE_FIELD (uidx);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2212" endline="2219">
+static void _outA_Indirection (StringInfo str, A_Indirection *node) {
+    WRITE_NODE_TYPE ("A_INDIRECTION");
+    WRITE_NODE_FIELD (arg);
+    WRITE_NODE_FIELD (indirection);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2221" endline="2228">
+static void _outA_ArrayExpr (StringInfo str, A_ArrayExpr *node) {
+    WRITE_NODE_TYPE ("A_ARRAYEXPR");
+    WRITE_NODE_FIELD (elements);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2230" endline="2239">
+static void _outResTarget (StringInfo str, ResTarget *node) {
+    WRITE_NODE_TYPE ("RESTARGET");
+    WRITE_STRING_FIELD (name);
+    WRITE_NODE_FIELD (indirection);
+    WRITE_NODE_FIELD (val);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2241" endline="2251">
+static void _outSortBy (StringInfo str, SortBy *node) {
+    WRITE_NODE_TYPE ("SORTBY");
+    WRITE_NODE_FIELD (node);
+    WRITE_ENUM_FIELD (sortby_dir, SortByDir);
+    WRITE_ENUM_FIELD (sortby_nulls, SortByNulls);
+    WRITE_NODE_FIELD (useOp);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2253" endline="2264">
+static void _outWindowDef (StringInfo str, WindowDef *node) {
+    WRITE_NODE_TYPE ("WINDOWDEF");
+    WRITE_STRING_FIELD (name);
+    WRITE_STRING_FIELD (refname);
+    WRITE_NODE_FIELD (partitionClause);
+    WRITE_NODE_FIELD (orderClause);
+    WRITE_INT_FIELD (frameOptions);
+    WRITE_LOCATION_FIELD (location);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2266" endline="2273">
+static void _outRangeSubselect (StringInfo str, RangeSubselect *node) {
+    WRITE_NODE_TYPE ("RANGESUBSELECT");
+    WRITE_NODE_FIELD (subquery);
+    WRITE_NODE_FIELD (alias);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2275" endline="2283">
+static void _outRangeFunction (StringInfo str, RangeFunction *node) {
+    WRITE_NODE_TYPE ("RANGEFUNCTION");
+    WRITE_NODE_FIELD (funccallnode);
+    WRITE_NODE_FIELD (alias);
+    WRITE_NODE_FIELD (coldeflist);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2285" endline="2329">
+static void _outConstraint (StringInfo str, Constraint *node) {
+    WRITE_NODE_TYPE ("CONSTRAINT");
+    WRITE_STRING_FIELD (name);
+    appendStringInfo (str, " :contype ");
+    switch (node->contype) {
+    case CONSTR_PRIMARY :
+        appendStringInfo (str, "PRIMARY_KEY");
+        WRITE_NODE_FIELD (keys);
+        WRITE_NODE_FIELD (options);
+        WRITE_STRING_FIELD (indexspace);
+        break;
+    case CONSTR_UNIQUE :
+        appendStringInfo (str, "UNIQUE");
+        WRITE_NODE_FIELD (keys);
+        WRITE_NODE_FIELD (options);
+        WRITE_STRING_FIELD (indexspace);
+        break;
+    case CONSTR_CHECK :
+        appendStringInfo (str, "CHECK");
+        WRITE_NODE_FIELD (raw_expr);
+        WRITE_STRING_FIELD (cooked_expr);
+        break;
+    case CONSTR_DEFAULT :
+        appendStringInfo (str, "DEFAULT");
+        WRITE_NODE_FIELD (raw_expr);
+        WRITE_STRING_FIELD (cooked_expr);
+        break;
+    case CONSTR_NOTNULL :
+        appendStringInfo (str, "NOT_NULL");
+        break;
+    default :
+        appendStringInfo (str, "<unrecognized_constraint>");
+        break;
+    }
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2331" endline="2346">
+static void _outFkConstraint (StringInfo str, FkConstraint *node) {
+    WRITE_NODE_TYPE ("FKCONSTRAINT");
+    WRITE_STRING_FIELD (constr_name);
+    WRITE_NODE_FIELD (pktable);
+    WRITE_NODE_FIELD (fk_attrs);
+    WRITE_NODE_FIELD (pk_attrs);
+    WRITE_CHAR_FIELD (fk_matchtype);
+    WRITE_CHAR_FIELD (fk_upd_action);
+    WRITE_CHAR_FIELD (fk_del_action);
+    WRITE_BOOL_FIELD (deferrable);
+    WRITE_BOOL_FIELD (initdeferred);
+    WRITE_BOOL_FIELD (skip_validation);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2353" endline="2805">
+static void _outNode (StringInfo str, void *obj) {
+    if (obj == NULL)
+        appendStringInfo (str, "<>");
+    else if (IsA (obj, List) || IsA (obj, IntList) || IsA (obj, OidList))
+        _outList (str, obj);
+    else if (IsA (obj, Integer) || IsA (obj, Float) || IsA (obj, String) || IsA (obj, BitString)) {
+        _outValue (str, obj);
+    }
+    else {
+        appendStringInfoChar (str, '{');
+        switch (nodeTag (obj)) {
+        case T_PlannedStmt :
+            _outPlannedStmt (str, obj);
+            break;
+        case T_Plan :
+            _outPlan (str, obj);
+            break;
+        case T_Result :
+            _outResult (str, obj);
+            break;
+        case T_Append :
+            _outAppend (str, obj);
+            break;
+        case T_RecursiveUnion :
+            _outRecursiveUnion (str, obj);
+            break;
+        case T_BitmapAnd :
+            _outBitmapAnd (str, obj);
+            break;
+        case T_BitmapOr :
+            _outBitmapOr (str, obj);
+            break;
+        case T_Scan :
+            _outScan (str, obj);
+            break;
+        case T_SeqScan :
+            _outSeqScan (str, obj);
+            break;
+        case T_IndexScan :
+            _outIndexScan (str, obj);
+            break;
+        case T_BitmapIndexScan :
+            _outBitmapIndexScan (str, obj);
+            break;
+        case T_BitmapHeapScan :
+            _outBitmapHeapScan (str, obj);
+            break;
+        case T_TidScan :
+            _outTidScan (str, obj);
+            break;
+        case T_SubqueryScan :
+            _outSubqueryScan (str, obj);
+            break;
+        case T_FunctionScan :
+            _outFunctionScan (str, obj);
+            break;
+        case T_ValuesScan :
+            _outValuesScan (str, obj);
+            break;
+        case T_CteScan :
+            _outCteScan (str, obj);
+            break;
+        case T_WorkTableScan :
+            _outWorkTableScan (str, obj);
+            break;
+        case T_Join :
+            _outJoin (str, obj);
+            break;
+        case T_NestLoop :
+            _outNestLoop (str, obj);
+            break;
+        case T_MergeJoin :
+            _outMergeJoin (str, obj);
+            break;
+        case T_HashJoin :
+            _outHashJoin (str, obj);
+            break;
+        case T_Agg :
+            _outAgg (str, obj);
+            break;
+        case T_WindowAgg :
+            _outWindowAgg (str, obj);
+            break;
+        case T_Group :
+            _outGroup (str, obj);
+            break;
+        case T_Material :
+            _outMaterial (str, obj);
+            break;
+        case T_Sort :
+            _outSort (str, obj);
+            break;
+        case T_Unique :
+            _outUnique (str, obj);
+            break;
+        case T_Hash :
+            _outHash (str, obj);
+            break;
+        case T_SetOp :
+            _outSetOp (str, obj);
+            break;
+        case T_Limit :
+            _outLimit (str, obj);
+            break;
+        case T_PlanInvalItem :
+            _outPlanInvalItem (str, obj);
+            break;
+        case T_Alias :
+            _outAlias (str, obj);
+            break;
+        case T_RangeVar :
+            _outRangeVar (str, obj);
+            break;
+        case T_IntoClause :
+            _outIntoClause (str, obj);
+            break;
+        case T_Var :
+            _outVar (str, obj);
+            break;
+        case T_Const :
+            _outConst (str, obj);
+            break;
+        case T_Param :
+            _outParam (str, obj);
+            break;
+        case T_Aggref :
+            _outAggref (str, obj);
+            break;
+        case T_WindowFunc :
+            _outWindowFunc (str, obj);
+            break;
+        case T_ArrayRef :
+            _outArrayRef (str, obj);
+            break;
+        case T_FuncExpr :
+            _outFuncExpr (str, obj);
+            break;
+        case T_OpExpr :
+            _outOpExpr (str, obj);
+            break;
+        case T_DistinctExpr :
+            _outDistinctExpr (str, obj);
+            break;
+        case T_ScalarArrayOpExpr :
+            _outScalarArrayOpExpr (str, obj);
+            break;
+        case T_BoolExpr :
+            _outBoolExpr (str, obj);
+            break;
+        case T_SubLink :
+            _outSubLink (str, obj);
+            break;
+        case T_SubPlan :
+            _outSubPlan (str, obj);
+            break;
+        case T_AlternativeSubPlan :
+            _outAlternativeSubPlan (str, obj);
+            break;
+        case T_FieldSelect :
+            _outFieldSelect (str, obj);
+            break;
+        case T_FieldStore :
+            _outFieldStore (str, obj);
+            break;
+        case T_RelabelType :
+            _outRelabelType (str, obj);
+            break;
+        case T_CoerceViaIO :
+            _outCoerceViaIO (str, obj);
+            break;
+        case T_ArrayCoerceExpr :
+            _outArrayCoerceExpr (str, obj);
+            break;
+        case T_ConvertRowtypeExpr :
+            _outConvertRowtypeExpr (str, obj);
+            break;
+        case T_CaseExpr :
+            _outCaseExpr (str, obj);
+            break;
+        case T_CaseWhen :
+            _outCaseWhen (str, obj);
+            break;
+        case T_CaseTestExpr :
+            _outCaseTestExpr (str, obj);
+            break;
+        case T_ArrayExpr :
+            _outArrayExpr (str, obj);
+            break;
+        case T_RowExpr :
+            _outRowExpr (str, obj);
+            break;
+        case T_RowCompareExpr :
+            _outRowCompareExpr (str, obj);
+            break;
+        case T_CoalesceExpr :
+            _outCoalesceExpr (str, obj);
+            break;
+        case T_MinMaxExpr :
+            _outMinMaxExpr (str, obj);
+            break;
+        case T_XmlExpr :
+            _outXmlExpr (str, obj);
+            break;
+        case T_NullIfExpr :
+            _outNullIfExpr (str, obj);
+            break;
+        case T_NullTest :
+            _outNullTest (str, obj);
+            break;
+        case T_BooleanTest :
+            _outBooleanTest (str, obj);
+            break;
+        case T_CoerceToDomain :
+            _outCoerceToDomain (str, obj);
+            break;
+        case T_CoerceToDomainValue :
+            _outCoerceToDomainValue (str, obj);
+            break;
+        case T_SetToDefault :
+            _outSetToDefault (str, obj);
+            break;
+        case T_CurrentOfExpr :
+            _outCurrentOfExpr (str, obj);
+            break;
+        case T_TargetEntry :
+            _outTargetEntry (str, obj);
+            break;
+        case T_RangeTblRef :
+            _outRangeTblRef (str, obj);
+            break;
+        case T_JoinExpr :
+            _outJoinExpr (str, obj);
+            break;
+        case T_FromExpr :
+            _outFromExpr (str, obj);
+            break;
+        case T_Path :
+            _outPath (str, obj);
+            break;
+        case T_IndexPath :
+            _outIndexPath (str, obj);
+            break;
+        case T_BitmapHeapPath :
+            _outBitmapHeapPath (str, obj);
+            break;
+        case T_BitmapAndPath :
+            _outBitmapAndPath (str, obj);
+            break;
+        case T_BitmapOrPath :
+            _outBitmapOrPath (str, obj);
+            break;
+        case T_TidPath :
+            _outTidPath (str, obj);
+            break;
+        case T_AppendPath :
+            _outAppendPath (str, obj);
+            break;
+        case T_ResultPath :
+            _outResultPath (str, obj);
+            break;
+        case T_MaterialPath :
+            _outMaterialPath (str, obj);
+            break;
+        case T_UniquePath :
+            _outUniquePath (str, obj);
+            break;
+        case T_NestPath :
+            _outNestPath (str, obj);
+            break;
+        case T_MergePath :
+            _outMergePath (str, obj);
+            break;
+        case T_HashPath :
+            _outHashPath (str, obj);
+            break;
+        case T_PlannerGlobal :
+            _outPlannerGlobal (str, obj);
+            break;
+        case T_PlannerInfo :
+            _outPlannerInfo (str, obj);
+            break;
+        case T_RelOptInfo :
+            _outRelOptInfo (str, obj);
+            break;
+        case T_IndexOptInfo :
+            _outIndexOptInfo (str, obj);
+            break;
+        case T_EquivalenceClass :
+            _outEquivalenceClass (str, obj);
+            break;
+        case T_EquivalenceMember :
+            _outEquivalenceMember (str, obj);
+            break;
+        case T_PathKey :
+            _outPathKey (str, obj);
+            break;
+        case T_RestrictInfo :
+            _outRestrictInfo (str, obj);
+            break;
+        case T_InnerIndexscanInfo :
+            _outInnerIndexscanInfo (str, obj);
+            break;
+        case T_PlaceHolderVar :
+            _outPlaceHolderVar (str, obj);
+            break;
+        case T_SpecialJoinInfo :
+            _outSpecialJoinInfo (str, obj);
+            break;
+        case T_AppendRelInfo :
+            _outAppendRelInfo (str, obj);
+            break;
+        case T_PlaceHolderInfo :
+            _outPlaceHolderInfo (str, obj);
+            break;
+        case T_PlannerParamItem :
+            _outPlannerParamItem (str, obj);
+            break;
+        case T_CreateStmt :
+            _outCreateStmt (str, obj);
+            break;
+        case T_IndexStmt :
+            _outIndexStmt (str, obj);
+            break;
+        case T_NotifyStmt :
+            _outNotifyStmt (str, obj);
+            break;
+        case T_DeclareCursorStmt :
+            _outDeclareCursorStmt (str, obj);
+            break;
+        case T_SelectStmt :
+            _outSelectStmt (str, obj);
+            break;
+        case T_ColumnDef :
+            _outColumnDef (str, obj);
+            break;
+        case T_TypeName :
+            _outTypeName (str, obj);
+            break;
+        case T_TypeCast :
+            _outTypeCast (str, obj);
+            break;
+        case T_IndexElem :
+            _outIndexElem (str, obj);
+            break;
+        case T_Query :
+            _outQuery (str, obj);
+            break;
+        case T_SortGroupClause :
+            _outSortGroupClause (str, obj);
+            break;
+        case T_WindowClause :
+            _outWindowClause (str, obj);
+            break;
+        case T_RowMarkClause :
+            _outRowMarkClause (str, obj);
+            break;
+        case T_WithClause :
+            _outWithClause (str, obj);
+            break;
+        case T_CommonTableExpr :
+            _outCommonTableExpr (str, obj);
+            break;
+        case T_SetOperationStmt :
+            _outSetOperationStmt (str, obj);
+            break;
+        case T_RangeTblEntry :
+            _outRangeTblEntry (str, obj);
+            break;
+        case T_A_Expr :
+            _outAExpr (str, obj);
+            break;
+        case T_ColumnRef :
+            _outColumnRef (str, obj);
+            break;
+        case T_ParamRef :
+            _outParamRef (str, obj);
+            break;
+        case T_A_Const :
+            _outAConst (str, obj);
+            break;
+        case T_A_Star :
+            _outA_Star (str, obj);
+            break;
+        case T_A_Indices :
+            _outA_Indices (str, obj);
+            break;
+        case T_A_Indirection :
+            _outA_Indirection (str, obj);
+            break;
+        case T_A_ArrayExpr :
+            _outA_ArrayExpr (str, obj);
+            break;
+        case T_ResTarget :
+            _outResTarget (str, obj);
+            break;
+        case T_SortBy :
+            _outSortBy (str, obj);
+            break;
+        case T_WindowDef :
+            _outWindowDef (str, obj);
+            break;
+        case T_RangeSubselect :
+            _outRangeSubselect (str, obj);
+            break;
+        case T_RangeFunction :
+            _outRangeFunction (str, obj);
+            break;
+        case T_Constraint :
+            _outConstraint (str, obj);
+            break;
+        case T_FkConstraint :
+            _outFkConstraint (str, obj);
+            break;
+        case T_FuncCall :
+            _outFuncCall (str, obj);
+            break;
+        case T_DefElem :
+            _outDefElem (str, obj);
+            break;
+        case T_InhRelation :
+            _outInhRelation (str, obj);
+            break;
+        case T_LockingClause :
+            _outLockingClause (str, obj);
+            break;
+        case T_XmlSerialize :
+            _outXmlSerialize (str, obj);
+            break;
+        default :
+            elog (WARNING, "could not dump unrecognized node type: %d", (int) nodeTag (obj));
+            break;
+        }
+        appendStringInfoChar (str, '}');
+    }
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed" startline="2811" endline="2820">
+char *nodeToString (void *obj) {
+    StringInfoData str;
+    initStringInfo (& str);
+    _outNode (& str, obj);
+    return str.data;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="86" endline="97">
+void pq_beginmessage (StringInfo buf, char msgtype) {
+    initStringInfo (buf);
+    buf->cursor = msgtype;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="103" endline="107">
+void pq_sendbyte (StringInfo buf, int byt) {
+    appendStringInfoCharMacro (buf, byt);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="113" endline="117">
+void pq_sendbytes (StringInfo buf, const char *data, int datalen) {
+    appendBinaryStringInfo (buf, data, datalen);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="129" endline="149">
+void pq_sendcountedtext (StringInfo buf, const char *str, int slen, bool countincludesself) {
+    int extra = countincludesself ? 4 : 0;
+    char *p;
+    p = pg_server_to_client (str, slen);
+    if (p != str) {
+        slen = strlen (p);
+        pq_sendint (buf, slen + extra, 4);
+        appendBinaryStringInfo (buf, p, slen);
+        pfree (p);
+    }
+    else {
+        pq_sendint (buf, slen + extra, 4);
+        appendBinaryStringInfo (buf, str, slen);
+    }
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="161" endline="175">
+void pq_sendtext (StringInfo buf, const char *str, int slen) {
+    char *p;
+    p = pg_server_to_client (str, slen);
+    if (p != str) {
+        slen = strlen (p);
+        appendBinaryStringInfo (buf, p, slen);
+        pfree (p);
+    }
+    else
+        appendBinaryStringInfo (buf, str, slen);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="184" endline="199">
+void pq_sendstring (StringInfo buf, const char *str) {
+    int slen = strlen (str);
+    char *p;
+    p = pg_server_to_client (str, slen);
+    if (p != str) {
+        slen = strlen (p);
+        appendBinaryStringInfo (buf, p, slen + 1);
+        pfree (p);
+    }
+    else
+        appendBinaryStringInfo (buf, str, slen +1);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="216" endline="228">
+void pq_send_ascii_string (StringInfo buf, const char *str) {
+    while (*str) {
+        char ch = *str++;
+        if (IS_HIGHBIT_SET (ch))
+            ch = '?';
+        appendStringInfoCharMacro (buf, ch);
+    }
+    appendStringInfoChar (buf, '\0');
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="234" endline="259">
+void pq_sendint (StringInfo buf, int i, int b) {
+    unsigned char n8;
+    uint16 n16;
+    uint32 n32;
+    switch (b) {
+    case 1 :
+        n8 = (unsigned char) i;
+        appendBinaryStringInfo (buf, (char *) & n8, 1);
+        break;
+    case 2 :
+        n16 = htons ((uint16) i);
+        appendBinaryStringInfo (buf, (char *) & n16, 2);
+        break;
+    case 4 :
+        n32 = htonl ((uint32) i);
+        appendBinaryStringInfo (buf, (char *) & n32, 4);
+        break;
+    default :
+        elog (ERROR, "unsupported integer size %d", b);
+        break;
+    }
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="269" endline="288">
+void pq_sendint64 (StringInfo buf, int64 i) {
+    uint32 n32;
+    n32 = (uint32) (i >> 32);
+    n32 = htonl (n32);
+    appendBinaryStringInfo (buf, (char *) & n32, 4);
+    n32 = (uint32) i;
+    n32 = htonl (n32);
+    appendBinaryStringInfo (buf, (char *) & n32, 4);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="301" endline="314">
+void pq_sendfloat4 (StringInfo buf, float4 f) {
+    union {
+        float4 f;
+        uint32 i;
+    } swap;
+    swap.f = f;
+    swap.i = htonl (swap.i);
+    appendBinaryStringInfo (buf, (char *) & swap.i, 4);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="327" endline="360">
+void pq_sendfloat8 (StringInfo buf, float8 f) {
+    union {
+        float8 f;
+        int64 i;
+    } swap;
+    swap.f = f;
+    pq_sendint64 (buf, swap.i);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="369" endline="377">
+void pq_endmessage (StringInfo buf) {
+    (void) pq_putmessage (buf->cursor, buf->data, buf->len);
+    pfree (buf -> data);
+    buf->data = NULL;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="384" endline="393">
+void pq_begintypsend (StringInfo buf) {
+    initStringInfo (buf);
+    appendStringInfoCharMacro (buf, '\0');
+    appendStringInfoCharMacro (buf, '\0');
+    appendStringInfoCharMacro (buf, '\0');
+    appendStringInfoCharMacro (buf, '\0');
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="404" endline="414">
+bytea *pq_endtypsend (StringInfo buf) {
+    bytea *result = (bytea *) buf->data;
+    Assert (buf -> len >= VARHDRSZ);
+    SET_VARSIZE (result, buf -> len);
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="425" endline="439">
+void pq_puttextmessage (char msgtype, const char *str) {
+    int slen = strlen (str);
+    char *p;
+    p = pg_server_to_client (str, slen);
+    if (p != str) {
+        (void) pq_putmessage (msgtype, p, strlen (p) +1);
+        pfree (p);
+        return;
+    }
+    (void) pq_putmessage (msgtype, str, slen +1);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="446" endline="450">
+void pq_putemptymessage (char msgtype) {
+    (void) pq_putmessage (msgtype, NULL, 0);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="457" endline="465">
+int pq_getmsgbyte (StringInfo msg) {
+    if (msg->cursor >= msg->len)
+        ereport (ERROR, (errcode (ERRCODE_PROTOCOL_VIOLATION), errmsg ("no data left in message")));
+    return (unsigned char) msg->data[msg->cursor++];
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="473" endline="501">
+unsigned int pq_getmsgint (StringInfo msg, int b) {
+    unsigned int result;
+    unsigned char n8;
+    uint16 n16;
+    uint32 n32;
+    switch (b) {
+    case 1 :
+        pq_copymsgbytes (msg, (char *) &n8, 1);
+        result = n8;
+        break;
+    case 2 :
+        pq_copymsgbytes (msg, (char *) &n16, 2);
+        result = ntohs (n16);
+        break;
+    case 4 :
+        pq_copymsgbytes (msg, (char *) &n32, 4);
+        result = ntohl (n32);
+        break;
+    default :
+        elog (ERROR, "unsupported integer size %d", b);
+        result = 0;
+        break;
+    }
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="511" endline="537">
+int64 pq_getmsgint64 (StringInfo msg) {
+    int64 result;
+    uint32 h32;
+    uint32 l32;
+    pq_copymsgbytes (msg, (char *) & h32, 4);
+    pq_copymsgbytes (msg, (char *) & l32, 4);
+    h32 = ntohl (h32);
+    l32 = ntohl (l32);
+    result = h32;
+    result <<= 32;
+    result |= l32;
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="545" endline="556">
+float4 pq_getmsgfloat4 (StringInfo msg) {
+    union {
+        float4 f;
+        uint32 i;
+    } swap;
+    swap.i = pq_getmsgint (msg, 4);
+    return swap.f;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="564" endline="594">
+float8 pq_getmsgfloat8 (StringInfo msg) {
+    union {
+        float8 f;
+        int64 i;
+    } swap;
+    swap.i = pq_getmsgint64 (msg);
+    return swap.f;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="603" endline="615">
+const char *pq_getmsgbytes (StringInfo msg, int datalen) {
+    const char *result;
+    if (datalen < 0 || datalen > (msg->len - msg->cursor))
+        ereport (ERROR, (errcode (ERRCODE_PROTOCOL_VIOLATION), errmsg ("insufficient data left in message")));
+    result = &msg->data[msg->cursor];
+    msg->cursor += datalen;
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="623" endline="632">
+void pq_copymsgbytes (StringInfo msg, char *buf, int datalen) {
+    if (datalen < 0 || datalen > (msg->len - msg->cursor))
+        ereport (ERROR, (errcode (ERRCODE_PROTOCOL_VIOLATION), errmsg ("insufficient data left in message")));
+    memcpy (buf, & msg -> data [msg -> cursor], datalen);
+    msg->cursor += datalen;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="641" endline="665">
+char *pq_getmsgtext (StringInfo msg, int rawbytes, int *nbytes) {
+    char *str;
+    char *p;
+    if (rawbytes < 0 || rawbytes > (msg->len - msg->cursor))
+        ereport (ERROR, (errcode (ERRCODE_PROTOCOL_VIOLATION), errmsg ("insufficient data left in message")));
+    str = &msg->data[msg->cursor];
+    msg->cursor += rawbytes;
+    p = pg_client_to_server (str, rawbytes);
+    if (p != str)
+        *nbytes = strlen (p);
+    else {
+        p = (char *) palloc (rawbytes +1);
+        memcpy (p, str, rawbytes);
+        p[rawbytes] = '\0';
+        *nbytes = rawbytes;
+    }
+    return p;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="674" endline="695">
+const char *pq_getmsgstring (StringInfo msg) {
+    char *str;
+    int slen;
+    str = &msg->data[msg->cursor];
+    slen = strlen (str);
+    if (msg->cursor + slen >= msg->len)
+        ereport (ERROR, (errcode (ERRCODE_PROTOCOL_VIOLATION), errmsg ("invalid string in message")));
+    msg->cursor += slen + 1;
+    return pg_client_to_server (str, slen);
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/pqformat.c.ifdefed" startline="701" endline="708">
+void pq_getmsgend (StringInfo msg) {
+    if (msg->cursor != msg->len)
+        ereport (ERROR, (errcode (ERRCODE_PROTOCOL_VIOLATION), errmsg ("invalid message format")));
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="148" endline="184">
+static Bitmapset *_readBitmapset (void) {
+    Bitmapset *result = NULL;
+    READ_TEMP_LOCALS ();
+    token = pg_strtok (&length);
+    if (token == NULL)
+        elog (ERROR, "incomplete Bitmapset structure");
+    if (length != 1 || token[0] != '(')
+        elog (ERROR, "unrecognized token: \"%.*s\"", length, token);
+    token = pg_strtok (&length);
+    if (token == NULL)
+        elog (ERROR, "incomplete Bitmapset structure");
+    if (length != 1 || token[0] != 'b')
+        elog (ERROR, "unrecognized token: \"%.*s\"", length, token);
+    for (;;) {
+        int val;
+        char *endptr;
+        token = pg_strtok (&length);
+        if (token == NULL)
+            elog (ERROR, "unterminated Bitmapset structure");
+        if (length == 1 && token[0] == ')')
+            break;
+        val = (int) strtol (token, &endptr, 10);
+        if (endptr != token + length)
+            elog (ERROR, "unrecognized integer: \"%.*s\"", length, token);
+        result = bms_add_member (result, val);
+    }
+    return result;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="190" endline="222">
+static Query *_readQuery (void) {
+    READ_LOCALS (Query);
+    READ_ENUM_FIELD (commandType, CmdType);
+    READ_ENUM_FIELD (querySource, QuerySource);
+    READ_BOOL_FIELD (canSetTag);
+    READ_NODE_FIELD (utilityStmt);
+    READ_INT_FIELD (resultRelation);
+    READ_NODE_FIELD (intoClause);
+    READ_BOOL_FIELD (hasAggs);
+    READ_BOOL_FIELD (hasWindowFuncs);
+    READ_BOOL_FIELD (hasSubLinks);
+    READ_BOOL_FIELD (hasDistinctOn);
+    READ_BOOL_FIELD (hasRecursive);
+    READ_NODE_FIELD (cteList);
+    READ_NODE_FIELD (rtable);
+    READ_NODE_FIELD (jointree);
+    READ_NODE_FIELD (targetList);
+    READ_NODE_FIELD (returningList);
+    READ_NODE_FIELD (groupClause);
+    READ_NODE_FIELD (havingQual);
+    READ_NODE_FIELD (windowClause);
+    READ_NODE_FIELD (distinctClause);
+    READ_NODE_FIELD (sortClause);
+    READ_NODE_FIELD (limitOffset);
+    READ_NODE_FIELD (limitCount);
+    READ_NODE_FIELD (rowMarks);
+    READ_NODE_FIELD (setOperations);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="227" endline="235">
+static NotifyStmt *_readNotifyStmt (void) {
+    READ_LOCALS (NotifyStmt);
+    READ_STRING_FIELD (conditionname);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="240" endline="250">
+static DeclareCursorStmt *_readDeclareCursorStmt (void) {
+    READ_LOCALS (DeclareCursorStmt);
+    READ_STRING_FIELD (portalname);
+    READ_INT_FIELD (options);
+    READ_NODE_FIELD (query);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="255" endline="266">
+static SortGroupClause *_readSortGroupClause (void) {
+    READ_LOCALS (SortGroupClause);
+    READ_UINT_FIELD (tleSortGroupRef);
+    READ_OID_FIELD (eqop);
+    READ_OID_FIELD (sortop);
+    READ_BOOL_FIELD (nulls_first);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="271" endline="285">
+static WindowClause *_readWindowClause (void) {
+    READ_LOCALS (WindowClause);
+    READ_STRING_FIELD (name);
+    READ_STRING_FIELD (refname);
+    READ_NODE_FIELD (partitionClause);
+    READ_NODE_FIELD (orderClause);
+    READ_INT_FIELD (frameOptions);
+    READ_UINT_FIELD (winref);
+    READ_BOOL_FIELD (copiedOrder);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="290" endline="302">
+static RowMarkClause *_readRowMarkClause (void) {
+    READ_LOCALS (RowMarkClause);
+    READ_UINT_FIELD (rti);
+    READ_UINT_FIELD (prti);
+    READ_BOOL_FIELD (forUpdate);
+    READ_BOOL_FIELD (noWait);
+    READ_BOOL_FIELD (isParent);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="307" endline="323">
+static CommonTableExpr *_readCommonTableExpr (void) {
+    READ_LOCALS (CommonTableExpr);
+    READ_STRING_FIELD (ctename);
+    READ_NODE_FIELD (aliascolnames);
+    READ_NODE_FIELD (ctequery);
+    READ_LOCATION_FIELD (location);
+    READ_BOOL_FIELD (cterecursive);
+    READ_INT_FIELD (cterefcount);
+    READ_NODE_FIELD (ctecolnames);
+    READ_NODE_FIELD (ctecoltypes);
+    READ_NODE_FIELD (ctecoltypmods);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="328" endline="342">
+static SetOperationStmt *_readSetOperationStmt (void) {
+    READ_LOCALS (SetOperationStmt);
+    READ_ENUM_FIELD (op, SetOperation);
+    READ_BOOL_FIELD (all);
+    READ_NODE_FIELD (larg);
+    READ_NODE_FIELD (rarg);
+    READ_NODE_FIELD (colTypes);
+    READ_NODE_FIELD (colTypmods);
+    READ_NODE_FIELD (groupClauses);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="349" endline="358">
+static Alias *_readAlias (void) {
+    READ_LOCALS (Alias);
+    READ_STRING_FIELD (aliasname);
+    READ_NODE_FIELD (colnames);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="360" endline="376">
+static RangeVar *_readRangeVar (void) {
+    READ_LOCALS (RangeVar);
+    local_node->catalogname = NULL;
+    READ_STRING_FIELD (schemaname);
+    READ_STRING_FIELD (relname);
+    READ_ENUM_FIELD (inhOpt, InhOption);
+    READ_BOOL_FIELD (istemp);
+    READ_NODE_FIELD (alias);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="378" endline="390">
+static IntoClause *_readIntoClause (void) {
+    READ_LOCALS (IntoClause);
+    READ_NODE_FIELD (rel);
+    READ_NODE_FIELD (colNames);
+    READ_NODE_FIELD (options);
+    READ_ENUM_FIELD (onCommit, OnCommitAction);
+    READ_STRING_FIELD (tableSpaceName);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="395" endline="410">
+static Var *_readVar (void) {
+    READ_LOCALS (Var);
+    READ_UINT_FIELD (varno);
+    READ_INT_FIELD (varattno);
+    READ_OID_FIELD (vartype);
+    READ_INT_FIELD (vartypmod);
+    READ_UINT_FIELD (varlevelsup);
+    READ_UINT_FIELD (varnoold);
+    READ_INT_FIELD (varoattno);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="415" endline="434">
+static Const *_readConst (void) {
+    READ_LOCALS (Const);
+    READ_OID_FIELD (consttype);
+    READ_INT_FIELD (consttypmod);
+    READ_INT_FIELD (constlen);
+    READ_BOOL_FIELD (constbyval);
+    READ_BOOL_FIELD (constisnull);
+    READ_LOCATION_FIELD (location);
+    token = pg_strtok (&length);
+    if (local_node->constisnull)
+        token = pg_strtok (&length);
+    else
+        local_node->constvalue = readDatum (local_node->constbyval);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="439" endline="451">
+static Param *_readParam (void) {
+    READ_LOCALS (Param);
+    READ_ENUM_FIELD (paramkind, ParamKind);
+    READ_INT_FIELD (paramid);
+    READ_OID_FIELD (paramtype);
+    READ_INT_FIELD (paramtypmod);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="456" endline="470">
+static Aggref *_readAggref (void) {
+    READ_LOCALS (Aggref);
+    READ_OID_FIELD (aggfnoid);
+    READ_OID_FIELD (aggtype);
+    READ_NODE_FIELD (args);
+    READ_UINT_FIELD (agglevelsup);
+    READ_BOOL_FIELD (aggstar);
+    READ_BOOL_FIELD (aggdistinct);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="475" endline="489">
+static WindowFunc *_readWindowFunc (void) {
+    READ_LOCALS (WindowFunc);
+    READ_OID_FIELD (winfnoid);
+    READ_OID_FIELD (wintype);
+    READ_NODE_FIELD (args);
+    READ_UINT_FIELD (winref);
+    READ_BOOL_FIELD (winstar);
+    READ_BOOL_FIELD (winagg);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="494" endline="508">
+static ArrayRef *_readArrayRef (void) {
+    READ_LOCALS (ArrayRef);
+    READ_OID_FIELD (refarraytype);
+    READ_OID_FIELD (refelemtype);
+    READ_INT_FIELD (reftypmod);
+    READ_NODE_FIELD (refupperindexpr);
+    READ_NODE_FIELD (reflowerindexpr);
+    READ_NODE_FIELD (refexpr);
+    READ_NODE_FIELD (refassgnexpr);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="513" endline="526">
+static FuncExpr *_readFuncExpr (void) {
+    READ_LOCALS (FuncExpr);
+    READ_OID_FIELD (funcid);
+    READ_OID_FIELD (funcresulttype);
+    READ_BOOL_FIELD (funcretset);
+    READ_ENUM_FIELD (funcformat, CoercionForm);
+    READ_NODE_FIELD (args);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="531" endline="555">
+static OpExpr *_readOpExpr (void) {
+    READ_LOCALS (OpExpr);
+    READ_OID_FIELD (opno);
+    READ_OID_FIELD (opfuncid);
+    local_node->opfuncid = InvalidOid;
+    READ_OID_FIELD (opresulttype);
+    READ_BOOL_FIELD (opretset);
+    READ_NODE_FIELD (args);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="560" endline="584">
+static DistinctExpr *_readDistinctExpr (void) {
+    READ_LOCALS (DistinctExpr);
+    READ_OID_FIELD (opno);
+    READ_OID_FIELD (opfuncid);
+    local_node->opfuncid = InvalidOid;
+    READ_OID_FIELD (opresulttype);
+    READ_BOOL_FIELD (opretset);
+    READ_NODE_FIELD (args);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="589" endline="612">
+static ScalarArrayOpExpr *_readScalarArrayOpExpr (void) {
+    READ_LOCALS (ScalarArrayOpExpr);
+    READ_OID_FIELD (opno);
+    READ_OID_FIELD (opfuncid);
+    local_node->opfuncid = InvalidOid;
+    READ_BOOL_FIELD (useOr);
+    READ_NODE_FIELD (args);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="617" endline="638">
+static BoolExpr *_readBoolExpr (void) {
+    READ_LOCALS (BoolExpr);
+    token = pg_strtok (&length);
+    token = pg_strtok (&length);
+    if (strncmp (token, "and", 3) == 0)
+        local_node->boolop = AND_EXPR;
+    else if (strncmp (token, "or", 2) == 0)
+        local_node->boolop = OR_EXPR;
+    else if (strncmp (token, "not", 3) == 0)
+        local_node->boolop = NOT_EXPR;
+    else
+        elog (ERROR, "unrecognized boolop \"%.*s\"", length, token);
+    READ_NODE_FIELD (args);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="643" endline="655">
+static SubLink *_readSubLink (void) {
+    READ_LOCALS (SubLink);
+    READ_ENUM_FIELD (subLinkType, SubLinkType);
+    READ_NODE_FIELD (testexpr);
+    READ_NODE_FIELD (operName);
+    READ_NODE_FIELD (subselect);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="664" endline="675">
+static FieldSelect *_readFieldSelect (void) {
+    READ_LOCALS (FieldSelect);
+    READ_NODE_FIELD (arg);
+    READ_INT_FIELD (fieldnum);
+    READ_OID_FIELD (resulttype);
+    READ_INT_FIELD (resulttypmod);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="680" endline="691">
+static FieldStore *_readFieldStore (void) {
+    READ_LOCALS (FieldStore);
+    READ_NODE_FIELD (arg);
+    READ_NODE_FIELD (newvals);
+    READ_NODE_FIELD (fieldnums);
+    READ_OID_FIELD (resulttype);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="696" endline="708">
+static RelabelType *_readRelabelType (void) {
+    READ_LOCALS (RelabelType);
+    READ_NODE_FIELD (arg);
+    READ_OID_FIELD (resulttype);
+    READ_INT_FIELD (resulttypmod);
+    READ_ENUM_FIELD (relabelformat, CoercionForm);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="713" endline="724">
+static CoerceViaIO *_readCoerceViaIO (void) {
+    READ_LOCALS (CoerceViaIO);
+    READ_NODE_FIELD (arg);
+    READ_OID_FIELD (resulttype);
+    READ_ENUM_FIELD (coerceformat, CoercionForm);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="729" endline="743">
+static ArrayCoerceExpr *_readArrayCoerceExpr (void) {
+    READ_LOCALS (ArrayCoerceExpr);
+    READ_NODE_FIELD (arg);
+    READ_OID_FIELD (elemfuncid);
+    READ_OID_FIELD (resulttype);
+    READ_INT_FIELD (resulttypmod);
+    READ_BOOL_FIELD (isExplicit);
+    READ_ENUM_FIELD (coerceformat, CoercionForm);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="748" endline="759">
+static ConvertRowtypeExpr *_readConvertRowtypeExpr (void) {
+    READ_LOCALS (ConvertRowtypeExpr);
+    READ_NODE_FIELD (arg);
+    READ_OID_FIELD (resulttype);
+    READ_ENUM_FIELD (convertformat, CoercionForm);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="764" endline="776">
+static CaseExpr *_readCaseExpr (void) {
+    READ_LOCALS (CaseExpr);
+    READ_OID_FIELD (casetype);
+    READ_NODE_FIELD (arg);
+    READ_NODE_FIELD (args);
+    READ_NODE_FIELD (defresult);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="781" endline="791">
+static CaseWhen *_readCaseWhen (void) {
+    READ_LOCALS (CaseWhen);
+    READ_NODE_FIELD (expr);
+    READ_NODE_FIELD (result);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="796" endline="805">
+static CaseTestExpr *_readCaseTestExpr (void) {
+    READ_LOCALS (CaseTestExpr);
+    READ_OID_FIELD (typeId);
+    READ_INT_FIELD (typeMod);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="810" endline="822">
+static ArrayExpr *_readArrayExpr (void) {
+    READ_LOCALS (ArrayExpr);
+    READ_OID_FIELD (array_typeid);
+    READ_OID_FIELD (element_typeid);
+    READ_NODE_FIELD (elements);
+    READ_BOOL_FIELD (multidims);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="827" endline="839">
+static RowExpr *_readRowExpr (void) {
+    READ_LOCALS (RowExpr);
+    READ_NODE_FIELD (args);
+    READ_OID_FIELD (row_typeid);
+    READ_ENUM_FIELD (row_format, CoercionForm);
+    READ_NODE_FIELD (colnames);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="844" endline="856">
+static RowCompareExpr *_readRowCompareExpr (void) {
+    READ_LOCALS (RowCompareExpr);
+    READ_ENUM_FIELD (rctype, RowCompareType);
+    READ_NODE_FIELD (opnos);
+    READ_NODE_FIELD (opfamilies);
+    READ_NODE_FIELD (largs);
+    READ_NODE_FIELD (rargs);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="861" endline="871">
+static CoalesceExpr *_readCoalesceExpr (void) {
+    READ_LOCALS (CoalesceExpr);
+    READ_OID_FIELD (coalescetype);
+    READ_NODE_FIELD (args);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="876" endline="887">
+static MinMaxExpr *_readMinMaxExpr (void) {
+    READ_LOCALS (MinMaxExpr);
+    READ_OID_FIELD (minmaxtype);
+    READ_ENUM_FIELD (op, MinMaxOp);
+    READ_NODE_FIELD (args);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="892" endline="908">
+static XmlExpr *_readXmlExpr (void) {
+    READ_LOCALS (XmlExpr);
+    READ_ENUM_FIELD (op, XmlExprOp);
+    READ_STRING_FIELD (name);
+    READ_NODE_FIELD (named_args);
+    READ_NODE_FIELD (arg_names);
+    READ_NODE_FIELD (args);
+    READ_ENUM_FIELD (xmloption, XmlOptionType);
+    READ_OID_FIELD (type);
+    READ_INT_FIELD (typmod);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="913" endline="937">
+static NullIfExpr *_readNullIfExpr (void) {
+    READ_LOCALS (NullIfExpr);
+    READ_OID_FIELD (opno);
+    READ_OID_FIELD (opfuncid);
+    local_node->opfuncid = InvalidOid;
+    READ_OID_FIELD (opresulttype);
+    READ_BOOL_FIELD (opretset);
+    READ_NODE_FIELD (args);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="942" endline="951">
+static NullTest *_readNullTest (void) {
+    READ_LOCALS (NullTest);
+    READ_NODE_FIELD (arg);
+    READ_ENUM_FIELD (nulltesttype, NullTestType);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="956" endline="965">
+static BooleanTest *_readBooleanTest (void) {
+    READ_LOCALS (BooleanTest);
+    READ_NODE_FIELD (arg);
+    READ_ENUM_FIELD (booltesttype, BoolTestType);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="970" endline="982">
+static CoerceToDomain *_readCoerceToDomain (void) {
+    READ_LOCALS (CoerceToDomain);
+    READ_NODE_FIELD (arg);
+    READ_OID_FIELD (resulttype);
+    READ_INT_FIELD (resulttypmod);
+    READ_ENUM_FIELD (coercionformat, CoercionForm);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="987" endline="997">
+static CoerceToDomainValue *_readCoerceToDomainValue (void) {
+    READ_LOCALS (CoerceToDomainValue);
+    READ_OID_FIELD (typeId);
+    READ_INT_FIELD (typeMod);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="1002" endline="1012">
+static SetToDefault *_readSetToDefault (void) {
+    READ_LOCALS (SetToDefault);
+    READ_OID_FIELD (typeId);
+    READ_INT_FIELD (typeMod);
+    READ_LOCATION_FIELD (location);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="1017" endline="1027">
+static CurrentOfExpr *_readCurrentOfExpr (void) {
+    READ_LOCALS (CurrentOfExpr);
+    READ_UINT_FIELD (cvarno);
+    READ_STRING_FIELD (cursor_name);
+    READ_INT_FIELD (cursor_param);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="1032" endline="1046">
+static TargetEntry *_readTargetEntry (void) {
+    READ_LOCALS (TargetEntry);
+    READ_NODE_FIELD (expr);
+    READ_INT_FIELD (resno);
+    READ_STRING_FIELD (resname);
+    READ_UINT_FIELD (ressortgroupref);
+    READ_OID_FIELD (resorigtbl);
+    READ_INT_FIELD (resorigcol);
+    READ_BOOL_FIELD (resjunk);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="1051" endline="1059">
+static RangeTblRef *_readRangeTblRef (void) {
+    READ_LOCALS (RangeTblRef);
+    READ_INT_FIELD (rtindex);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="1064" endline="1079">
+static JoinExpr *_readJoinExpr (void) {
+    READ_LOCALS (JoinExpr);
+    READ_ENUM_FIELD (jointype, JoinType);
+    READ_BOOL_FIELD (isNatural);
+    READ_NODE_FIELD (larg);
+    READ_NODE_FIELD (rarg);
+    READ_NODE_FIELD (using);
+    READ_NODE_FIELD (quals);
+    READ_NODE_FIELD (alias);
+    READ_INT_FIELD (rtindex);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="1084" endline="1093">
+static FromExpr *_readFromExpr (void) {
+    READ_LOCALS (FromExpr);
+    READ_NODE_FIELD (fromlist);
+    READ_NODE_FIELD (quals);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="1103" endline="1155">
+static RangeTblEntry *_readRangeTblEntry (void) {
+    READ_LOCALS (RangeTblEntry);
+    READ_NODE_FIELD (alias);
+    READ_NODE_FIELD (eref);
+    READ_ENUM_FIELD (rtekind, RTEKind);
+    switch (local_node->rtekind) {
+    case RTE_RELATION :
+    case RTE_SPECIAL :
+        READ_OID_FIELD (relid);
+        break;
+    case RTE_SUBQUERY :
+        READ_NODE_FIELD (subquery);
+        break;
+    case RTE_JOIN :
+        READ_ENUM_FIELD (jointype, JoinType);
+        READ_NODE_FIELD (joinaliasvars);
+        break;
+    case RTE_FUNCTION :
+        READ_NODE_FIELD (funcexpr);
+        READ_NODE_FIELD (funccoltypes);
+        READ_NODE_FIELD (funccoltypmods);
+        break;
+    case RTE_VALUES :
+        READ_NODE_FIELD (values_lists);
+        break;
+    case RTE_CTE :
+        READ_STRING_FIELD (ctename);
+        READ_UINT_FIELD (ctelevelsup);
+        READ_BOOL_FIELD (self_reference);
+        READ_NODE_FIELD (ctecoltypes);
+        READ_NODE_FIELD (ctecoltypmods);
+        break;
+    default :
+        elog (ERROR, "unrecognized RTE kind: %d", (int) local_node->rtekind);
+        break;
+    }
+    READ_BOOL_FIELD (inh);
+    READ_BOOL_FIELD (inFromCl);
+    READ_UINT_FIELD (requiredPerms);
+    READ_OID_FIELD (checkAsUser);
+    READ_BITMAPSET_FIELD (selectedCols);
+    READ_BITMAPSET_FIELD (modifiedCols);
+    READ_DONE ();
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="1166" endline="1285">
+Node *parseNodeString (void) {
+    void *return_value;
+    READ_TEMP_LOCALS ();
+    token = pg_strtok (&length);
+    if (MATCH ("QUERY", 5))
+        return_value = _readQuery ();
+    else if (MATCH ("SORTGROUPCLAUSE", 15))
+        return_value = _readSortGroupClause ();
+    else if (MATCH ("WINDOWCLAUSE", 12))
+        return_value = _readWindowClause ();
+    else if (MATCH ("ROWMARKCLAUSE", 13))
+        return_value = _readRowMarkClause ();
+    else if (MATCH ("COMMONTABLEEXPR", 15))
+        return_value = _readCommonTableExpr ();
+    else if (MATCH ("SETOPERATIONSTMT", 16))
+        return_value = _readSetOperationStmt ();
+    else if (MATCH ("ALIAS", 5))
+        return_value = _readAlias ();
+    else if (MATCH ("RANGEVAR", 8))
+        return_value = _readRangeVar ();
+    else if (MATCH ("INTOCLAUSE", 10))
+        return_value = _readIntoClause ();
+    else if (MATCH ("VAR", 3))
+        return_value = _readVar ();
+    else if (MATCH ("CONST", 5))
+        return_value = _readConst ();
+    else if (MATCH ("PARAM", 5))
+        return_value = _readParam ();
+    else if (MATCH ("AGGREF", 6))
+        return_value = _readAggref ();
+    else if (MATCH ("WINDOWFUNC", 10))
+        return_value = _readWindowFunc ();
+    else if (MATCH ("ARRAYREF", 8))
+        return_value = _readArrayRef ();
+    else if (MATCH ("FUNCEXPR", 8))
+        return_value = _readFuncExpr ();
+    else if (MATCH ("OPEXPR", 6))
+        return_value = _readOpExpr ();
+    else if (MATCH ("DISTINCTEXPR", 12))
+        return_value = _readDistinctExpr ();
+    else if (MATCH ("SCALARARRAYOPEXPR", 17))
+        return_value = _readScalarArrayOpExpr ();
+    else if (MATCH ("BOOLEXPR", 8))
+        return_value = _readBoolExpr ();
+    else if (MATCH ("SUBLINK", 7))
+        return_value = _readSubLink ();
+    else if (MATCH ("FIELDSELECT", 11))
+        return_value = _readFieldSelect ();
+    else if (MATCH ("FIELDSTORE", 10))
+        return_value = _readFieldStore ();
+    else if (MATCH ("RELABELTYPE", 11))
+        return_value = _readRelabelType ();
+    else if (MATCH ("COERCEVIAIO", 11))
+        return_value = _readCoerceViaIO ();
+    else if (MATCH ("ARRAYCOERCEEXPR", 15))
+        return_value = _readArrayCoerceExpr ();
+    else if (MATCH ("CONVERTROWTYPEEXPR", 18))
+        return_value = _readConvertRowtypeExpr ();
+    else if (MATCH ("CASE", 4))
+        return_value = _readCaseExpr ();
+    else if (MATCH ("WHEN", 4))
+        return_value = _readCaseWhen ();
+    else if (MATCH ("CASETESTEXPR", 12))
+        return_value = _readCaseTestExpr ();
+    else if (MATCH ("ARRAY", 5))
+        return_value = _readArrayExpr ();
+    else if (MATCH ("ROW", 3))
+        return_value = _readRowExpr ();
+    else if (MATCH ("ROWCOMPARE", 10))
+        return_value = _readRowCompareExpr ();
+    else if (MATCH ("COALESCE", 8))
+        return_value = _readCoalesceExpr ();
+    else if (MATCH ("MINMAX", 6))
+        return_value = _readMinMaxExpr ();
+    else if (MATCH ("XMLEXPR", 7))
+        return_value = _readXmlExpr ();
+    else if (MATCH ("NULLIFEXPR", 10))
+        return_value = _readNullIfExpr ();
+    else if (MATCH ("NULLTEST", 8))
+        return_value = _readNullTest ();
+    else if (MATCH ("BOOLEANTEST", 11))
+        return_value = _readBooleanTest ();
+    else if (MATCH ("COERCETODOMAIN", 14))
+        return_value = _readCoerceToDomain ();
+    else if (MATCH ("COERCETODOMAINVALUE", 19))
+        return_value = _readCoerceToDomainValue ();
+    else if (MATCH ("SETTODEFAULT", 12))
+        return_value = _readSetToDefault ();
+    else if (MATCH ("CURRENTOFEXPR", 13))
+        return_value = _readCurrentOfExpr ();
+    else if (MATCH ("TARGETENTRY", 11))
+        return_value = _readTargetEntry ();
+    else if (MATCH ("RANGETBLREF", 11))
+        return_value = _readRangeTblRef ();
+    else if (MATCH ("JOINEXPR", 8))
+        return_value = _readJoinExpr ();
+    else if (MATCH ("FROMEXPR", 8))
+        return_value = _readFromExpr ();
+    else if (MATCH ("RTE", 3))
+        return_value = _readRangeTblEntry ();
+    else if (MATCH ("NOTIFY", 6))
+        return_value = _readNotifyStmt ();
+    else if (MATCH ("DECLARECURSOR", 13))
+        return_value = _readDeclareCursorStmt ();
+    else {
+        elog (ERROR, "badly formatted node string \"%.32s\"...", token);
+        return_value = NULL;
+    }
+    return (Node *) return_value;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed" startline="1295" endline="1350">
+static Datum readDatum (bool typbyval) {
+    Size length, i;
+    int tokenLength;
+    char *token;
+    Datum res;
+    char *s;
+    token = pg_strtok (&tokenLength);
+    length = atoui (token);
+    token = pg_strtok (&tokenLength);
+    if (token == NULL || token[0] != '[')
+        elog (ERROR, "expected \"[\" to start datum, but got \"%s\"; length = %lu", token ? (const char *) token : "[NULL]", (unsigned long) length);
+    if (typbyval) {
+        if (length > (Size) sizeof (Datum))
+            elog (ERROR, "byval datum but length = %lu", (unsigned long) length);
+        res = (Datum) 0;
+        s = (char *) (&res);
+        for (i = 0; i < (Size) sizeof (Datum); i++) {
+            token = pg_strtok (&tokenLength);
+            s[i] = (char) atoi (token);
+        }
+    }
+    else if (length <= 0)
+        res = (Datum) NULL;
+    else {
+        s = (char *) palloc (length);
+        for (i = 0; i < length; i++) {
+            token = pg_strtok (&tokenLength);
+            s[i] = (char) atoi (token);
+        }
+        res = PointerGetDatum (s);
+    }
+    token = pg_strtok (&tokenLength);
+    if (token == NULL || token[0] != ']')
+        elog (ERROR, "expected \"]\" to end datum, but got \"%s\"; length = %lu", token ? (const char *) token : "[NULL]", (unsigned long) length);
+    return res;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/value.c.ifdefed" startline="22" endline="30">
+Value *makeInteger (long i) {
+    Value *v = makeNode (Value);
+    v->type = T_Integer;
+    v->val.ival = i;
+    return v;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/value.c.ifdefed" startline="37" endline="45">
+Value *makeFloat (char *numericStr) {
+    Value *v = makeNode (Value);
+    v->type = T_Float;
+    v->val.str = numericStr;
+    return v;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/value.c.ifdefed" startline="52" endline="60">
+Value *makeString (char *str) {
+    Value *v = makeNode (Value);
+    v->type = T_String;
+    v->val.str = str;
+    return v;
+}
+</source>
+<source file="examples2/postgresql//smallpostgresql/value.c.ifdefed" startline="67" endline="75">
+Value *makeBitString (char *str) {
+    Value *v = makeNode (Value);
+    v->type = T_BitString;
+    v->val.str = str;
+    return v;
+}
+</source>

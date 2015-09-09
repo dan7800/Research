@@ -1,0 +1,512 @@
+.class public crittercism/android/c
+.super java/lang/Object
+
+.field private final a Lorg/apache/http/impl/client/DefaultHttpClient;
+.field private final b Ljava/lang/String;
+.field private c Landroid/content/Context;
+
+.method public <init>()V
+.limit registers 2
+; this: v1 (Lcrittercism/android/c;)
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lcrittercism/android/c;
+	const-string	v0,""
+; v0 : Ljava/lang/String;
+	iput-object	v0,v1,crittercism/android/c.b Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lcrittercism/android/c;
+	invoke-static	{},crittercism/android/c/a	; a()Lorg/apache/http/impl/client/DefaultHttpClient;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Lorg/apache/http/impl/client/DefaultHttpClient;
+	iput-object	v0,v1,crittercism/android/c.a Lorg/apache/http/impl/client/DefaultHttpClient;
+; v0 : Lorg/apache/http/impl/client/DefaultHttpClient; , v1 : Lcrittercism/android/c;
+	return-void	
+.end method
+
+.method public <init>(Ljava/lang/String;Landroid/content/Context;)V
+.limit registers 4
+; this: v1 (Lcrittercism/android/c;)
+; parameter[0] : v2 (Ljava/lang/String;)
+; parameter[1] : v3 (Landroid/content/Context;)
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lcrittercism/android/c;
+	iput-object	v2,v1,crittercism/android/c.b Ljava/lang/String;
+; v2 : Ljava/lang/String; , v1 : Lcrittercism/android/c;
+	invoke-static	{},crittercism/android/c/a	; a()Lorg/apache/http/impl/client/DefaultHttpClient;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Lorg/apache/http/impl/client/DefaultHttpClient;
+	iput-object	v0,v1,crittercism/android/c.a Lorg/apache/http/impl/client/DefaultHttpClient;
+; v0 : Lorg/apache/http/impl/client/DefaultHttpClient; , v1 : Lcrittercism/android/c;
+	iput-object	v3,v1,crittercism/android/c.c Landroid/content/Context;
+; v3 : Landroid/content/Context; , v1 : Lcrittercism/android/c;
+	return-void	
+.end method
+
+.method private a(Lorg/apache/http/client/methods/HttpRequestBase;)Ljava/lang/String;
+.limit registers 9
+; this: v7 (Lcrittercism/android/c;)
+; parameter[0] : v8 (Lorg/apache/http/client/methods/HttpRequestBase;)
+.catch org/apache/http/conn/ConnectTimeoutException from l1031ea to l10328a using l10328e
+.catch java/io/IOException from l1031ea to l10328a using l1032be
+.catch java/lang/Exception from l1031ea to l10328a using l1033ba
+	const/16	v6,10
+; v6 : single-length
+	const/4	v1,0
+; v1 : single-length
+	const-string	v0,""
+; v0 : Ljava/lang/String;
+l1031ea:
+	iget-object	v2,v7,crittercism/android/c.a Lorg/apache/http/impl/client/DefaultHttpClient;
+; v2 : Lorg/apache/http/impl/client/DefaultHttpClient; , v7 : Lcrittercism/android/c;
+	invoke-virtual	{v2},org/apache/http/impl/client/DefaultHttpClient/getConnectionManager	; getConnectionManager()Lorg/apache/http/conn/ClientConnectionManager;
+; v2 : Lorg/apache/http/impl/client/DefaultHttpClient;
+	move-result-object	v2
+; v2 : Lorg/apache/http/conn/ClientConnectionManager;
+	invoke-interface	{v2},org/apache/http/conn/ClientConnectionManager/closeExpiredConnections	; closeExpiredConnections()V
+; v2 : Lorg/apache/http/conn/ClientConnectionManager;
+	iget-object	v2,v7,crittercism/android/c.a Lorg/apache/http/impl/client/DefaultHttpClient;
+; v2 : Lorg/apache/http/impl/client/DefaultHttpClient; , v7 : Lcrittercism/android/c;
+	invoke-virtual	{v2,v8},org/apache/http/impl/client/DefaultHttpClient/execute	; execute(Lorg/apache/http/client/methods/HttpUriRequest;)Lorg/apache/http/HttpResponse;
+; v2 : Lorg/apache/http/impl/client/DefaultHttpClient; , v8 : Lorg/apache/http/client/methods/HttpRequestBase;
+	move-result-object	v2
+; v2 : Lorg/apache/http/HttpResponse;
+	invoke-interface	{v2},org/apache/http/HttpResponse/getStatusLine	; getStatusLine()Lorg/apache/http/StatusLine;
+; v2 : Lorg/apache/http/HttpResponse;
+	move-result-object	v3
+; v3 : Lorg/apache/http/StatusLine;
+	invoke-interface	{v3},org/apache/http/StatusLine/getStatusCode	; getStatusCode()I
+; v3 : Lorg/apache/http/StatusLine;
+	move-result	v3
+; v3 : single-length
+	packed-switch	v3,200
+		ps103218_103278	; case 200
+		default: ps103218_default
+; v3 : single-length
+ps103218_default:
+	const-class	v4,crittercism/android/c
+; v4 : Ljava/lang/Class;
+	invoke-virtual	{v4},java/lang/Class/getCanonicalName	; getCanonicalName()Ljava/lang/String;
+; v4 : Ljava/lang/Class;
+	new-instance	v4,java/lang/StringBuilder
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,"executeHttpRequest error="
+; v5 : Ljava/lang/String;
+	invoke-direct	{v4,v5},java/lang/StringBuilder/<init>	; <init>(Ljava/lang/String;)V
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v3},java/lang/StringBuilder/append	; append(I)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v3 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4," - "
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-interface	{v2},org/apache/http/HttpResponse/getStatusLine	; getStatusLine()Lorg/apache/http/StatusLine;
+; v2 : Lorg/apache/http/HttpResponse;
+	move-result-object	v4
+; v4 : Lorg/apache/http/StatusLine;
+	invoke-virtual	{v4},java/lang/Object/toString	; toString()Ljava/lang/String;
+; v4 : Lorg/apache/http/StatusLine;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	invoke-interface	{v2},org/apache/http/HttpResponse/getEntity	; getEntity()Lorg/apache/http/HttpEntity;
+; v2 : Lorg/apache/http/HttpResponse;
+	move-result-object	v2
+; v2 : Lorg/apache/http/HttpEntity;
+	invoke-interface	{v2},org/apache/http/HttpEntity/consumeContent	; consumeContent()V
+; v2 : Lorg/apache/http/HttpEntity;
+l103276:
+	return-object	v0
+; v0 : Ljava/lang/String;
+ps103218_103278:
+	invoke-interface	{v2},org/apache/http/HttpResponse/getEntity	; getEntity()Lorg/apache/http/HttpEntity;
+; v2 : Lorg/apache/http/HttpResponse;
+	move-result-object	v2
+; v2 : Lorg/apache/http/HttpEntity;
+	const-string	v3,"UTF-8"
+; v3 : Ljava/lang/String;
+	invoke-static	{v2,v3},org/apache/http/util/EntityUtils/toString	; toString(Lorg/apache/http/HttpEntity;Ljava/lang/String;)Ljava/lang/String;
+; v2 : Lorg/apache/http/HttpEntity; , v3 : Ljava/lang/String;
+l10328a:
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l103276
+l10328e:
+	move-exception	v0
+; v0 : org/apache/http/conn/ConnectTimeoutException
+	const-class	v0,crittercism/android/c
+; v0 : Ljava/lang/Class;
+	invoke-virtual	{v0},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v0 : Ljava/lang/Class;
+	move-result-object	v0
+; v0 : Ljava/lang/Class;
+	invoke-virtual	{v0},java/lang/Class/getCanonicalName	; getCanonicalName()Ljava/lang/String;
+; v0 : Ljava/lang/Class;
+	new-instance	v0,crittercism/android/f
+; v0 : Lcrittercism/android/f;
+	const/16	v1,11
+; v1 : single-length
+	invoke-static	{v1},crittercism/android/a/a	; a(I)Ljava/lang/String;
+; v1 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	sget-object	v2,crittercism/android/f$a.b Lcrittercism/android/f$a;
+; v2 : Lcrittercism/android/f$a;
+	invoke-direct	{v0,v1,v2},crittercism/android/f/<init>	; <init>(Ljava/lang/String;Lcrittercism/android/f$a;)V
+; v0 : Lcrittercism/android/f; , v1 : Ljava/lang/String; , v2 : Lcrittercism/android/f$a;
+	throw	v0
+; v0 : Lcrittercism/android/f;
+l1032be:
+	move-exception	v0
+; v0 : java/io/IOException
+	move-object	v2,v0
+; v2 : java/io/IOException , v0 : java/io/IOException
+	invoke-virtual	{v8},org/apache/http/client/methods/HttpRequestBase/abort	; abort()V
+; v8 : Lorg/apache/http/client/methods/HttpRequestBase;
+	move	v0,v1
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/StringBuilder;
+l1032ca:
+	invoke-virtual	{v8},org/apache/http/client/methods/HttpRequestBase/getAllHeaders	; getAllHeaders()[Lorg/apache/http/Header;
+; v8 : Lorg/apache/http/client/methods/HttpRequestBase;
+	move-result-object	v3
+; v3 : [Lorg/apache/http/Header;
+	array-length	v3,v3
+; v3 : single-length , v3 : single-length
+	if-ge	v0,v3,l103326
+; v0 : single-length , v3 : single-length
+	invoke-virtual	{v8},org/apache/http/client/methods/HttpRequestBase/getAllHeaders	; getAllHeaders()[Lorg/apache/http/Header;
+; v8 : Lorg/apache/http/client/methods/HttpRequestBase;
+	move-result-object	v3
+; v3 : [Lorg/apache/http/Header;
+	aget-object	v3,v3,v0
+; v3 : Lorg/apache/http/Header; , v3 : Lorg/apache/http/Header; , v0 : single-length
+	new-instance	v4,java/lang/StringBuilder
+; v4 : Ljava/lang/StringBuilder;
+	invoke-direct	{v4},java/lang/StringBuilder/<init>	; <init>()V
+; v4 : Ljava/lang/StringBuilder;
+	invoke-interface	{v3},org/apache/http/Header/getName	; getName()Ljava/lang/String;
+; v3 : Lorg/apache/http/Header;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,": "
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-interface	{v3},org/apache/http/Header/getValue	; getValue()Ljava/lang/String;
+; v3 : Lorg/apache/http/Header;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v4,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l1032ca
+l103326:
+	invoke-virtual	{v2},java/io/IOException/getMessage	; getMessage()Ljava/lang/String;
+; v2 : java/io/IOException
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	if-eqz	v0,l10336a
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v2},java/io/IOException/getMessage	; getMessage()Ljava/lang/String;
+; v2 : java/io/IOException
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v0},java/lang/String/toLowerCase	; toLowerCase()Ljava/lang/String;
+; v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	const-string	v3,"no route to host"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v0,v3},java/lang/String/contains	; contains(Ljava/lang/CharSequence;)Z
+; v0 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l10336a
+; v0 : single-length
+	new-instance	v0,crittercism/android/f
+; v0 : Lcrittercism/android/f;
+	invoke-static	{v6},crittercism/android/a/a	; a(I)Ljava/lang/String;
+; v6 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	sget-object	v2,crittercism/android/f$a.a Lcrittercism/android/f$a;
+; v2 : Lcrittercism/android/f$a;
+	invoke-direct	{v0,v1,v2},crittercism/android/f/<init>	; <init>(Ljava/lang/String;Lcrittercism/android/f$a;)V
+; v0 : Lcrittercism/android/f; , v1 : Ljava/lang/String; , v2 : Lcrittercism/android/f$a;
+	throw	v0
+; v0 : Lcrittercism/android/f;
+l10336a:
+	invoke-virtual	{v2},java/io/IOException/getStackTrace	; getStackTrace()[Ljava/lang/StackTraceElement;
+; v2 : java/io/IOException
+	move-result-object	v0
+; v0 : [Ljava/lang/StackTraceElement;
+	aget-object	v0,v0,v1
+; v0 : Ljava/lang/StackTraceElement; , v0 : Ljava/lang/StackTraceElement; , v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StackTraceElement/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StackTraceElement;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	const-string	v1,"java.net.InetAddress.lookupHostByName"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/String/contains	; contains(Ljava/lang/CharSequence;)Z
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l1033b8
+; v0 : single-length
+	const-class	v0,crittercism/android/c
+; v0 : Ljava/lang/Class;
+	invoke-virtual	{v0},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v0 : Ljava/lang/Class;
+	move-result-object	v0
+; v0 : Ljava/lang/Class;
+	invoke-virtual	{v0},java/lang/Class/getCanonicalName	; getCanonicalName()Ljava/lang/String;
+; v0 : Ljava/lang/Class;
+	new-instance	v0,crittercism/android/f
+; v0 : Lcrittercism/android/f;
+	invoke-static	{v6},crittercism/android/a/a	; a(I)Ljava/lang/String;
+; v6 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	sget-object	v2,crittercism/android/f$a.a Lcrittercism/android/f$a;
+; v2 : Lcrittercism/android/f$a;
+	invoke-direct	{v0,v1,v2},crittercism/android/f/<init>	; <init>(Ljava/lang/String;Lcrittercism/android/f$a;)V
+; v0 : Lcrittercism/android/f; , v1 : Ljava/lang/String; , v2 : Lcrittercism/android/f$a;
+	throw	v0
+; v0 : Lcrittercism/android/f;
+l1033b8:
+	throw	v2
+; v2 : java/io/IOException
+l1033ba:
+	move-exception	v1
+; v1 : java/lang/Exception
+	const-class	v2,crittercism/android/c
+; v2 : Ljava/lang/Class;
+	invoke-virtual	{v2},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v2 : Ljava/lang/Class;
+	move-result-object	v2
+; v2 : Ljava/lang/Class;
+	invoke-virtual	{v2},java/lang/Class/getCanonicalName	; getCanonicalName()Ljava/lang/String;
+; v2 : Ljava/lang/Class;
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"Neither ConnectTimeoutException nor IOException.  Instead: "
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/StringBuilder/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	invoke-virtual	{v1},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v1 : java/lang/Exception
+	move-result-object	v1
+; v1 : Ljava/lang/Class;
+	invoke-virtual	{v1},java/lang/Class/getName	; getName()Ljava/lang/String;
+; v1 : Ljava/lang/Class;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v2,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	goto/16	l103276
+l1033fe:	data-array
+		0x00, 0x00
+	end data-array
+.end method
+
+.method private static a()Lorg/apache/http/impl/client/DefaultHttpClient;
+.limit registers 7
+	const/16	v6,20000
+; v6 : single-length
+	const/4	v5,0
+; v5 : single-length
+	new-instance	v1,org/apache/http/conn/scheme/SchemeRegistry
+; v1 : Lorg/apache/http/conn/scheme/SchemeRegistry;
+	invoke-direct	{v1},org/apache/http/conn/scheme/SchemeRegistry/<init>	; <init>()V
+; v1 : Lorg/apache/http/conn/scheme/SchemeRegistry;
+	new-instance	v0,org/apache/http/conn/scheme/Scheme
+; v0 : Lorg/apache/http/conn/scheme/Scheme;
+	const-string	v2,"http"
+; v2 : Ljava/lang/String;
+	invoke-static	{},org/apache/http/conn/scheme/PlainSocketFactory/getSocketFactory	; getSocketFactory()Lorg/apache/http/conn/scheme/PlainSocketFactory;
+; 
+	nop	
+	move-result-object	v3
+; v3 : Lorg/apache/http/conn/scheme/PlainSocketFactory;
+	const/16	v4,80
+; v4 : single-length
+	invoke-direct	{v0,v2,v3,v4},org/apache/http/conn/scheme/Scheme/<init>	; <init>(Ljava/lang/String;Lorg/apache/http/conn/scheme/SocketFactory;I)V
+; v0 : Lorg/apache/http/conn/scheme/Scheme; , v2 : Ljava/lang/String; , v3 : Lorg/apache/http/conn/scheme/PlainSocketFactory; , v4 : single-length
+	invoke-virtual	{v1,v0},org/apache/http/conn/scheme/SchemeRegistry/register	; register(Lorg/apache/http/conn/scheme/Scheme;)Lorg/apache/http/conn/scheme/Scheme;
+; v1 : Lorg/apache/http/conn/scheme/SchemeRegistry; , v0 : Lorg/apache/http/conn/scheme/Scheme;
+	sget-object	v0,org/apache/http/conn/ssl/SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER Lorg/apache/http/conn/ssl/X509HostnameVerifier;
+; v0 : Lorg/apache/http/conn/ssl/X509HostnameVerifier;
+	invoke-static	{},org/apache/http/conn/ssl/SSLSocketFactory/getSocketFactory	; getSocketFactory()Lorg/apache/http/conn/ssl/SSLSocketFactory;
+; 
+	nop	
+	move-result-object	v2
+; v2 : Lorg/apache/http/conn/ssl/SSLSocketFactory;
+	check-cast	v0,org/apache/http/conn/ssl/X509HostnameVerifier
+; v0 : Lorg/apache/http/conn/ssl/X509HostnameVerifier;
+	invoke-virtual	{v2,v0},org/apache/http/conn/ssl/SSLSocketFactory/setHostnameVerifier	; setHostnameVerifier(Lorg/apache/http/conn/ssl/X509HostnameVerifier;)V
+; v2 : Lorg/apache/http/conn/ssl/SSLSocketFactory; , v0 : Lorg/apache/http/conn/ssl/X509HostnameVerifier;
+	new-instance	v0,org/apache/http/conn/scheme/Scheme
+; v0 : Lorg/apache/http/conn/scheme/Scheme;
+	const-string	v3,"https"
+; v3 : Ljava/lang/String;
+	const/16	v4,443
+; v4 : single-length
+	invoke-direct	{v0,v3,v2,v4},org/apache/http/conn/scheme/Scheme/<init>	; <init>(Ljava/lang/String;Lorg/apache/http/conn/scheme/SocketFactory;I)V
+; v0 : Lorg/apache/http/conn/scheme/Scheme; , v3 : Ljava/lang/String; , v2 : Lorg/apache/http/conn/ssl/SSLSocketFactory; , v4 : single-length
+	invoke-virtual	{v1,v0},org/apache/http/conn/scheme/SchemeRegistry/register	; register(Lorg/apache/http/conn/scheme/Scheme;)Lorg/apache/http/conn/scheme/Scheme;
+; v1 : Lorg/apache/http/conn/scheme/SchemeRegistry; , v0 : Lorg/apache/http/conn/scheme/Scheme;
+	new-instance	v0,org/apache/http/params/BasicHttpParams
+; v0 : Lorg/apache/http/params/BasicHttpParams;
+	invoke-direct	{v0},org/apache/http/params/BasicHttpParams/<init>	; <init>()V
+; v0 : Lorg/apache/http/params/BasicHttpParams;
+	invoke-static	{v0,v5},org/apache/http/params/HttpConnectionParams/setStaleCheckingEnabled	; setStaleCheckingEnabled(Lorg/apache/http/params/HttpParams;Z)V
+; v0 : Lorg/apache/http/params/BasicHttpParams; , v5 : single-length
+	invoke-static	{v0,v6},org/apache/http/params/HttpConnectionParams/setConnectionTimeout	; setConnectionTimeout(Lorg/apache/http/params/HttpParams;I)V
+; v0 : Lorg/apache/http/params/BasicHttpParams; , v6 : single-length
+	invoke-static	{v0,v6},org/apache/http/params/HttpConnectionParams/setSoTimeout	; setSoTimeout(Lorg/apache/http/params/HttpParams;I)V
+; v0 : Lorg/apache/http/params/BasicHttpParams; , v6 : single-length
+	const/16	v2,8192
+; v2 : single-length
+	invoke-static	{v0,v2},org/apache/http/params/HttpConnectionParams/setSocketBufferSize	; setSocketBufferSize(Lorg/apache/http/params/HttpParams;I)V
+; v0 : Lorg/apache/http/params/BasicHttpParams; , v2 : single-length
+	invoke-static	{v0,v5},org/apache/http/client/params/HttpClientParams/setRedirecting	; setRedirecting(Lorg/apache/http/params/HttpParams;Z)V
+; v0 : Lorg/apache/http/params/BasicHttpParams; , v5 : single-length
+	new-instance	v2,org/apache/http/impl/conn/tsccm/ThreadSafeClientConnManager
+; v2 : Lorg/apache/http/impl/conn/tsccm/ThreadSafeClientConnManager;
+	invoke-direct	{v2,v0,v1},org/apache/http/impl/conn/tsccm/ThreadSafeClientConnManager/<init>	; <init>(Lorg/apache/http/params/HttpParams;Lorg/apache/http/conn/scheme/SchemeRegistry;)V
+; v2 : Lorg/apache/http/impl/conn/tsccm/ThreadSafeClientConnManager; , v0 : Lorg/apache/http/params/BasicHttpParams; , v1 : Lorg/apache/http/conn/scheme/SchemeRegistry;
+	new-instance	v1,org/apache/http/impl/client/DefaultHttpClient
+; v1 : Lorg/apache/http/impl/client/DefaultHttpClient;
+	invoke-direct	{v1,v2,v0},org/apache/http/impl/client/DefaultHttpClient/<init>	; <init>(Lorg/apache/http/conn/ClientConnectionManager;Lorg/apache/http/params/HttpParams;)V
+; v1 : Lorg/apache/http/impl/client/DefaultHttpClient; , v2 : Lorg/apache/http/impl/conn/tsccm/ThreadSafeClientConnManager; , v0 : Lorg/apache/http/params/BasicHttpParams;
+	return-object	v1
+; v1 : Lorg/apache/http/impl/client/DefaultHttpClient;
+.end method
+
+.method public final a(Ljava/lang/String;Lorg/json/JSONObject;)Ljava/lang/String;
+.limit registers 7
+; this: v4 (Lcrittercism/android/c;)
+; parameter[0] : v5 (Ljava/lang/String;)
+; parameter[1] : v6 (Lorg/json/JSONObject;)
+.catch java/lang/Exception from l103506 to l103582 using l10358c
+	new-instance	v0,org/apache/http/client/methods/HttpPost
+; v0 : Lorg/apache/http/client/methods/HttpPost;
+	invoke-direct	{v0,v5},org/apache/http/client/methods/HttpPost/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/http/client/methods/HttpPost; , v5 : Ljava/lang/String;
+	const-string	v1,"User-Agent"
+; v1 : Ljava/lang/String;
+	iget-object	v2,v4,crittercism/android/c.b Ljava/lang/String;
+; v2 : Ljava/lang/String; , v4 : Lcrittercism/android/c;
+	invoke-virtual	{v0,v1,v2},org/apache/http/client/methods/HttpPost/addHeader	; addHeader(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/apache/http/client/methods/HttpPost; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	const-string	v1,"Content-Type"
+; v1 : Ljava/lang/String;
+	const-string	v2,"application/json"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v2},org/apache/http/client/methods/HttpPost/addHeader	; addHeader(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/apache/http/client/methods/HttpPost; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+l103506:
+	new-instance	v1,org/apache/http/entity/ByteArrayEntity
+; v1 : Lorg/apache/http/entity/ByteArrayEntity;
+	invoke-virtual	{v6},org/json/JSONObject/toString	; toString()Ljava/lang/String;
+; v6 : Lorg/json/JSONObject;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	const-string	v3,"UTF8"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/String/getBytes	; getBytes(Ljava/lang/String;)[B
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : [B
+	invoke-direct	{v1,v2},org/apache/http/entity/ByteArrayEntity/<init>	; <init>([B)V
+; v1 : Lorg/apache/http/entity/ByteArrayEntity; , v2 : [B
+	invoke-virtual	{v0,v1},org/apache/http/client/methods/HttpPost/setEntity	; setEntity(Lorg/apache/http/HttpEntity;)V
+; v0 : Lorg/apache/http/client/methods/HttpPost; , v1 : Lorg/apache/http/entity/ByteArrayEntity;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"JSON Object for request: "
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},java/lang/StringBuilder/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	invoke-virtual	{v6},org/json/JSONObject/toString	; toString()Ljava/lang/String;
+; v6 : Lorg/json/JSONObject;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"httpPost Entity is: "
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},java/lang/StringBuilder/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	invoke-virtual	{v0},org/apache/http/client/methods/HttpPost/getEntity	; getEntity()Lorg/apache/http/HttpEntity;
+; v0 : Lorg/apache/http/client/methods/HttpPost;
+	move-result-object	v2
+; v2 : Lorg/apache/http/HttpEntity;
+	invoke-interface	{v2},org/apache/http/HttpEntity/getContent	; getContent()Ljava/io/InputStream;
+; v2 : Lorg/apache/http/HttpEntity;
+	move-result-object	v2
+; v2 : Ljava/io/InputStream;
+	invoke-virtual	{v2},java/lang/Object/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/io/InputStream;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+l103582:
+	invoke-direct	{v4,v0},crittercism/android/c/a	; a(Lorg/apache/http/client/methods/HttpRequestBase;)Ljava/lang/String;
+; v4 : Lcrittercism/android/c; , v0 : Lorg/apache/http/client/methods/HttpPost;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+l10358c:
+	move-exception	v0
+; v0 : java/lang/Exception
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"Error encoding http params"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+.end method
+
+

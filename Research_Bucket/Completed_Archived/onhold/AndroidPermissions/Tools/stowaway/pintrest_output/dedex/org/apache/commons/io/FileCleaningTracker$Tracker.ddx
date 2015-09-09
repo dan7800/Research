@@ -1,0 +1,71 @@
+.class final org/apache/commons/io/FileCleaningTracker$Tracker
+.super java/lang/ref/PhantomReference
+.source FileCleaningTracker.java
+
+.inner class Tracker inner org/apache/commons/io/FileCleaningTracker$Tracker outer org/apache/commons/io/FileCleaningTracker
+.annotation systemVisibility Ldalvik/annotation/Signature;
+  value [Ljava/lang/String; = { "Ljava/lang/ref/PhantomReference" , "<" , "Ljava/lang/Object;" , ">;" }
+.end annotation
+
+.field private final deleteStrategy Lorg/apache/commons/io/FileDeleteStrategy;
+.field private final path Ljava/lang/String;
+
+.method <init>(Ljava/lang/String;Lorg/apache/commons/io/FileDeleteStrategy;Ljava/lang/Object;Ljava/lang/ref/ReferenceQueue;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/lang/String;" , "Lorg/apache/commons/io/FileDeleteStrategy;" , "Ljava/lang/Object;" , "Ljava/lang/ref/ReferenceQueue" , "<-" , "Ljava/lang/Object;" , ">;)V" }
+.end annotation
+.limit registers 5
+; this: v0 (Lorg/apache/commons/io/FileCleaningTracker$Tracker;)
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (Lorg/apache/commons/io/FileDeleteStrategy;)
+; parameter[2] : v3 (Ljava/lang/Object;)
+; parameter[3] : v4 (Ljava/lang/ref/ReferenceQueue;)
+.line 259
+	invoke-direct	{v0,v3,v4},java/lang/ref/PhantomReference/<init>	; <init>(Ljava/lang/Object;Ljava/lang/ref/ReferenceQueue;)V
+; v0 : Lorg/apache/commons/io/FileCleaningTracker$Tracker; , v3 : Ljava/lang/Object; , v4 : Ljava/lang/ref/ReferenceQueue;
+.line 260
+	iput-object	v1,v0,org/apache/commons/io/FileCleaningTracker$Tracker.path Ljava/lang/String;
+; v1 : Ljava/lang/String; , v0 : Lorg/apache/commons/io/FileCleaningTracker$Tracker;
+.line 261
+	if-nez	v2,l1113de
+; v2 : Lorg/apache/commons/io/FileDeleteStrategy;
+	sget-object	v2,org/apache/commons/io/FileDeleteStrategy.NORMAL Lorg/apache/commons/io/FileDeleteStrategy;
+; v2 : Lorg/apache/commons/io/FileDeleteStrategy;
+l1113de:
+	iput-object	v2,v0,org/apache/commons/io/FileCleaningTracker$Tracker.deleteStrategy Lorg/apache/commons/io/FileDeleteStrategy;
+; v2 : Lorg/apache/commons/io/FileDeleteStrategy; , v0 : Lorg/apache/commons/io/FileCleaningTracker$Tracker;
+.line 262
+	return-void	
+.end method
+
+.method public delete()Z
+.limit registers 4
+; this: v3 (Lorg/apache/commons/io/FileCleaningTracker$Tracker;)
+.line 280
+	iget-object	v0,v3,org/apache/commons/io/FileCleaningTracker$Tracker.deleteStrategy Lorg/apache/commons/io/FileDeleteStrategy;
+; v0 : Lorg/apache/commons/io/FileDeleteStrategy; , v3 : Lorg/apache/commons/io/FileCleaningTracker$Tracker;
+	new-instance	v1,java/io/File
+; v1 : Ljava/io/File;
+	iget-object	v2,v3,org/apache/commons/io/FileCleaningTracker$Tracker.path Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : Lorg/apache/commons/io/FileCleaningTracker$Tracker;
+	invoke-direct	{v1,v2},java/io/File/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/io/File; , v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},org/apache/commons/io/FileDeleteStrategy/deleteQuietly	; deleteQuietly(Ljava/io/File;)Z
+; v0 : Lorg/apache/commons/io/FileDeleteStrategy; , v1 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getPath()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/FileCleaningTracker$Tracker;)
+.line 270
+	iget-object	v0,v1,org/apache/commons/io/FileCleaningTracker$Tracker.path Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/apache/commons/io/FileCleaningTracker$Tracker;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+

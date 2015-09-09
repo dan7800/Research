@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Directory where the script (and the jar directory) is located
+SCRIPT_DIR=$(dirname $0)
+
+# Garbage collector to use. Choose one.
+# Use the serial collection if you are on a machine with a single core.
+#GC=+UseSerialGC
+# Use parallel if you have multiple CPUs
+#GC=+UseParallelGC
+# Use old parallel if you have multiple CPUs and use a lot of memory (recommended)
+GC=+UseParallelOldGC
+# Use this one if you don't want pauses for some reason time matters (not recommended)
+#GC=+UseConcMarkSweepGC
+
+# The maximum heap size
+HEAP=60g
+
+# The maximum size of the young memory generations
+# This setting may have a significant effect on the performance of the
+# garbage collection. Java organizes its memory in generations. When a
+# object is instanciated it will go in the youngest generation. If it
+# survives a garbage collection it will be moved to older generations.
+# After some time it will reach the tenured generations where the
+# long-lived objects are located. Garbage collection in these
+# generations is usually slower.
+#
+# If the young generations are too small, objects will be promoted to
+# the tenured generation even though they are still young. So the size
+# of the young generation should not be too small. It should not be
+# chosen too big, too, because this would make the collection in the
+# young generations slower too.
+YOUNG=3g
+
+# Options passed to the Java VM
+OPTIONS="-Xmx$HEAP -Xmn$YOUNG -XX:$GC"
+
+# Now start iclones.
+java ${OPTIONS} -jar "${SCRIPT_DIR}/jar/iclones.jar" $@

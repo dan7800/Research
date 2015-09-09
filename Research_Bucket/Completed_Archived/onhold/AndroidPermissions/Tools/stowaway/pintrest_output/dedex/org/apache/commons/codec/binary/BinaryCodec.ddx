@@ -1,0 +1,612 @@
+.class public org/apache/commons/codec/binary/BinaryCodec
+.super java/lang/Object
+.source BinaryCodec.java
+.implements org/apache/commons/codec/BinaryDecoder
+.implements org/apache/commons/codec/BinaryEncoder
+
+.field private static final BITS [I = null
+.field private static final BIT_0 I = 1	; 0x1
+.field private static final BIT_1 I = 2	; 0x2
+.field private static final BIT_2 I = 4	; 0x4
+.field private static final BIT_3 I = 8	; 0x8
+.field private static final BIT_4 I = 16	; 0x10
+.field private static final BIT_5 I = 32	; 0x20
+.field private static final BIT_6 I = 64	; 0x40
+.field private static final BIT_7 I = 128	; 0x80
+.field private static final EMPTY_BYTE_ARRAY [B
+.field private static final EMPTY_CHAR_ARRAY [C
+
+.method static <clinit>()V
+.limit registers 2
+	const/4	v1,0
+; v1 : single-length
+.line 41
+	new-array	v0,v1,[C
+; v0 : [C , v1 : single-length
+	sput-object	v0,org/apache/commons/codec/binary/BinaryCodec.EMPTY_CHAR_ARRAY [C
+; v0 : [C
+.line 44
+	new-array	v0,v1,[B
+; v0 : [B , v1 : single-length
+	sput-object	v0,org/apache/commons/codec/binary/BinaryCodec.EMPTY_BYTE_ARRAY [B
+; v0 : [B
+.line 70
+	const/16	v0,8
+; v0 : single-length
+	new-array	v0,v0,[I
+; v0 : [I , v0 : [I
+	fill-array-data	v0,l107408
+; v0 : [I
+	sput-object	v0,org/apache/commons/codec/binary/BinaryCodec.BITS [I
+; v0 : [I
+	return-void	
+l107406:	data-array
+		0x00, 0x00
+	end data-array
+l107408:	data-array
+		0x01, 0x00, 0x00, 0x00	; #0
+		0x02, 0x00, 0x00, 0x00	; #1
+		0x04, 0x00, 0x00, 0x00	; #2
+		0x08, 0x00, 0x00, 0x00	; #3
+		0x10, 0x00, 0x00, 0x00	; #4
+		0x20, 0x00, 0x00, 0x00	; #5
+		0x40, 0x00, 0x00, 0x00	; #6
+		0x80, 0x00, 0x00, 0x00	; #7
+	end data-array
+.end method
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/codec/binary/BinaryCodec;)
+.line 35
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/codec/binary/BinaryCodec;
+	return-void	
+.end method
+
+.method public static fromAscii([B)[B
+.limit registers 7
+; parameter[0] : v6 ([B)
+.line 194
+	invoke-static	{v6},org/apache/commons/codec/binary/BinaryCodec/isEmpty	; isEmpty([B)Z
+; v6 : [B
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l10746a
+; v4 : single-length
+.line 195
+	sget-object	v3,org/apache/commons/codec/binary/BinaryCodec.EMPTY_BYTE_ARRAY [B
+; v3 : [B
+l107468:
+.line 210
+	return-object	v3
+; v3 : [B
+l10746a:
+.line 198
+	array-length	v4,v6
+; v4 : single-length , v6 : [B
+	shr-int/lit8	v4,v4,3
+; v4 : single-length , v4 : single-length
+	new-array	v3,v4,[B
+; v3 : [B , v4 : single-length
+.line 203
+	const/4	v1,0
+; v1 : single-length
+	array-length	v4,v6
+; v4 : single-length , v6 : [B
+	add-int/lit8	v2,v4,255
+; v2 : single-length , v4 : single-length
+l10747c:
+	array-length	v4,v3
+; v4 : single-length , v3 : [B
+	if-ge	v1,v4,l107468
+; v1 : single-length , v4 : single-length
+.line 204
+	const/4	v0,0
+; v0 : single-length
+l107484:
+	sget-object	v4,org/apache/commons/codec/binary/BinaryCodec.BITS [I
+; v4 : [I
+	array-length	v4,v4
+; v4 : single-length , v4 : single-length
+	if-ge	v0,v4,l1074b8
+; v0 : single-length , v4 : single-length
+.line 205
+	sub-int	v4,v2,v0
+; v4 : single-length , v2 : single-length , v0 : single-length
+	aget-byte	v4,v6,v4
+; v4 : single-length , v6 : [B , v4 : single-length
+	const/16	v5,49
+; v5 : single-length
+	if-ne	v4,v5,l1074b2
+; v4 : single-length , v5 : single-length
+.line 206
+	aget-byte	v4,v3,v1
+; v4 : single-length , v3 : [B , v1 : single-length
+	sget-object	v5,org/apache/commons/codec/binary/BinaryCodec.BITS [I
+; v5 : [I
+	aget	v5,v5,v0
+; v5 : single-length , v5 : single-length , v0 : single-length
+	or-int/2addr	v4,v5
+; v4 : single-length , v5 : single-length
+	int-to-byte	v4,v4
+; v4 : single-length , v4 : single-length
+	aput-byte	v4,v3,v1
+; v4 : single-length , v3 : [B , v1 : single-length
+l1074b2:
+.line 204
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l107484
+l1074b8:
+.line 203
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	add-int/lit8	v2,v2,248
+; v2 : single-length , v2 : single-length
+	goto	l10747c
+.end method
+
+.method public static fromAscii([C)[B
+.limit registers 7
+; parameter[0] : v6 ([C)
+.line 167
+	if-eqz	v6,l1074de
+; v6 : [C
+	array-length	v4,v6
+; v4 : single-length , v6 : [C
+	if-nez	v4,l1074e4
+; v4 : single-length
+l1074de:
+.line 168
+	sget-object	v3,org/apache/commons/codec/binary/BinaryCodec.EMPTY_BYTE_ARRAY [B
+; v3 : [B
+l1074e2:
+.line 183
+	return-object	v3
+; v3 : [B
+l1074e4:
+.line 171
+	array-length	v4,v6
+; v4 : single-length , v6 : [C
+	shr-int/lit8	v4,v4,3
+; v4 : single-length , v4 : single-length
+	new-array	v3,v4,[B
+; v3 : [B , v4 : single-length
+.line 176
+	const/4	v1,0
+; v1 : single-length
+	array-length	v4,v6
+; v4 : single-length , v6 : [C
+	add-int/lit8	v2,v4,255
+; v2 : single-length , v4 : single-length
+l1074f6:
+	array-length	v4,v3
+; v4 : single-length , v3 : [B
+	if-ge	v1,v4,l1074e2
+; v1 : single-length , v4 : single-length
+.line 177
+	const/4	v0,0
+; v0 : single-length
+l1074fe:
+	sget-object	v4,org/apache/commons/codec/binary/BinaryCodec.BITS [I
+; v4 : [I
+	array-length	v4,v4
+; v4 : single-length , v4 : single-length
+	if-ge	v0,v4,l107532
+; v0 : single-length , v4 : single-length
+.line 178
+	sub-int	v4,v2,v0
+; v4 : single-length , v2 : single-length , v0 : single-length
+	aget-char	v4,v6,v4
+; v4 : single-length , v6 : [C , v4 : single-length
+	const/16	v5,49
+; v5 : single-length
+	if-ne	v4,v5,l10752c
+; v4 : single-length , v5 : single-length
+.line 179
+	aget-byte	v4,v3,v1
+; v4 : single-length , v3 : [B , v1 : single-length
+	sget-object	v5,org/apache/commons/codec/binary/BinaryCodec.BITS [I
+; v5 : [I
+	aget	v5,v5,v0
+; v5 : single-length , v5 : single-length , v0 : single-length
+	or-int/2addr	v4,v5
+; v4 : single-length , v5 : single-length
+	int-to-byte	v4,v4
+; v4 : single-length , v4 : single-length
+	aput-byte	v4,v3,v1
+; v4 : single-length , v3 : [B , v1 : single-length
+l10752c:
+.line 177
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l1074fe
+l107532:
+.line 176
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	add-int/lit8	v2,v2,248
+; v2 : single-length , v2 : single-length
+	goto	l1074f6
+.end method
+
+.method private static isEmpty([B)Z
+.limit registers 2
+; parameter[0] : v1 ([B)
+.line 221
+	if-eqz	v1,l107556
+; v1 : [B
+	array-length	v0,v1
+; v0 : single-length , v1 : [B
+	if-nez	v0,l10755a
+; v0 : single-length
+l107556:
+	const/4	v0,1
+; v0 : single-length
+l107558:
+	return	v0
+; v0 : single-length
+l10755a:
+	const/4	v0,0
+; v0 : single-length
+	goto	l107558
+.end method
+
+.method public static toAsciiBytes([B)[B
+.limit registers 7
+; parameter[0] : v6 ([B)
+.line 234
+	invoke-static	{v6},org/apache/commons/codec/binary/BinaryCodec/isEmpty	; isEmpty([B)Z
+; v6 : [B
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l107582
+; v4 : single-length
+.line 235
+	sget-object	v3,org/apache/commons/codec/binary/BinaryCodec.EMPTY_BYTE_ARRAY [B
+; v3 : [B
+l107580:
+.line 252
+	return-object	v3
+; v3 : [B
+l107582:
+.line 238
+	array-length	v4,v6
+; v4 : single-length , v6 : [B
+	shl-int/lit8	v4,v4,3
+; v4 : single-length , v4 : single-length
+	new-array	v3,v4,[B
+; v3 : [B , v4 : single-length
+.line 243
+	const/4	v1,0
+; v1 : single-length
+	array-length	v4,v3
+; v4 : single-length , v3 : [B
+	add-int/lit8	v2,v4,255
+; v2 : single-length , v4 : single-length
+l107594:
+	array-length	v4,v6
+; v4 : single-length , v6 : [B
+	if-ge	v1,v4,l107580
+; v1 : single-length , v4 : single-length
+.line 244
+	const/4	v0,0
+; v0 : single-length
+l10759c:
+	sget-object	v4,org/apache/commons/codec/binary/BinaryCodec.BITS [I
+; v4 : [I
+	array-length	v4,v4
+; v4 : single-length , v4 : single-length
+	if-ge	v0,v4,l1075d8
+; v0 : single-length , v4 : single-length
+.line 245
+	aget-byte	v4,v6,v1
+; v4 : single-length , v6 : [B , v1 : single-length
+	sget-object	v5,org/apache/commons/codec/binary/BinaryCodec.BITS [I
+; v5 : [I
+	aget	v5,v5,v0
+; v5 : single-length , v5 : single-length , v0 : single-length
+	and-int/2addr	v4,v5
+; v4 : single-length , v5 : single-length
+	if-nez	v4,l1075ca
+; v4 : single-length
+.line 246
+	sub-int	v4,v2,v0
+; v4 : single-length , v2 : single-length , v0 : single-length
+	const/16	v5,48
+; v5 : single-length
+	aput-byte	v5,v3,v4
+; v5 : single-length , v3 : [B , v4 : single-length
+l1075c4:
+.line 244
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l10759c
+l1075ca:
+.line 248
+	sub-int	v4,v2,v0
+; v4 : single-length , v2 : single-length , v0 : single-length
+	const/16	v5,49
+; v5 : single-length
+	aput-byte	v5,v3,v4
+; v5 : single-length , v3 : [B , v4 : single-length
+	goto	l1075c4
+l1075d8:
+.line 243
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	add-int/lit8	v2,v2,248
+; v2 : single-length , v2 : single-length
+	goto	l107594
+.end method
+
+.method public static toAsciiChars([B)[C
+.limit registers 7
+; parameter[0] : v6 ([B)
+.line 264
+	invoke-static	{v6},org/apache/commons/codec/binary/BinaryCodec/isEmpty	; isEmpty([B)Z
+; v6 : [B
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l107606
+; v4 : single-length
+.line 265
+	sget-object	v3,org/apache/commons/codec/binary/BinaryCodec.EMPTY_CHAR_ARRAY [C
+; v3 : [C
+l107604:
+.line 282
+	return-object	v3
+; v3 : [C
+l107606:
+.line 268
+	array-length	v4,v6
+; v4 : single-length , v6 : [B
+	shl-int/lit8	v4,v4,3
+; v4 : single-length , v4 : single-length
+	new-array	v3,v4,[C
+; v3 : [C , v4 : single-length
+.line 273
+	const/4	v1,0
+; v1 : single-length
+	array-length	v4,v3
+; v4 : single-length , v3 : [C
+	add-int/lit8	v2,v4,255
+; v2 : single-length , v4 : single-length
+l107618:
+	array-length	v4,v6
+; v4 : single-length , v6 : [B
+	if-ge	v1,v4,l107604
+; v1 : single-length , v4 : single-length
+.line 274
+	const/4	v0,0
+; v0 : single-length
+l107620:
+	sget-object	v4,org/apache/commons/codec/binary/BinaryCodec.BITS [I
+; v4 : [I
+	array-length	v4,v4
+; v4 : single-length , v4 : single-length
+	if-ge	v0,v4,l10765c
+; v0 : single-length , v4 : single-length
+.line 275
+	aget-byte	v4,v6,v1
+; v4 : single-length , v6 : [B , v1 : single-length
+	sget-object	v5,org/apache/commons/codec/binary/BinaryCodec.BITS [I
+; v5 : [I
+	aget	v5,v5,v0
+; v5 : single-length , v5 : single-length , v0 : single-length
+	and-int/2addr	v4,v5
+; v4 : single-length , v5 : single-length
+	if-nez	v4,l10764e
+; v4 : single-length
+.line 276
+	sub-int	v4,v2,v0
+; v4 : single-length , v2 : single-length , v0 : single-length
+	const/16	v5,48
+; v5 : single-length
+	aput-char	v5,v3,v4
+; v5 : single-length , v3 : [C , v4 : single-length
+l107648:
+.line 274
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l107620
+l10764e:
+.line 278
+	sub-int	v4,v2,v0
+; v4 : single-length , v2 : single-length , v0 : single-length
+	const/16	v5,49
+; v5 : single-length
+	aput-char	v5,v3,v4
+; v5 : single-length , v3 : [C , v4 : single-length
+	goto	l107648
+l10765c:
+.line 273
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	add-int/lit8	v2,v2,248
+; v2 : single-length , v2 : single-length
+	goto	l107618
+.end method
+
+.method public static toAsciiString([B)Ljava/lang/String;
+.limit registers 3
+; parameter[0] : v2 ([B)
+.line 294
+	new-instance	v0,java/lang/String
+; v0 : Ljava/lang/String;
+	invoke-static	{v2},org/apache/commons/codec/binary/BinaryCodec/toAsciiChars	; toAsciiChars([B)[C
+; v2 : [B
+	move-result-object	v1
+; v1 : [C
+	invoke-direct	{v0,v1},java/lang/String/<init>	; <init>([C)V
+; v0 : Ljava/lang/String; , v1 : [C
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public decode(Ljava/lang/Object;)Ljava/lang/Object;
+.throws Lorg/apache/commons/codec/DecoderException;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/codec/binary/BinaryCodec;)
+; parameter[0] : v3 (Ljava/lang/Object;)
+.line 112
+	if-nez	v3,l1076a6
+; v3 : Ljava/lang/Object;
+.line 113
+	sget-object	v0,org/apache/commons/codec/binary/BinaryCodec.EMPTY_BYTE_ARRAY [B
+; v0 : [B
+l1076a4:
+.line 122
+	return-object	v0
+; v0 : [B
+l1076a6:
+.line 115
+	instance-of	v0,v3,[B
+; v0 : single-length , v3 : Ljava/lang/Object;
+	if-eqz	v0,l1076c0
+; v0 : single-length
+.line 116
+	check-cast	v3,[B
+; v3 : [B
+	check-cast	v3,[B
+; v3 : [B
+	invoke-static	{v3},org/apache/commons/codec/binary/BinaryCodec/fromAscii	; fromAscii([B)[B
+; v3 : [B
+	move-result-object	v0
+; v0 : [B
+	goto	l1076a4
+l1076c0:
+.line 118
+	instance-of	v0,v3,[C
+; v0 : single-length , v3 : Ljava/lang/Object;
+	if-eqz	v0,l1076da
+; v0 : single-length
+.line 119
+	check-cast	v3,[C
+; v3 : [C
+	check-cast	v3,[C
+; v3 : [C
+	invoke-static	{v3},org/apache/commons/codec/binary/BinaryCodec/fromAscii	; fromAscii([C)[B
+; v3 : [C
+	move-result-object	v0
+; v0 : [B
+	goto	l1076a4
+l1076da:
+.line 121
+	instance-of	v0,v3,java/lang/String
+; v0 : single-length , v3 : Ljava/lang/Object;
+	if-eqz	v0,l1076f8
+; v0 : single-length
+.line 122
+	check-cast	v3,java/lang/String
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v3},java/lang/String/toCharArray	; toCharArray()[C
+; v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : [C
+	invoke-static	{v0},org/apache/commons/codec/binary/BinaryCodec/fromAscii	; fromAscii([C)[B
+; v0 : [C
+	move-result-object	v0
+; v0 : [B
+	goto	l1076a4
+l1076f8:
+.line 124
+	new-instance	v0,org/apache/commons/codec/DecoderException
+; v0 : Lorg/apache/commons/codec/DecoderException;
+	const-string	v1,"argument not a byte array"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},org/apache/commons/codec/DecoderException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/codec/DecoderException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Lorg/apache/commons/codec/DecoderException;
+.end method
+
+.method public decode([B)[B
+.throws Lorg/apache/commons/codec/DecoderException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/codec/binary/BinaryCodec;)
+; parameter[0] : v2 ([B)
+.line 136
+	invoke-static	{v2},org/apache/commons/codec/binary/BinaryCodec/fromAscii	; fromAscii([B)[B
+; v2 : [B
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+.method public encode(Ljava/lang/Object;)Ljava/lang/Object;
+.throws Lorg/apache/commons/codec/EncoderException;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/codec/binary/BinaryCodec;)
+; parameter[0] : v3 (Ljava/lang/Object;)
+.line 95
+	instance-of	v0,v3,[B
+; v0 : single-length , v3 : Ljava/lang/Object;
+	if-nez	v0,l10774c
+; v0 : single-length
+.line 96
+	new-instance	v0,org/apache/commons/codec/EncoderException
+; v0 : Lorg/apache/commons/codec/EncoderException;
+	const-string	v1,"argument not a byte array"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},org/apache/commons/codec/EncoderException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/codec/EncoderException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Lorg/apache/commons/codec/EncoderException;
+l10774c:
+.line 98
+	check-cast	v3,[B
+; v3 : [B
+	check-cast	v3,[B
+; v3 : [B
+	invoke-static	{v3},org/apache/commons/codec/binary/BinaryCodec/toAsciiChars	; toAsciiChars([B)[C
+; v3 : [B
+	move-result-object	v0
+; v0 : [C
+	return-object	v0
+; v0 : [C
+.end method
+
+.method public encode([B)[B
+.throws Lorg/apache/commons/codec/EncoderException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/codec/binary/BinaryCodec;)
+; parameter[0] : v2 ([B)
+.line 81
+	invoke-static	{v2},org/apache/commons/codec/binary/BinaryCodec/toAsciiBytes	; toAsciiBytes([B)[B
+; v2 : [B
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+.method public toByteArray(Ljava/lang/String;)[B
+.limit registers 3
+; this: v1 (Lorg/apache/commons/codec/binary/BinaryCodec;)
+; parameter[0] : v2 (Ljava/lang/String;)
+.line 148
+	if-nez	v2,l107796
+; v2 : Ljava/lang/String;
+.line 149
+	sget-object	v0,org/apache/commons/codec/binary/BinaryCodec.EMPTY_BYTE_ARRAY [B
+; v0 : [B
+l107794:
+.line 151
+	return-object	v0
+; v0 : [B
+l107796:
+	invoke-virtual	{v2},java/lang/String/toCharArray	; toCharArray()[C
+; v2 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : [C
+	invoke-static	{v0},org/apache/commons/codec/binary/BinaryCodec/fromAscii	; fromAscii([C)[B
+; v0 : [C
+	move-result-object	v0
+; v0 : [B
+	goto	l107794
+.end method
+
+

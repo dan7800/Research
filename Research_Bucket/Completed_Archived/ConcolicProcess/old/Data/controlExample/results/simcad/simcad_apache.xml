@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="simcad.xsl"?>
+<SimCad version="SimCad 2.2">
+<DetectionTimeStamp>2013-11-19 13:07:58.701</DetectionTimeStamp>
+<SearchInput>n/a</SearchInput>
+<SearchTarget>input/apache/</SearchTarget>
+<SourceFragmentType>function</SourceFragmentType>
+<SourceTransformation>generous</SourceTransformation>
+<CloneType>Type-1, Type-2, Type-3</CloneType>
+<CloneGroupingType>group</CloneGroupingType>
+<SourceFragmentTotal>35</SourceFragmentTotal>
+<CloneFragmentTotal>13</CloneFragmentTotal>
+<CloneSetTotal>4</CloneSetTotal>
+<Clones fragmentType="function" cloneSetType="group" nfragments="13" ngroups="4">
+<CloneGroup groupid="1" nfragments="4" type="Type-3">
+<CloneFragment file="/smallApache/http_core.c.ifdefed" startline="47" endline="57" pcid="0"><![CDATA[
+static const char *set_keep_alive_timeout (cmd_parms *cmd, void *dummy, const char *arg) {
+    const char *err = ap_check_cmd_context (cmd, NOT_IN_DIR_LOC_FILE | NOT_IN_LIMIT);
+    if (err != NULL) {
+        return err;
+    }
+    cmd->server->keep_alive_timeout = apr_time_from_sec (atoi (arg));
+    return NULL;
+}
+]]></CloneFragment>
+<CloneFragment file="/smallApache/http_core.c.ifdefed" startline="79" endline="89" pcid="2"><![CDATA[
+static const char *set_keep_alive_max (cmd_parms *cmd, void *dummy, const char *arg) {
+    const char *err = ap_check_cmd_context (cmd, NOT_IN_DIR_LOC_FILE | NOT_IN_LIMIT);
+    if (err != NULL) {
+        return err;
+    }
+    cmd->server->keep_alive_max = atoi (arg);
+    return NULL;
+}
+]]></CloneFragment>
+<CloneFragment file="/smallApache/http_core.c.ifdefed" startline="59" endline="77" pcid="1"><![CDATA[
+static const char *set_keep_alive (cmd_parms *cmd, void *dummy, const char *arg) {
+    const char *err = ap_check_cmd_context (cmd, NOT_IN_DIR_LOC_FILE | NOT_IN_LIMIT);
+    if (err != NULL) {
+        return err;
+    }
+    if (!strcasecmp (arg, "off") || !strcmp (arg, "0")) {
+        cmd->server->keep_alive = 0;
+    }
+    else {
+        cmd->server->keep_alive = 1;
+    }
+    return NULL;
+}
+]]></CloneFragment>
+<CloneFragment file="/smallApache/mod_cache.c.ifdefed" startline="1150" endline="1170" pcid="23"><![CDATA[
+static const char *add_cache_disable (cmd_parms *parms, void *dummy, const char *url) {
+    cache_server_conf *conf;
+    struct cache_disable *new;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    new = apr_array_push (conf->cachedisable);
+    if (apr_uri_parse (parms->pool, url, &(new->url))) {
+        return NULL;
+    }
+    if (new->url.path) {
+        new->pathlen = strlen (new->url.path);
+    }
+    else {
+        new->pathlen = 1;
+        new->url.path = "/";
+    }
+    return NULL;
+}
+]]></CloneFragment>
+</CloneGroup>
+<CloneGroup groupid="2" nfragments="2" type="Type-3">
+<CloneFragment file="/smallApache/http_core.c.ifdefed" startline="124" endline="170" pcid="5"><![CDATA[
+static int ap_process_http_async_connection (conn_rec *c) {
+    request_rec *r;
+    conn_state_t *cs = c->cs;
+    if (c->clogging_input_filters) {
+        return ap_process_http_connection (c);
+    }
+    AP_DEBUG_ASSERT (cs -> state == CONN_STATE_READ_REQUEST_LINE);
+    while (cs->state == CONN_STATE_READ_REQUEST_LINE) {
+        ap_update_child_status (c -> sbh, SERVER_BUSY_READ, NULL);
+        if ((r = ap_read_request (c))) {
+            c->keepalive = AP_CONN_UNKNOWN;
+            ap_update_child_status (c -> sbh, SERVER_BUSY_WRITE, r);
+            if (r->status == HTTP_OK)
+                ap_process_request (r);
+            if (ap_extended_status)
+                ap_increment_counts (c->sbh, r);
+            if (c->keepalive != AP_CONN_KEEPALIVE || c->aborted || ap_graceful_stop_signalled ()) {
+                cs->state = CONN_STATE_LINGER;
+            }
+            else if (!c->data_in_input_filters) {
+                cs->state = CONN_STATE_CHECK_REQUEST_LINE_READABLE;
+            }
+            apr_pool_destroy (r -> pool);
+        }
+        else {
+            cs->state = CONN_STATE_LINGER;
+        }
+    }
+    return OK;
+}
+]]></CloneFragment>
+<CloneFragment file="/smallApache/mod_file_cache.c.ifdefed" startline="241" endline="270" pcid="32"><![CDATA[
+static int file_cache_xlat (request_rec *r) {
+    a_server_config *sconf;
+    a_file *match;
+    int res;
+    sconf = ap_get_module_config (r->server->module_config, &file_cache_module);
+    if (!apr_hash_count (sconf->fileht)) {
+        return DECLINED;
+    }
+    res = ap_core_translate (r);
+    if (res != OK || !r->filename) {
+        return res;
+    }
+    match = (a_file *) apr_hash_get (sconf->fileht, r->filename, APR_HASH_KEY_STRING);
+    if (match == NULL)
+        return DECLINED;
+    ap_set_module_config (r -> request_config, & file_cache_module, match);
+    r->finfo = match->finfo;
+    return OK;
+}
+]]></CloneFragment>
+</CloneGroup>
+<CloneGroup groupid="3" nfragments="5" type="Type-2">
+<CloneFragment file="/smallApache/mod_cache.c.ifdefed" startline="1011" endline="1023" pcid="16"><![CDATA[
+static const char *set_cache_ignore_no_last_mod (cmd_parms *parms, void *dummy, int flag) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->no_last_mod_ignore = flag;
+    conf->no_last_mod_ignore_set = 1;
+    return NULL;
+}
+]]></CloneFragment>
+<CloneFragment file="/smallApache/mod_cache.c.ifdefed" startline="1025" endline="1036" pcid="17"><![CDATA[
+static const char *set_cache_ignore_cachecontrol (cmd_parms *parms, void *dummy, int flag) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->ignorecachecontrol = flag;
+    conf->ignorecachecontrol_set = 1;
+    return NULL;
+}
+]]></CloneFragment>
+<CloneFragment file="/smallApache/mod_cache.c.ifdefed" startline="1038" endline="1049" pcid="18"><![CDATA[
+static const char *set_cache_store_private (cmd_parms *parms, void *dummy, int flag) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->store_private = flag;
+    conf->store_private_set = 1;
+    return NULL;
+}
+]]></CloneFragment>
+<CloneFragment file="/smallApache/mod_cache.c.ifdefed" startline="1051" endline="1062" pcid="19"><![CDATA[
+static const char *set_cache_store_nostore (cmd_parms *parms, void *dummy, int flag) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->store_nostore = flag;
+    conf->store_nostore_set = 1;
+    return NULL;
+}
+]]></CloneFragment>
+<CloneFragment file="/smallApache/mod_cache.c.ifdefed" startline="1215" endline="1226" pcid="27"><![CDATA[
+static const char *set_cache_ignore_querystring (cmd_parms *parms, void *dummy, int flag) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->ignorequerystring = flag;
+    conf->ignorequerystring_set = 1;
+    return NULL;
+}
+]]></CloneFragment>
+</CloneGroup>
+<CloneGroup groupid="4" nfragments="2" type="Type-2">
+<CloneFragment file="/smallApache/mod_cache.c.ifdefed" startline="1172" endline="1183" pcid="24"><![CDATA[
+static const char *set_cache_maxex (cmd_parms *parms, void *dummy, const char *arg) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->maxex = (apr_time_t) (atol (arg) * MSEC_ONE_SEC);
+    conf->maxex_set = 1;
+    return NULL;
+}
+]]></CloneFragment>
+<CloneFragment file="/smallApache/mod_cache.c.ifdefed" startline="1185" endline="1196" pcid="25"><![CDATA[
+static const char *set_cache_defex (cmd_parms *parms, void *dummy, const char *arg) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->defex = (apr_time_t) (atol (arg) * MSEC_ONE_SEC);
+    conf->defex_set = 1;
+    return NULL;
+}
+]]></CloneFragment>
+</CloneGroup>
+</Clones>
+</SimCad>

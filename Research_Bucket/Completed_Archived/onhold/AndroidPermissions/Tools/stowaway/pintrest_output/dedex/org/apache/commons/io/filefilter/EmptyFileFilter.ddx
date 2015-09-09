@@ -1,0 +1,96 @@
+.class public org/apache/commons/io/filefilter/EmptyFileFilter
+.super org/apache/commons/io/filefilter/AbstractFileFilter
+.source EmptyFileFilter.java
+.implements java/io/Serializable
+
+.field public static final EMPTY Lorg/apache/commons/io/filefilter/IOFileFilter;
+.field public static final NOT_EMPTY Lorg/apache/commons/io/filefilter/IOFileFilter;
+
+.method static <clinit>()V
+.limit registers 2
+.line 57
+	new-instance	v0,org/apache/commons/io/filefilter/EmptyFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/EmptyFileFilter;
+	invoke-direct	{v0},org/apache/commons/io/filefilter/EmptyFileFilter/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/filefilter/EmptyFileFilter;
+	sput-object	v0,org/apache/commons/io/filefilter/EmptyFileFilter.EMPTY Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 60
+	new-instance	v0,org/apache/commons/io/filefilter/NotFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/NotFileFilter;
+	sget-object	v1,org/apache/commons/io/filefilter/EmptyFileFilter.EMPTY Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/NotFileFilter/<init>	; <init>(Lorg/apache/commons/io/filefilter/IOFileFilter;)V
+; v0 : Lorg/apache/commons/io/filefilter/NotFileFilter; , v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	sput-object	v0,org/apache/commons/io/filefilter/EmptyFileFilter.NOT_EMPTY Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	return-void	
+.end method
+
+.method protected <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/io/filefilter/EmptyFileFilter;)
+.line 65
+	invoke-direct	{v0},org/apache/commons/io/filefilter/AbstractFileFilter/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/filefilter/EmptyFileFilter;
+.line 66
+	return-void	
+.end method
+
+.method public accept(Ljava/io/File;)Z
+.limit registers 9
+; this: v7 (Lorg/apache/commons/io/filefilter/EmptyFileFilter;)
+; parameter[0] : v8 (Ljava/io/File;)
+.var 0 is files [Ljava/io/File; from l118648 to l118654
+	const/4	v2,1
+; v2 : single-length
+	const/4	v1,0
+; v1 : single-length
+.line 77
+	invoke-virtual	{v8},java/io/File/isDirectory	; isDirectory()Z
+; v8 : Ljava/io/File;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l118656
+; v3 : single-length
+.line 78
+	invoke-virtual	{v8},java/io/File/listFiles	; listFiles()[Ljava/io/File;
+; v8 : Ljava/io/File;
+	move-result-object	v0
+; v0 : [Ljava/io/File;
+.line 79
+	if-eqz	v0,l118652
+; v0 : [Ljava/io/File;
+	array-length	v3,v0
+; v3 : single-length , v0 : [Ljava/io/File;
+	if-nez	v3,l118654
+; v3 : single-length
+l118652:
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+l118654:
+.line 81
+	return	v1
+; v1 : single-length
+l118656:
+	invoke-virtual	{v8},java/io/File/length	; length()J
+; v8 : Ljava/io/File;
+	move-result-wide	v3
+; v3 : double-length
+	const-wide/16	v5,0
+; v5 : double-length
+	cmp-long	v3,v3,v5
+; v3 : single-length , v3 : single-length , v5 : double-length
+	if-nez	v3,l11866e
+; v3 : single-length
+l11866a:
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+	goto	l118654
+l11866e:
+	move	v2,v1
+; v2 : single-length , v1 : single-length
+	goto	l11866a
+.end method
+
+

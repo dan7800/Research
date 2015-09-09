@@ -1,0 +1,555 @@
+.class public com/pinterest/api/models/Activity
+.super java/lang/Object
+.source Activity.java
+
+.field public static final TYPE_COMMENT I = 2	; 0x2
+.field public static final TYPE_FOLLOW_BOARD I = 4	; 0x4
+.field public static final TYPE_FOLLOW_USER I = 9	; 0x9
+.field public static final TYPE_LIKE I = 3	; 0x3
+.field public static final TYPE_REPIN I = 5	; 0x5
+.field public board Lcom/pinterest/api/models/Board;
+.field public displayImage Ljava/lang/String;
+.field public displayText Ljava/lang/String;
+.field public extraText Ljava/lang/String;
+.field public other I
+.field public pin Lcom/pinterest/api/models/Pin;
+.field public type I
+.field public user Lcom/pinterest/api/models/User;
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/api/models/Activity;)
+.line 17
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lcom/pinterest/api/models/Activity;
+	return-void	
+.end method
+
+.method public static findDisplayImage(Lcom/pinterest/api/models/Activity;)Ljava/lang/String;
+.limit registers 3
+; parameter[0] : v2 (Lcom/pinterest/api/models/Activity;)
+.line 108
+	iget	v1,v2,com/pinterest/api/models/Activity.type I
+; v1 : single-length , v2 : Lcom/pinterest/api/models/Activity;
+	packed-switch	v1,2
+		psedda0_eddaa	; case 2
+		psedda0_eddaa	; case 3
+		psedda0_eddbc	; case 4
+		psedda0_eddaa	; case 5
+		default: psedda0_default
+; v1 : single-length
+psedda0_default:
+.line 117
+	const/4	v0,0
+; v0 : single-length
+ledda8:
+	return-object	v0
+; v0 : Ljava/lang/String;
+psedda0_eddaa:
+.line 112
+	iget-object	v1,v2,com/pinterest/api/models/Activity.pin Lcom/pinterest/api/models/Pin;
+; v1 : Lcom/pinterest/api/models/Pin; , v2 : Lcom/pinterest/api/models/Activity;
+	invoke-virtual	{v1},com/pinterest/api/models/Pin/getImages	; getImages()Lcom/pinterest/api/models/Images;
+; v1 : Lcom/pinterest/api/models/Pin;
+	move-result-object	v1
+; v1 : Lcom/pinterest/api/models/Images;
+	iget-object	v0,v1,com/pinterest/api/models/Images.thumbnail Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lcom/pinterest/api/models/Images;
+	goto	ledda8
+psedda0_eddbc:
+.line 114
+	iget-object	v1,v2,com/pinterest/api/models/Activity.board Lcom/pinterest/api/models/Board;
+; v1 : Lcom/pinterest/api/models/Board; , v2 : Lcom/pinterest/api/models/Activity;
+	invoke-virtual	{v1},com/pinterest/api/models/Board/getThumbnailLargeUrl	; getThumbnailLargeUrl()Ljava/lang/String;
+; v1 : Lcom/pinterest/api/models/Board;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 115
+	goto	ledda8
+.line 108
+leddca:	data-array
+		0x00, 0x00
+	end data-array
+.end method
+
+.method public static findDisplayText(Lcom/pinterest/api/models/Activity;)Ljava/lang/String;
+.limit registers 9
+; parameter[0] : v8 (Lcom/pinterest/api/models/Activity;)
+	const/4	v7,2
+; v7 : single-length
+	const/4	v6,0
+; v6 : single-length
+	const/4	v5,1
+; v5 : single-length
+.line 69
+	const-string	v0,""
+; v0 : Ljava/lang/String;
+.line 70
+	const-string	v2,"<b>%s</b>"
+; v2 : Ljava/lang/String;
+	new-array	v3,v5,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v5 : single-length
+	iget-object	v4,v8,com/pinterest/api/models/Activity.user Lcom/pinterest/api/models/User;
+; v4 : Lcom/pinterest/api/models/User; , v8 : Lcom/pinterest/api/models/Activity;
+	iget-object	v4,v4,com/pinterest/api/models/User.fullname Ljava/lang/String;
+; v4 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	aput-object	v4,v3,v6
+; v4 : Ljava/lang/String; , v3 : [Ljava/lang/Object; , v6 : single-length
+	invoke-static	{v2,v3},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : [Ljava/lang/Object;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 72
+	iget	v2,v8,com/pinterest/api/models/Activity.type I
+; v2 : single-length , v8 : Lcom/pinterest/api/models/Activity;
+	packed-switch	v2,2
+		psede1e_ede2a	; case 2
+		psede1e_ede4a	; case 3
+		psede1e_ede6a	; case 4
+		psede1e_edefa	; case 5
+		psede1e_ede24	; case 6
+		psede1e_ede24	; case 7
+		psede1e_ede24	; case 8
+		psede1e_edf1a	; case 9
+		default: psede1e_default
+; v2 : single-length
+psede1e_default:
+.line 100
+	const-string	v0,""
+; v0 : Ljava/lang/String;
+lede28:
+.line 104
+	return-object	v0
+; v0 : Ljava/lang/String;
+psede1e_ede2a:
+.line 75
+	const	v2,2131427633	; 0x7f0b0131
+; v2 : single-length
+	invoke-static	{v2},com/pinterest/base/Application/string	; string(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	new-array	v3,v5,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v5 : single-length
+	aput-object	v1,v3,v6
+; v1 : Ljava/lang/String; , v3 : [Ljava/lang/Object; , v6 : single-length
+	invoke-static	{v2,v3},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 76
+	goto	lede28
+psede1e_ede4a:
+.line 78
+	const	v2,2131427634	; 0x7f0b0132
+; v2 : single-length
+	invoke-static	{v2},com/pinterest/base/Application/string	; string(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	new-array	v3,v5,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v5 : single-length
+	aput-object	v1,v3,v6
+; v1 : Ljava/lang/String; , v3 : [Ljava/lang/Object; , v6 : single-length
+	invoke-static	{v2,v3},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 79
+	goto	lede28
+psede1e_ede6a:
+.line 81
+	iget	v2,v8,com/pinterest/api/models/Activity.other I
+; v2 : single-length , v8 : Lcom/pinterest/api/models/Activity;
+	if-gtz	v2,lede92
+; v2 : single-length
+.line 82
+	const	v2,2131427635	; 0x7f0b0133
+; v2 : single-length
+	invoke-static	{v2},com/pinterest/base/Application/string	; string(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	new-array	v3,v5,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v5 : single-length
+	aput-object	v1,v3,v6
+; v1 : Ljava/lang/String; , v3 : [Ljava/lang/Object; , v6 : single-length
+	invoke-static	{v2,v3},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	lede28
+lede92:
+.line 83
+	iget	v2,v8,com/pinterest/api/models/Activity.other I
+; v2 : single-length , v8 : Lcom/pinterest/api/models/Activity;
+	if-ne	v2,v5,ledeca
+; v2 : single-length , v5 : single-length
+.line 84
+	const	v2,2131427638	; 0x7f0b0136
+; v2 : single-length
+	invoke-static	{v2},com/pinterest/base/Application/string	; string(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	new-array	v3,v7,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v7 : single-length
+	aput-object	v1,v3,v6
+; v1 : Ljava/lang/String; , v3 : [Ljava/lang/Object; , v6 : single-length
+	iget	v4,v8,com/pinterest/api/models/Activity.other I
+; v4 : single-length , v8 : Lcom/pinterest/api/models/Activity;
+	invoke-static	{v4},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v4 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/Integer;
+	aput-object	v4,v3,v5
+; v4 : Ljava/lang/Integer; , v3 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v2,v3},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	lede28
+ledeca:
+.line 86
+	const	v2,2131427639	; 0x7f0b0137
+; v2 : single-length
+	invoke-static	{v2},com/pinterest/base/Application/string	; string(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	new-array	v3,v7,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v7 : single-length
+	aput-object	v1,v3,v6
+; v1 : Ljava/lang/String; , v3 : [Ljava/lang/Object; , v6 : single-length
+	iget	v4,v8,com/pinterest/api/models/Activity.other I
+; v4 : single-length , v8 : Lcom/pinterest/api/models/Activity;
+	invoke-static	{v4},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v4 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/Integer;
+	aput-object	v4,v3,v5
+; v4 : Ljava/lang/Integer; , v3 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v2,v3},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 87
+	goto	lede28
+psede1e_edefa:
+.line 89
+	const	v2,2131427636	; 0x7f0b0134
+; v2 : single-length
+	invoke-static	{v2},com/pinterest/base/Application/string	; string(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	new-array	v3,v5,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v5 : single-length
+	aput-object	v1,v3,v6
+; v1 : Ljava/lang/String; , v3 : [Ljava/lang/Object; , v6 : single-length
+	invoke-static	{v2,v3},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 90
+	goto	lede28
+psede1e_edf1a:
+.line 92
+	iget	v2,v8,com/pinterest/api/models/Activity.other I
+; v2 : single-length , v8 : Lcom/pinterest/api/models/Activity;
+	if-gtz	v2,ledf44
+; v2 : single-length
+.line 93
+	const	v2,2131427637	; 0x7f0b0135
+; v2 : single-length
+	invoke-static	{v2},com/pinterest/base/Application/string	; string(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	new-array	v3,v5,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v5 : single-length
+	aput-object	v1,v3,v6
+; v1 : Ljava/lang/String; , v3 : [Ljava/lang/Object; , v6 : single-length
+	invoke-static	{v2,v3},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto/16	lede28
+ledf44:
+.line 94
+	iget	v2,v8,com/pinterest/api/models/Activity.other I
+; v2 : single-length , v8 : Lcom/pinterest/api/models/Activity;
+	if-ne	v2,v5,ledf7e
+; v2 : single-length , v5 : single-length
+.line 95
+	const	v2,2131427640	; 0x7f0b0138
+; v2 : single-length
+	invoke-static	{v2},com/pinterest/base/Application/string	; string(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	new-array	v3,v7,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v7 : single-length
+	aput-object	v1,v3,v6
+; v1 : Ljava/lang/String; , v3 : [Ljava/lang/Object; , v6 : single-length
+	iget	v4,v8,com/pinterest/api/models/Activity.other I
+; v4 : single-length , v8 : Lcom/pinterest/api/models/Activity;
+	invoke-static	{v4},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v4 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/Integer;
+	aput-object	v4,v3,v5
+; v4 : Ljava/lang/Integer; , v3 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v2,v3},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto/16	lede28
+ledf7e:
+.line 97
+	const	v2,2131427641	; 0x7f0b0139
+; v2 : single-length
+	invoke-static	{v2},com/pinterest/base/Application/string	; string(I)Ljava/lang/String;
+; v2 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	new-array	v3,v7,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v7 : single-length
+	aput-object	v1,v3,v6
+; v1 : Ljava/lang/String; , v3 : [Ljava/lang/Object; , v6 : single-length
+	iget	v4,v8,com/pinterest/api/models/Activity.other I
+; v4 : single-length , v8 : Lcom/pinterest/api/models/Activity;
+	invoke-static	{v4},java/lang/Integer/valueOf	; valueOf(I)Ljava/lang/Integer;
+; v4 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/Integer;
+	aput-object	v4,v3,v5
+; v4 : Ljava/lang/Integer; , v3 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v2,v3},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 98
+	goto/16	lede28
+.line 72
+.end method
+
+.method public static findExtraText(Lcom/pinterest/api/models/Activity;)Ljava/lang/String;
+.limit registers 2
+; parameter[0] : v1 (Lcom/pinterest/api/models/Activity;)
+.line 122
+	iget	v0,v1,com/pinterest/api/models/Activity.type I
+; v0 : single-length , v1 : Lcom/pinterest/api/models/Activity;
+	packed-switch	v0,2
+		psedfec_edff6	; case 2
+		psedfec_edff6	; case 3
+		psedfec_ee004	; case 4
+		psedfec_edff6	; case 5
+		default: psedfec_default
+; v0 : single-length
+psedfec_default:
+.line 130
+	const/4	v0,0
+; v0 : single-length
+ledff4:
+	return-object	v0
+; v0 : Ljava/lang/String;
+psedfec_edff6:
+.line 126
+	iget-object	v0,v1,com/pinterest/api/models/Activity.pin Lcom/pinterest/api/models/Pin;
+; v0 : Lcom/pinterest/api/models/Pin; , v1 : Lcom/pinterest/api/models/Activity;
+	invoke-virtual	{v0},com/pinterest/api/models/Pin/getDescription	; getDescription()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/Pin;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	ledff4
+psedfec_ee004:
+.line 128
+	iget-object	v0,v1,com/pinterest/api/models/Activity.board Lcom/pinterest/api/models/Board;
+; v0 : Lcom/pinterest/api/models/Board; , v1 : Lcom/pinterest/api/models/Activity;
+	invoke-virtual	{v0},com/pinterest/api/models/Board/getName	; getName()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/Board;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	ledff4
+.line 122
+lee012:	data-array
+		0x00, 0x00
+	end data-array
+.end method
+
+.method public static getActivities(Lorg/json/JSONArray;)Ljava/util/List;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/json/JSONArray;" , ")" , "Ljava/util/List" , "<" , "Lcom/pinterest/api/models/Activity;" , ">;" }
+.end annotation
+.limit registers 8
+; parameter[0] : v7 (Lorg/json/JSONArray;)
+.catch org/json/JSONException from lee054 to lee144 using lee146
+.var 1 is activity Lcom/pinterest/api/models/Activity; from lee05e to lee0da
+.var 2 is data Lorg/json/JSONObject; from lee066 to lee0da
+.var 1 is activity Lcom/pinterest/api/models/Activity; from lee0e0 to lee146
+.var 2 is data Lorg/json/JSONObject; from lee0e0 to lee146
+.line 38
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+.line 41
+	const/4	v3,0
+; v3 : single-length
+	invoke-virtual	{v7},org/json/JSONArray/length	; length()I
+; v7 : Lorg/json/JSONArray;
+	move-result	v4
+; v4 : single-length
+lee050:
+	if-ge	v3,v4,lee14a
+; v3 : single-length , v4 : single-length
+lee054:
+.line 45
+	new-instance	v1,com/pinterest/api/models/Activity
+; v1 : Lcom/pinterest/api/models/Activity;
+	invoke-direct	{v1},com/pinterest/api/models/Activity/<init>	; <init>()V
+; v1 : Lcom/pinterest/api/models/Activity;
+.line 46
+	invoke-virtual	{v7,v3},org/json/JSONArray/getJSONObject	; getJSONObject(I)Lorg/json/JSONObject;
+; v7 : Lorg/json/JSONArray; , v3 : single-length
+	move-result-object	v2
+; v2 : Lorg/json/JSONObject;
+.line 47
+	const-string	v5,"user"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v2,v5},org/json/JSONObject/optJSONObject	; optJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
+; v2 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Lorg/json/JSONObject;
+	invoke-static	{v5},com/pinterest/api/models/User/makeUser	; makeUser(Lorg/json/JSONObject;)Lcom/pinterest/api/models/User;
+; v5 : Lorg/json/JSONObject;
+	move-result-object	v5
+; v5 : Lcom/pinterest/api/models/User;
+	iput-object	v5,v1,com/pinterest/api/models/Activity.user Lcom/pinterest/api/models/User;
+; v5 : Lcom/pinterest/api/models/User; , v1 : Lcom/pinterest/api/models/Activity;
+.line 48
+	const-string	v5,"pin"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v2,v5},org/json/JSONObject/optJSONObject	; optJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
+; v2 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Lorg/json/JSONObject;
+	invoke-static	{v5},com/pinterest/api/models/Pin/makePin	; makePin(Lorg/json/JSONObject;)Lcom/pinterest/api/models/Pin;
+; v5 : Lorg/json/JSONObject;
+	move-result-object	v5
+; v5 : Lcom/pinterest/api/models/Pin;
+	iput-object	v5,v1,com/pinterest/api/models/Activity.pin Lcom/pinterest/api/models/Pin;
+; v5 : Lcom/pinterest/api/models/Pin; , v1 : Lcom/pinterest/api/models/Activity;
+.line 49
+	iget-object	v5,v1,com/pinterest/api/models/Activity.pin Lcom/pinterest/api/models/Pin;
+; v5 : Lcom/pinterest/api/models/Pin; , v1 : Lcom/pinterest/api/models/Activity;
+	invoke-virtual	{v5},com/pinterest/api/models/Pin/getId	; getId()Ljava/lang/String;
+; v5 : Lcom/pinterest/api/models/Pin;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	if-eqz	v5,lee0e0
+; v5 : Ljava/lang/String;
+	iget-object	v5,v1,com/pinterest/api/models/Activity.pin Lcom/pinterest/api/models/Pin;
+; v5 : Lcom/pinterest/api/models/Pin; , v1 : Lcom/pinterest/api/models/Activity;
+	invoke-virtual	{v5},com/pinterest/api/models/Pin/getId	; getId()Ljava/lang/String;
+; v5 : Lcom/pinterest/api/models/Pin;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v5},java/lang/String/length	; length()I
+; v5 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	if-lez	v5,lee0e0
+; v5 : single-length
+	sget-object	v5,com/pinterest/base/Application.deletedPins Ljava/util/List;
+; v5 : Ljava/util/List;
+	iget-object	v6,v1,com/pinterest/api/models/Activity.pin Lcom/pinterest/api/models/Pin;
+; v6 : Lcom/pinterest/api/models/Pin; , v1 : Lcom/pinterest/api/models/Activity;
+	invoke-virtual	{v6},com/pinterest/api/models/Pin/getId	; getId()Ljava/lang/String;
+; v6 : Lcom/pinterest/api/models/Pin;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-interface	{v5,v6},java/util/List/contains	; contains(Ljava/lang/Object;)Z
+; v5 : Ljava/util/List; , v6 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,lee0e0
+; v5 : single-length
+lee0da:
+.line 41
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	lee050
+lee0e0:
+.line 51
+	const-string	v5,"board"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v2,v5},org/json/JSONObject/optJSONObject	; optJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
+; v2 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Lorg/json/JSONObject;
+	invoke-static	{v5},com/pinterest/api/models/Board/makeBoard	; makeBoard(Lorg/json/JSONObject;)Lcom/pinterest/api/models/Board;
+; v5 : Lorg/json/JSONObject;
+	move-result-object	v5
+; v5 : Lcom/pinterest/api/models/Board;
+	iput-object	v5,v1,com/pinterest/api/models/Activity.board Lcom/pinterest/api/models/Board;
+; v5 : Lcom/pinterest/api/models/Board; , v1 : Lcom/pinterest/api/models/Activity;
+.line 52
+	const-string	v5,"entry_type"
+; v5 : Ljava/lang/String;
+	const/4	v6,15
+; v6 : single-length
+	invoke-virtual	{v2,v5,v6},org/json/JSONObject/optInt	; optInt(Ljava/lang/String;I)I
+; v2 : Lorg/json/JSONObject; , v5 : Ljava/lang/String; , v6 : single-length
+	move-result	v5
+; v5 : single-length
+	iput	v5,v1,com/pinterest/api/models/Activity.type I
+; v5 : single-length , v1 : Lcom/pinterest/api/models/Activity;
+.line 53
+	const-string	v5,"other"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v2,v5},org/json/JSONObject/optInt	; optInt(Ljava/lang/String;)I
+; v2 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	iput	v5,v1,com/pinterest/api/models/Activity.other I
+; v5 : single-length , v1 : Lcom/pinterest/api/models/Activity;
+.line 54
+	invoke-static	{v1},com/pinterest/api/models/Activity/findDisplayText	; findDisplayText(Lcom/pinterest/api/models/Activity;)Ljava/lang/String;
+; v1 : Lcom/pinterest/api/models/Activity;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	iput-object	v5,v1,com/pinterest/api/models/Activity.displayText Ljava/lang/String;
+; v5 : Ljava/lang/String; , v1 : Lcom/pinterest/api/models/Activity;
+.line 55
+	invoke-static	{v1},com/pinterest/api/models/Activity/findDisplayImage	; findDisplayImage(Lcom/pinterest/api/models/Activity;)Ljava/lang/String;
+; v1 : Lcom/pinterest/api/models/Activity;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	iput-object	v5,v1,com/pinterest/api/models/Activity.displayImage Ljava/lang/String;
+; v5 : Ljava/lang/String; , v1 : Lcom/pinterest/api/models/Activity;
+.line 56
+	invoke-static	{v1},com/pinterest/api/models/Activity/findExtraText	; findExtraText(Lcom/pinterest/api/models/Activity;)Ljava/lang/String;
+; v1 : Lcom/pinterest/api/models/Activity;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	iput-object	v5,v1,com/pinterest/api/models/Activity.extraText Ljava/lang/String;
+; v5 : Ljava/lang/String; , v1 : Lcom/pinterest/api/models/Activity;
+.line 57
+	invoke-interface	{v0,v1},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/pinterest/api/models/Activity;
+lee144:
+	goto	lee0da
+lee146:
+.line 59
+	move-exception	v5
+; v5 : org/json/JSONException
+	goto	lee0da
+lee14a:
+.line 61
+	return-object	v0
+; v0 : Ljava/util/ArrayList;
+.end method
+
+

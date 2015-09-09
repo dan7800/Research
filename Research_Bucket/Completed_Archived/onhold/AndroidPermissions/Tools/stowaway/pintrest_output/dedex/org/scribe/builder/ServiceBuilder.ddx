@@ -1,0 +1,284 @@
+.class public org/scribe/builder/ServiceBuilder
+.super java/lang/Object
+.source ServiceBuilder.java
+
+.field private api Lorg/scribe/builder/api/Api;
+.field private apiKey Ljava/lang/String;
+.field private apiSecret Ljava/lang/String;
+.field private callback Ljava/lang/String;
+.field private debugStream Ljava/io/OutputStream;
+.field private scope Ljava/lang/String;
+.field private signatureType Lorg/scribe/model/SignatureType;
+
+.method public <init>()V
+.limit registers 2
+; this: v1 (Lorg/scribe/builder/ServiceBuilder;)
+.line 31
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lorg/scribe/builder/ServiceBuilder;
+.line 32
+	const-string	v0,"oob"
+; v0 : Ljava/lang/String;
+	iput-object	v0,v1,org/scribe/builder/ServiceBuilder.callback Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/scribe/builder/ServiceBuilder;
+.line 33
+	sget-object	v0,org/scribe/model/SignatureType.Header Lorg/scribe/model/SignatureType;
+; v0 : Lorg/scribe/model/SignatureType;
+	iput-object	v0,v1,org/scribe/builder/ServiceBuilder.signatureType Lorg/scribe/model/SignatureType;
+; v0 : Lorg/scribe/model/SignatureType; , v1 : Lorg/scribe/builder/ServiceBuilder;
+.line 34
+	const/4	v0,0
+; v0 : single-length
+	iput-object	v0,v1,org/scribe/builder/ServiceBuilder.debugStream Ljava/io/OutputStream;
+; v0 : single-length , v1 : Lorg/scribe/builder/ServiceBuilder;
+.line 35
+	return-void	
+.end method
+
+.method private createApi(Ljava/lang/Class;)Lorg/scribe/builder/api/Api;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/lang/Class" , "<+" , "Lorg/scribe/builder/api/Api;" , ">;)" , "Lorg/scribe/builder/api/Api;" }
+.end annotation
+.limit registers 6
+; this: v4 (Lorg/scribe/builder/ServiceBuilder;)
+; parameter[0] : v5 (Ljava/lang/Class;)
+.catch java/lang/Exception from l14854e to l14855a using l14855c
+.var 0 is api Lorg/scribe/builder/api/Api; from l14855a to l14855c
+.line 51
+	const-string	v2,"Api class cannot be null"
+; v2 : Ljava/lang/String;
+	invoke-static	{v5,v2},org/scribe/utils/Preconditions/checkNotNull	; checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V
+; v5 : Ljava/lang/Class; , v2 : Ljava/lang/String;
+l14854e:
+.line 55
+	invoke-virtual	{v5},java/lang/Class/newInstance	; newInstance()Ljava/lang/Object;
+; v5 : Ljava/lang/Class;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,org/scribe/builder/api/Api
+; v0 : Lorg/scribe/builder/api/Api;
+l14855a:
+.line 61
+	return-object	v0
+; v0 : Lorg/scribe/builder/api/Api;
+l14855c:
+.line 57
+	move-exception	v1
+; v1 : java/lang/Exception
+.line 59
+	new-instance	v2,org/scribe/exceptions/OAuthException
+; v2 : Lorg/scribe/exceptions/OAuthException;
+	const-string	v3,"Error while creating the Api object"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3,v1},org/scribe/exceptions/OAuthException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Exception;)V
+; v2 : Lorg/scribe/exceptions/OAuthException; , v3 : Ljava/lang/String; , v1 : java/lang/Exception
+	throw	v2
+; v2 : Lorg/scribe/exceptions/OAuthException;
+.end method
+
+.method public apiKey(Ljava/lang/String;)Lorg/scribe/builder/ServiceBuilder;
+.limit registers 3
+; this: v1 (Lorg/scribe/builder/ServiceBuilder;)
+; parameter[0] : v2 (Ljava/lang/String;)
+.line 100
+	const-string	v0,"Invalid Api key"
+; v0 : Ljava/lang/String;
+	invoke-static	{v2,v0},org/scribe/utils/Preconditions/checkEmptyString	; checkEmptyString(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Ljava/lang/String; , v0 : Ljava/lang/String;
+.line 101
+	iput-object	v2,v1,org/scribe/builder/ServiceBuilder.apiKey Ljava/lang/String;
+; v2 : Ljava/lang/String; , v1 : Lorg/scribe/builder/ServiceBuilder;
+.line 102
+	return-object	v1
+; v1 : Lorg/scribe/builder/ServiceBuilder;
+.end method
+
+.method public apiSecret(Ljava/lang/String;)Lorg/scribe/builder/ServiceBuilder;
+.limit registers 3
+; this: v1 (Lorg/scribe/builder/ServiceBuilder;)
+; parameter[0] : v2 (Ljava/lang/String;)
+.line 113
+	const-string	v0,"Invalid Api secret"
+; v0 : Ljava/lang/String;
+	invoke-static	{v2,v0},org/scribe/utils/Preconditions/checkEmptyString	; checkEmptyString(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Ljava/lang/String; , v0 : Ljava/lang/String;
+.line 114
+	iput-object	v2,v1,org/scribe/builder/ServiceBuilder.apiSecret Ljava/lang/String;
+; v2 : Ljava/lang/String; , v1 : Lorg/scribe/builder/ServiceBuilder;
+.line 115
+	return-object	v1
+; v1 : Lorg/scribe/builder/ServiceBuilder;
+.end method
+
+.method public build()Lorg/scribe/oauth/OAuthService;
+.limit registers 9
+; this: v8 (Lorg/scribe/builder/ServiceBuilder;)
+.line 164
+	iget-object	v0,v8,org/scribe/builder/ServiceBuilder.api Lorg/scribe/builder/api/Api;
+; v0 : Lorg/scribe/builder/api/Api; , v8 : Lorg/scribe/builder/ServiceBuilder;
+	const-string	v1,"You must specify a valid api through the provider() method"
+; v1 : Ljava/lang/String;
+	invoke-static	{v0,v1},org/scribe/utils/Preconditions/checkNotNull	; checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V
+; v0 : Lorg/scribe/builder/api/Api; , v1 : Ljava/lang/String;
+.line 165
+	iget-object	v0,v8,org/scribe/builder/ServiceBuilder.apiKey Ljava/lang/String;
+; v0 : Ljava/lang/String; , v8 : Lorg/scribe/builder/ServiceBuilder;
+	const-string	v1,"You must provide an api key"
+; v1 : Ljava/lang/String;
+	invoke-static	{v0,v1},org/scribe/utils/Preconditions/checkEmptyString	; checkEmptyString(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 166
+	iget-object	v0,v8,org/scribe/builder/ServiceBuilder.apiSecret Ljava/lang/String;
+; v0 : Ljava/lang/String; , v8 : Lorg/scribe/builder/ServiceBuilder;
+	const-string	v1,"You must provide an api secret"
+; v1 : Ljava/lang/String;
+	invoke-static	{v0,v1},org/scribe/utils/Preconditions/checkEmptyString	; checkEmptyString(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 167
+	iget-object	v7,v8,org/scribe/builder/ServiceBuilder.api Lorg/scribe/builder/api/Api;
+; v7 : Lorg/scribe/builder/api/Api; , v8 : Lorg/scribe/builder/ServiceBuilder;
+	new-instance	v0,org/scribe/model/OAuthConfig
+; v0 : Lorg/scribe/model/OAuthConfig;
+	iget-object	v1,v8,org/scribe/builder/ServiceBuilder.apiKey Ljava/lang/String;
+; v1 : Ljava/lang/String; , v8 : Lorg/scribe/builder/ServiceBuilder;
+	iget-object	v2,v8,org/scribe/builder/ServiceBuilder.apiSecret Ljava/lang/String;
+; v2 : Ljava/lang/String; , v8 : Lorg/scribe/builder/ServiceBuilder;
+	iget-object	v3,v8,org/scribe/builder/ServiceBuilder.callback Ljava/lang/String;
+; v3 : Ljava/lang/String; , v8 : Lorg/scribe/builder/ServiceBuilder;
+	iget-object	v4,v8,org/scribe/builder/ServiceBuilder.signatureType Lorg/scribe/model/SignatureType;
+; v4 : Lorg/scribe/model/SignatureType; , v8 : Lorg/scribe/builder/ServiceBuilder;
+	iget-object	v5,v8,org/scribe/builder/ServiceBuilder.scope Ljava/lang/String;
+; v5 : Ljava/lang/String; , v8 : Lorg/scribe/builder/ServiceBuilder;
+	iget-object	v6,v8,org/scribe/builder/ServiceBuilder.debugStream Ljava/io/OutputStream;
+; v6 : Ljava/io/OutputStream; , v8 : Lorg/scribe/builder/ServiceBuilder;
+	invoke-direct/range	{v0..v6},org/scribe/model/OAuthConfig/<init>;	<init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/scribe/model/SignatureType;Ljava/lang/String;Ljava/io/OutputStream;)V
+; v0 : Lorg/scribe/model/OAuthConfig; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String; , v4 : Lorg/scribe/model/SignatureType; , v5 : Ljava/lang/String; , v6 : Ljava/io/OutputStream;
+	invoke-interface	{v7,v0},org/scribe/builder/api/Api/createService	; createService(Lorg/scribe/model/OAuthConfig;)Lorg/scribe/oauth/OAuthService;
+; v7 : Lorg/scribe/builder/api/Api; , v0 : Lorg/scribe/model/OAuthConfig;
+	move-result-object	v0
+; v0 : Lorg/scribe/oauth/OAuthService;
+	return-object	v0
+; v0 : Lorg/scribe/oauth/OAuthService;
+.end method
+
+.method public callback(Ljava/lang/String;)Lorg/scribe/builder/ServiceBuilder;
+.limit registers 3
+; this: v1 (Lorg/scribe/builder/ServiceBuilder;)
+; parameter[0] : v2 (Ljava/lang/String;)
+.line 87
+	const-string	v0,"Callback can't be null"
+; v0 : Ljava/lang/String;
+	invoke-static	{v2,v0},org/scribe/utils/Preconditions/checkNotNull	; checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V
+; v2 : Ljava/lang/String; , v0 : Ljava/lang/String;
+.line 88
+	iput-object	v2,v1,org/scribe/builder/ServiceBuilder.callback Ljava/lang/String;
+; v2 : Ljava/lang/String; , v1 : Lorg/scribe/builder/ServiceBuilder;
+.line 89
+	return-object	v1
+; v1 : Lorg/scribe/builder/ServiceBuilder;
+.end method
+
+.method public debug()Lorg/scribe/builder/ServiceBuilder;
+.limit registers 2
+; this: v1 (Lorg/scribe/builder/ServiceBuilder;)
+.line 153
+	sget-object	v0,java/lang/System.out Ljava/io/PrintStream;
+; v0 : Ljava/io/PrintStream;
+	invoke-virtual	{v1,v0},org/scribe/builder/ServiceBuilder/debugStream	; debugStream(Ljava/io/OutputStream;)Lorg/scribe/builder/ServiceBuilder;
+; v1 : Lorg/scribe/builder/ServiceBuilder; , v0 : Ljava/io/PrintStream;
+.line 154
+	return-object	v1
+; v1 : Lorg/scribe/builder/ServiceBuilder;
+.end method
+
+.method public debugStream(Ljava/io/OutputStream;)Lorg/scribe/builder/ServiceBuilder;
+.limit registers 3
+; this: v1 (Lorg/scribe/builder/ServiceBuilder;)
+; parameter[0] : v2 (Ljava/io/OutputStream;)
+.line 146
+	const-string	v0,"debug stream can't be null"
+; v0 : Ljava/lang/String;
+	invoke-static	{v2,v0},org/scribe/utils/Preconditions/checkNotNull	; checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V
+; v2 : Ljava/io/OutputStream; , v0 : Ljava/lang/String;
+.line 147
+	iput-object	v2,v1,org/scribe/builder/ServiceBuilder.debugStream Ljava/io/OutputStream;
+; v2 : Ljava/io/OutputStream; , v1 : Lorg/scribe/builder/ServiceBuilder;
+.line 148
+	return-object	v1
+; v1 : Lorg/scribe/builder/ServiceBuilder;
+.end method
+
+.method public provider(Ljava/lang/Class;)Lorg/scribe/builder/ServiceBuilder;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/lang/Class" , "<+" , "Lorg/scribe/builder/api/Api;" , ">;)" , "Lorg/scribe/builder/ServiceBuilder;" }
+.end annotation
+.limit registers 3
+; this: v1 (Lorg/scribe/builder/ServiceBuilder;)
+; parameter[0] : v2 (Ljava/lang/Class;)
+.line 45
+	invoke-direct	{v1,v2},org/scribe/builder/ServiceBuilder/createApi	; createApi(Ljava/lang/Class;)Lorg/scribe/builder/api/Api;
+; v1 : Lorg/scribe/builder/ServiceBuilder; , v2 : Ljava/lang/Class;
+	move-result-object	v0
+; v0 : Lorg/scribe/builder/api/Api;
+	iput-object	v0,v1,org/scribe/builder/ServiceBuilder.api Lorg/scribe/builder/api/Api;
+; v0 : Lorg/scribe/builder/api/Api; , v1 : Lorg/scribe/builder/ServiceBuilder;
+.line 46
+	return-object	v1
+; v1 : Lorg/scribe/builder/ServiceBuilder;
+.end method
+
+.method public provider(Lorg/scribe/builder/api/Api;)Lorg/scribe/builder/ServiceBuilder;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/lang/Class" , "<+" , "Lorg/scribe/builder/api/Api;" , ">;)" , "Lorg/scribe/builder/ServiceBuilder;" }
+.end annotation
+.limit registers 3
+; this: v1 (Lorg/scribe/builder/ServiceBuilder;)
+; parameter[0] : v2 (Lorg/scribe/builder/api/Api;)
+.line 74
+	const-string	v0,"Api cannot be null"
+; v0 : Ljava/lang/String;
+	invoke-static	{v2,v0},org/scribe/utils/Preconditions/checkNotNull	; checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V
+; v2 : Lorg/scribe/builder/api/Api; , v0 : Ljava/lang/String;
+.line 75
+	iput-object	v2,v1,org/scribe/builder/ServiceBuilder.api Lorg/scribe/builder/api/Api;
+; v2 : Lorg/scribe/builder/api/Api; , v1 : Lorg/scribe/builder/ServiceBuilder;
+.line 76
+	return-object	v1
+; v1 : Lorg/scribe/builder/ServiceBuilder;
+.end method
+
+.method public scope(Ljava/lang/String;)Lorg/scribe/builder/ServiceBuilder;
+.limit registers 3
+; this: v1 (Lorg/scribe/builder/ServiceBuilder;)
+; parameter[0] : v2 (Ljava/lang/String;)
+.line 126
+	const-string	v0,"Invalid OAuth scope"
+; v0 : Ljava/lang/String;
+	invoke-static	{v2,v0},org/scribe/utils/Preconditions/checkEmptyString	; checkEmptyString(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Ljava/lang/String; , v0 : Ljava/lang/String;
+.line 127
+	iput-object	v2,v1,org/scribe/builder/ServiceBuilder.scope Ljava/lang/String;
+; v2 : Ljava/lang/String; , v1 : Lorg/scribe/builder/ServiceBuilder;
+.line 128
+	return-object	v1
+; v1 : Lorg/scribe/builder/ServiceBuilder;
+.end method
+
+.method public signatureType(Lorg/scribe/model/SignatureType;)Lorg/scribe/builder/ServiceBuilder;
+.limit registers 3
+; this: v1 (Lorg/scribe/builder/ServiceBuilder;)
+; parameter[0] : v2 (Lorg/scribe/model/SignatureType;)
+.line 139
+	const-string	v0,"Signature type can't be null"
+; v0 : Ljava/lang/String;
+	invoke-static	{v2,v0},org/scribe/utils/Preconditions/checkNotNull	; checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V
+; v2 : Lorg/scribe/model/SignatureType; , v0 : Ljava/lang/String;
+.line 140
+	iput-object	v2,v1,org/scribe/builder/ServiceBuilder.signatureType Lorg/scribe/model/SignatureType;
+; v2 : Lorg/scribe/model/SignatureType; , v1 : Lorg/scribe/builder/ServiceBuilder;
+.line 141
+	return-object	v1
+; v1 : Lorg/scribe/builder/ServiceBuilder;
+.end method
+
+

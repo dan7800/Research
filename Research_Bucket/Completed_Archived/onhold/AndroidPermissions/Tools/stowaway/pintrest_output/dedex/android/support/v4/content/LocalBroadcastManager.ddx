@@ -1,0 +1,1037 @@
+.class public android/support/v4/content/LocalBroadcastManager
+.super java/lang/Object
+.source LocalBroadcastManager.java
+
+.inner class BroadcastRecord inner android/support/v4/content/LocalBroadcastManager$BroadcastRecord outer android/support/v4/content/LocalBroadcastManager
+.inner class ReceiverRecord inner android/support/v4/content/LocalBroadcastManager$ReceiverRecord outer android/support/v4/content/LocalBroadcastManager
+.field private static final DEBUG Z = false
+.field static final MSG_EXEC_PENDING_BROADCASTS I = 1	; 0x1
+.field private static final TAG Ljava/lang/String; = "LocalBroadcastManager"
+.field private static mInstance Landroid/support/v4/content/LocalBroadcastManager;
+.field private static final mLock Ljava/lang/Object;
+.field private final mActions Ljava/util/HashMap;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/HashMap" , "<" , "Ljava/lang/String;" , "Ljava/util/ArrayList" , "<" , "Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;" , ">;>;" }
+  .end annotation
+.end field
+.field private final mAppContext Landroid/content/Context;
+.field private final mHandler Landroid/os/Handler;
+.field private final mPendingBroadcasts Ljava/util/ArrayList;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/ArrayList" , "<" , "Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord;" , ">;" }
+  .end annotation
+.end field
+.field private final mReceivers Ljava/util/HashMap;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/HashMap" , "<" , "Landroid/content/BroadcastReceiver;" , "Ljava/util/ArrayList" , "<" , "Landroid/content/IntentFilter;" , ">;>;" }
+  .end annotation
+.end field
+
+.method static <clinit>()V
+.limit registers 1
+.line 96
+	new-instance	v0,java/lang/Object
+; v0 : Ljava/lang/Object;
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Ljava/lang/Object;
+	sput-object	v0,android/support/v4/content/LocalBroadcastManager.mLock Ljava/lang/Object;
+; v0 : Ljava/lang/Object;
+	return-void	
+.end method
+
+.method private <init>(Landroid/content/Context;)V
+.limit registers 4
+; this: v2 (Landroid/support/v4/content/LocalBroadcastManager;)
+; parameter[0] : v3 (Landroid/content/Context;)
+.line 108
+	invoke-direct	{v2},java/lang/Object/<init>	; <init>()V
+; v2 : Landroid/support/v4/content/LocalBroadcastManager;
+.line 84
+	new-instance	v0,java/util/HashMap
+; v0 : Ljava/util/HashMap;
+	invoke-direct	{v0},java/util/HashMap/<init>	; <init>()V
+; v0 : Ljava/util/HashMap;
+	iput-object	v0,v2,android/support/v4/content/LocalBroadcastManager.mReceivers Ljava/util/HashMap;
+; v0 : Ljava/util/HashMap; , v2 : Landroid/support/v4/content/LocalBroadcastManager;
+.line 86
+	new-instance	v0,java/util/HashMap
+; v0 : Ljava/util/HashMap;
+	invoke-direct	{v0},java/util/HashMap/<init>	; <init>()V
+; v0 : Ljava/util/HashMap;
+	iput-object	v0,v2,android/support/v4/content/LocalBroadcastManager.mActions Ljava/util/HashMap;
+; v0 : Ljava/util/HashMap; , v2 : Landroid/support/v4/content/LocalBroadcastManager;
+.line 89
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+	iput-object	v0,v2,android/support/v4/content/LocalBroadcastManager.mPendingBroadcasts Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v2 : Landroid/support/v4/content/LocalBroadcastManager;
+.line 109
+	iput-object	v3,v2,android/support/v4/content/LocalBroadcastManager.mAppContext Landroid/content/Context;
+; v3 : Landroid/content/Context; , v2 : Landroid/support/v4/content/LocalBroadcastManager;
+.line 110
+	new-instance	v0,android/support/v4/content/LocalBroadcastManager$1
+; v0 : Landroid/support/v4/content/LocalBroadcastManager$1;
+	invoke-virtual	{v3},android/content/Context/getMainLooper	; getMainLooper()Landroid/os/Looper;
+; v3 : Landroid/content/Context;
+	move-result-object	v1
+; v1 : Landroid/os/Looper;
+	invoke-direct	{v0,v2,v1},android/support/v4/content/LocalBroadcastManager$1/<init>	; <init>(Landroid/support/v4/content/LocalBroadcastManager;Landroid/os/Looper;)V
+; v0 : Landroid/support/v4/content/LocalBroadcastManager$1; , v2 : Landroid/support/v4/content/LocalBroadcastManager; , v1 : Landroid/os/Looper;
+	iput-object	v0,v2,android/support/v4/content/LocalBroadcastManager.mHandler Landroid/os/Handler;
+; v0 : Landroid/support/v4/content/LocalBroadcastManager$1; , v2 : Landroid/support/v4/content/LocalBroadcastManager;
+.line 123
+	return-void	
+.end method
+
+.method static access$000(Landroid/support/v4/content/LocalBroadcastManager;)V
+.limit registers 1
+; parameter[0] : v0 (Landroid/support/v4/content/LocalBroadcastManager;)
+.line 46
+	invoke-direct	{v0},android/support/v4/content/LocalBroadcastManager/executePendingBroadcasts	; executePendingBroadcasts()V
+; v0 : Landroid/support/v4/content/LocalBroadcastManager;
+	return-void	
+.end method
+
+.method private executePendingBroadcasts()V
+.limit registers 9
+; this: v8 (Landroid/support/v4/content/LocalBroadcastManager;)
+.catch java/lang/Exception from l77c06 to l77c08 using l77c04
+.catch java/lang/Exception from l77b90 to l77bbe using l77c04
+.var 0 is N I from l77b9c to l77c04
+.var 1 is br Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord; from l77bca to l77c04
+.var 3 is i I from l77bc0 to l77c04
+.var 4 is j I from l77bcc to l77c04
+l77b88:
+.line 284
+	const/4	v2,0
+; v2 : single-length
+.line 285
+	iget-object	v6,v8,android/support/v4/content/LocalBroadcastManager.mReceivers Ljava/util/HashMap;
+; v6 : Ljava/util/HashMap; , v8 : Landroid/support/v4/content/LocalBroadcastManager;
+	monitor-enter	v6
+; v6 : Ljava/util/HashMap;
+l77b90:
+.line 286
+	iget-object	v5,v8,android/support/v4/content/LocalBroadcastManager.mPendingBroadcasts Ljava/util/ArrayList;
+; v5 : Ljava/util/ArrayList; , v8 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual	{v5},java/util/ArrayList/size	; size()I
+; v5 : Ljava/util/ArrayList;
+	move-result	v0
+; v0 : single-length
+.line 287
+	if-gtz	v0,l77ba4
+; v0 : single-length
+.line 288
+	monitor-exit	v6
+; v6 : Ljava/util/HashMap;
+	return-void	
+l77ba4:
+.line 290
+	new-array	v2,v0,[Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord;
+; v2 : [Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord; , v0 : single-length
+.line 291
+	iget-object	v5,v8,android/support/v4/content/LocalBroadcastManager.mPendingBroadcasts Ljava/util/ArrayList;
+; v5 : Ljava/util/ArrayList; , v8 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual	{v5,v2},java/util/ArrayList/toArray	; toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+; v5 : Ljava/util/ArrayList; , v2 : [Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord;
+.line 292
+	iget-object	v5,v8,android/support/v4/content/LocalBroadcastManager.mPendingBroadcasts Ljava/util/ArrayList;
+; v5 : Ljava/util/ArrayList; , v8 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual	{v5},java/util/ArrayList/clear	; clear()V
+; v5 : Ljava/util/ArrayList;
+.line 293
+	monitor-exit	v6
+; v6 : Ljava/util/HashMap;
+l77bbe:
+.line 294
+	const/4	v3,0
+; v3 : single-length
+l77bc0:
+	array-length	v5,v2
+; v5 : single-length , v2 : [Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord;
+	if-ge	v3,v5,l77b88
+; v3 : single-length , v5 : single-length
+.line 295
+	aget-object	v1,v2,v3
+; v1 : Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord; , v2 : [Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord; , v3 : single-length
+.line 296
+	const/4	v4,0
+; v4 : single-length
+l77bcc:
+	iget-object	v5,v1,android/support/v4/content/LocalBroadcastManager$BroadcastRecord.receivers Ljava/util/ArrayList;
+; v5 : Ljava/util/ArrayList; , v1 : Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord;
+	invoke-virtual	{v5},java/util/ArrayList/size	; size()I
+; v5 : Ljava/util/ArrayList;
+	move-result	v5
+; v5 : single-length
+	if-ge	v4,v5,l77c0a
+; v4 : single-length , v5 : single-length
+.line 297
+	iget-object	v5,v1,android/support/v4/content/LocalBroadcastManager$BroadcastRecord.receivers Ljava/util/ArrayList;
+; v5 : Ljava/util/ArrayList; , v1 : Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord;
+	invoke-virtual	{v5,v4},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v5 : Ljava/util/ArrayList; , v4 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/Object;
+	check-cast	v5,android/support/v4/content/LocalBroadcastManager$ReceiverRecord
+; v5 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;
+	iget-object	v5,v5,android/support/v4/content/LocalBroadcastManager$ReceiverRecord.receiver Landroid/content/BroadcastReceiver;
+; v5 : Landroid/content/BroadcastReceiver; , v5 : Landroid/content/BroadcastReceiver;
+	iget-object	v6,v8,android/support/v4/content/LocalBroadcastManager.mAppContext Landroid/content/Context;
+; v6 : Landroid/content/Context; , v8 : Landroid/support/v4/content/LocalBroadcastManager;
+	iget-object	v7,v1,android/support/v4/content/LocalBroadcastManager$BroadcastRecord.intent Landroid/content/Intent;
+; v7 : Landroid/content/Intent; , v1 : Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord;
+	invoke-virtual	{v5,v6,v7},android/content/BroadcastReceiver/onReceive	; onReceive(Landroid/content/Context;Landroid/content/Intent;)V
+; v5 : Landroid/content/BroadcastReceiver; , v6 : Landroid/content/Context; , v7 : Landroid/content/Intent;
+.line 296
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	goto	l77bcc
+l77c04:
+.line 293
+	move-exception	v5
+; v5 : java/lang/Exception
+l77c06:
+	monitor-exit	v6
+; v6 : Ljava/util/HashMap;
+l77c08:
+	throw	v5
+; v5 : java/lang/Exception
+l77c0a:
+.line 294
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	l77bc0
+.end method
+
+.method public static getInstance(Landroid/content/Context;)Landroid/support/v4/content/LocalBroadcastManager;
+.limit registers 4
+; parameter[0] : v3 (Landroid/content/Context;)
+.catch java/lang/Exception from l77c3a to l77c64 using l77c60
+.line 100
+	sget-object	v1,android/support/v4/content/LocalBroadcastManager.mLock Ljava/lang/Object;
+; v1 : Ljava/lang/Object;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+l77c3a:
+.line 101
+	sget-object	v0,android/support/v4/content/LocalBroadcastManager.mInstance Landroid/support/v4/content/LocalBroadcastManager;
+; v0 : Landroid/support/v4/content/LocalBroadcastManager;
+	if-nez	v0,l77c58
+; v0 : Landroid/support/v4/content/LocalBroadcastManager;
+.line 102
+	new-instance	v0,android/support/v4/content/LocalBroadcastManager
+; v0 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual	{v3},android/content/Context/getApplicationContext	; getApplicationContext()Landroid/content/Context;
+; v3 : Landroid/content/Context;
+	move-result-object	v2
+; v2 : Landroid/content/Context;
+	invoke-direct	{v0,v2},android/support/v4/content/LocalBroadcastManager/<init>	; <init>(Landroid/content/Context;)V
+; v0 : Landroid/support/v4/content/LocalBroadcastManager; , v2 : Landroid/content/Context;
+	sput-object	v0,android/support/v4/content/LocalBroadcastManager.mInstance Landroid/support/v4/content/LocalBroadcastManager;
+; v0 : Landroid/support/v4/content/LocalBroadcastManager;
+l77c58:
+.line 104
+	sget-object	v0,android/support/v4/content/LocalBroadcastManager.mInstance Landroid/support/v4/content/LocalBroadcastManager;
+; v0 : Landroid/support/v4/content/LocalBroadcastManager;
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+	return-object	v0
+; v0 : Landroid/support/v4/content/LocalBroadcastManager;
+l77c60:
+.line 105
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+l77c64:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)V
+.limit registers 10
+; this: v7 (Landroid/support/v4/content/LocalBroadcastManager;)
+; parameter[0] : v8 (Landroid/content/BroadcastReceiver;)
+; parameter[1] : v9 (Landroid/content/IntentFilter;)
+.catch java/lang/Exception from l77c8a to l77d18 using l77d14
+.var 3 is filters Ljava/util/ArrayList; from l77ca4 to l77cac
+.var 1 is entries Ljava/util/ArrayList; from l77cea to l77cf2
+.var 0 is action Ljava/lang/String; from l77cda to l77d10
+.var 1 is entries Ljava/util/ArrayList; from l77cfa to l77d10
+.var 2 is entry Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord; from l77c94 to l77d14
+.var 3 is filters Ljava/util/ArrayList; from l77cb4 to l77d14
+.var 4 is i I from l77cc6 to l77d14
+.line 134
+	iget-object	v6,v7,android/support/v4/content/LocalBroadcastManager.mReceivers Ljava/util/HashMap;
+; v6 : Ljava/util/HashMap; , v7 : Landroid/support/v4/content/LocalBroadcastManager;
+	monitor-enter	v6
+; v6 : Ljava/util/HashMap;
+l77c8a:
+.line 135
+	new-instance	v2,android/support/v4/content/LocalBroadcastManager$ReceiverRecord
+; v2 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;
+	invoke-direct	{v2,v9,v8},android/support/v4/content/LocalBroadcastManager$ReceiverRecord/<init>	; <init>(Landroid/content/IntentFilter;Landroid/content/BroadcastReceiver;)V
+; v2 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord; , v9 : Landroid/content/IntentFilter; , v8 : Landroid/content/BroadcastReceiver;
+.line 136
+	iget-object	v5,v7,android/support/v4/content/LocalBroadcastManager.mReceivers Ljava/util/HashMap;
+; v5 : Ljava/util/HashMap; , v7 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual	{v5,v8},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v5 : Ljava/util/HashMap; , v8 : Landroid/content/BroadcastReceiver;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,java/util/ArrayList
+; v3 : Ljava/util/ArrayList;
+.line 137
+	if-nez	v3,l77cbe
+; v3 : Ljava/util/ArrayList;
+.line 138
+	new-instance	v3,java/util/ArrayList
+; v3 : Ljava/util/ArrayList;
+l77cac:
+	const/4	v5,1
+; v5 : single-length
+	invoke-direct	{v3,v5},java/util/ArrayList/<init>	; <init>(I)V
+; v3 : Ljava/util/ArrayList; , v5 : single-length
+.line 139
+	iget-object	v5,v7,android/support/v4/content/LocalBroadcastManager.mReceivers Ljava/util/HashMap;
+; v5 : Ljava/util/HashMap; , v7 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual	{v5,v8,v3},java/util/HashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v5 : Ljava/util/HashMap; , v8 : Landroid/content/BroadcastReceiver; , v3 : Ljava/util/ArrayList;
+l77cbe:
+.line 141
+	invoke-virtual	{v3,v9},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v3 : Ljava/util/ArrayList; , v9 : Landroid/content/IntentFilter;
+.line 142
+	const/4	v4,0
+; v4 : single-length
+l77cc6:
+	invoke-virtual	{v9},android/content/IntentFilter/countActions	; countActions()I
+; v9 : Landroid/content/IntentFilter;
+	move-result	v5
+; v5 : single-length
+	if-ge	v4,v5,l77d10
+; v4 : single-length , v5 : single-length
+.line 143
+	invoke-virtual	{v9,v4},android/content/IntentFilter/getAction	; getAction(I)Ljava/lang/String;
+; v9 : Landroid/content/IntentFilter; , v4 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 144
+	iget-object	v5,v7,android/support/v4/content/LocalBroadcastManager.mActions Ljava/util/HashMap;
+; v5 : Ljava/util/HashMap; , v7 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual	{v5,v0},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v5 : Ljava/util/HashMap; , v0 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,java/util/ArrayList
+; v1 : Ljava/util/ArrayList;
+.line 145
+	if-nez	v1,l77d04
+; v1 : Ljava/util/ArrayList;
+.line 146
+	new-instance	v1,java/util/ArrayList
+; v1 : Ljava/util/ArrayList;
+l77cf2:
+	const/4	v5,1
+; v5 : single-length
+	invoke-direct	{v1,v5},java/util/ArrayList/<init>	; <init>(I)V
+; v1 : Ljava/util/ArrayList; , v5 : single-length
+.line 147
+	iget-object	v5,v7,android/support/v4/content/LocalBroadcastManager.mActions Ljava/util/HashMap;
+; v5 : Ljava/util/HashMap; , v7 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual	{v5,v0,v1},java/util/HashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v5 : Ljava/util/HashMap; , v0 : Ljava/lang/String; , v1 : Ljava/util/ArrayList;
+l77d04:
+.line 149
+	invoke-virtual	{v1,v2},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v1 : Ljava/util/ArrayList; , v2 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;
+.line 142
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	goto	l77cc6
+l77d10:
+.line 151
+	monitor-exit	v6
+; v6 : Ljava/util/HashMap;
+.line 152
+	return-void	
+l77d14:
+.line 151
+	move-exception	v5
+; v5 : java/lang/Exception
+	monitor-exit	v6
+; v6 : Ljava/util/HashMap;
+l77d18:
+	throw	v5
+; v5 : java/lang/Exception
+.end method
+
+.method public sendBroadcast(Landroid/content/Intent;)Z
+.limit registers 19
+; this: v17 (Landroid/support/v4/content/LocalBroadcastManager;)
+; parameter[0] : v18 (Landroid/content/Intent;)
+.catch java/lang/Exception from l77f5e to l78024 using l77f4e
+.catch java/lang/Exception from l77d42 to l77f52 using l77f4e
+.var 8 is debug Z from l77d90 to l77ed4
+.var 9 is entries Ljava/util/ArrayList; from l77e18 to l77ed4
+.var 10 is i I from l77e58 to l77ed4
+.var 13 is receiver Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord; from l77e70 to l77ed4
+.var 14 is receivers Ljava/util/ArrayList; from l77e56 to l77ed4
+.var 14 is receivers Ljava/util/ArrayList; from l77eda to l77f3a
+.var 2 is action Ljava/lang/String; from l77d4a to l77f4e
+.var 3 is type Ljava/lang/String; from l77d66 to l77f4e
+.var 4 is scheme Ljava/lang/String; from l77d76 to l77f4e
+.var 5 is data Landroid/net/Uri; from l77d6e to l77f4e
+.var 6 is categories Ljava/util/Set; from l77d7e to l77f4e
+.var 8 is debug Z from l77eda to l77f4e
+.var 9 is entries Ljava/util/ArrayList; from l77eda to l77f4e
+.var 10 is i I from l77eda to l77f4e
+.var 11 is match I from l77eea to l77f4e
+.var 13 is receiver Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord; from l77eda to l77f4e
+.var 14 is receivers Ljava/util/ArrayList; from l77f40 to l77f4e
+.var 12 is reason Ljava/lang/String; from l77f62 to l77f98
+.var 12 is reason Ljava/lang/String; from l77f9c to l77f9e
+.var 12 is reason Ljava/lang/String; from l77fa2 to l77fa4
+.var 12 is reason Ljava/lang/String; from l77fa8 to l77faa
+.var 11 is match I from l77f54 to l77fb0
+.var 12 is reason Ljava/lang/String; from l77fae to l77fb0
+.var 13 is receiver Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord; from l77f54 to l77fb0
+.var 10 is i I from l77f54 to l78020
+.var 14 is receivers Ljava/util/ArrayList; from l77f54 to l78020
+.line 201
+	move-object/from16	v0,v17
+; v0 : Landroid/support/v4/content/LocalBroadcastManager; , v17 : Landroid/support/v4/content/LocalBroadcastManager;
+	iget-object	v15,v0,android/support/v4/content/LocalBroadcastManager.mReceivers Ljava/util/HashMap;
+; v15 : Ljava/util/HashMap; , v0 : Landroid/support/v4/content/LocalBroadcastManager;
+	monitor-enter	v15
+; v15 : Ljava/util/HashMap;
+l77d42:
+.line 202
+	invoke-virtual/range	{v18},android/content/Intent/getAction;	getAction()Ljava/lang/String;
+; v18 : Landroid/content/Intent;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+.line 203
+	move-object/from16	v0,v17
+; v0 : Landroid/support/v4/content/LocalBroadcastManager; , v17 : Landroid/support/v4/content/LocalBroadcastManager;
+	iget-object	v1,v0,android/support/v4/content/LocalBroadcastManager.mAppContext Landroid/content/Context;
+; v1 : Landroid/content/Context; , v0 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual	{v1},android/content/Context/getContentResolver	; getContentResolver()Landroid/content/ContentResolver;
+; v1 : Landroid/content/Context;
+	move-result-object	v1
+; v1 : Landroid/content/ContentResolver;
+	move-object/from16	v0,v18
+; v0 : Landroid/content/Intent; , v18 : Landroid/content/Intent;
+	invoke-virtual	{v0,v1},android/content/Intent/resolveTypeIfNeeded	; resolveTypeIfNeeded(Landroid/content/ContentResolver;)Ljava/lang/String;
+; v0 : Landroid/content/Intent; , v1 : Landroid/content/ContentResolver;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+.line 205
+	invoke-virtual/range	{v18},android/content/Intent/getData;	getData()Landroid/net/Uri;
+; v18 : Landroid/content/Intent;
+	move-result-object	v5
+; v5 : Landroid/net/Uri;
+.line 206
+	invoke-virtual/range	{v18},android/content/Intent/getScheme;	getScheme()Ljava/lang/String;
+; v18 : Landroid/content/Intent;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+.line 207
+	invoke-virtual/range	{v18},android/content/Intent/getCategories;	getCategories()Ljava/util/Set;
+; v18 : Landroid/content/Intent;
+	move-result-object	v6
+; v6 : Ljava/util/Set;
+.line 209
+	invoke-virtual/range	{v18},android/content/Intent/getFlags;	getFlags()I
+; v18 : Landroid/content/Intent;
+	move-result	v1
+; v1 : single-length
+	and-int/lit8	v1,v1,8
+; v1 : single-length , v1 : single-length
+	if-eqz	v1,l77ed4
+; v1 : single-length
+	const/4	v8,1
+; v8 : single-length
+l77d90:
+.line 211
+	if-eqz	v8,l77dfc
+; v8 : single-length
+	const-string	v1,"LocalBroadcastManager"
+; v1 : Ljava/lang/String;
+	new-instance	v7,java/lang/StringBuilder
+; v7 : Ljava/lang/StringBuilder;
+	invoke-direct	{v7},java/lang/StringBuilder/<init>	; <init>()V
+; v7 : Ljava/lang/StringBuilder;
+	const-string	v16,"Resolving type "
+; v16 : Ljava/lang/String;
+	move-object/from16	v0,v16
+; v0 : Ljava/lang/String; , v16 : Ljava/lang/String;
+	invoke-virtual	{v7,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v7,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	const-string	v16," scheme "
+; v16 : Ljava/lang/String;
+	move-object/from16	v0,v16
+; v0 : Ljava/lang/String; , v16 : Ljava/lang/String;
+	invoke-virtual	{v7,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v7,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	const-string	v16," of intent "
+; v16 : Ljava/lang/String;
+	move-object/from16	v0,v16
+; v0 : Ljava/lang/String; , v16 : Ljava/lang/String;
+	invoke-virtual	{v7,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	move-object/from16	v0,v18
+; v0 : Landroid/content/Intent; , v18 : Landroid/content/Intent;
+	invoke-virtual	{v7,v0},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v0 : Landroid/content/Intent;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v7},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v7 : Ljava/lang/StringBuilder;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	invoke-static	{v1,v7},android/util/Log/v	; v(Ljava/lang/String;Ljava/lang/String;)I
+; v1 : Ljava/lang/String; , v7 : Ljava/lang/String;
+l77dfc:
+.line 215
+	move-object/from16	v0,v17
+; v0 : Landroid/support/v4/content/LocalBroadcastManager; , v17 : Landroid/support/v4/content/LocalBroadcastManager;
+	iget-object	v1,v0,android/support/v4/content/LocalBroadcastManager.mActions Ljava/util/HashMap;
+; v1 : Ljava/util/HashMap; , v0 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual/range	{v18},android/content/Intent/getAction;	getAction()Ljava/lang/String;
+; v18 : Landroid/content/Intent;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	invoke-virtual	{v1,v7},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/HashMap; , v7 : Ljava/lang/String;
+	move-result-object	v9
+; v9 : Ljava/lang/Object;
+	check-cast	v9,java/util/ArrayList
+; v9 : Ljava/util/ArrayList;
+.line 216
+	if-eqz	v9,l78022
+; v9 : Ljava/util/ArrayList;
+.line 217
+	if-eqz	v8,l77e54
+; v8 : single-length
+	const-string	v1,"LocalBroadcastManager"
+; v1 : Ljava/lang/String;
+	new-instance	v7,java/lang/StringBuilder
+; v7 : Ljava/lang/StringBuilder;
+	invoke-direct	{v7},java/lang/StringBuilder/<init>	; <init>()V
+; v7 : Ljava/lang/StringBuilder;
+	const-string	v16,"Action list: "
+; v16 : Ljava/lang/String;
+	move-object/from16	v0,v16
+; v0 : Ljava/lang/String; , v16 : Ljava/lang/String;
+	invoke-virtual	{v7,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v7,v9},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v9 : Ljava/util/ArrayList;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v7},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v7 : Ljava/lang/StringBuilder;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	invoke-static	{v1,v7},android/util/Log/v	; v(Ljava/lang/String;Ljava/lang/String;)I
+; v1 : Ljava/lang/String; , v7 : Ljava/lang/String;
+l77e54:
+.line 219
+	const/4	v14,0
+; v14 : single-length
+.line 220
+	const/4	v10,0
+; v10 : single-length
+l77e58:
+	invoke-virtual	{v9},java/util/ArrayList/size	; size()I
+; v9 : Ljava/util/ArrayList;
+	move-result	v1
+; v1 : single-length
+	if-ge	v10,v1,l77fb0
+; v10 : single-length , v1 : single-length
+.line 221
+	invoke-virtual	{v9,v10},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v9 : Ljava/util/ArrayList; , v10 : single-length
+	move-result-object	v13
+; v13 : Ljava/lang/Object;
+	check-cast	v13,android/support/v4/content/LocalBroadcastManager$ReceiverRecord
+; v13 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;
+.line 222
+	if-eqz	v8,l77eb4
+; v8 : single-length
+	const-string	v1,"LocalBroadcastManager"
+; v1 : Ljava/lang/String;
+	new-instance	v7,java/lang/StringBuilder
+; v7 : Ljava/lang/StringBuilder;
+	invoke-direct	{v7},java/lang/StringBuilder/<init>	; <init>()V
+; v7 : Ljava/lang/StringBuilder;
+	const-string	v16,"Matching against filter "
+; v16 : Ljava/lang/String;
+	move-object/from16	v0,v16
+; v0 : Ljava/lang/String; , v16 : Ljava/lang/String;
+	invoke-virtual	{v7,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	iget-object	v0,v13,android/support/v4/content/LocalBroadcastManager$ReceiverRecord.filter Landroid/content/IntentFilter;
+; v0 : Landroid/content/IntentFilter; , v13 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;
+	move-object/from16	v16,v0
+; v16 : Landroid/content/IntentFilter; , v0 : Landroid/content/IntentFilter;
+	move-object/from16	v0,v16
+; v0 : Landroid/content/IntentFilter; , v16 : Landroid/content/IntentFilter;
+	invoke-virtual	{v7,v0},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v0 : Landroid/content/IntentFilter;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v7},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v7 : Ljava/lang/StringBuilder;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	invoke-static	{v1,v7},android/util/Log/v	; v(Ljava/lang/String;Ljava/lang/String;)I
+; v1 : Ljava/lang/String; , v7 : Ljava/lang/String;
+l77eb4:
+.line 224
+	iget-boolean	v1,v13,android/support/v4/content/LocalBroadcastManager$ReceiverRecord.broadcasting Z
+; v1 : single-length , v13 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;
+	if-eqz	v1,l77eda
+; v1 : single-length
+.line 225
+	if-eqz	v8,l77ece
+; v8 : single-length
+.line 226
+	const-string	v1,"LocalBroadcastManager"
+; v1 : Ljava/lang/String;
+	const-string	v7,"  Filter's target already added"
+; v7 : Ljava/lang/String;
+	invoke-static	{v1,v7},android/util/Log/v	; v(Ljava/lang/String;Ljava/lang/String;)I
+; v1 : Ljava/lang/String; , v7 : Ljava/lang/String;
+l77ece:
+.line 220
+	add-int/lit8	v10,v10,1
+; v10 : single-length , v10 : single-length
+	goto	l77e58
+l77ed4:
+.line 209
+	const/4	v8,0
+; v8 : single-length
+	goto/16	l77d90
+l77eda:
+.line 231
+	iget-object	v1,v13,android/support/v4/content/LocalBroadcastManager$ReceiverRecord.filter Landroid/content/IntentFilter;
+; v1 : Landroid/content/IntentFilter; , v13 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;
+	const-string	v7,"LocalBroadcastManager"
+; v7 : Ljava/lang/String;
+	invoke-virtual/range	{v1..v7},android/content/IntentFilter/match;	match(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/net/Uri;Ljava/util/Set;Ljava/lang/String;)I
+; v1 : Landroid/content/IntentFilter; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String; , v5 : Landroid/net/Uri; , v6 : Ljava/util/Set; , v7 : Ljava/lang/String;
+	move-result	v11
+; v11 : single-length
+.line 233
+	if-ltz	v11,l77f54
+; v11 : single-length
+.line 234
+	if-eqz	v8,l77f32
+; v8 : single-length
+	const-string	v1,"LocalBroadcastManager"
+; v1 : Ljava/lang/String;
+	new-instance	v7,java/lang/StringBuilder
+; v7 : Ljava/lang/StringBuilder;
+	invoke-direct	{v7},java/lang/StringBuilder/<init>	; <init>()V
+; v7 : Ljava/lang/StringBuilder;
+	const-string	v16,"  Filter matched!  match=0x"
+; v16 : Ljava/lang/String;
+	move-object/from16	v0,v16
+; v0 : Ljava/lang/String; , v16 : Ljava/lang/String;
+	invoke-virtual	{v7,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	invoke-static	{v11},java/lang/Integer/toHexString	; toHexString(I)Ljava/lang/String;
+; v11 : single-length
+	move-result-object	v16
+; v16 : Ljava/lang/String;
+	move-object/from16	v0,v16
+; v0 : Ljava/lang/String; , v16 : Ljava/lang/String;
+	invoke-virtual	{v7,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v7},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v7 : Ljava/lang/StringBuilder;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	invoke-static	{v1,v7},android/util/Log/v	; v(Ljava/lang/String;Ljava/lang/String;)I
+; v1 : Ljava/lang/String; , v7 : Ljava/lang/String;
+l77f32:
+.line 236
+	if-nez	v14,l77f40
+; v14 : single-length
+.line 237
+	new-instance	v14,java/util/ArrayList
+; v14 : Ljava/util/ArrayList;
+l77f3a:
+	invoke-direct	{v14},java/util/ArrayList/<init>	; <init>()V
+; v14 : Ljava/util/ArrayList;
+l77f40:
+.line 239
+	invoke-virtual	{v14,v13},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v14 : Ljava/util/ArrayList; , v13 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;
+.line 240
+	const/4	v1,1
+; v1 : single-length
+	iput-boolean	v1,v13,android/support/v4/content/LocalBroadcastManager$ReceiverRecord.broadcasting Z
+; v1 : single-length , v13 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;
+	goto	l77ece
+l77f4e:
+.line 267
+	move-exception	v1
+; v1 : java/lang/Exception
+	monitor-exit	v15
+; v15 : Ljava/util/HashMap;
+l77f52:
+	throw	v1
+; v1 : java/lang/Exception
+l77f54:
+.line 242
+	if-eqz	v8,l77ece
+; v8 : single-length
+.line 244
+	packed-switch	v11,-4
+		ps77f58_77f9e	; case -4
+		ps77f58_77f98	; case -3
+		ps77f58_77fa4	; case -2
+		ps77f58_77faa	; case -1
+		default: ps77f58_default
+; v11 : single-length
+l77f5e:
+.line 249
+	const-string	v12,"unknown reason"
+; v12 : Ljava/lang/String;
+l77f62:
+.line 251
+	const-string	v1,"LocalBroadcastManager"
+; v1 : Ljava/lang/String;
+	new-instance	v7,java/lang/StringBuilder
+; v7 : Ljava/lang/StringBuilder;
+	invoke-direct	{v7},java/lang/StringBuilder/<init>	; <init>()V
+; v7 : Ljava/lang/StringBuilder;
+	const-string	v16,"  Filter did not match: "
+; v16 : Ljava/lang/String;
+	move-object/from16	v0,v16
+; v0 : Ljava/lang/String; , v16 : Ljava/lang/String;
+	invoke-virtual	{v7,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v7,v12},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v12 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v7},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v7 : Ljava/lang/StringBuilder;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	invoke-static	{v1,v7},android/util/Log/v	; v(Ljava/lang/String;Ljava/lang/String;)I
+; v1 : Ljava/lang/String; , v7 : Ljava/lang/String;
+	goto	l77ece
+ps77f58_77f98:
+.line 245
+	const-string	v12,"action"
+; v12 : Ljava/lang/String;
+l77f9c:
+	goto	l77f62
+ps77f58_77f9e:
+.line 246
+	const-string	v12,"category"
+; v12 : Ljava/lang/String;
+l77fa2:
+	goto	l77f62
+ps77f58_77fa4:
+.line 247
+	const-string	v12,"data"
+; v12 : Ljava/lang/String;
+l77fa8:
+	goto	l77f62
+ps77f58_77faa:
+.line 248
+	const-string	v12,"type"
+; v12 : Ljava/lang/String;
+l77fae:
+	goto	l77f62
+l77fb0:
+.line 256
+	if-eqz	v14,l78022
+; v14 : single-length
+.line 257
+	const/4	v10,0
+; v10 : single-length
+l77fb6:
+	invoke-virtual	{v14},java/util/ArrayList/size	; size()I
+; v14 : single-length
+	move-result	v1
+; v1 : single-length
+	if-ge	v10,v1,l77fda
+; v10 : single-length , v1 : single-length
+.line 258
+	invoke-virtual	{v14,v10},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v14 : single-length , v10 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,android/support/v4/content/LocalBroadcastManager$ReceiverRecord
+; v1 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;
+	const/4	v7,0
+; v7 : single-length
+	iput-boolean	v7,v1,android/support/v4/content/LocalBroadcastManager$ReceiverRecord.broadcasting Z
+; v7 : single-length , v1 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;
+.line 257
+	add-int/lit8	v10,v10,1
+; v10 : single-length , v10 : single-length
+	goto	l77fb6
+l77fda:
+.line 260
+	move-object/from16	v0,v17
+; v0 : Landroid/support/v4/content/LocalBroadcastManager; , v17 : Landroid/support/v4/content/LocalBroadcastManager;
+	iget-object	v1,v0,android/support/v4/content/LocalBroadcastManager.mPendingBroadcasts Ljava/util/ArrayList;
+; v1 : Ljava/util/ArrayList; , v0 : Landroid/support/v4/content/LocalBroadcastManager;
+	new-instance	v7,android/support/v4/content/LocalBroadcastManager$BroadcastRecord
+; v7 : Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord;
+	move-object/from16	v0,v18
+; v0 : Landroid/content/Intent; , v18 : Landroid/content/Intent;
+	invoke-direct	{v7,v0,v14},android/support/v4/content/LocalBroadcastManager$BroadcastRecord/<init>	; <init>(Landroid/content/Intent;Ljava/util/ArrayList;)V
+; v7 : Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord; , v0 : Landroid/content/Intent; , v14 : single-length
+	invoke-virtual	{v1,v7},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v1 : Ljava/util/ArrayList; , v7 : Landroid/support/v4/content/LocalBroadcastManager$BroadcastRecord;
+.line 261
+	move-object/from16	v0,v17
+; v0 : Landroid/support/v4/content/LocalBroadcastManager; , v17 : Landroid/support/v4/content/LocalBroadcastManager;
+	iget-object	v1,v0,android/support/v4/content/LocalBroadcastManager.mHandler Landroid/os/Handler;
+; v1 : Landroid/os/Handler; , v0 : Landroid/support/v4/content/LocalBroadcastManager;
+	const/4	v7,1
+; v7 : single-length
+	invoke-virtual	{v1,v7},android/os/Handler/hasMessages	; hasMessages(I)Z
+; v1 : Landroid/os/Handler; , v7 : single-length
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l7801c
+; v1 : single-length
+.line 262
+	move-object/from16	v0,v17
+; v0 : Landroid/support/v4/content/LocalBroadcastManager; , v17 : Landroid/support/v4/content/LocalBroadcastManager;
+	iget-object	v1,v0,android/support/v4/content/LocalBroadcastManager.mHandler Landroid/os/Handler;
+; v1 : Landroid/os/Handler; , v0 : Landroid/support/v4/content/LocalBroadcastManager;
+	const/4	v7,1
+; v7 : single-length
+	invoke-virtual	{v1,v7},android/os/Handler/sendEmptyMessage	; sendEmptyMessage(I)Z
+; v1 : Landroid/os/Handler; , v7 : single-length
+l7801c:
+.line 264
+	const/4	v1,1
+; v1 : single-length
+	monitor-exit	v15
+; v15 : Ljava/util/HashMap;
+l78020:
+.line 268
+	return	v1
+; v1 : single-length
+l78022:
+.line 267
+	monitor-exit	v15
+; v15 : Ljava/util/HashMap;
+l78024:
+.line 268
+	const/4	v1,0
+; v1 : single-length
+	goto	l78020
+.line 244
+.end method
+
+.method public sendBroadcastSync(Landroid/content/Intent;)V
+.limit registers 3
+; this: v1 (Landroid/support/v4/content/LocalBroadcastManager;)
+; parameter[0] : v2 (Landroid/content/Intent;)
+.line 277
+	invoke-virtual	{v1,v2},android/support/v4/content/LocalBroadcastManager/sendBroadcast	; sendBroadcast(Landroid/content/Intent;)Z
+; v1 : Landroid/support/v4/content/LocalBroadcastManager; , v2 : Landroid/content/Intent;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l78076
+; v0 : single-length
+.line 278
+	invoke-direct	{v1},android/support/v4/content/LocalBroadcastManager/executePendingBroadcasts	; executePendingBroadcasts()V
+; v1 : Landroid/support/v4/content/LocalBroadcastManager;
+l78076:
+.line 280
+	return-void	
+.end method
+
+.method public unregisterReceiver(Landroid/content/BroadcastReceiver;)V
+.limit registers 11
+; this: v9 (Landroid/support/v4/content/LocalBroadcastManager;)
+; parameter[0] : v10 (Landroid/content/BroadcastReceiver;)
+.catch java/lang/Exception from l7808e to l78146 using l78142
+.var 5 is k I from l780ec to l78132
+.var 0 is action Ljava/lang/String; from l780d6 to l78138
+.var 6 is receivers Ljava/util/ArrayList; from l780e6 to l78138
+.var 1 is filter Landroid/content/IntentFilter; from l780c0 to l7813e
+.var 4 is j I from l780c2 to l7813e
+.var 2 is filters Ljava/util/ArrayList; from l7809e to l78142
+.var 3 is i I from l780a8 to l78142
+.line 164
+	iget-object	v8,v9,android/support/v4/content/LocalBroadcastManager.mReceivers Ljava/util/HashMap;
+; v8 : Ljava/util/HashMap; , v9 : Landroid/support/v4/content/LocalBroadcastManager;
+	monitor-enter	v8
+; v8 : Ljava/util/HashMap;
+l7808e:
+.line 165
+	iget-object	v7,v9,android/support/v4/content/LocalBroadcastManager.mReceivers Ljava/util/HashMap;
+; v7 : Ljava/util/HashMap; , v9 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual	{v7,v10},java/util/HashMap/remove	; remove(Ljava/lang/Object;)Ljava/lang/Object;
+; v7 : Ljava/util/HashMap; , v10 : Landroid/content/BroadcastReceiver;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/util/ArrayList
+; v2 : Ljava/util/ArrayList;
+.line 166
+	if-nez	v2,l780a6
+; v2 : Ljava/util/ArrayList;
+.line 167
+	monitor-exit	v8
+; v8 : Ljava/util/HashMap;
+l780a4:
+.line 188
+	return-void	
+l780a6:
+.line 169
+	const/4	v3,0
+; v3 : single-length
+l780a8:
+	invoke-virtual	{v2},java/util/ArrayList/size	; size()I
+; v2 : Ljava/util/ArrayList;
+	move-result	v7
+; v7 : single-length
+	if-ge	v3,v7,l7813e
+; v3 : single-length , v7 : single-length
+.line 170
+	invoke-virtual	{v2,v3},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v2 : Ljava/util/ArrayList; , v3 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,android/content/IntentFilter
+; v1 : Landroid/content/IntentFilter;
+.line 171
+	const/4	v4,0
+; v4 : single-length
+l780c2:
+	invoke-virtual	{v1},android/content/IntentFilter/countActions	; countActions()I
+; v1 : Landroid/content/IntentFilter;
+	move-result	v7
+; v7 : single-length
+	if-ge	v4,v7,l78138
+; v4 : single-length , v7 : single-length
+.line 172
+	invoke-virtual	{v1,v4},android/content/IntentFilter/getAction	; getAction(I)Ljava/lang/String;
+; v1 : Landroid/content/IntentFilter; , v4 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 173
+	iget-object	v7,v9,android/support/v4/content/LocalBroadcastManager.mActions Ljava/util/HashMap;
+; v7 : Ljava/util/HashMap; , v9 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual	{v7,v0},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v7 : Ljava/util/HashMap; , v0 : Ljava/lang/String;
+	move-result-object	v6
+; v6 : Ljava/lang/Object;
+	check-cast	v6,java/util/ArrayList
+; v6 : Ljava/util/ArrayList;
+.line 174
+	if-eqz	v6,l78132
+; v6 : Ljava/util/ArrayList;
+.line 175
+	const/4	v5,0
+; v5 : single-length
+l780ec:
+	invoke-virtual	{v6},java/util/ArrayList/size	; size()I
+; v6 : Ljava/util/ArrayList;
+	move-result	v7
+; v7 : single-length
+	if-ge	v5,v7,l7811c
+; v5 : single-length , v7 : single-length
+.line 176
+	invoke-virtual	{v6,v5},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v6 : Ljava/util/ArrayList; , v5 : single-length
+	move-result-object	v7
+; v7 : Ljava/lang/Object;
+	check-cast	v7,android/support/v4/content/LocalBroadcastManager$ReceiverRecord
+; v7 : Landroid/support/v4/content/LocalBroadcastManager$ReceiverRecord;
+	iget-object	v7,v7,android/support/v4/content/LocalBroadcastManager$ReceiverRecord.receiver Landroid/content/BroadcastReceiver;
+; v7 : Landroid/content/BroadcastReceiver; , v7 : Landroid/content/BroadcastReceiver;
+	if-ne	v7,v10,l78116
+; v7 : Landroid/content/BroadcastReceiver; , v10 : Landroid/content/BroadcastReceiver;
+.line 177
+	invoke-virtual	{v6,v5},java/util/ArrayList/remove	; remove(I)Ljava/lang/Object;
+; v6 : Ljava/util/ArrayList; , v5 : single-length
+.line 178
+	add-int/lit8	v5,v5,255
+; v5 : single-length , v5 : single-length
+l78116:
+.line 175
+	add-int/lit8	v5,v5,1
+; v5 : single-length , v5 : single-length
+	goto	l780ec
+l7811c:
+.line 181
+	invoke-virtual	{v6},java/util/ArrayList/size	; size()I
+; v6 : Ljava/util/ArrayList;
+	move-result	v7
+; v7 : single-length
+	if-gtz	v7,l78132
+; v7 : single-length
+.line 182
+	iget-object	v7,v9,android/support/v4/content/LocalBroadcastManager.mActions Ljava/util/HashMap;
+; v7 : Ljava/util/HashMap; , v9 : Landroid/support/v4/content/LocalBroadcastManager;
+	invoke-virtual	{v7,v0},java/util/HashMap/remove	; remove(Ljava/lang/Object;)Ljava/lang/Object;
+; v7 : Ljava/util/HashMap; , v0 : Ljava/lang/String;
+l78132:
+.line 171
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	goto	l780c2
+l78138:
+.line 169
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	l780a8
+l7813e:
+.line 187
+	monitor-exit	v8
+; v8 : Ljava/util/HashMap;
+	goto	l780a4
+l78142:
+	move-exception	v7
+; v7 : java/lang/Exception
+	monitor-exit	v8
+; v8 : Ljava/util/HashMap;
+l78146:
+	throw	v7
+; v7 : java/lang/Exception
+.end method
+
+

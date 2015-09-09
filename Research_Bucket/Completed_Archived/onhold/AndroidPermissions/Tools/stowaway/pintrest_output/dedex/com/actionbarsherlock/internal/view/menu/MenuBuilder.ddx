@@ -1,0 +1,3994 @@
+.class public com/actionbarsherlock/internal/view/menu/MenuBuilder
+.super java/lang/Object
+.source MenuBuilder.java
+.implements com/actionbarsherlock/view/Menu
+
+.inner class ItemInvoker inner com/actionbarsherlock/internal/view/menu/MenuBuilder$ItemInvoker outer com/actionbarsherlock/internal/view/menu/MenuBuilder
+.inner class Callback inner com/actionbarsherlock/internal/view/menu/MenuBuilder$Callback outer com/actionbarsherlock/internal/view/menu/MenuBuilder
+.field private static final ACTION_VIEW_STATES_KEY Ljava/lang/String; = "android:menu:actionviewstates"
+.field private static final EXPANDED_ACTION_VIEW_ID Ljava/lang/String; = "android:menu:expandedactionview"
+.field private static final PRESENTER_KEY Ljava/lang/String; = "android:menu:presenters"
+.field private static final sCategoryToOrder [I
+.field private mActionItems Ljava/util/ArrayList;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;" , ">;" }
+  .end annotation
+.end field
+.field private mCallback Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback;
+.field private final mContext Landroid/content/Context;
+.field private mCurrentMenuInfo Landroid/view/ContextMenu$ContextMenuInfo;
+.field private mDefaultShowAsAction I
+.field private mExpandedItem Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.field mHeaderIcon Landroid/graphics/drawable/Drawable;
+.field mHeaderTitle Ljava/lang/CharSequence;
+.field mHeaderView Landroid/view/View;
+.field private mIsActionItemsStale Z
+.field private mIsClosing Z
+.field private mIsVisibleItemsStale Z
+.field private mItems Ljava/util/ArrayList;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;" , ">;" }
+  .end annotation
+.end field
+.field private mItemsChangedWhileDispatchPrevented Z
+.field private mNonActionItems Ljava/util/ArrayList;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;" , ">;" }
+  .end annotation
+.end field
+.field private mOptionalIconsVisible Z
+.field private mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/concurrent/CopyOnWriteArrayList" , "<" , "Ljava/lang/ref/WeakReference" , "<" , "Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;" , ">;>;" }
+  .end annotation
+.end field
+.field private mPreventDispatchingItemsChanged Z
+.field private mQwertyMode Z
+.field private final mResources Landroid/content/res/Resources;
+.field private mShortcutsVisible Z
+.field private mTempShortcutItemList Ljava/util/ArrayList;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;" , ">;" }
+  .end annotation
+.end field
+.field private mVisibleItems Ljava/util/ArrayList;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;" , ">;" }
+  .end annotation
+.end field
+
+.method static <clinit>()V
+.limit registers 1
+.line 59
+	const/4	v0,6
+; v0 : single-length
+	new-array	v0,v0,[I
+; v0 : [I , v0 : [I
+	fill-array-data	v0,l97de4
+; v0 : [I
+	sput-object	v0,com/actionbarsherlock/internal/view/menu/MenuBuilder.sCategoryToOrder [I
+; v0 : [I
+	return-void	
+l97de2:	data-array
+		0x00, 0x00
+	end data-array
+l97de4:	data-array
+		0x01, 0x00, 0x00, 0x00	; #0
+		0x04, 0x00, 0x00, 0x00	; #1
+		0x05, 0x00, 0x00, 0x00	; #2
+		0x03, 0x00, 0x00, 0x00	; #3
+		0x02, 0x00, 0x00, 0x00	; #4
+		0x00, 0x00, 0x00, 0x00	; #5
+	end data-array
+.end method
+
+.method public <init>(Landroid/content/Context;)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v3 (Landroid/content/Context;)
+	const/4	v1,1
+; v1 : single-length
+	const/4	v0,0
+; v0 : single-length
+.line 189
+	invoke-direct	{v2},java/lang/Object/<init>	; <init>()V
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 119
+	iput	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mDefaultShowAsAction I
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 145
+	iput-boolean	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPreventDispatchingItemsChanged Z
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 146
+	iput-boolean	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItemsChangedWhileDispatchPrevented Z
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 148
+	iput-boolean	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mOptionalIconsVisible Z
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 150
+	iput-boolean	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsClosing Z
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 152
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+	iput-object	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mTempShortcutItemList Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 154
+	new-instance	v0,java/util/concurrent/CopyOnWriteArrayList
+; v0 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	invoke-direct	{v0},java/util/concurrent/CopyOnWriteArrayList/<init>	; <init>()V
+; v0 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	iput-object	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v0 : Ljava/util/concurrent/CopyOnWriteArrayList; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 190
+	iput-object	v3,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mContext Landroid/content/Context;
+; v3 : Landroid/content/Context; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 191
+	invoke-virtual	{v3},android/content/Context/getResources	; getResources()Landroid/content/res/Resources;
+; v3 : Landroid/content/Context;
+	move-result-object	v0
+; v0 : Landroid/content/res/Resources;
+	iput-object	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mResources Landroid/content/res/Resources;
+; v0 : Landroid/content/res/Resources; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 193
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+	iput-object	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 195
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+	iput-object	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mVisibleItems Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 196
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsVisibleItemsStale Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 198
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+	iput-object	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mActionItems Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 199
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+	iput-object	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mNonActionItems Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 200
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsActionItemsStale Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 202
+	invoke-direct	{v2,v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/setShortcutsVisibleInner	; setShortcutsVisibleInner(Z)V
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length
+.line 203
+	return-void	
+.end method
+
+.method private addInternal(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 13
+; this: v8 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v9 (I)
+; parameter[1] : v10 (I)
+; parameter[2] : v11 (I)
+; parameter[3] : v12 (Ljava/lang/CharSequence;)
+.line 390
+	invoke-static	{v11},com/actionbarsherlock/internal/view/menu/MenuBuilder/getOrdering	; getOrdering(I)I
+; v11 : single-length
+	move-result	v5
+; v5 : single-length
+.line 392
+	new-instance	v0,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	iget	v7,v8,com/actionbarsherlock/internal/view/menu/MenuBuilder.mDefaultShowAsAction I
+; v7 : single-length , v8 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-object	v1,v8
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v8 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move	v2,v9
+; v2 : single-length , v9 : single-length
+	move	v3,v10
+; v3 : single-length , v10 : single-length
+	move	v4,v11
+; v4 : single-length , v11 : single-length
+	move-object	v6,v12
+; v6 : Ljava/lang/CharSequence; , v12 : Ljava/lang/CharSequence;
+	invoke-direct/range	{v0..v7},com/actionbarsherlock/internal/view/menu/MenuItemImpl/<init>;	<init>(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;IIIILjava/lang/CharSequence;I)V
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : single-length , v3 : single-length , v4 : single-length , v5 : single-length , v6 : Ljava/lang/CharSequence; , v7 : single-length
+.line 395
+	iget-object	v1,v8,com/actionbarsherlock/internal/view/menu/MenuBuilder.mCurrentMenuInfo Landroid/view/ContextMenu$ContextMenuInfo;
+; v1 : Landroid/view/ContextMenu$ContextMenuInfo; , v8 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	if-eqz	v1,l97eea
+; v1 : Landroid/view/ContextMenu$ContextMenuInfo;
+.line 397
+	iget-object	v1,v8,com/actionbarsherlock/internal/view/menu/MenuBuilder.mCurrentMenuInfo Landroid/view/ContextMenu$ContextMenuInfo;
+; v1 : Landroid/view/ContextMenu$ContextMenuInfo; , v8 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/setMenuInfo	; setMenuInfo(Landroid/view/ContextMenu$ContextMenuInfo;)V
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v1 : Landroid/view/ContextMenu$ContextMenuInfo;
+l97eea:
+.line 400
+	iget-object	v1,v8,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v1 : Ljava/util/ArrayList; , v8 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	iget-object	v2,v8,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v2 : Ljava/util/ArrayList; , v8 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-static	{v2,v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/findInsertIndex	; findInsertIndex(Ljava/util/ArrayList;I)I
+; v2 : Ljava/util/ArrayList; , v5 : single-length
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v1,v2,v0},java/util/ArrayList/add	; add(ILjava/lang/Object;)V
+; v1 : Ljava/util/ArrayList; , v2 : single-length , v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 401
+	const/4	v1,1
+; v1 : single-length
+	invoke-virtual	{v8,v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length
+.line 403
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.end method
+
+.method private dispatchPresenterUpdate(Z)V
+.limit registers 6
+; this: v4 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v5 (Z)
+.var 1 is presenter Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; from l97f64 to l97f7c
+.var 2 is ref Ljava/lang/ref/WeakReference; from l97f58 to l97f7c
+.line 239
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3},java/util/concurrent/CopyOnWriteArrayList/isEmpty	; isEmpty()Z
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l97f2e
+; v3 : single-length
+l97f2c:
+.line 251
+	return-void	
+l97f2e:
+.line 241
+	invoke-virtual	{v4},com/actionbarsherlock/internal/view/menu/MenuBuilder/stopDispatchingItemsChanged	; stopDispatchingItemsChanged()V
+; v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 242
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3},java/util/concurrent/CopyOnWriteArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result-object	v0
+; v0 : Ljava/util/Iterator;
+l97f40:
+	invoke-interface	{v0},java/util/Iterator/hasNext	; hasNext()Z
+; v0 : Ljava/util/Iterator;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l97f7c
+; v3 : single-length
+	invoke-interface	{v0},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v0 : Ljava/util/Iterator;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/lang/ref/WeakReference
+; v2 : Ljava/lang/ref/WeakReference;
+.line 243
+	invoke-virtual	{v2},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v2 : Ljava/lang/ref/WeakReference;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuPresenter
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 244
+	if-nez	v1,l97f74
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 245
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3,v2},java/util/concurrent/CopyOnWriteArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList; , v2 : Ljava/lang/ref/WeakReference;
+	goto	l97f40
+l97f74:
+.line 247
+	invoke-interface	{v1,v5},com/actionbarsherlock/internal/view/menu/MenuPresenter/updateMenuView	; updateMenuView(Z)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; , v5 : single-length
+	goto	l97f40
+l97f7c:
+.line 250
+	invoke-virtual	{v4},com/actionbarsherlock/internal/view/menu/MenuBuilder/startDispatchingItemsChanged	; startDispatchingItemsChanged()V
+; v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	goto	l97f2c
+.end method
+
+.method private dispatchRestoreInstanceState(Landroid/os/Bundle;)V
+.limit registers 9
+; this: v7 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v8 (Landroid/os/Bundle;)
+.line 293
+	const-string	v6,"android:menu:presenters"
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v8,v6},android/os/Bundle/getSparseParcelableArray	; getSparseParcelableArray(Ljava/lang/String;)Landroid/util/SparseArray;
+; v8 : Landroid/os/Bundle; , v6 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Landroid/util/SparseArray;
+.line 295
+	if-eqz	v4,l97fb4
+; v4 : Landroid/util/SparseArray;
+	iget-object	v6,v7,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v6 : Ljava/util/concurrent/CopyOnWriteArrayList; , v7 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v6},java/util/concurrent/CopyOnWriteArrayList/isEmpty	; isEmpty()Z
+; v6 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result	v6
+; v6 : single-length
+	if-eqz	v6,l97fb6
+; v6 : single-length
+l97fb4:
+.line 311
+	return-void	
+l97fb6:
+.line 297
+	iget-object	v6,v7,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v6 : Ljava/util/concurrent/CopyOnWriteArrayList; , v7 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v6},java/util/concurrent/CopyOnWriteArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v6 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result-object	v0
+; v0 : Ljava/util/Iterator;
+l97fc2:
+	invoke-interface	{v0},java/util/Iterator/hasNext	; hasNext()Z
+; v0 : Ljava/util/Iterator;
+	move-result	v6
+; v6 : single-length
+	if-eqz	v6,l97fb4
+; v6 : single-length
+	invoke-interface	{v0},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v0 : Ljava/util/Iterator;
+	move-result-object	v5
+; v5 : Ljava/lang/Object;
+	check-cast	v5,java/lang/ref/WeakReference
+; v5 : Ljava/lang/ref/WeakReference;
+.line 298
+	invoke-virtual	{v5},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v5 : Ljava/lang/ref/WeakReference;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,com/actionbarsherlock/internal/view/menu/MenuPresenter
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 299
+	if-nez	v3,l97ff6
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 300
+	iget-object	v6,v7,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v6 : Ljava/util/concurrent/CopyOnWriteArrayList; , v7 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v6,v5},java/util/concurrent/CopyOnWriteArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v6 : Ljava/util/concurrent/CopyOnWriteArrayList; , v5 : Ljava/lang/ref/WeakReference;
+	goto	l97fc2
+l97ff6:
+.line 302
+	invoke-interface	{v3},com/actionbarsherlock/internal/view/menu/MenuPresenter/getId	; getId()I
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+	move-result	v1
+; v1 : single-length
+.line 303
+	if-lez	v1,l97fc2
+; v1 : single-length
+.line 304
+	invoke-virtual	{v4,v1},android/util/SparseArray/get	; get(I)Ljava/lang/Object;
+; v4 : Landroid/util/SparseArray; , v1 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,android/os/Parcelable
+; v2 : Landroid/os/Parcelable;
+.line 305
+	if-eqz	v2,l97fc2
+; v2 : Landroid/os/Parcelable;
+.line 306
+	invoke-interface	{v3,v2},com/actionbarsherlock/internal/view/menu/MenuPresenter/onRestoreInstanceState	; onRestoreInstanceState(Landroid/os/Parcelable;)V
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; , v2 : Landroid/os/Parcelable;
+	goto	l97fc2
+.end method
+
+.method private dispatchSaveInstanceState(Landroid/os/Bundle;)V
+.limit registers 9
+; this: v7 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v8 (Landroid/os/Bundle;)
+.var 1 is id I from l98090 to l980a8
+.var 2 is presenter Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; from l98078 to l980a8
+.var 4 is ref Ljava/lang/ref/WeakReference; from l9806c to l980a8
+.var 5 is state Landroid/os/Parcelable; from l9809c to l980a8
+.line 270
+	iget-object	v6,v7,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v6 : Ljava/util/concurrent/CopyOnWriteArrayList; , v7 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v6},java/util/concurrent/CopyOnWriteArrayList/isEmpty	; isEmpty()Z
+; v6 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result	v6
+; v6 : single-length
+	if-eqz	v6,l9803e
+; v6 : single-length
+l9803c:
+.line 290
+	return-void	
+l9803e:
+.line 272
+	new-instance	v3,android/util/SparseArray
+; v3 : Landroid/util/SparseArray;
+	invoke-direct	{v3},android/util/SparseArray/<init>	; <init>()V
+; v3 : Landroid/util/SparseArray;
+.line 274
+	iget-object	v6,v7,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v6 : Ljava/util/concurrent/CopyOnWriteArrayList; , v7 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v6},java/util/concurrent/CopyOnWriteArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v6 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result-object	v0
+; v0 : Ljava/util/Iterator;
+l98054:
+	invoke-interface	{v0},java/util/Iterator/hasNext	; hasNext()Z
+; v0 : Ljava/util/Iterator;
+	move-result	v6
+; v6 : single-length
+	if-eqz	v6,l980a8
+; v6 : single-length
+	invoke-interface	{v0},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v0 : Ljava/util/Iterator;
+	move-result-object	v4
+; v4 : Ljava/lang/Object;
+	check-cast	v4,java/lang/ref/WeakReference
+; v4 : Ljava/lang/ref/WeakReference;
+.line 275
+	invoke-virtual	{v4},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v4 : Ljava/lang/ref/WeakReference;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,com/actionbarsherlock/internal/view/menu/MenuPresenter
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 276
+	if-nez	v2,l98088
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 277
+	iget-object	v6,v7,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v6 : Ljava/util/concurrent/CopyOnWriteArrayList; , v7 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v6,v4},java/util/concurrent/CopyOnWriteArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v6 : Ljava/util/concurrent/CopyOnWriteArrayList; , v4 : Ljava/lang/ref/WeakReference;
+	goto	l98054
+l98088:
+.line 279
+	invoke-interface	{v2},com/actionbarsherlock/internal/view/menu/MenuPresenter/getId	; getId()I
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+	move-result	v1
+; v1 : single-length
+.line 280
+	if-lez	v1,l98054
+; v1 : single-length
+.line 281
+	invoke-interface	{v2},com/actionbarsherlock/internal/view/menu/MenuPresenter/onSaveInstanceState	; onSaveInstanceState()Landroid/os/Parcelable;
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+	move-result-object	v5
+; v5 : Landroid/os/Parcelable;
+.line 282
+	if-eqz	v5,l98054
+; v5 : Landroid/os/Parcelable;
+.line 283
+	invoke-virtual	{v3,v1,v5},android/util/SparseArray/put	; put(ILjava/lang/Object;)V
+; v3 : Landroid/util/SparseArray; , v1 : single-length , v5 : Landroid/os/Parcelable;
+	goto	l98054
+l980a8:
+.line 289
+	const-string	v6,"android:menu:presenters"
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v8,v6,v3},android/os/Bundle/putSparseParcelableArray	; putSparseParcelableArray(Ljava/lang/String;Landroid/util/SparseArray;)V
+; v8 : Landroid/os/Bundle; , v6 : Ljava/lang/String; , v3 : Landroid/util/SparseArray;
+	goto	l9803c
+.end method
+
+.method private dispatchSubMenuSelected(Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;)Z
+.limit registers 7
+; this: v5 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v6 (Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;)
+.line 254
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4},java/util/concurrent/CopyOnWriteArrayList/isEmpty	; isEmpty()Z
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l980d8
+; v4 : single-length
+	const/4	v3,0
+; v3 : single-length
+l980d6:
+.line 266
+	return	v3
+; v3 : single-length
+l980d8:
+.line 256
+	const/4	v3,0
+; v3 : single-length
+.line 258
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4},java/util/concurrent/CopyOnWriteArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result-object	v0
+; v0 : Ljava/util/Iterator;
+l980e6:
+	invoke-interface	{v0},java/util/Iterator/hasNext	; hasNext()Z
+; v0 : Ljava/util/Iterator;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l980d6
+; v4 : single-length
+	invoke-interface	{v0},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v0 : Ljava/util/Iterator;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/lang/ref/WeakReference
+; v2 : Ljava/lang/ref/WeakReference;
+.line 259
+	invoke-virtual	{v2},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v2 : Ljava/lang/ref/WeakReference;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuPresenter
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 260
+	if-nez	v1,l9811a
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 261
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4,v2},java/util/concurrent/CopyOnWriteArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList; , v2 : Ljava/lang/ref/WeakReference;
+	goto	l980e6
+l9811a:
+.line 262
+	if-nez	v3,l980e6
+; v3 : single-length
+.line 263
+	invoke-interface	{v1,v6},com/actionbarsherlock/internal/view/menu/MenuPresenter/onSubMenuSelected	; onSubMenuSelected(Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;)Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; , v6 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;
+	move-result	v3
+; v3 : single-length
+	goto	l980e6
+.end method
+
+.method private static findInsertIndex(Ljava/util/ArrayList;I)I
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;" , ">;I)I" }
+.end annotation
+.limit registers 5
+; parameter[0] : v3 (Ljava/util/ArrayList;)
+; parameter[1] : v4 (I)
+.var 1 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l98154 to l98164
+.var 1 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l98166 to l9816c
+.line 751
+	invoke-virtual	{v3},java/util/ArrayList/size	; size()I
+; v3 : Ljava/util/ArrayList;
+	move-result	v2
+; v2 : single-length
+	add-int/lit8	v0,v2,255
+; v0 : single-length , v2 : single-length
+l98144:
+	if-ltz	v0,l9816c
+; v0 : single-length
+.line 752
+	invoke-virtual	{v3,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v3 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 753
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getOrdering	; getOrdering()I
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v2
+; v2 : single-length
+	if-gt	v2,v4,l98166
+; v2 : single-length , v4 : single-length
+.line 754
+	add-int/lit8	v2,v0,1
+; v2 : single-length , v0 : single-length
+l98164:
+.line 758
+	return	v2
+; v2 : single-length
+l98166:
+.line 751
+	add-int/lit8	v0,v0,255
+; v0 : single-length , v0 : single-length
+	goto	l98144
+l9816c:
+.line 758
+	const/4	v2,0
+; v2 : single-length
+	goto	l98164
+.end method
+
+.method private static getOrdering(I)I
+.limit registers 4
+; parameter[0] : v3 (I)
+.line 684
+	const/high16	v1,65535
+; v1 : single-length
+	and-int/2addr	v1,v3
+; v1 : single-length , v3 : single-length
+	shr-int/lit8	v0,v1,16
+; v0 : single-length , v1 : single-length
+.line 686
+	if-ltz	v0,l98198
+; v0 : single-length
+	sget-object	v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.sCategoryToOrder [I
+; v1 : [I
+	array-length	v1,v1
+; v1 : single-length , v1 : single-length
+	if-lt	v0,v1,l981a8
+; v0 : single-length , v1 : single-length
+l98198:
+.line 687
+	new-instance	v1,java/lang/IllegalArgumentException
+; v1 : Ljava/lang/IllegalArgumentException;
+	const-string	v2,"order does not contain a valid category."
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/lang/IllegalArgumentException; , v2 : Ljava/lang/String;
+	throw	v1
+; v1 : Ljava/lang/IllegalArgumentException;
+l981a8:
+.line 690
+	sget-object	v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.sCategoryToOrder [I
+; v1 : [I
+	aget	v1,v1,v0
+; v1 : single-length , v1 : single-length , v0 : single-length
+	shl-int/lit8	v1,v1,16
+; v1 : single-length , v1 : single-length
+	const	v2,65535	; 0xffff
+; v2 : single-length
+	and-int/2addr	v2,v3
+; v2 : single-length , v3 : single-length
+	or-int/2addr	v1,v2
+; v1 : single-length , v2 : single-length
+	return	v1
+; v1 : single-length
+.end method
+
+.method private removeItemAtInt(IZ)V
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (Z)
+.line 502
+	if-ltz	v2,l981e4
+; v2 : single-length
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v0},java/util/ArrayList/size	; size()I
+; v0 : Ljava/util/ArrayList;
+	move-result	v0
+; v0 : single-length
+	if-lt	v2,v0,l981e6
+; v2 : single-length , v0 : single-length
+l981e4:
+.line 507
+	return-void	
+l981e6:
+.line 504
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v0,v2},java/util/ArrayList/remove	; remove(I)Ljava/lang/Object;
+; v0 : Ljava/util/ArrayList; , v2 : single-length
+.line 506
+	if-eqz	v3,l981e4
+; v3 : single-length
+	const/4	v0,1
+; v0 : single-length
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length
+	goto	l981e4
+.end method
+
+.method private setHeaderInternal(ILjava/lang/CharSequence;ILandroid/graphics/drawable/Drawable;Landroid/view/View;)V
+.limit registers 9
+; this: v3 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v4 (I)
+; parameter[1] : v5 (Ljava/lang/CharSequence;)
+; parameter[2] : v6 (I)
+; parameter[3] : v7 (Landroid/graphics/drawable/Drawable;)
+; parameter[4] : v8 (Landroid/view/View;)
+	const/4	v2,0
+; v2 : single-length
+.line 1095
+	invoke-virtual	{v3},com/actionbarsherlock/internal/view/menu/MenuBuilder/getResources	; getResources()Landroid/content/res/Resources;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result-object	v0
+; v0 : Landroid/content/res/Resources;
+.line 1097
+	if-eqz	v8,l98234
+; v8 : Landroid/view/View;
+.line 1098
+	iput-object	v8,v3,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderView Landroid/view/View;
+; v8 : Landroid/view/View; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1101
+	iput-object	v2,v3,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderTitle Ljava/lang/CharSequence;
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1102
+	iput-object	v2,v3,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderIcon Landroid/graphics/drawable/Drawable;
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+l9822a:
+.line 1121
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v3,v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length
+.line 1122
+	return-void	
+l98234:
+.line 1104
+	if-lez	v4,l9825a
+; v4 : single-length
+.line 1105
+	invoke-virtual	{v0,v4},android/content/res/Resources/getText	; getText(I)Ljava/lang/CharSequence;
+; v0 : Landroid/content/res/Resources; , v4 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/CharSequence;
+	iput-object	v1,v3,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderTitle Ljava/lang/CharSequence;
+; v1 : Ljava/lang/CharSequence; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+l98244:
+.line 1110
+	if-lez	v6,l98264
+; v6 : single-length
+.line 1111
+	invoke-virtual	{v0,v6},android/content/res/Resources/getDrawable	; getDrawable(I)Landroid/graphics/drawable/Drawable;
+; v0 : Landroid/content/res/Resources; , v6 : single-length
+	move-result-object	v1
+; v1 : Landroid/graphics/drawable/Drawable;
+	iput-object	v1,v3,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderIcon Landroid/graphics/drawable/Drawable;
+; v1 : Landroid/graphics/drawable/Drawable; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+l98254:
+.line 1117
+	iput-object	v2,v3,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderView Landroid/view/View;
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	goto	l9822a
+l9825a:
+.line 1106
+	if-eqz	v5,l98244
+; v5 : Ljava/lang/CharSequence;
+.line 1107
+	iput-object	v5,v3,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderTitle Ljava/lang/CharSequence;
+; v5 : Ljava/lang/CharSequence; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	goto	l98244
+l98264:
+.line 1112
+	if-eqz	v7,l98254
+; v7 : Landroid/graphics/drawable/Drawable;
+.line 1113
+	iput-object	v7,v3,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderIcon Landroid/graphics/drawable/Drawable;
+; v7 : Landroid/graphics/drawable/Drawable; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	goto	l98254
+.end method
+
+.method private setShortcutsVisibleInner(Z)V
+.limit registers 5
+; this: v3 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v4 (Z)
+	const/4	v0,1
+; v0 : single-length
+.line 716
+	if-eqz	v4,l982b4
+; v4 : single-length
+	iget-object	v1,v3,com/actionbarsherlock/internal/view/menu/MenuBuilder.mResources Landroid/content/res/Resources;
+; v1 : Landroid/content/res/Resources; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v1},android/content/res/Resources/getConfiguration	; getConfiguration()Landroid/content/res/Configuration;
+; v1 : Landroid/content/res/Resources;
+	move-result-object	v1
+; v1 : Landroid/content/res/Configuration;
+	iget	v1,v1,android/content/res/Configuration.keyboard I
+; v1 : single-length , v1 : single-length
+	if-eq	v1,v0,l982b4
+; v1 : single-length , v0 : single-length
+	iget-object	v1,v3,com/actionbarsherlock/internal/view/menu/MenuBuilder.mResources Landroid/content/res/Resources;
+; v1 : Landroid/content/res/Resources; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	sget	v2,com/actionbarsherlock/R$bool.abs__config_showMenuShortcutsWhenKeyboardPresent I
+; v2 : single-length
+	invoke-virtual	{v1,v2},android/content/res/Resources/getBoolean	; getBoolean(I)Z
+; v1 : Landroid/content/res/Resources; , v2 : single-length
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l982b4
+; v1 : single-length
+l982ae:
+	iput-boolean	v0,v3,com/actionbarsherlock/internal/view/menu/MenuBuilder.mShortcutsVisible Z
+; v0 : single-length , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 720
+	return-void	
+l982b4:
+.line 716
+	const/4	v0,0
+; v0 : single-length
+	goto	l982ae
+.end method
+
+.method public add(I)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v3 (I)
+	const/4	v1,0
+; v1 : single-length
+.line 411
+	iget-object	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mResources Landroid/content/res/Resources;
+; v0 : Landroid/content/res/Resources; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v0,v3},android/content/res/Resources/getString	; getString(I)Ljava/lang/String;
+; v0 : Landroid/content/res/Resources; , v3 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	invoke-direct	{v2,v1,v1,v1,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/addInternal	; addInternal(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/MenuItem;
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length , v1 : single-length , v1 : single-length , v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+.end method
+
+.method public add(IIII)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 6
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+; parameter[3] : v5 (I)
+.line 419
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mResources Landroid/content/res/Resources;
+; v0 : Landroid/content/res/Resources; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v0,v5},android/content/res/Resources/getString	; getString(I)Ljava/lang/String;
+; v0 : Landroid/content/res/Resources; , v5 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	invoke-direct	{v1,v2,v3,v4,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/addInternal	; addInternal(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/MenuItem;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : single-length , v3 : single-length , v4 : single-length , v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+.end method
+
+.method public add(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 6
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+; parameter[3] : v5 (Ljava/lang/CharSequence;)
+.line 415
+	invoke-direct	{v1,v2,v3,v4,v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/addInternal	; addInternal(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/MenuItem;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : single-length , v3 : single-length , v4 : single-length , v5 : Ljava/lang/CharSequence;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+.end method
+
+.method public add(Ljava/lang/CharSequence;)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (Ljava/lang/CharSequence;)
+	const/4	v0,0
+; v0 : single-length
+.line 407
+	invoke-direct	{v1,v0,v0,v0,v2},com/actionbarsherlock/internal/view/menu/MenuBuilder/addInternal	; addInternal(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/MenuItem;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length , v0 : single-length , v0 : single-length , v2 : Ljava/lang/CharSequence;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+.end method
+
+.method public addIntentOptions(IIILandroid/content/ComponentName;[Landroid/content/Intent;Landroid/content/Intent;I[Lcom/actionbarsherlock/view/MenuItem;)I
+.limit registers 22
+; this: v13 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v14 (I)
+; parameter[1] : v15 (I)
+; parameter[2] : v16 (I)
+; parameter[3] : v17 (Landroid/content/ComponentName;)
+; parameter[4] : v18 ([Landroid/content/Intent;)
+; parameter[5] : v19 (Landroid/content/Intent;)
+; parameter[6] : v20 (I)
+; parameter[7] : v21 ([Lcom/actionbarsherlock/view/MenuItem;)
+.var 3 is N I from l9837e to l9841e
+.var 4 is i I from l9838e to l9841e
+.var 5 is item Lcom/actionbarsherlock/view/MenuItem; from l98404 to l9841e
+.var 8 is ri Landroid/content/pm/ResolveInfo; from l9839e to l9841e
+.var 9 is rintent Landroid/content/Intent; from l983b4 to l9841e
+.var 8 is ri Landroid/content/pm/ResolveInfo; from l98422 to l9842c
+.line 444
+	iget-object	v10,v13,com/actionbarsherlock/internal/view/menu/MenuBuilder.mContext Landroid/content/Context;
+; v10 : Landroid/content/Context; , v13 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v10},android/content/Context/getPackageManager	; getPackageManager()Landroid/content/pm/PackageManager;
+; v10 : Landroid/content/Context;
+	move-result-object	v7
+; v7 : Landroid/content/pm/PackageManager;
+.line 445
+	const/4	v10,0
+; v10 : single-length
+	move-object/from16	v0,v17
+; v0 : Landroid/content/ComponentName; , v17 : Landroid/content/ComponentName;
+	move-object/from16	v1,v18
+; v1 : [Landroid/content/Intent; , v18 : [Landroid/content/Intent;
+	move-object/from16	v2,v19
+; v2 : Landroid/content/Intent; , v19 : Landroid/content/Intent;
+	invoke-virtual	{v7,v0,v1,v2,v10},android/content/pm/PackageManager/queryIntentActivityOptions	; queryIntentActivityOptions(Landroid/content/ComponentName;[Landroid/content/Intent;Landroid/content/Intent;I)Ljava/util/List;
+; v7 : Landroid/content/pm/PackageManager; , v0 : Landroid/content/ComponentName; , v1 : [Landroid/content/Intent; , v2 : Landroid/content/Intent; , v10 : single-length
+	move-result-object	v6
+; v6 : Ljava/util/List;
+.line 447
+	if-eqz	v6,l9841e
+; v6 : Ljava/util/List;
+	invoke-interface	{v6},java/util/List/size	; size()I
+; v6 : Ljava/util/List;
+	move-result	v3
+; v3 : single-length
+l9837e:
+.line 449
+	and-int/lit8	v10,v20,1
+; v10 : single-length , v20 : single-length
+	if-nez	v10,l9838c
+; v10 : single-length
+.line 450
+	invoke-virtual	{v13,v14},com/actionbarsherlock/internal/view/menu/MenuBuilder/removeGroup	; removeGroup(I)V
+; v13 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v14 : single-length
+l9838c:
+.line 453
+	const/4	v4,0
+; v4 : single-length
+l9838e:
+	if-ge	v4,v3,l9842c
+; v4 : single-length , v3 : single-length
+.line 454
+	invoke-interface	{v6,v4},java/util/List/get	; get(I)Ljava/lang/Object;
+; v6 : Ljava/util/List; , v4 : single-length
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	check-cast	v8,android/content/pm/ResolveInfo
+; v8 : Landroid/content/pm/ResolveInfo;
+.line 455
+	new-instance	v9,android/content/Intent
+; v9 : Landroid/content/Intent;
+	iget	v10,v8,android/content/pm/ResolveInfo.specificIndex I
+; v10 : single-length , v8 : Landroid/content/pm/ResolveInfo;
+	if-gez	v10,l98422
+; v10 : single-length
+	move-object/from16	v10,v19
+; v10 : Landroid/content/Intent; , v19 : Landroid/content/Intent;
+l983ae:
+	invoke-direct	{v9,v10},android/content/Intent/<init>	; <init>(Landroid/content/Intent;)V
+; v9 : Landroid/content/Intent; , v10 : Landroid/content/Intent;
+.line 457
+	new-instance	v10,android/content/ComponentName
+; v10 : Landroid/content/ComponentName;
+	iget-object	v11,v8,android/content/pm/ResolveInfo.activityInfo Landroid/content/pm/ActivityInfo;
+; v11 : Landroid/content/pm/ActivityInfo; , v8 : Landroid/content/pm/ResolveInfo;
+	iget-object	v11,v11,android/content/pm/ActivityInfo.applicationInfo Landroid/content/pm/ApplicationInfo;
+; v11 : Landroid/content/pm/ApplicationInfo; , v11 : Landroid/content/pm/ApplicationInfo;
+	iget-object	v11,v11,android/content/pm/ApplicationInfo.packageName Ljava/lang/String;
+; v11 : Ljava/lang/String; , v11 : Ljava/lang/String;
+	iget-object	v12,v8,android/content/pm/ResolveInfo.activityInfo Landroid/content/pm/ActivityInfo;
+; v12 : Landroid/content/pm/ActivityInfo; , v8 : Landroid/content/pm/ResolveInfo;
+	iget-object	v12,v12,android/content/pm/ActivityInfo.name Ljava/lang/String;
+; v12 : Ljava/lang/String; , v12 : Ljava/lang/String;
+	invoke-direct	{v10,v11,v12},android/content/ComponentName/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;)V
+; v10 : Landroid/content/ComponentName; , v11 : Ljava/lang/String; , v12 : Ljava/lang/String;
+	invoke-virtual	{v9,v10},android/content/Intent/setComponent	; setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
+; v9 : Landroid/content/Intent; , v10 : Landroid/content/ComponentName;
+.line 460
+	invoke-virtual	{v8,v7},android/content/pm/ResolveInfo/loadLabel	; loadLabel(Landroid/content/pm/PackageManager;)Ljava/lang/CharSequence;
+; v8 : Landroid/content/pm/ResolveInfo; , v7 : Landroid/content/pm/PackageManager;
+	move-result-object	v10
+; v10 : Ljava/lang/CharSequence;
+	move/from16	v0,v16
+; v0 : single-length , v16 : single-length
+	invoke-virtual	{v13,v14,v15,v0,v10},com/actionbarsherlock/internal/view/menu/MenuBuilder/add	; add(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/MenuItem;
+; v13 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v14 : single-length , v15 : single-length , v0 : single-length , v10 : Ljava/lang/CharSequence;
+	move-result-object	v10
+; v10 : Lcom/actionbarsherlock/view/MenuItem;
+	invoke-virtual	{v8,v7},android/content/pm/ResolveInfo/loadIcon	; loadIcon(Landroid/content/pm/PackageManager;)Landroid/graphics/drawable/Drawable;
+; v8 : Landroid/content/pm/ResolveInfo; , v7 : Landroid/content/pm/PackageManager;
+	move-result-object	v11
+; v11 : Landroid/graphics/drawable/Drawable;
+	invoke-interface	{v10,v11},com/actionbarsherlock/view/MenuItem/setIcon	; setIcon(Landroid/graphics/drawable/Drawable;)Lcom/actionbarsherlock/view/MenuItem;
+; v10 : Lcom/actionbarsherlock/view/MenuItem; , v11 : Landroid/graphics/drawable/Drawable;
+	move-result-object	v10
+; v10 : Lcom/actionbarsherlock/view/MenuItem;
+	invoke-interface	{v10,v9},com/actionbarsherlock/view/MenuItem/setIntent	; setIntent(Landroid/content/Intent;)Lcom/actionbarsherlock/view/MenuItem;
+; v10 : Lcom/actionbarsherlock/view/MenuItem; , v9 : Landroid/content/Intent;
+	move-result-object	v5
+; v5 : Lcom/actionbarsherlock/view/MenuItem;
+.line 463
+	if-eqz	v21,l98418
+; v21 : [Lcom/actionbarsherlock/view/MenuItem;
+	iget	v10,v8,android/content/pm/ResolveInfo.specificIndex I
+; v10 : single-length , v8 : Landroid/content/pm/ResolveInfo;
+	if-ltz	v10,l98418
+; v10 : single-length
+.line 464
+	iget	v10,v8,android/content/pm/ResolveInfo.specificIndex I
+; v10 : single-length , v8 : Landroid/content/pm/ResolveInfo;
+	aput-object	v5,v21,v10
+; v5 : Lcom/actionbarsherlock/view/MenuItem; , v21 : [Lcom/actionbarsherlock/view/MenuItem; , v10 : single-length
+l98418:
+.line 453
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	goto	l9838e
+l9841e:
+.line 447
+	const/4	v3,0
+; v3 : single-length
+	goto	l9837e
+l98422:
+.line 455
+	iget	v10,v8,android/content/pm/ResolveInfo.specificIndex I
+; v10 : single-length , v8 : Landroid/content/pm/ResolveInfo;
+	aget-object	v10,v18,v10
+; v10 : Landroid/content/Intent; , v18 : [Landroid/content/Intent; , v10 : Landroid/content/Intent;
+	goto	l983ae
+l9842c:
+.line 468
+	return	v3
+; v3 : single-length
+.end method
+
+.method public addMenuPresenter(Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v3 (Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;)
+.line 218
+	iget-object	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v0 : Ljava/util/concurrent/CopyOnWriteArrayList; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	new-instance	v1,java/lang/ref/WeakReference
+; v1 : Ljava/lang/ref/WeakReference;
+	invoke-direct	{v1,v3},java/lang/ref/WeakReference/<init>	; <init>(Ljava/lang/Object;)V
+; v1 : Ljava/lang/ref/WeakReference; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+	invoke-virtual	{v0,v1},java/util/concurrent/CopyOnWriteArrayList/add	; add(Ljava/lang/Object;)Z
+; v0 : Ljava/util/concurrent/CopyOnWriteArrayList; , v1 : Ljava/lang/ref/WeakReference;
+.line 219
+	iget-object	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mContext Landroid/content/Context;
+; v0 : Landroid/content/Context; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-interface	{v3,v0,v2},com/actionbarsherlock/internal/view/menu/MenuPresenter/initForMenu	; initForMenu(Landroid/content/Context;Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)V
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; , v0 : Landroid/content/Context; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 220
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsActionItemsStale Z
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 221
+	return-void	
+.end method
+
+.method public addSubMenu(I)Lcom/actionbarsherlock/view/SubMenu;
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v3 (I)
+	const/4	v1,0
+; v1 : single-length
+.line 427
+	iget-object	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mResources Landroid/content/res/Resources;
+; v0 : Landroid/content/res/Resources; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v0,v3},android/content/res/Resources/getString	; getString(I)Ljava/lang/String;
+; v0 : Landroid/content/res/Resources; , v3 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v2,v1,v1,v1,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/addSubMenu	; addSubMenu(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/SubMenu;
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length , v1 : single-length , v1 : single-length , v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+.end method
+
+.method public addSubMenu(IIII)Lcom/actionbarsherlock/view/SubMenu;
+.limit registers 6
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+; parameter[3] : v5 (I)
+.line 439
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mResources Landroid/content/res/Resources;
+; v0 : Landroid/content/res/Resources; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v0,v5},android/content/res/Resources/getString	; getString(I)Ljava/lang/String;
+; v0 : Landroid/content/res/Resources; , v5 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v2,v3,v4,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/addSubMenu	; addSubMenu(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/SubMenu;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : single-length , v3 : single-length , v4 : single-length , v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+.end method
+
+.method public addSubMenu(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/SubMenu;
+.limit registers 8
+; this: v3 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v4 (I)
+; parameter[1] : v5 (I)
+; parameter[2] : v6 (I)
+; parameter[3] : v7 (Ljava/lang/CharSequence;)
+.line 431
+	invoke-direct	{v3,v4,v5,v6,v7},com/actionbarsherlock/internal/view/menu/MenuBuilder/addInternal	; addInternal(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/MenuItem;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v4 : single-length , v5 : single-length , v6 : single-length , v7 : Ljava/lang/CharSequence;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+	check-cast	v0,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 432
+	new-instance	v1,com/actionbarsherlock/internal/view/menu/SubMenuBuilder
+; v1 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;
+	iget-object	v2,v3,com/actionbarsherlock/internal/view/menu/MenuBuilder.mContext Landroid/content/Context;
+; v2 : Landroid/content/Context; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-direct	{v1,v2,v3,v0},com/actionbarsherlock/internal/view/menu/SubMenuBuilder/<init>	; <init>(Landroid/content/Context;Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder; , v2 : Landroid/content/Context; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 433
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/setSubMenu	; setSubMenu(Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;)V
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v1 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;
+.line 435
+	return-object	v1
+; v1 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;
+.end method
+
+.method public addSubMenu(Ljava/lang/CharSequence;)Lcom/actionbarsherlock/view/SubMenu;
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (Ljava/lang/CharSequence;)
+	const/4	v0,0
+; v0 : single-length
+.line 423
+	invoke-virtual	{v1,v0,v0,v0,v2},com/actionbarsherlock/internal/view/menu/MenuBuilder/addSubMenu	; addSubMenu(IIILjava/lang/CharSequence;)Lcom/actionbarsherlock/view/SubMenu;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length , v0 : single-length , v0 : single-length , v2 : Ljava/lang/CharSequence;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/SubMenu;
+.end method
+
+.method public bindNativeOverflow(Landroid/view/Menu;Landroid/view/MenuItem$OnMenuItemClickListener;Ljava/util/HashMap;)Z
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Landroid/view/Menu;" , "Landroid/view/MenuItem$OnMenuItemClickListener;" , "Ljava/util/HashMap" , "<" , "Landroid/view/MenuItem;" , "Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;" , ">;)Z" }
+.end annotation
+.limit registers 19
+; this: v15 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v16 (Landroid/view/Menu;)
+; parameter[1] : v17 (Landroid/view/MenuItem$OnMenuItemClickListener;)
+; parameter[2] : v18 (Ljava/util/HashMap;)
+.var 5 is nativeSubItem Landroid/view/MenuItem; from l985fe to l986a2
+.var 8 is subItem Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l985d6 to l986a2
+.var 2 is i$ Ljava/util/Iterator; from l985be to l986aa
+.var 4 is nativeSub Landroid/view/SubMenu; from l985a2 to l986aa
+.var 9 is subMenu Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder; from l985ae to l986aa
+.var 3 is nativeItem Landroid/view/MenuItem; from l986aa to l98754
+.line 1272
+	invoke-virtual	{v15},com/actionbarsherlock/internal/view/menu/MenuBuilder/getNonActionItems	; getNonActionItems()Ljava/util/ArrayList;
+; v15 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result-object	v7
+; v7 : Ljava/util/ArrayList;
+.line 1273
+	if-eqz	v7,l98530
+; v7 : Ljava/util/ArrayList;
+	invoke-interface	{v7},java/util/List/size	; size()I
+; v7 : Ljava/util/ArrayList;
+	move-result	v11
+; v11 : single-length
+	if-nez	v11,l98534
+; v11 : single-length
+l98530:
+.line 1274
+	const/4	v10,0
+; v10 : single-length
+l98532:
+.line 1333
+	return	v10
+; v10 : single-length
+l98534:
+.line 1277
+	const/4	v10,0
+; v10 : single-length
+.line 1278
+	invoke-interface/range	{v16},android/view/Menu/clear;	clear()V
+; v16 : Landroid/view/Menu;
+.line 1279
+	invoke-interface	{v7},java/util/List/iterator	; iterator()Ljava/util/Iterator;
+; v7 : Ljava/util/ArrayList;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+l98544:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v11
+; v11 : single-length
+	if-eqz	v11,l98532
+; v11 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v6
+; v6 : Ljava/lang/Object;
+	check-cast	v6,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 1280
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isVisible	; isVisible()Z
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	if-eqz	v11,l98544
+; v11 : single-length
+.line 1283
+	const/4	v10,1
+; v10 : single-length
+.line 1286
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/hasSubMenu	; hasSubMenu()Z
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	if-eqz	v11,l98754
+; v11 : single-length
+.line 1287
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getGroupId	; getGroupId()I
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getItemId	; getItemId()I
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v12
+; v12 : single-length
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getOrder	; getOrder()I
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v13
+; v13 : single-length
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getTitle	; getTitle()Ljava/lang/CharSequence;
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result-object	v14
+; v14 : Ljava/lang/CharSequence;
+	move-object/from16	v0,v16
+; v0 : Landroid/view/Menu; , v16 : Landroid/view/Menu;
+	invoke-interface	{v0,v11,v12,v13,v14},android/view/Menu/addSubMenu	; addSubMenu(IIILjava/lang/CharSequence;)Landroid/view/SubMenu;
+; v0 : Landroid/view/Menu; , v11 : single-length , v12 : single-length , v13 : single-length , v14 : Ljava/lang/CharSequence;
+	move-result-object	v4
+; v4 : Landroid/view/SubMenu;
+.line 1290
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getSubMenu	; getSubMenu()Lcom/actionbarsherlock/view/SubMenu;
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result-object	v9
+; v9 : Lcom/actionbarsherlock/view/SubMenu;
+	check-cast	v9,com/actionbarsherlock/internal/view/menu/SubMenuBuilder
+; v9 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;
+.line 1291
+	invoke-virtual	{v9},com/actionbarsherlock/internal/view/menu/SubMenuBuilder/getVisibleItems	; getVisibleItems()Ljava/util/ArrayList;
+; v9 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;
+	move-result-object	v11
+; v11 : Ljava/util/ArrayList;
+	invoke-virtual	{v11},java/util/ArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v11 : Ljava/util/ArrayList;
+	move-result-object	v2
+; v2 : Ljava/util/Iterator;
+l985be:
+	invoke-interface	{v2},java/util/Iterator/hasNext	; hasNext()Z
+; v2 : Ljava/util/Iterator;
+	move-result	v11
+; v11 : single-length
+	if-eqz	v11,l986a2
+; v11 : single-length
+	invoke-interface	{v2},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v2 : Ljava/util/Iterator;
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	check-cast	v8,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 1292
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getGroupId	; getGroupId()I
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getItemId	; getItemId()I
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v12
+; v12 : single-length
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getOrder	; getOrder()I
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v13
+; v13 : single-length
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getTitle	; getTitle()Ljava/lang/CharSequence;
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result-object	v14
+; v14 : Ljava/lang/CharSequence;
+	invoke-interface	{v4,v11,v12,v13,v14},android/view/SubMenu/add	; add(IIILjava/lang/CharSequence;)Landroid/view/MenuItem;
+; v4 : Landroid/view/SubMenu; , v11 : single-length , v12 : single-length , v13 : single-length , v14 : Ljava/lang/CharSequence;
+	move-result-object	v5
+; v5 : Landroid/view/MenuItem;
+.line 1295
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getIcon	; getIcon()Landroid/graphics/drawable/Drawable;
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result-object	v11
+; v11 : Landroid/graphics/drawable/Drawable;
+	invoke-interface	{v5,v11},android/view/MenuItem/setIcon	; setIcon(Landroid/graphics/drawable/Drawable;)Landroid/view/MenuItem;
+; v5 : Landroid/view/MenuItem; , v11 : Landroid/graphics/drawable/Drawable;
+.line 1296
+	move-object/from16	v0,v17
+; v0 : Landroid/view/MenuItem$OnMenuItemClickListener; , v17 : Landroid/view/MenuItem$OnMenuItemClickListener;
+	invoke-interface	{v5,v0},android/view/MenuItem/setOnMenuItemClickListener	; setOnMenuItemClickListener(Landroid/view/MenuItem$OnMenuItemClickListener;)Landroid/view/MenuItem;
+; v5 : Landroid/view/MenuItem; , v0 : Landroid/view/MenuItem$OnMenuItemClickListener;
+.line 1297
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isEnabled	; isEnabled()Z
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-interface	{v5,v11},android/view/MenuItem/setEnabled	; setEnabled(Z)Landroid/view/MenuItem;
+; v5 : Landroid/view/MenuItem; , v11 : single-length
+.line 1298
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getIntent	; getIntent()Landroid/content/Intent;
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result-object	v11
+; v11 : Landroid/content/Intent;
+	invoke-interface	{v5,v11},android/view/MenuItem/setIntent	; setIntent(Landroid/content/Intent;)Landroid/view/MenuItem;
+; v5 : Landroid/view/MenuItem; , v11 : Landroid/content/Intent;
+.line 1299
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getNumericShortcut	; getNumericShortcut()C
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-interface	{v5,v11},android/view/MenuItem/setNumericShortcut	; setNumericShortcut(C)Landroid/view/MenuItem;
+; v5 : Landroid/view/MenuItem; , v11 : single-length
+.line 1300
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getAlphabeticShortcut	; getAlphabeticShortcut()C
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-interface	{v5,v11},android/view/MenuItem/setAlphabeticShortcut	; setAlphabeticShortcut(C)Landroid/view/MenuItem;
+; v5 : Landroid/view/MenuItem; , v11 : single-length
+.line 1301
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getTitleCondensed	; getTitleCondensed()Ljava/lang/CharSequence;
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result-object	v11
+; v11 : Ljava/lang/CharSequence;
+	invoke-interface	{v5,v11},android/view/MenuItem/setTitleCondensed	; setTitleCondensed(Ljava/lang/CharSequence;)Landroid/view/MenuItem;
+; v5 : Landroid/view/MenuItem; , v11 : Ljava/lang/CharSequence;
+.line 1302
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isCheckable	; isCheckable()Z
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-interface	{v5,v11},android/view/MenuItem/setCheckable	; setCheckable(Z)Landroid/view/MenuItem;
+; v5 : Landroid/view/MenuItem; , v11 : single-length
+.line 1303
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isChecked	; isChecked()Z
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-interface	{v5,v11},android/view/MenuItem/setChecked	; setChecked(Z)Landroid/view/MenuItem;
+; v5 : Landroid/view/MenuItem; , v11 : single-length
+.line 1305
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isExclusiveCheckable	; isExclusiveCheckable()Z
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	if-eqz	v11,l98696
+; v11 : single-length
+.line 1306
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getGroupId	; getGroupId()I
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	const/4	v12,1
+; v12 : single-length
+	const/4	v13,1
+; v13 : single-length
+	invoke-interface	{v4,v11,v12,v13},android/view/SubMenu/setGroupCheckable	; setGroupCheckable(IZZ)V
+; v4 : Landroid/view/SubMenu; , v11 : single-length , v12 : single-length , v13 : single-length
+l98696:
+.line 1309
+	move-object/from16	v0,v18
+; v0 : Ljava/util/HashMap; , v18 : Ljava/util/HashMap;
+	invoke-virtual	{v0,v5,v8},java/util/HashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/HashMap; , v5 : Landroid/view/MenuItem; , v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	goto	l985be
+l986a2:
+.line 1312
+	invoke-interface	{v4},android/view/SubMenu/getItem	; getItem()Landroid/view/MenuItem;
+; v4 : Landroid/view/SubMenu;
+	move-result-object	v3
+; v3 : Landroid/view/MenuItem;
+l986aa:
+.line 1317
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getIcon	; getIcon()Landroid/graphics/drawable/Drawable;
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result-object	v11
+; v11 : Landroid/graphics/drawable/Drawable;
+	invoke-interface	{v3,v11},android/view/MenuItem/setIcon	; setIcon(Landroid/graphics/drawable/Drawable;)Landroid/view/MenuItem;
+; v3 : Landroid/view/MenuItem; , v11 : Landroid/graphics/drawable/Drawable;
+.line 1318
+	move-object/from16	v0,v17
+; v0 : Landroid/view/MenuItem$OnMenuItemClickListener; , v17 : Landroid/view/MenuItem$OnMenuItemClickListener;
+	invoke-interface	{v3,v0},android/view/MenuItem/setOnMenuItemClickListener	; setOnMenuItemClickListener(Landroid/view/MenuItem$OnMenuItemClickListener;)Landroid/view/MenuItem;
+; v3 : Landroid/view/MenuItem; , v0 : Landroid/view/MenuItem$OnMenuItemClickListener;
+.line 1319
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isEnabled	; isEnabled()Z
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-interface	{v3,v11},android/view/MenuItem/setEnabled	; setEnabled(Z)Landroid/view/MenuItem;
+; v3 : Landroid/view/MenuItem; , v11 : single-length
+.line 1320
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getIntent	; getIntent()Landroid/content/Intent;
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result-object	v11
+; v11 : Landroid/content/Intent;
+	invoke-interface	{v3,v11},android/view/MenuItem/setIntent	; setIntent(Landroid/content/Intent;)Landroid/view/MenuItem;
+; v3 : Landroid/view/MenuItem; , v11 : Landroid/content/Intent;
+.line 1321
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getNumericShortcut	; getNumericShortcut()C
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-interface	{v3,v11},android/view/MenuItem/setNumericShortcut	; setNumericShortcut(C)Landroid/view/MenuItem;
+; v3 : Landroid/view/MenuItem; , v11 : single-length
+.line 1322
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getAlphabeticShortcut	; getAlphabeticShortcut()C
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-interface	{v3,v11},android/view/MenuItem/setAlphabeticShortcut	; setAlphabeticShortcut(C)Landroid/view/MenuItem;
+; v3 : Landroid/view/MenuItem; , v11 : single-length
+.line 1323
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getTitleCondensed	; getTitleCondensed()Ljava/lang/CharSequence;
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result-object	v11
+; v11 : Ljava/lang/CharSequence;
+	invoke-interface	{v3,v11},android/view/MenuItem/setTitleCondensed	; setTitleCondensed(Ljava/lang/CharSequence;)Landroid/view/MenuItem;
+; v3 : Landroid/view/MenuItem; , v11 : Ljava/lang/CharSequence;
+.line 1324
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isCheckable	; isCheckable()Z
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-interface	{v3,v11},android/view/MenuItem/setCheckable	; setCheckable(Z)Landroid/view/MenuItem;
+; v3 : Landroid/view/MenuItem; , v11 : single-length
+.line 1325
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isChecked	; isChecked()Z
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-interface	{v3,v11},android/view/MenuItem/setChecked	; setChecked(Z)Landroid/view/MenuItem;
+; v3 : Landroid/view/MenuItem; , v11 : single-length
+.line 1327
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isExclusiveCheckable	; isExclusiveCheckable()Z
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	if-eqz	v11,l98746
+; v11 : single-length
+.line 1328
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getGroupId	; getGroupId()I
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	const/4	v12,1
+; v12 : single-length
+	const/4	v13,1
+; v13 : single-length
+	move-object/from16	v0,v16
+; v0 : Landroid/view/Menu; , v16 : Landroid/view/Menu;
+	invoke-interface	{v0,v11,v12,v13},android/view/Menu/setGroupCheckable	; setGroupCheckable(IZZ)V
+; v0 : Landroid/view/Menu; , v11 : single-length , v12 : single-length , v13 : single-length
+l98746:
+.line 1331
+	move-object/from16	v0,v18
+; v0 : Ljava/util/HashMap; , v18 : Ljava/util/HashMap;
+	invoke-virtual	{v0,v3,v6},java/util/HashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/HashMap; , v3 : Landroid/view/MenuItem; , v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	goto/16	l98544
+l98754:
+.line 1314
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getGroupId	; getGroupId()I
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v11
+; v11 : single-length
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getItemId	; getItemId()I
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v12
+; v12 : single-length
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getOrder	; getOrder()I
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v13
+; v13 : single-length
+	invoke-virtual	{v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getTitle	; getTitle()Ljava/lang/CharSequence;
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result-object	v14
+; v14 : Ljava/lang/CharSequence;
+	move-object/from16	v0,v16
+; v0 : Landroid/view/Menu; , v16 : Landroid/view/Menu;
+	invoke-interface	{v0,v11,v12,v13,v14},android/view/Menu/add	; add(IIILjava/lang/CharSequence;)Landroid/view/MenuItem;
+; v0 : Landroid/view/Menu; , v11 : single-length , v12 : single-length , v13 : single-length , v14 : Ljava/lang/CharSequence;
+	move-result-object	v3
+; v3 : Landroid/view/MenuItem;
+	goto	l986aa
+.end method
+
+.method public changeMenuMode()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 745
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mCallback Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback;
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	if-eqz	v0,l987a6
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback;
+.line 746
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mCallback Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback;
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-interface	{v0,v1},com/actionbarsherlock/internal/view/menu/MenuBuilder$Callback/onMenuModeChange	; onMenuModeChange(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)V
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+l987a6:
+.line 748
+	return-void	
+.end method
+
+.method public clear()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 523
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mExpandedItem Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	if-eqz	v0,l987ca
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 524
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mExpandedItem Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/collapseItemActionView	; collapseItemActionView(Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;)Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+l987ca:
+.line 526
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v0},java/util/ArrayList/clear	; clear()V
+; v0 : Ljava/util/ArrayList;
+.line 528
+	const/4	v0,1
+; v0 : single-length
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length
+.line 529
+	return-void	
+.end method
+
+.method public clearAll()V
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+	const/4	v1,1
+; v1 : single-length
+	const/4	v0,0
+; v0 : single-length
+.line 514
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPreventDispatchingItemsChanged Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 515
+	invoke-virtual	{v2},com/actionbarsherlock/internal/view/menu/MenuBuilder/clear	; clear()V
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 516
+	invoke-virtual	{v2},com/actionbarsherlock/internal/view/menu/MenuBuilder/clearHeader	; clearHeader()V
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 517
+	iput-boolean	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPreventDispatchingItemsChanged Z
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 518
+	iput-boolean	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItemsChangedWhileDispatchPrevented Z
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 519
+	invoke-virtual	{v2,v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length
+.line 520
+	return-void	
+.end method
+
+.method public clearHeader()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+	const/4	v0,0
+; v0 : single-length
+.line 1086
+	iput-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderIcon Landroid/graphics/drawable/Drawable;
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1087
+	iput-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderTitle Ljava/lang/CharSequence;
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1088
+	iput-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderView Landroid/view/View;
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1090
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length
+.line 1091
+	return-void	
+.end method
+
+.method public close()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 929
+	const/4	v0,1
+; v0 : single-length
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/close	; close(Z)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length
+.line 930
+	return-void	
+.end method
+
+.method final close(Z)V
+.limit registers 6
+; this: v4 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v5 (Z)
+.var 1 is presenter Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; from l988a8 to l988c0
+.var 2 is ref Ljava/lang/ref/WeakReference; from l9889c to l988c0
+.line 913
+	iget-boolean	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsClosing Z
+; v3 : single-length , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	if-eqz	v3,l98872
+; v3 : single-length
+l98870:
+.line 925
+	return-void	
+l98872:
+.line 915
+	const/4	v3,1
+; v3 : single-length
+	iput-boolean	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsClosing Z
+; v3 : single-length , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 916
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3},java/util/concurrent/CopyOnWriteArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result-object	v0
+; v0 : Ljava/util/Iterator;
+l98884:
+	invoke-interface	{v0},java/util/Iterator/hasNext	; hasNext()Z
+; v0 : Ljava/util/Iterator;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l988c0
+; v3 : single-length
+	invoke-interface	{v0},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v0 : Ljava/util/Iterator;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/lang/ref/WeakReference
+; v2 : Ljava/lang/ref/WeakReference;
+.line 917
+	invoke-virtual	{v2},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v2 : Ljava/lang/ref/WeakReference;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuPresenter
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 918
+	if-nez	v1,l988b8
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 919
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3,v2},java/util/concurrent/CopyOnWriteArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList; , v2 : Ljava/lang/ref/WeakReference;
+	goto	l98884
+l988b8:
+.line 921
+	invoke-interface	{v1,v4,v5},com/actionbarsherlock/internal/view/menu/MenuPresenter/onCloseMenu	; onCloseMenu(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;Z)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v5 : single-length
+	goto	l98884
+l988c0:
+.line 924
+	const/4	v3,0
+; v3 : single-length
+	iput-boolean	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsClosing Z
+; v3 : single-length , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	goto	l98870
+.end method
+
+.method public collapseItemActionView(Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;)Z
+.limit registers 7
+; this: v5 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v6 (Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;)
+.var 2 is presenter Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; from l9892c to l98948
+.var 3 is ref Ljava/lang/ref/WeakReference; from l98920 to l98948
+.line 1246
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4},java/util/concurrent/CopyOnWriteArrayList/isEmpty	; isEmpty()Z
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result	v4
+; v4 : single-length
+	if-nez	v4,l988f0
+; v4 : single-length
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mExpandedItem Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+; v4 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	if-eq	v4,v6,l988f4
+; v4 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+l988f0:
+	const/4	v0,0
+; v0 : single-length
+l988f2:
+.line 1264
+	return	v0
+; v0 : single-length
+l988f4:
+.line 1248
+	const/4	v0,0
+; v0 : single-length
+.line 1250
+	invoke-virtual	{v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/stopDispatchingItemsChanged	; stopDispatchingItemsChanged()V
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1251
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4},java/util/concurrent/CopyOnWriteArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+l98908:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l98948
+; v4 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,java/lang/ref/WeakReference
+; v3 : Ljava/lang/ref/WeakReference;
+.line 1252
+	invoke-virtual	{v3},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v3 : Ljava/lang/ref/WeakReference;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,com/actionbarsherlock/internal/view/menu/MenuPresenter
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 1253
+	if-nez	v2,l9893c
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 1254
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4,v3},java/util/concurrent/CopyOnWriteArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList; , v3 : Ljava/lang/ref/WeakReference;
+	goto	l98908
+l9893c:
+.line 1255
+	invoke-interface	{v2,v5,v6},com/actionbarsherlock/internal/view/menu/MenuPresenter/collapseItemActionView	; collapseItemActionView(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;)Z
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l98908
+; v0 : single-length
+l98948:
+.line 1259
+	invoke-virtual	{v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/startDispatchingItemsChanged	; startDispatchingItemsChanged()V
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1261
+	if-eqz	v0,l988f2
+; v0 : single-length
+.line 1262
+	const/4	v4,0
+; v4 : single-length
+	iput-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mExpandedItem Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+; v4 : single-length , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	goto	l988f2
+.end method
+
+.method dispatchMenuItemSelected(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;Lcom/actionbarsherlock/view/MenuItem;)Z
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[1] : v3 (Lcom/actionbarsherlock/view/MenuItem;)
+.line 738
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mCallback Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback;
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	if-eqz	v0,l98988
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback;
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mCallback Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback;
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-interface	{v0,v2,v3},com/actionbarsherlock/internal/view/menu/MenuBuilder$Callback/onMenuItemSelected	; onMenuItemSelected(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;Lcom/actionbarsherlock/view/MenuItem;)Z
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback; , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v3 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l98988
+; v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l98986:
+	return	v0
+; v0 : single-length
+l98988:
+	const/4	v0,0
+; v0 : single-length
+	goto	l98986
+.end method
+
+.method public expandItemActionView(Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;)Z
+.limit registers 7
+; this: v5 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v6 (Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;)
+.var 2 is presenter Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; from l989e8 to l98a04
+.var 3 is ref Ljava/lang/ref/WeakReference; from l989dc to l98a04
+.line 1224
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4},java/util/concurrent/CopyOnWriteArrayList/isEmpty	; isEmpty()Z
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l989b0
+; v4 : single-length
+	const/4	v0,0
+; v0 : single-length
+l989ae:
+.line 1242
+	return	v0
+; v0 : single-length
+l989b0:
+.line 1226
+	const/4	v0,0
+; v0 : single-length
+.line 1228
+	invoke-virtual	{v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/stopDispatchingItemsChanged	; stopDispatchingItemsChanged()V
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1229
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4},java/util/concurrent/CopyOnWriteArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+l989c4:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l98a04
+; v4 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,java/lang/ref/WeakReference
+; v3 : Ljava/lang/ref/WeakReference;
+.line 1230
+	invoke-virtual	{v3},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v3 : Ljava/lang/ref/WeakReference;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,com/actionbarsherlock/internal/view/menu/MenuPresenter
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 1231
+	if-nez	v2,l989f8
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 1232
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4,v3},java/util/concurrent/CopyOnWriteArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v4 : Ljava/util/concurrent/CopyOnWriteArrayList; , v3 : Ljava/lang/ref/WeakReference;
+	goto	l989c4
+l989f8:
+.line 1233
+	invoke-interface	{v2,v5,v6},com/actionbarsherlock/internal/view/menu/MenuPresenter/expandItemActionView	; expandItemActionView(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;)Z
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l989c4
+; v0 : single-length
+l98a04:
+.line 1237
+	invoke-virtual	{v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/startDispatchingItemsChanged	; startDispatchingItemsChanged()V
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1239
+	if-eqz	v0,l989ae
+; v0 : single-length
+.line 1240
+	iput-object	v6,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mExpandedItem Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	goto	l989ae
+.end method
+
+.method public findGroupIndex(I)I
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (I)
+.line 632
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v1,v2,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/findGroupIndex	; findGroupIndex(II)I
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : single-length , v0 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public findGroupIndex(II)I
+.limit registers 7
+; this: v4 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v5 (I)
+; parameter[1] : v6 (I)
+.var 0 is i I from l98a50 to l98a70
+.var 1 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l98a64 to l98a70
+.var 1 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l98a72 to l98a78
+.line 636
+	invoke-virtual	{v4},com/actionbarsherlock/internal/view/menu/MenuBuilder/size	; size()I
+; v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result	v2
+; v2 : single-length
+.line 638
+	if-gez	v6,l98a4e
+; v6 : single-length
+.line 639
+	const/4	v6,0
+; v6 : single-length
+l98a4e:
+.line 642
+	move	v0,v6
+; v0 : single-length , v6 : single-length
+l98a50:
+	if-ge	v0,v2,l98a78
+; v0 : single-length , v2 : single-length
+.line 643
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v3 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 645
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getGroupId	; getGroupId()I
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v3
+; v3 : single-length
+	if-ne	v3,v5,l98a72
+; v3 : single-length , v5 : single-length
+l98a70:
+.line 650
+	return	v0
+; v0 : single-length
+l98a72:
+.line 642
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l98a50
+l98a78:
+.line 650
+	const/4	v0,15
+; v0 : single-length
+	goto	l98a70
+.end method
+
+.method public findItem(I)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 7
+; this: v5 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v6 (I)
+.var 1 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l98aaa to l98ab6
+.var 2 is possibleItem Lcom/actionbarsherlock/view/MenuItem; from l98ad4 to l98adc
+.var 1 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l98ab8 to l98ae2
+.line 601
+	invoke-virtual	{v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/size	; size()I
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result	v3
+; v3 : single-length
+.line 602
+	const/4	v0,0
+; v0 : single-length
+l98a96:
+	if-ge	v0,v3,l98ae2
+; v0 : single-length , v3 : single-length
+.line 603
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v4 : Ljava/util/ArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v4 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 604
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getItemId	; getItemId()I
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v4
+; v4 : single-length
+	if-ne	v4,v6,l98ab8
+; v4 : single-length , v6 : single-length
+l98ab6:
+.line 615
+	return-object	v1
+; v1 : Lcom/actionbarsherlock/view/MenuItem;
+l98ab8:
+.line 606
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/hasSubMenu	; hasSubMenu()Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l98adc
+; v4 : single-length
+.line 607
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getSubMenu	; getSubMenu()Lcom/actionbarsherlock/view/SubMenu;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result-object	v4
+; v4 : Lcom/actionbarsherlock/view/SubMenu;
+	invoke-interface	{v4,v6},com/actionbarsherlock/view/SubMenu/findItem	; findItem(I)Lcom/actionbarsherlock/view/MenuItem;
+; v4 : Lcom/actionbarsherlock/view/SubMenu; , v6 : single-length
+	move-result-object	v2
+; v2 : Lcom/actionbarsherlock/view/MenuItem;
+.line 609
+	if-eqz	v2,l98adc
+; v2 : Lcom/actionbarsherlock/view/MenuItem;
+	move-object	v1,v2
+; v1 : Lcom/actionbarsherlock/view/MenuItem; , v2 : Lcom/actionbarsherlock/view/MenuItem;
+.line 610
+	goto	l98ab6
+l98adc:
+.line 602
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l98a96
+l98ae2:
+.line 615
+	const/4	v1,0
+; v1 : single-length
+	goto	l98ab6
+.end method
+
+.method public findItemIndex(I)I
+.limit registers 6
+; this: v4 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v5 (I)
+.var 0 is i I from l98b02 to l98b22
+.var 1 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l98b16 to l98b22
+.var 1 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l98b24 to l98b2a
+.line 619
+	invoke-virtual	{v4},com/actionbarsherlock/internal/view/menu/MenuBuilder/size	; size()I
+; v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result	v2
+; v2 : single-length
+.line 621
+	const/4	v0,0
+; v0 : single-length
+l98b02:
+	if-ge	v0,v2,l98b2a
+; v0 : single-length , v2 : single-length
+.line 622
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v3 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 623
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getItemId	; getItemId()I
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v3
+; v3 : single-length
+	if-ne	v3,v5,l98b24
+; v3 : single-length , v5 : single-length
+l98b22:
+.line 628
+	return	v0
+; v0 : single-length
+l98b24:
+.line 621
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l98b02
+l98b2a:
+.line 628
+	const/4	v0,15
+; v0 : single-length
+	goto	l98b22
+.end method
+
+.method findItemWithShortcutForKey(ILandroid/view/KeyEvent;)Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.limit registers 15
+; this: v12 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v13 (I)
+; parameter[1] : v14 (Landroid/view/KeyEvent;)
+.var 6 is shortcutChar C from l98bbc to l98bfe
+	const/4	v8,0
+; v8 : single-length
+	const/4	v11,0
+; v11 : single-length
+.line 829
+	iget-object	v2,v12,com/actionbarsherlock/internal/view/menu/MenuBuilder.mTempShortcutItemList Ljava/util/ArrayList;
+; v2 : Ljava/util/ArrayList; , v12 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 830
+	invoke-virtual	{v2},java/util/ArrayList/clear	; clear()V
+; v2 : Ljava/util/ArrayList;
+.line 831
+	invoke-virtual	{v12,v2,v13,v14},com/actionbarsherlock/internal/view/menu/MenuBuilder/findItemsWithShortcutForKey	; findItemsWithShortcutForKey(Ljava/util/List;ILandroid/view/KeyEvent;)V
+; v12 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : Ljava/util/ArrayList; , v13 : single-length , v14 : Landroid/view/KeyEvent;
+.line 833
+	invoke-virtual	{v2},java/util/ArrayList/isEmpty	; isEmpty()Z
+; v2 : Ljava/util/ArrayList;
+	move-result	v9
+; v9 : single-length
+	if-eqz	v9,l98b62
+; v9 : single-length
+l98b60:
+.line 864
+	return-object	v8
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+l98b62:
+.line 837
+	invoke-virtual	{v14},android/view/KeyEvent/getMetaState	; getMetaState()I
+; v14 : Landroid/view/KeyEvent;
+	move-result	v3
+; v3 : single-length
+.line 838
+	new-instance	v4,android/view/KeyCharacterMap$KeyData
+; v4 : Landroid/view/KeyCharacterMap$KeyData;
+	invoke-direct	{v4},android/view/KeyCharacterMap$KeyData/<init>	; <init>()V
+; v4 : Landroid/view/KeyCharacterMap$KeyData;
+.line 840
+	invoke-virtual	{v14,v4},android/view/KeyEvent/getKeyData	; getKeyData(Landroid/view/KeyCharacterMap$KeyData;)Z
+; v14 : Landroid/view/KeyEvent; , v4 : Landroid/view/KeyCharacterMap$KeyData;
+.line 843
+	invoke-virtual	{v2},java/util/ArrayList/size	; size()I
+; v2 : Ljava/util/ArrayList;
+	move-result	v7
+; v7 : single-length
+.line 844
+	const/4	v9,1
+; v9 : single-length
+	if-ne	v7,v9,l98b96
+; v7 : single-length , v9 : single-length
+.line 845
+	invoke-virtual	{v2,v11},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v2 : Ljava/util/ArrayList; , v11 : single-length
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	check-cast	v8,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	goto	l98b60
+l98b96:
+.line 848
+	invoke-virtual	{v12},com/actionbarsherlock/internal/view/menu/MenuBuilder/isQwertyMode	; isQwertyMode()Z
+; v12 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result	v5
+; v5 : single-length
+.line 851
+	const/4	v0,0
+; v0 : single-length
+l98ba0:
+	if-ge	v0,v7,l98b60
+; v0 : single-length , v7 : single-length
+.line 852
+	invoke-virtual	{v2,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v2 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 853
+	if-eqz	v5,l98bfe
+; v5 : single-length
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getAlphabeticShortcut	; getAlphabeticShortcut()C
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v6
+; v6 : single-length
+l98bbc:
+.line 855
+	iget-object	v9,v4,android/view/KeyCharacterMap$KeyData.meta [C
+; v9 : [C , v4 : Landroid/view/KeyCharacterMap$KeyData;
+	aget-char	v9,v9,v11
+; v9 : single-length , v9 : single-length , v11 : single-length
+	if-ne	v6,v9,l98bd0
+; v6 : single-length , v9 : single-length
+	and-int/lit8	v9,v3,2
+; v9 : single-length , v3 : single-length
+	if-eqz	v9,l98bfa
+; v9 : single-length
+l98bd0:
+	iget-object	v9,v4,android/view/KeyCharacterMap$KeyData.meta [C
+; v9 : [C , v4 : Landroid/view/KeyCharacterMap$KeyData;
+	const/4	v10,2
+; v10 : single-length
+	aget-char	v9,v9,v10
+; v9 : single-length , v9 : single-length , v10 : single-length
+	if-ne	v6,v9,l98be6
+; v6 : single-length , v9 : single-length
+	and-int/lit8	v9,v3,2
+; v9 : single-length , v3 : single-length
+	if-nez	v9,l98bfa
+; v9 : single-length
+l98be6:
+	if-eqz	v5,l98c08
+; v5 : single-length
+	const/16	v9,8
+; v9 : single-length
+	if-ne	v6,v9,l98c08
+; v6 : single-length , v9 : single-length
+	const/16	v9,67
+; v9 : single-length
+	if-ne	v13,v9,l98c08
+; v13 : single-length , v9 : single-length
+l98bfa:
+	move-object	v8,v1
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 861
+	goto	l98b60
+l98bfe:
+.line 853
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getNumericShortcut	; getNumericShortcut()C
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v6
+; v6 : single-length
+	goto	l98bbc
+l98c08:
+.line 851
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l98ba0
+.end method
+
+.method findItemsWithShortcutForKey(Ljava/util/List;ILandroid/view/KeyEvent;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/util/List" , "<" , "Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;" , ">;I" , "Landroid/view/KeyEvent;" , ")V" }
+.end annotation
+.limit registers 15
+; this: v11 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v12 (Ljava/util/List;)
+; parameter[1] : v13 (I)
+; parameter[2] : v14 (Landroid/view/KeyEvent;)
+.var 7 is shortcutChar C from l98c9c to l98cec
+	const/16	v10,67
+; v10 : single-length
+.line 785
+	invoke-virtual	{v11},com/actionbarsherlock/internal/view/menu/MenuBuilder/isQwertyMode	; isQwertyMode()Z
+; v11 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result	v6
+; v6 : single-length
+.line 786
+	invoke-virtual	{v14},android/view/KeyEvent/getMetaState	; getMetaState()I
+; v14 : Landroid/view/KeyEvent;
+	move-result	v4
+; v4 : single-length
+.line 787
+	new-instance	v5,android/view/KeyCharacterMap$KeyData
+; v5 : Landroid/view/KeyCharacterMap$KeyData;
+	invoke-direct	{v5},android/view/KeyCharacterMap$KeyData/<init>	; <init>()V
+; v5 : Landroid/view/KeyCharacterMap$KeyData;
+.line 789
+	invoke-virtual	{v14,v5},android/view/KeyEvent/getKeyData	; getKeyData(Landroid/view/KeyCharacterMap$KeyData;)Z
+; v14 : Landroid/view/KeyEvent; , v5 : Landroid/view/KeyCharacterMap$KeyData;
+	move-result	v2
+; v2 : single-length
+.line 791
+	if-nez	v2,l98c50
+; v2 : single-length
+	if-eq	v13,v10,l98c50
+; v13 : single-length , v10 : single-length
+l98c4e:
+.line 813
+	return-void	
+l98c50:
+.line 796
+	iget-object	v8,v11,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v8 : Ljava/util/ArrayList; , v11 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v8},java/util/ArrayList/size	; size()I
+; v8 : Ljava/util/ArrayList;
+	move-result	v0
+; v0 : single-length
+.line 797
+	const/4	v1,0
+; v1 : single-length
+l98c5e:
+	if-ge	v1,v0,l98c4e
+; v1 : single-length , v0 : single-length
+.line 798
+	iget-object	v8,v11,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v8 : Ljava/util/ArrayList; , v11 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v8,v1},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v8 : Ljava/util/ArrayList; , v1 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 799
+	invoke-virtual	{v3},com/actionbarsherlock/internal/view/menu/MenuItemImpl/hasSubMenu	; hasSubMenu()Z
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v8
+; v8 : single-length
+	if-eqz	v8,l98c90
+; v8 : single-length
+.line 800
+	invoke-virtual	{v3},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getSubMenu	; getSubMenu()Lcom/actionbarsherlock/view/SubMenu;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result-object	v8
+; v8 : Lcom/actionbarsherlock/view/SubMenu;
+	check-cast	v8,com/actionbarsherlock/internal/view/menu/MenuBuilder
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v8,v12,v13,v14},com/actionbarsherlock/internal/view/menu/MenuBuilder/findItemsWithShortcutForKey	; findItemsWithShortcutForKey(Ljava/util/List;ILandroid/view/KeyEvent;)V
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v12 : Ljava/util/List; , v13 : single-length , v14 : Landroid/view/KeyEvent;
+l98c90:
+.line 802
+	if-eqz	v6,l98cec
+; v6 : single-length
+	invoke-virtual	{v3},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getAlphabeticShortcut	; getAlphabeticShortcut()C
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v7
+; v7 : single-length
+l98c9c:
+.line 803
+	and-int/lit8	v8,v4,5
+; v8 : single-length , v4 : single-length
+	if-nez	v8,l98ce6
+; v8 : single-length
+	if-eqz	v7,l98ce6
+; v7 : single-length
+	iget-object	v8,v5,android/view/KeyCharacterMap$KeyData.meta [C
+; v8 : [C , v5 : Landroid/view/KeyCharacterMap$KeyData;
+	const/4	v9,0
+; v9 : single-length
+	aget-char	v8,v8,v9
+; v8 : single-length , v8 : single-length , v9 : single-length
+	if-eq	v7,v8,l98cd4
+; v7 : single-length , v8 : single-length
+	iget-object	v8,v5,android/view/KeyCharacterMap$KeyData.meta [C
+; v8 : [C , v5 : Landroid/view/KeyCharacterMap$KeyData;
+	const/4	v9,2
+; v9 : single-length
+	aget-char	v8,v8,v9
+; v8 : single-length , v8 : single-length , v9 : single-length
+	if-eq	v7,v8,l98cd4
+; v7 : single-length , v8 : single-length
+	if-eqz	v6,l98ce6
+; v6 : single-length
+	const/16	v8,8
+; v8 : single-length
+	if-ne	v7,v8,l98ce6
+; v7 : single-length , v8 : single-length
+	if-ne	v13,v10,l98ce6
+; v13 : single-length , v10 : single-length
+l98cd4:
+	invoke-virtual	{v3},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isEnabled	; isEnabled()Z
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v8
+; v8 : single-length
+	if-eqz	v8,l98ce6
+; v8 : single-length
+.line 810
+	invoke-interface	{v12,v3},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v12 : Ljava/util/List; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+l98ce6:
+.line 797
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	l98c5e
+l98cec:
+.line 802
+	invoke-virtual	{v3},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getNumericShortcut	; getNumericShortcut()C
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v7
+; v7 : single-length
+	goto	l98c9c
+.end method
+
+.method public flagActionItems()V
+.limit registers 11
+; this: v10 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.var 5 is presenter Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; from l98d44 to l98d60
+.var 6 is ref Ljava/lang/ref/WeakReference; from l98d38 to l98d60
+.var 1 is i I from l98d8a to l98dc2
+.var 3 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l98d9a to l98dc2
+.var 4 is itemsSize I from l98d88 to l98dc2
+.var 7 is visibleItems Ljava/util/ArrayList; from l98d80 to l98dc2
+.line 1037
+	iget-boolean	v8,v10,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsActionItemsStale Z
+; v8 : single-length , v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	if-nez	v8,l98d12
+; v8 : single-length
+l98d10:
+.line 1073
+	return-void	
+l98d12:
+.line 1042
+	const/4	v0,0
+; v0 : single-length
+.line 1043
+	iget-object	v8,v10,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v8 : Ljava/util/concurrent/CopyOnWriteArrayList; , v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v8},java/util/concurrent/CopyOnWriteArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v8 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result-object	v2
+; v2 : Ljava/util/Iterator;
+l98d20:
+	invoke-interface	{v2},java/util/Iterator/hasNext	; hasNext()Z
+; v2 : Ljava/util/Iterator;
+	move-result	v8
+; v8 : single-length
+	if-eqz	v8,l98d60
+; v8 : single-length
+	invoke-interface	{v2},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v2 : Ljava/util/Iterator;
+	move-result-object	v6
+; v6 : Ljava/lang/Object;
+	check-cast	v6,java/lang/ref/WeakReference
+; v6 : Ljava/lang/ref/WeakReference;
+.line 1044
+	invoke-virtual	{v6},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v6 : Ljava/lang/ref/WeakReference;
+	move-result-object	v5
+; v5 : Ljava/lang/Object;
+	check-cast	v5,com/actionbarsherlock/internal/view/menu/MenuPresenter
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 1045
+	if-nez	v5,l98d54
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 1046
+	iget-object	v8,v10,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v8 : Ljava/util/concurrent/CopyOnWriteArrayList; , v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v8,v6},java/util/concurrent/CopyOnWriteArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v8 : Ljava/util/concurrent/CopyOnWriteArrayList; , v6 : Ljava/lang/ref/WeakReference;
+	goto	l98d20
+l98d54:
+.line 1048
+	invoke-interface	{v5},com/actionbarsherlock/internal/view/menu/MenuPresenter/flagActionItems	; flagActionItems()Z
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+	move-result	v8
+; v8 : single-length
+	or-int/2addr	v0,v8
+; v0 : single-length , v8 : single-length
+	goto	l98d20
+l98d60:
+.line 1052
+	if-eqz	v0,l98dc2
+; v0 : single-length
+.line 1053
+	iget-object	v8,v10,com/actionbarsherlock/internal/view/menu/MenuBuilder.mActionItems Ljava/util/ArrayList;
+; v8 : Ljava/util/ArrayList; , v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v8},java/util/ArrayList/clear	; clear()V
+; v8 : Ljava/util/ArrayList;
+.line 1054
+	iget-object	v8,v10,com/actionbarsherlock/internal/view/menu/MenuBuilder.mNonActionItems Ljava/util/ArrayList;
+; v8 : Ljava/util/ArrayList; , v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v8},java/util/ArrayList/clear	; clear()V
+; v8 : Ljava/util/ArrayList;
+.line 1055
+	invoke-virtual	{v10},com/actionbarsherlock/internal/view/menu/MenuBuilder/getVisibleItems	; getVisibleItems()Ljava/util/ArrayList;
+; v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result-object	v7
+; v7 : Ljava/util/ArrayList;
+.line 1056
+	invoke-virtual	{v7},java/util/ArrayList/size	; size()I
+; v7 : Ljava/util/ArrayList;
+	move-result	v4
+; v4 : single-length
+.line 1057
+	const/4	v1,0
+; v1 : single-length
+l98d8a:
+	if-ge	v1,v4,l98de8
+; v1 : single-length , v4 : single-length
+.line 1058
+	invoke-virtual	{v7,v1},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v7 : Ljava/util/ArrayList; , v1 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 1059
+	invoke-virtual	{v3},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isActionButton	; isActionButton()Z
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v8
+; v8 : single-length
+	if-eqz	v8,l98db6
+; v8 : single-length
+.line 1060
+	iget-object	v8,v10,com/actionbarsherlock/internal/view/menu/MenuBuilder.mActionItems Ljava/util/ArrayList;
+; v8 : Ljava/util/ArrayList; , v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v8,v3},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v8 : Ljava/util/ArrayList; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+l98db0:
+.line 1057
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	l98d8a
+l98db6:
+.line 1062
+	iget-object	v8,v10,com/actionbarsherlock/internal/view/menu/MenuBuilder.mNonActionItems Ljava/util/ArrayList;
+; v8 : Ljava/util/ArrayList; , v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v8,v3},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v8 : Ljava/util/ArrayList; , v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	goto	l98db0
+l98dc2:
+.line 1068
+	iget-object	v8,v10,com/actionbarsherlock/internal/view/menu/MenuBuilder.mActionItems Ljava/util/ArrayList;
+; v8 : Ljava/util/ArrayList; , v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v8},java/util/ArrayList/clear	; clear()V
+; v8 : Ljava/util/ArrayList;
+.line 1069
+	iget-object	v8,v10,com/actionbarsherlock/internal/view/menu/MenuBuilder.mNonActionItems Ljava/util/ArrayList;
+; v8 : Ljava/util/ArrayList; , v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v8},java/util/ArrayList/clear	; clear()V
+; v8 : Ljava/util/ArrayList;
+.line 1070
+	iget-object	v8,v10,com/actionbarsherlock/internal/view/menu/MenuBuilder.mNonActionItems Ljava/util/ArrayList;
+; v8 : Ljava/util/ArrayList; , v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v10},com/actionbarsherlock/internal/view/menu/MenuBuilder/getVisibleItems	; getVisibleItems()Ljava/util/ArrayList;
+; v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result-object	v9
+; v9 : Ljava/util/ArrayList;
+	invoke-virtual	{v8,v9},java/util/ArrayList/addAll	; addAll(Ljava/util/Collection;)Z
+; v8 : Ljava/util/ArrayList; , v9 : Ljava/util/ArrayList;
+l98de8:
+.line 1072
+	const/4	v8,0
+; v8 : single-length
+	iput-boolean	v8,v10,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsActionItemsStale Z
+; v8 : single-length , v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	goto	l98d10
+.end method
+
+.method getActionItems()Ljava/util/ArrayList;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "()" , "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;" , ">;" }
+.end annotation
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 1076
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/flagActionItems	; flagActionItems()V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1077
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mActionItems Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	return-object	v0
+; v0 : Ljava/util/ArrayList;
+.end method
+
+.method protected getActionViewStatesKey()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 379
+	const-string	v0,"android:menu:actionviewstates"
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getContext()Landroid/content/Context;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 734
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mContext Landroid/content/Context;
+; v0 : Landroid/content/Context; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	return-object	v0
+; v0 : Landroid/content/Context;
+.end method
+
+.method public getExpandedItem()Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 1268
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mExpandedItem Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.end method
+
+.method public getHeaderIcon()Landroid/graphics/drawable/Drawable;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 1189
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderIcon Landroid/graphics/drawable/Drawable;
+; v0 : Landroid/graphics/drawable/Drawable; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	return-object	v0
+; v0 : Landroid/graphics/drawable/Drawable;
+.end method
+
+.method public getHeaderTitle()Ljava/lang/CharSequence;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 1185
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderTitle Ljava/lang/CharSequence;
+; v0 : Ljava/lang/CharSequence; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	return-object	v0
+; v0 : Ljava/lang/CharSequence;
+.end method
+
+.method public getHeaderView()Landroid/view/View;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 1193
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mHeaderView Landroid/view/View;
+; v0 : Landroid/view/View; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	return-object	v0
+; v0 : Landroid/view/View;
+.end method
+
+.method public getItem(I)Lcom/actionbarsherlock/view/MenuItem;
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (I)
+.line 659
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v0,v2},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v0 : Ljava/util/ArrayList; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/actionbarsherlock/view/MenuItem
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+.end method
+
+.method getNonActionItems()Ljava/util/ArrayList;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "()" , "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;" , ">;" }
+.end annotation
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 1081
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/flagActionItems	; flagActionItems()V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1082
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mNonActionItems Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	return-object	v0
+; v0 : Ljava/util/ArrayList;
+.end method
+
+.method getOptionalIconsVisible()Z
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 1220
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mOptionalIconsVisible Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	return	v0
+; v0 : single-length
+.end method
+
+.method getResources()Landroid/content/res/Resources;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 730
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mResources Landroid/content/res/Resources;
+; v0 : Landroid/content/res/Resources; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	return-object	v0
+; v0 : Landroid/content/res/Resources;
+.end method
+
+.method public getRootMenu()Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.limit registers 1
+; this: v0 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 1201
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.end method
+
+.method getVisibleItems()Ljava/util/ArrayList;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "()" , "Ljava/util/ArrayList" , "<" , "Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;" , ">;" }
+.end annotation
+.limit registers 5
+; this: v4 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.var 1 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l98f6a to l98f86
+.line 994
+	iget-boolean	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsVisibleItemsStale Z
+; v3 : single-length , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	if-nez	v3,l98f3e
+; v3 : single-length
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mVisibleItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+l98f3c:
+.line 1009
+	return-object	v3
+; v3 : Ljava/util/ArrayList;
+l98f3e:
+.line 997
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mVisibleItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3},java/util/ArrayList/clear	; clear()V
+; v3 : Ljava/util/ArrayList;
+.line 999
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3},java/util/ArrayList/size	; size()I
+; v3 : Ljava/util/ArrayList;
+	move-result	v2
+; v2 : single-length
+.line 1001
+	const/4	v0,0
+; v0 : single-length
+l98f56:
+	if-ge	v0,v2,l98f86
+; v0 : single-length , v2 : single-length
+.line 1002
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v3 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 1003
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isVisible	; isVisible()Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l98f80
+; v3 : single-length
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mVisibleItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3,v1},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v3 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+l98f80:
+.line 1001
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l98f56
+l98f86:
+.line 1006
+	const/4	v3,0
+; v3 : single-length
+	iput-boolean	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsVisibleItemsStale Z
+; v3 : single-length , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1007
+	const/4	v3,1
+; v3 : single-length
+	iput-boolean	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsActionItemsStale Z
+; v3 : single-length , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1009
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mVisibleItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	goto	l98f3c
+.end method
+
+.method public hasVisibleItems()Z
+.limit registers 5
+; this: v4 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.var 1 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l98fc6 to l98fd4
+.var 1 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l98fd6 to l98fdc
+.line 588
+	invoke-virtual	{v4},com/actionbarsherlock/internal/view/menu/MenuBuilder/size	; size()I
+; v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result	v2
+; v2 : single-length
+.line 590
+	const/4	v0,0
+; v0 : single-length
+l98fb2:
+	if-ge	v0,v2,l98fdc
+; v0 : single-length , v2 : single-length
+.line 591
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v3 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 592
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isVisible	; isVisible()Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l98fd6
+; v3 : single-length
+.line 593
+	const/4	v3,1
+; v3 : single-length
+l98fd4:
+.line 597
+	return	v3
+; v3 : single-length
+l98fd6:
+.line 590
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l98fb2
+l98fdc:
+.line 597
+	const/4	v3,0
+; v3 : single-length
+	goto	l98fd4
+.end method
+
+.method isQwertyMode()Z
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 697
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mQwertyMode Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public isShortcutKey(ILandroid/view/KeyEvent;)Z
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (Landroid/view/KeyEvent;)
+.line 663
+	invoke-virtual	{v1,v2,v3},com/actionbarsherlock/internal/view/menu/MenuBuilder/findItemWithShortcutForKey	; findItemWithShortcutForKey(ILandroid/view/KeyEvent;)Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : single-length , v3 : Landroid/view/KeyEvent;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	if-eqz	v0,l99018
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	const/4	v0,1
+; v0 : single-length
+l99016:
+	return	v0
+; v0 : single-length
+l99018:
+	const/4	v0,0
+; v0 : single-length
+	goto	l99016
+.end method
+
+.method public isShortcutsVisible()Z
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 726
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mShortcutsVisible Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	return	v0
+; v0 : single-length
+.end method
+
+.method onItemActionRequestChanged(Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;)
+	const/4	v0,1
+; v0 : single-length
+.line 989
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsActionItemsStale Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 990
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length
+.line 991
+	return-void	
+.end method
+
+.method onItemVisibleChanged(Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;)
+	const/4	v0,1
+; v0 : single-length
+.line 979
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsVisibleItemsStale Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 980
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length
+.line 981
+	return-void	
+.end method
+
+.method onItemsChanged(Z)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v3 (Z)
+	const/4	v1,1
+; v1 : single-length
+.line 940
+	iget-boolean	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPreventDispatchingItemsChanged Z
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	if-nez	v0,l990a2
+; v0 : single-length
+.line 941
+	if-eqz	v3,l9909a
+; v3 : single-length
+.line 942
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsVisibleItemsStale Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 943
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mIsActionItemsStale Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+l9909a:
+.line 946
+	invoke-direct	{v2,v3},com/actionbarsherlock/internal/view/menu/MenuBuilder/dispatchPresenterUpdate	; dispatchPresenterUpdate(Z)V
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v3 : single-length
+l990a0:
+.line 950
+	return-void	
+l990a2:
+.line 948
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItemsChangedWhileDispatchPrevented Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	goto	l990a0
+.end method
+
+.method public performIdentifierAction(II)Z
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+.line 869
+	invoke-virtual	{v1,v2},com/actionbarsherlock/internal/view/menu/MenuBuilder/findItem	; findItem(I)Lcom/actionbarsherlock/view/MenuItem;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : single-length
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/view/MenuItem;
+	invoke-virtual	{v1,v0,v3},com/actionbarsherlock/internal/view/menu/MenuBuilder/performItemAction	; performItemAction(Lcom/actionbarsherlock/view/MenuItem;I)Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : Lcom/actionbarsherlock/view/MenuItem; , v3 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public performItemAction(Lcom/actionbarsherlock/view/MenuItem;I)Z
+.limit registers 10
+; this: v7 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v8 (Lcom/actionbarsherlock/view/MenuItem;)
+; parameter[1] : v9 (I)
+.var 2 is provider Lcom/actionbarsherlock/view/ActionProvider; from l9914a to l99176
+.var 3 is subMenu Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder; from l99142 to l99176
+	const/4	v4,0
+; v4 : single-length
+	const/4	v6,1
+; v6 : single-length
+.line 873
+	move-object	v1,v8
+; v1 : Lcom/actionbarsherlock/view/MenuItem; , v8 : Lcom/actionbarsherlock/view/MenuItem;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 875
+	if-eqz	v1,l990f6
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isEnabled	; isEnabled()Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v5
+; v5 : single-length
+	if-nez	v5,l990fa
+; v5 : single-length
+l990f6:
+	move	v0,v4
+; v0 : single-length , v4 : single-length
+l990f8:
+.line 900
+	return	v0
+; v0 : single-length
+l990fa:
+.line 879
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/invoke	; invoke()Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v0
+; v0 : single-length
+.line 881
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/hasCollapsibleActionView	; hasCollapsibleActionView()Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l99124
+; v5 : single-length
+.line 882
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/expandActionView	; expandActionView()Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v4
+; v4 : single-length
+	or-int/2addr	v0,v4
+; v0 : single-length , v4 : single-length
+.line 883
+	if-eqz	v0,l990f8
+; v0 : single-length
+	invoke-virtual	{v7,v6},com/actionbarsherlock/internal/view/menu/MenuBuilder/close	; close(Z)V
+; v7 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : single-length
+	goto	l990f8
+l99124:
+.line 884
+	invoke-interface	{v8},com/actionbarsherlock/view/MenuItem/hasSubMenu	; hasSubMenu()Z
+; v8 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l99176
+; v5 : single-length
+.line 885
+	invoke-virtual	{v7,v4},com/actionbarsherlock/internal/view/menu/MenuBuilder/close	; close(Z)V
+; v7 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v4 : single-length
+.line 887
+	invoke-interface	{v8},com/actionbarsherlock/view/MenuItem/getSubMenu	; getSubMenu()Lcom/actionbarsherlock/view/SubMenu;
+; v8 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result-object	v3
+; v3 : Lcom/actionbarsherlock/view/SubMenu;
+	check-cast	v3,com/actionbarsherlock/internal/view/menu/SubMenuBuilder
+; v3 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;
+.line 888
+	invoke-interface	{v8},com/actionbarsherlock/view/MenuItem/getActionProvider	; getActionProvider()Lcom/actionbarsherlock/view/ActionProvider;
+; v8 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result-object	v2
+; v2 : Lcom/actionbarsherlock/view/ActionProvider;
+.line 889
+	if-eqz	v2,l99160
+; v2 : Lcom/actionbarsherlock/view/ActionProvider;
+	invoke-virtual	{v2},com/actionbarsherlock/view/ActionProvider/hasSubMenu	; hasSubMenu()Z
+; v2 : Lcom/actionbarsherlock/view/ActionProvider;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l99160
+; v4 : single-length
+.line 890
+	invoke-virtual	{v2,v3},com/actionbarsherlock/view/ActionProvider/onPrepareSubMenu	; onPrepareSubMenu(Lcom/actionbarsherlock/view/SubMenu;)V
+; v2 : Lcom/actionbarsherlock/view/ActionProvider; , v3 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;
+l99160:
+.line 892
+	invoke-direct	{v7,v3},com/actionbarsherlock/internal/view/menu/MenuBuilder/dispatchSubMenuSelected	; dispatchSubMenuSelected(Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;)Z
+; v7 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v3 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;
+	move-result	v4
+; v4 : single-length
+	or-int/2addr	v0,v4
+; v0 : single-length , v4 : single-length
+.line 893
+	if-nez	v0,l990f8
+; v0 : single-length
+	invoke-virtual	{v7,v6},com/actionbarsherlock/internal/view/menu/MenuBuilder/close	; close(Z)V
+; v7 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : single-length
+	goto	l990f8
+l99176:
+.line 895
+	and-int/lit8	v4,v9,1
+; v4 : single-length , v9 : single-length
+	if-nez	v4,l990f8
+; v4 : single-length
+.line 896
+	invoke-virtual	{v7,v6},com/actionbarsherlock/internal/view/menu/MenuBuilder/close	; close(Z)V
+; v7 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : single-length
+	goto	l990f8
+.end method
+
+.method public performShortcut(ILandroid/view/KeyEvent;I)Z
+.limit registers 7
+; this: v3 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v4 (I)
+; parameter[1] : v5 (Landroid/view/KeyEvent;)
+; parameter[2] : v6 (I)
+.line 762
+	invoke-virtual	{v3,v4,v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/findItemWithShortcutForKey	; findItemWithShortcutForKey(ILandroid/view/KeyEvent;)Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v4 : single-length , v5 : Landroid/view/KeyEvent;
+	move-result-object	v1
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 764
+	const/4	v0,0
+; v0 : single-length
+.line 766
+	if-eqz	v1,l991ae
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 767
+	invoke-virtual	{v3,v1,v6},com/actionbarsherlock/internal/view/menu/MenuBuilder/performItemAction	; performItemAction(Lcom/actionbarsherlock/view/MenuItem;I)Z
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v6 : single-length
+	move-result	v0
+; v0 : single-length
+l991ae:
+.line 770
+	and-int/lit8	v2,v6,2
+; v2 : single-length , v6 : single-length
+	if-eqz	v2,l991be
+; v2 : single-length
+.line 771
+	const/4	v2,1
+; v2 : single-length
+	invoke-virtual	{v3,v2},com/actionbarsherlock/internal/view/menu/MenuBuilder/close	; close(Z)V
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : single-length
+l991be:
+.line 774
+	return	v0
+; v0 : single-length
+.end method
+
+.method public removeGroup(I)V
+.limit registers 7
+; this: v5 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v6 (I)
+.var 2 is numRemoved I from l991ee to l991f0
+.var 3 is numRemoved I from l991f0 to l991f4
+.var 2 is numRemoved I from l991f4 to l9921e
+.var 3 is numRemoved I from l9921e to l99220
+.var 1 is maxRemovable I from l991ec to l99228
+.var 2 is numRemoved I from l99220 to l99228
+.line 476
+	invoke-virtual	{v5,v6},com/actionbarsherlock/internal/view/menu/MenuBuilder/findGroupIndex	; findGroupIndex(I)I
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : single-length
+	move-result	v0
+; v0 : single-length
+.line 478
+	if-ltz	v0,l99228
+; v0 : single-length
+.line 479
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v4 : Ljava/util/ArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4},java/util/ArrayList/size	; size()I
+; v4 : Ljava/util/ArrayList;
+	move-result	v4
+; v4 : single-length
+	sub-int	v1,v4,v0
+; v1 : single-length , v4 : single-length , v0 : single-length
+.line 480
+	const/4	v2,0
+; v2 : single-length
+l991ee:
+	move	v3,v2
+; v3 : single-length , v2 : single-length
+l991f0:
+.line 481
+	add-int/lit8	v2,v3,1
+; v2 : single-length , v3 : single-length
+l991f4:
+	if-ge	v3,v1,l99220
+; v3 : single-length , v1 : single-length
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v4 : Ljava/util/ArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4,v0},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v4 : Ljava/util/ArrayList; , v0 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/Object;
+	check-cast	v4,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v4 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	invoke-virtual	{v4},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getGroupId	; getGroupId()I
+; v4 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v4
+; v4 : single-length
+	if-ne	v4,v6,l99220
+; v4 : single-length , v6 : single-length
+.line 483
+	const/4	v4,0
+; v4 : single-length
+	invoke-direct	{v5,v0,v4},com/actionbarsherlock/internal/view/menu/MenuBuilder/removeItemAtInt	; removeItemAtInt(IZ)V
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length , v4 : single-length
+	move	v3,v2
+; v3 : single-length , v2 : single-length
+l9921e:
+	goto	l991f0
+l99220:
+.line 487
+	const/4	v4,1
+; v4 : single-length
+	invoke-virtual	{v5,v4},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v4 : single-length
+l99228:
+.line 489
+	return-void	
+.end method
+
+.method public removeItem(I)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v3 (I)
+.line 472
+	invoke-virtual	{v2,v3},com/actionbarsherlock/internal/view/menu/MenuBuilder/findItemIndex	; findItemIndex(I)I
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v3 : single-length
+	move-result	v0
+; v0 : single-length
+	const/4	v1,1
+; v1 : single-length
+	invoke-direct	{v2,v0,v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/removeItemAtInt	; removeItemAtInt(IZ)V
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length , v1 : single-length
+.line 473
+	return-void	
+.end method
+
+.method public removeItemAt(I)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (I)
+.line 510
+	const/4	v0,1
+; v0 : single-length
+	invoke-direct	{v1,v2,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/removeItemAtInt	; removeItemAtInt(IZ)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : single-length , v0 : single-length
+.line 511
+	return-void	
+.end method
+
+.method public removeMenuPresenter(Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;)V
+.limit registers 6
+; this: v4 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v5 (Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;)
+.var 1 is item Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; from l992ac to l992c0
+.var 2 is ref Ljava/lang/ref/WeakReference; from l992a0 to l992c0
+.line 230
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3},java/util/concurrent/CopyOnWriteArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList;
+	move-result-object	v0
+; v0 : Ljava/util/Iterator;
+l99288:
+	invoke-interface	{v0},java/util/Iterator/hasNext	; hasNext()Z
+; v0 : Ljava/util/Iterator;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,l992c0
+; v3 : single-length
+	invoke-interface	{v0},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v0 : Ljava/util/Iterator;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/lang/ref/WeakReference
+; v2 : Ljava/lang/ref/WeakReference;
+.line 231
+	invoke-virtual	{v2},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v2 : Ljava/lang/ref/WeakReference;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuPresenter
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+.line 232
+	if-eqz	v1,l992b4
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+	if-ne	v1,v5,l99288
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuPresenter;
+l992b4:
+.line 233
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPresenters Ljava/util/concurrent/CopyOnWriteArrayList;
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3,v2},java/util/concurrent/CopyOnWriteArrayList/remove	; remove(Ljava/lang/Object;)Z
+; v3 : Ljava/util/concurrent/CopyOnWriteArrayList; , v2 : Ljava/lang/ref/WeakReference;
+	goto	l99288
+l992c0:
+.line 236
+	return-void	
+.end method
+
+.method public restoreActionViewStates(Landroid/os/Bundle;)V
+.limit registers 12
+; this: v10 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v11 (Landroid/os/Bundle;)
+.var 5 is subMenu Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder; from l99338 to l9933e
+.var 2 is item Lcom/actionbarsherlock/view/MenuItem; from l99300 to l99344
+.var 6 is v Landroid/view/View; from l99308 to l99344
+.line 349
+	if-nez	v11,l992da
+; v11 : Landroid/os/Bundle;
+l992d8:
+.line 376
+	return-void	
+l992da:
+.line 353
+	invoke-virtual	{v10},com/actionbarsherlock/internal/view/menu/MenuBuilder/getActionViewStatesKey	; getActionViewStatesKey()Ljava/lang/String;
+; v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result-object	v8
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v11,v8},android/os/Bundle/getSparseParcelableArray	; getSparseParcelableArray(Ljava/lang/String;)Landroid/util/SparseArray;
+; v11 : Landroid/os/Bundle; , v8 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Landroid/util/SparseArray;
+.line 356
+	invoke-virtual	{v10},com/actionbarsherlock/internal/view/menu/MenuBuilder/size	; size()I
+; v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result	v3
+; v3 : single-length
+.line 357
+	const/4	v1,0
+; v1 : single-length
+l992f4:
+	if-ge	v1,v3,l99344
+; v1 : single-length , v3 : single-length
+.line 358
+	invoke-virtual	{v10,v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/getItem	; getItem(I)Lcom/actionbarsherlock/view/MenuItem;
+; v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length
+	move-result-object	v2
+; v2 : Lcom/actionbarsherlock/view/MenuItem;
+.line 359
+	invoke-interface	{v2},com/actionbarsherlock/view/MenuItem/getActionView	; getActionView()Landroid/view/View;
+; v2 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result-object	v6
+; v6 : Landroid/view/View;
+.line 360
+	if-eqz	v6,l99320
+; v6 : Landroid/view/View;
+	invoke-virtual	{v6},android/view/View/getId	; getId()I
+; v6 : Landroid/view/View;
+	move-result	v8
+; v8 : single-length
+	const/4	v9,15
+; v9 : single-length
+	if-eq	v8,v9,l99320
+; v8 : single-length , v9 : single-length
+.line 361
+	invoke-virtual	{v6,v7},android/view/View/restoreHierarchyState	; restoreHierarchyState(Landroid/util/SparseArray;)V
+; v6 : Landroid/view/View; , v7 : Landroid/util/SparseArray;
+l99320:
+.line 363
+	invoke-interface	{v2},com/actionbarsherlock/view/MenuItem/hasSubMenu	; hasSubMenu()Z
+; v2 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result	v8
+; v8 : single-length
+	if-eqz	v8,l9933e
+; v8 : single-length
+.line 364
+	invoke-interface	{v2},com/actionbarsherlock/view/MenuItem/getSubMenu	; getSubMenu()Lcom/actionbarsherlock/view/SubMenu;
+; v2 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result-object	v5
+; v5 : Lcom/actionbarsherlock/view/SubMenu;
+	check-cast	v5,com/actionbarsherlock/internal/view/menu/SubMenuBuilder
+; v5 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;
+.line 365
+	invoke-virtual	{v5,v11},com/actionbarsherlock/internal/view/menu/SubMenuBuilder/restoreActionViewStates	; restoreActionViewStates(Landroid/os/Bundle;)V
+; v5 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder; , v11 : Landroid/os/Bundle;
+l9933e:
+.line 357
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	l992f4
+l99344:
+.line 369
+	const-string	v8,"android:menu:expandedactionview"
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v11,v8},android/os/Bundle/getInt	; getInt(Ljava/lang/String;)I
+; v11 : Landroid/os/Bundle; , v8 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+.line 370
+	if-lez	v0,l992d8
+; v0 : single-length
+.line 371
+	invoke-virtual	{v10,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/findItem	; findItem(I)Lcom/actionbarsherlock/view/MenuItem;
+; v10 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length
+	move-result-object	v4
+; v4 : Lcom/actionbarsherlock/view/MenuItem;
+.line 372
+	if-eqz	v4,l992d8
+; v4 : Lcom/actionbarsherlock/view/MenuItem;
+.line 373
+	invoke-interface	{v4},com/actionbarsherlock/view/MenuItem/expandActionView	; expandActionView()Z
+; v4 : Lcom/actionbarsherlock/view/MenuItem;
+	goto	l992d8
+.end method
+
+.method public restorePresenterStates(Landroid/os/Bundle;)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v1 (Landroid/os/Bundle;)
+.line 318
+	invoke-direct	{v0,v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/dispatchRestoreInstanceState	; dispatchRestoreInstanceState(Landroid/os/Bundle;)V
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : Landroid/os/Bundle;
+.line 319
+	return-void	
+.end method
+
+.method public saveActionViewStates(Landroid/os/Bundle;)V
+.limit registers 10
+; this: v8 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v9 (Landroid/os/Bundle;)
+.var 5 is viewStates Landroid/util/SparseArray; from l99392 to l993ca
+.var 3 is subMenu Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder; from l9940c to l99412
+.var 1 is item Lcom/actionbarsherlock/view/MenuItem; from l993a8 to l99418
+.var 4 is v Landroid/view/View; from l993b0 to l99418
+.line 322
+	const/4	v5,0
+; v5 : single-length
+.line 324
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuBuilder/size	; size()I
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result	v2
+; v2 : single-length
+.line 325
+	const/4	v0,0
+; v0 : single-length
+l9939c:
+	if-ge	v0,v2,l99418
+; v0 : single-length , v2 : single-length
+.line 326
+	invoke-virtual	{v8,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/getItem	; getItem(I)Lcom/actionbarsherlock/view/MenuItem;
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length
+	move-result-object	v1
+; v1 : Lcom/actionbarsherlock/view/MenuItem;
+.line 327
+	invoke-interface	{v1},com/actionbarsherlock/view/MenuItem/getActionView	; getActionView()Landroid/view/View;
+; v1 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result-object	v4
+; v4 : Landroid/view/View;
+.line 328
+	if-eqz	v4,l993f4
+; v4 : Landroid/view/View;
+	invoke-virtual	{v4},android/view/View/getId	; getId()I
+; v4 : Landroid/view/View;
+	move-result	v6
+; v6 : single-length
+	const/4	v7,15
+; v7 : single-length
+	if-eq	v6,v7,l993f4
+; v6 : single-length , v7 : single-length
+.line 329
+	if-nez	v5,l993d0
+; v5 : Landroid/util/SparseArray;
+.line 330
+	new-instance	v5,android/util/SparseArray
+; v5 : Landroid/util/SparseArray;
+l993ca:
+	invoke-direct	{v5},android/util/SparseArray/<init>	; <init>()V
+; v5 : Landroid/util/SparseArray;
+l993d0:
+.line 332
+	invoke-virtual	{v4,v5},android/view/View/saveHierarchyState	; saveHierarchyState(Landroid/util/SparseArray;)V
+; v4 : Landroid/view/View; , v5 : Landroid/util/SparseArray;
+.line 333
+	invoke-interface	{v1},com/actionbarsherlock/view/MenuItem/isActionViewExpanded	; isActionViewExpanded()Z
+; v1 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result	v6
+; v6 : single-length
+	if-eqz	v6,l993f4
+; v6 : single-length
+.line 334
+	const-string	v6,"android:menu:expandedactionview"
+; v6 : Ljava/lang/String;
+	invoke-interface	{v1},com/actionbarsherlock/view/MenuItem/getItemId	; getItemId()I
+; v1 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result	v7
+; v7 : single-length
+	invoke-virtual	{v9,v6,v7},android/os/Bundle/putInt	; putInt(Ljava/lang/String;I)V
+; v9 : Landroid/os/Bundle; , v6 : Ljava/lang/String; , v7 : single-length
+l993f4:
+.line 337
+	invoke-interface	{v1},com/actionbarsherlock/view/MenuItem/hasSubMenu	; hasSubMenu()Z
+; v1 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result	v6
+; v6 : single-length
+	if-eqz	v6,l99412
+; v6 : single-length
+.line 338
+	invoke-interface	{v1},com/actionbarsherlock/view/MenuItem/getSubMenu	; getSubMenu()Lcom/actionbarsherlock/view/SubMenu;
+; v1 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result-object	v3
+; v3 : Lcom/actionbarsherlock/view/SubMenu;
+	check-cast	v3,com/actionbarsherlock/internal/view/menu/SubMenuBuilder
+; v3 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder;
+.line 339
+	invoke-virtual	{v3,v9},com/actionbarsherlock/internal/view/menu/SubMenuBuilder/saveActionViewStates	; saveActionViewStates(Landroid/os/Bundle;)V
+; v3 : Lcom/actionbarsherlock/internal/view/menu/SubMenuBuilder; , v9 : Landroid/os/Bundle;
+l99412:
+.line 325
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l9939c
+l99418:
+.line 343
+	if-eqz	v5,l9942a
+; v5 : single-length
+.line 344
+	invoke-virtual	{v8},com/actionbarsherlock/internal/view/menu/MenuBuilder/getActionViewStatesKey	; getActionViewStatesKey()Ljava/lang/String;
+; v8 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v9,v6,v5},android/os/Bundle/putSparseParcelableArray	; putSparseParcelableArray(Ljava/lang/String;Landroid/util/SparseArray;)V
+; v9 : Landroid/os/Bundle; , v6 : Ljava/lang/String; , v5 : single-length
+l9942a:
+.line 346
+	return-void	
+.end method
+
+.method public savePresenterStates(Landroid/os/Bundle;)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v1 (Landroid/os/Bundle;)
+.line 314
+	invoke-direct	{v0,v1},com/actionbarsherlock/internal/view/menu/MenuBuilder/dispatchSaveInstanceState	; dispatchSaveInstanceState(Landroid/os/Bundle;)V
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : Landroid/os/Bundle;
+.line 315
+	return-void	
+.end method
+
+.method public setCallback(Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback;)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback;)
+.line 383
+	iput-object	v1,v0,com/actionbarsherlock/internal/view/menu/MenuBuilder.mCallback Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback;
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder$Callback; , v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 384
+	return-void	
+.end method
+
+.method public setCurrentMenuInfo(Landroid/view/ContextMenu$ContextMenuInfo;)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v1 (Landroid/view/ContextMenu$ContextMenuInfo;)
+.line 1212
+	iput-object	v1,v0,com/actionbarsherlock/internal/view/menu/MenuBuilder.mCurrentMenuInfo Landroid/view/ContextMenu$ContextMenuInfo;
+; v1 : Landroid/view/ContextMenu$ContextMenuInfo; , v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1213
+	return-void	
+.end method
+
+.method public setDefaultShowAsAction(I)Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v1 (I)
+.line 206
+	iput	v1,v0,com/actionbarsherlock/internal/view/menu/MenuBuilder.mDefaultShowAsAction I
+; v1 : single-length , v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 207
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.end method
+
+.method setExclusiveItemChecked(Lcom/actionbarsherlock/view/MenuItem;)V
+.limit registers 7
+; this: v5 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v6 (Lcom/actionbarsherlock/view/MenuItem;)
+.var 1 is curItem Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l994c6 to l99502
+.line 532
+	invoke-interface	{v6},com/actionbarsherlock/view/MenuItem/getGroupId	; getGroupId()I
+; v6 : Lcom/actionbarsherlock/view/MenuItem;
+	move-result	v2
+; v2 : single-length
+.line 534
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v4 : Ljava/util/ArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4},java/util/ArrayList/size	; size()I
+; v4 : Ljava/util/ArrayList;
+	move-result	v0
+; v0 : single-length
+.line 535
+	const/4	v3,0
+; v3 : single-length
+l994b2:
+	if-ge	v3,v0,l99502
+; v3 : single-length , v0 : single-length
+.line 536
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v4 : Ljava/util/ArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4,v3},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v4 : Ljava/util/ArrayList; , v3 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 537
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getGroupId	; getGroupId()I
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v4
+; v4 : single-length
+	if-ne	v4,v2,l994de
+; v4 : single-length , v2 : single-length
+.line 538
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isExclusiveCheckable	; isExclusiveCheckable()Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v4
+; v4 : single-length
+	if-nez	v4,l994e4
+; v4 : single-length
+l994de:
+.line 535
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	l994b2
+l994e4:
+.line 539
+	invoke-virtual	{v1},com/actionbarsherlock/internal/view/menu/MenuItemImpl/isCheckable	; isCheckable()Z
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l994de
+; v4 : single-length
+.line 542
+	if-ne	v1,v6,l994fe
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v6 : Lcom/actionbarsherlock/view/MenuItem;
+	const/4	v4,1
+; v4 : single-length
+l994f6:
+	invoke-virtual	{v1,v4},com/actionbarsherlock/internal/view/menu/MenuItemImpl/setCheckedInt	; setCheckedInt(Z)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v4 : single-length
+	goto	l994de
+l994fe:
+	const/4	v4,0
+; v4 : single-length
+	goto	l994f6
+l99502:
+.line 545
+	return-void	
+.end method
+
+.method public setGroupCheckable(IZZ)V
+.limit registers 8
+; this: v4 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v5 (I)
+; parameter[1] : v6 (Z)
+; parameter[2] : v7 (Z)
+.var 2 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l99536 to l99554
+.line 548
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3},java/util/ArrayList/size	; size()I
+; v3 : Ljava/util/ArrayList;
+	move-result	v0
+; v0 : single-length
+.line 550
+	const/4	v1,0
+; v1 : single-length
+l99522:
+	if-ge	v1,v0,l99554
+; v1 : single-length , v0 : single-length
+.line 551
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3,v1},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v3 : Ljava/util/ArrayList; , v1 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 552
+	invoke-virtual	{v2},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getGroupId	; getGroupId()I
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v3
+; v3 : single-length
+	if-ne	v3,v5,l9954e
+; v3 : single-length , v5 : single-length
+.line 553
+	invoke-virtual	{v2,v7},com/actionbarsherlock/internal/view/menu/MenuItemImpl/setExclusiveCheckable	; setExclusiveCheckable(Z)V
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v7 : single-length
+.line 554
+	invoke-virtual	{v2,v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/setCheckable	; setCheckable(Z)Lcom/actionbarsherlock/view/MenuItem;
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v6 : single-length
+l9954e:
+.line 550
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	l99522
+l99554:
+.line 557
+	return-void	
+.end method
+
+.method public setGroupEnabled(IZ)V
+.limit registers 7
+; this: v4 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v5 (I)
+; parameter[1] : v6 (Z)
+.var 2 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l9958a to l995a2
+.line 577
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3},java/util/ArrayList/size	; size()I
+; v3 : Ljava/util/ArrayList;
+	move-result	v0
+; v0 : single-length
+.line 579
+	const/4	v1,0
+; v1 : single-length
+l99576:
+	if-ge	v1,v0,l995a2
+; v1 : single-length , v0 : single-length
+.line 580
+	iget-object	v3,v4,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v3 : Ljava/util/ArrayList; , v4 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v3,v1},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v3 : Ljava/util/ArrayList; , v1 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 581
+	invoke-virtual	{v2},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getGroupId	; getGroupId()I
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v3
+; v3 : single-length
+	if-ne	v3,v5,l9959c
+; v3 : single-length , v5 : single-length
+.line 582
+	invoke-virtual	{v2,v6},com/actionbarsherlock/internal/view/menu/MenuItemImpl/setEnabled	; setEnabled(Z)Lcom/actionbarsherlock/view/MenuItem;
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v6 : single-length
+l9959c:
+.line 579
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	l99576
+l995a2:
+.line 585
+	return-void	
+.end method
+
+.method public setGroupVisible(IZ)V
+.limit registers 8
+; this: v5 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v6 (I)
+; parameter[1] : v7 (Z)
+.var 3 is item Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; from l995d8 to l995f8
+.line 560
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v4 : Ljava/util/ArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4},java/util/ArrayList/size	; size()I
+; v4 : Ljava/util/ArrayList;
+	move-result	v0
+; v0 : single-length
+.line 565
+	const/4	v1,0
+; v1 : single-length
+.line 566
+	const/4	v2,0
+; v2 : single-length
+l995c4:
+	if-ge	v2,v0,l995f8
+; v2 : single-length , v0 : single-length
+.line 567
+	iget-object	v4,v5,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v4 : Ljava/util/ArrayList; , v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v4,v2},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v4 : Ljava/util/ArrayList; , v2 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,com/actionbarsherlock/internal/view/menu/MenuItemImpl
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+.line 568
+	invoke-virtual	{v3},com/actionbarsherlock/internal/view/menu/MenuItemImpl/getGroupId	; getGroupId()I
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl;
+	move-result	v4
+; v4 : single-length
+	if-ne	v4,v6,l995f2
+; v4 : single-length , v6 : single-length
+.line 569
+	invoke-virtual	{v3,v7},com/actionbarsherlock/internal/view/menu/MenuItemImpl/setVisibleInt	; setVisibleInt(Z)Z
+; v3 : Lcom/actionbarsherlock/internal/view/menu/MenuItemImpl; , v7 : single-length
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l995f2
+; v4 : single-length
+	const/4	v1,1
+; v1 : single-length
+l995f2:
+.line 566
+	add-int/lit8	v2,v2,1
+; v2 : single-length , v2 : single-length
+	goto	l995c4
+l995f8:
+.line 573
+	if-eqz	v1,l99604
+; v1 : single-length
+	const/4	v4,1
+; v4 : single-length
+	invoke-virtual	{v5,v4},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v5 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v4 : single-length
+l99604:
+.line 574
+	return-void	
+.end method
+
+.method protected setHeaderIconInt(I)Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.limit registers 8
+; this: v6 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v7 (I)
+	const/4	v2,0
+; v2 : single-length
+.line 1168
+	const/4	v1,0
+; v1 : single-length
+	move-object	v0,v6
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move	v3,v7
+; v3 : single-length , v7 : single-length
+	move-object	v4,v2
+; v4 : single-length , v2 : single-length
+	move-object	v5,v2
+; v5 : single-length , v2 : single-length
+	invoke-direct/range	{v0..v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/setHeaderInternal;	setHeaderInternal(ILjava/lang/CharSequence;ILandroid/graphics/drawable/Drawable;Landroid/view/View;)V
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length , v2 : single-length , v3 : single-length , v4 : single-length , v5 : single-length
+.line 1169
+	return-object	v6
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.end method
+
+.method protected setHeaderIconInt(Landroid/graphics/drawable/Drawable;)Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.limit registers 8
+; this: v6 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v7 (Landroid/graphics/drawable/Drawable;)
+	const/4	v2,0
+; v2 : single-length
+	const/4	v1,0
+; v1 : single-length
+.line 1156
+	move-object	v0,v6
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move	v3,v1
+; v3 : single-length , v1 : single-length
+	move-object	v4,v7
+; v4 : Landroid/graphics/drawable/Drawable; , v7 : Landroid/graphics/drawable/Drawable;
+	move-object	v5,v2
+; v5 : single-length , v2 : single-length
+	invoke-direct/range	{v0..v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/setHeaderInternal;	setHeaderInternal(ILjava/lang/CharSequence;ILandroid/graphics/drawable/Drawable;Landroid/view/View;)V
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length , v2 : single-length , v3 : single-length , v4 : Landroid/graphics/drawable/Drawable; , v5 : single-length
+.line 1157
+	return-object	v6
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.end method
+
+.method protected setHeaderTitleInt(I)Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.limit registers 8
+; this: v6 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v7 (I)
+	const/4	v2,0
+; v2 : single-length
+.line 1144
+	const/4	v3,0
+; v3 : single-length
+	move-object	v0,v6
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move	v1,v7
+; v1 : single-length , v7 : single-length
+	move-object	v4,v2
+; v4 : single-length , v2 : single-length
+	move-object	v5,v2
+; v5 : single-length , v2 : single-length
+	invoke-direct/range	{v0..v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/setHeaderInternal;	setHeaderInternal(ILjava/lang/CharSequence;ILandroid/graphics/drawable/Drawable;Landroid/view/View;)V
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length , v2 : single-length , v3 : single-length , v4 : single-length , v5 : single-length
+.line 1145
+	return-object	v6
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.end method
+
+.method protected setHeaderTitleInt(Ljava/lang/CharSequence;)Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.limit registers 8
+; this: v6 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v7 (Ljava/lang/CharSequence;)
+	const/4	v4,0
+; v4 : single-length
+	const/4	v1,0
+; v1 : single-length
+.line 1132
+	move-object	v0,v6
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move-object	v2,v7
+; v2 : Ljava/lang/CharSequence; , v7 : Ljava/lang/CharSequence;
+	move	v3,v1
+; v3 : single-length , v1 : single-length
+	move-object	v5,v4
+; v5 : single-length , v4 : single-length
+	invoke-direct/range	{v0..v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/setHeaderInternal;	setHeaderInternal(ILjava/lang/CharSequence;ILandroid/graphics/drawable/Drawable;Landroid/view/View;)V
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length , v2 : Ljava/lang/CharSequence; , v3 : single-length , v4 : single-length , v5 : single-length
+.line 1133
+	return-object	v6
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.end method
+
+.method protected setHeaderViewInt(Landroid/view/View;)Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.limit registers 8
+; this: v6 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v7 (Landroid/view/View;)
+	const/4	v2,0
+; v2 : single-length
+	const/4	v1,0
+; v1 : single-length
+.line 1180
+	move-object	v0,v6
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v6 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	move	v3,v1
+; v3 : single-length , v1 : single-length
+	move-object	v4,v2
+; v4 : single-length , v2 : single-length
+	move-object	v5,v7
+; v5 : Landroid/view/View; , v7 : Landroid/view/View;
+	invoke-direct/range	{v0..v5},com/actionbarsherlock/internal/view/menu/MenuBuilder/setHeaderInternal;	setHeaderInternal(ILjava/lang/CharSequence;ILandroid/graphics/drawable/Drawable;Landroid/view/View;)V
+; v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v1 : single-length , v2 : single-length , v3 : single-length , v4 : single-length , v5 : Landroid/view/View;
+.line 1181
+	return-object	v6
+; v6 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.end method
+
+.method setOptionalIconsVisible(Z)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v1 (Z)
+.line 1216
+	iput-boolean	v1,v0,com/actionbarsherlock/internal/view/menu/MenuBuilder.mOptionalIconsVisible Z
+; v1 : single-length , v0 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 1217
+	return-void	
+.end method
+
+.method public setQwertyMode(Z)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (Z)
+.line 667
+	iput-boolean	v2,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mQwertyMode Z
+; v2 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 669
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length
+.line 670
+	return-void	
+.end method
+
+.method public setShortcutsVisible(Z)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+; parameter[0] : v2 (Z)
+.line 709
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mShortcutsVisible Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	if-ne	v0,v2,l9970e
+; v0 : single-length , v2 : single-length
+l9970c:
+.line 713
+	return-void	
+l9970e:
+.line 711
+	invoke-direct	{v1,v2},com/actionbarsherlock/internal/view/menu/MenuBuilder/setShortcutsVisibleInner	; setShortcutsVisibleInner(Z)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v2 : single-length
+.line 712
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length
+	goto	l9970c
+.end method
+
+.method public size()I
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 654
+	iget-object	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItems Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	invoke-virtual	{v0},java/util/ArrayList/size	; size()I
+; v0 : Ljava/util/ArrayList;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public startDispatchingItemsChanged()V
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+	const/4	v1,0
+; v1 : single-length
+.line 965
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPreventDispatchingItemsChanged Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 967
+	iget-boolean	v0,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItemsChangedWhileDispatchPrevented Z
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	if-eqz	v0,l9976a
+; v0 : single-length
+.line 968
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItemsChangedWhileDispatchPrevented Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 969
+	const/4	v0,1
+; v0 : single-length
+	invoke-virtual	{v2,v0},com/actionbarsherlock/internal/view/menu/MenuBuilder/onItemsChanged	; onItemsChanged(Z)V
+; v2 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder; , v0 : single-length
+l9976a:
+.line 971
+	return-void	
+.end method
+
+.method public stopDispatchingItemsChanged()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;)
+.line 958
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPreventDispatchingItemsChanged Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+	if-nez	v0,l99790
+; v0 : single-length
+.line 959
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mPreventDispatchingItemsChanged Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+.line 960
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v1,com/actionbarsherlock/internal/view/menu/MenuBuilder.mItemsChangedWhileDispatchPrevented Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/view/menu/MenuBuilder;
+l99790:
+.line 962
+	return-void	
+.end method
+
+

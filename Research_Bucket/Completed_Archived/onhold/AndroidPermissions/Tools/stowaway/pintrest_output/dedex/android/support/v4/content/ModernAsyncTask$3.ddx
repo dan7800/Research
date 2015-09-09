@@ -1,0 +1,104 @@
+.class android/support/v4/content/ModernAsyncTask$3
+.super java/util/concurrent/FutureTask
+.source ModernAsyncTask.java
+
+.enclosing method android/<init>()V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+  value [Ljava/lang/String; = { "Ljava/util/concurrent/FutureTask" , "<TResult;>;" }
+.end annotation
+
+.field final this$0 Landroid/support/v4/content/ModernAsyncTask;
+
+.method <init>(Landroid/support/v4/content/ModernAsyncTask;Ljava/util/concurrent/Callable;)V
+.limit registers 3
+; this: v0 (Landroid/support/v4/content/ModernAsyncTask$3;)
+; parameter[0] : v1 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[1] : v2 (Ljava/util/concurrent/Callable;)
+.line 127
+	iput-object	v1,v0,android/support/v4/content/ModernAsyncTask$3.this$0 Landroid/support/v4/content/ModernAsyncTask;
+; v1 : Landroid/support/v4/content/ModernAsyncTask; , v0 : Landroid/support/v4/content/ModernAsyncTask$3;
+	invoke-direct	{v0,v2},java/util/concurrent/FutureTask/<init>	; <init>(Ljava/util/concurrent/Callable;)V
+; v0 : Landroid/support/v4/content/ModernAsyncTask$3; , v2 : Ljava/util/concurrent/Callable;
+	return-void	
+.end method
+
+.method protected done()V
+.limit registers 7
+; this: v6 (Landroid/support/v4/content/ModernAsyncTask$3;)
+.catch java/lang/InterruptedException from l78294 to l782a6 using l782a8
+.catch java/util/concurrent/ExecutionException from l78294 to l782a6 using l782b6
+.catch java/util/concurrent/CancellationException from l78294 to l782a6 using l782d0
+.catch java/lang/Throwable from l78294 to l782a6 using l782e0
+.var 1 is result Ljava/lang/Object; from l7829c to l782a6
+.var 0 is e Ljava/lang/InterruptedException; from l782aa to l782b6
+.var 0 is e Ljava/util/concurrent/ExecutionException; from l782b8 to l782d0
+.var 0 is e Ljava/util/concurrent/CancellationException; from l782d2 to l782e0
+l78294:
+.line 131
+	invoke-virtual	{v6},android/support/v4/content/ModernAsyncTask$3/get	; get()Ljava/lang/Object;
+; v6 : Landroid/support/v4/content/ModernAsyncTask$3;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+.line 133
+	iget-object	v3,v6,android/support/v4/content/ModernAsyncTask$3.this$0 Landroid/support/v4/content/ModernAsyncTask;
+; v3 : Landroid/support/v4/content/ModernAsyncTask; , v6 : Landroid/support/v4/content/ModernAsyncTask$3;
+	invoke-static	{v3,v1},android/support/v4/content/ModernAsyncTask/access$400	; access$400(Landroid/support/v4/content/ModernAsyncTask;Ljava/lang/Object;)V
+; v3 : Landroid/support/v4/content/ModernAsyncTask; , v1 : Ljava/lang/Object;
+l782a6:
+.line 145
+	return-void	
+l782a8:
+.line 134
+	move-exception	v0
+; v0 : java/lang/InterruptedException
+.line 135
+	const-string	v3,"AsyncTask"
+; v3 : Ljava/lang/String;
+	invoke-static	{v3,v0},android/util/Log/w	; w(Ljava/lang/String;Ljava/lang/Throwable;)I
+; v3 : Ljava/lang/String; , v0 : java/lang/InterruptedException
+	goto	l782a6
+l782b6:
+.line 136
+	move-exception	v0
+; v0 : java/util/concurrent/ExecutionException
+.line 137
+	new-instance	v3,java/lang/RuntimeException
+; v3 : Ljava/lang/RuntimeException;
+	const-string	v4,"An error occured while executing doInBackground()"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v0},java/util/concurrent/ExecutionException/getCause	; getCause()Ljava/lang/Throwable;
+; v0 : java/util/concurrent/ExecutionException
+	move-result-object	v5
+; v5 : Ljava/lang/Throwable;
+	invoke-direct	{v3,v4,v5},java/lang/RuntimeException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+; v3 : Ljava/lang/RuntimeException; , v4 : Ljava/lang/String; , v5 : Ljava/lang/Throwable;
+	throw	v3
+; v3 : Ljava/lang/RuntimeException;
+l782d0:
+.line 139
+	move-exception	v0
+; v0 : java/util/concurrent/CancellationException
+.line 140
+	iget-object	v3,v6,android/support/v4/content/ModernAsyncTask$3.this$0 Landroid/support/v4/content/ModernAsyncTask;
+; v3 : Landroid/support/v4/content/ModernAsyncTask; , v6 : Landroid/support/v4/content/ModernAsyncTask$3;
+	const/4	v4,0
+; v4 : single-length
+	invoke-static	{v3,v4},android/support/v4/content/ModernAsyncTask/access$400	; access$400(Landroid/support/v4/content/ModernAsyncTask;Ljava/lang/Object;)V
+; v3 : Landroid/support/v4/content/ModernAsyncTask; , v4 : single-length
+	goto	l782a6
+l782e0:
+.line 141
+	move-exception	v2
+; v2 : java/lang/Throwable
+.line 142
+	new-instance	v3,java/lang/RuntimeException
+; v3 : Ljava/lang/RuntimeException;
+	const-string	v4,"An error occured while executing doInBackground()"
+; v4 : Ljava/lang/String;
+	invoke-direct	{v3,v4,v2},java/lang/RuntimeException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+; v3 : Ljava/lang/RuntimeException; , v4 : Ljava/lang/String; , v2 : java/lang/Throwable
+	throw	v3
+; v3 : Ljava/lang/RuntimeException;
+.end method
+
+

@@ -1,0 +1,53 @@
+.class public org/apache/commons/io/filefilter/CanWriteFileFilter
+.super org/apache/commons/io/filefilter/AbstractFileFilter
+.source CanWriteFileFilter.java
+.implements java/io/Serializable
+
+.field public static final CANNOT_WRITE Lorg/apache/commons/io/filefilter/IOFileFilter;
+.field public static final CAN_WRITE Lorg/apache/commons/io/filefilter/IOFileFilter;
+
+.method static <clinit>()V
+.limit registers 2
+.line 58
+	new-instance	v0,org/apache/commons/io/filefilter/CanWriteFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/CanWriteFileFilter;
+	invoke-direct	{v0},org/apache/commons/io/filefilter/CanWriteFileFilter/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/filefilter/CanWriteFileFilter;
+	sput-object	v0,org/apache/commons/io/filefilter/CanWriteFileFilter.CAN_WRITE Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+.line 61
+	new-instance	v0,org/apache/commons/io/filefilter/NotFileFilter
+; v0 : Lorg/apache/commons/io/filefilter/NotFileFilter;
+	sget-object	v1,org/apache/commons/io/filefilter/CanWriteFileFilter.CAN_WRITE Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	invoke-direct	{v0,v1},org/apache/commons/io/filefilter/NotFileFilter/<init>	; <init>(Lorg/apache/commons/io/filefilter/IOFileFilter;)V
+; v0 : Lorg/apache/commons/io/filefilter/NotFileFilter; , v1 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	sput-object	v0,org/apache/commons/io/filefilter/CanWriteFileFilter.CANNOT_WRITE Lorg/apache/commons/io/filefilter/IOFileFilter;
+; v0 : Lorg/apache/commons/io/filefilter/IOFileFilter;
+	return-void	
+.end method
+
+.method protected <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/io/filefilter/CanWriteFileFilter;)
+.line 66
+	invoke-direct	{v0},org/apache/commons/io/filefilter/AbstractFileFilter/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/filefilter/CanWriteFileFilter;
+.line 67
+	return-void	
+.end method
+
+.method public accept(Ljava/io/File;)Z
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/filefilter/CanWriteFileFilter;)
+; parameter[0] : v2 (Ljava/io/File;)
+.line 78
+	invoke-virtual	{v2},java/io/File/canWrite	; canWrite()Z
+; v2 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+

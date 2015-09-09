@@ -1,0 +1,127 @@
+.class public org/apache/commons/io/input/ClassLoaderObjectInputStream
+.super java/io/ObjectInputStream
+.source ClassLoaderObjectInputStream.java
+
+.field private final classLoader Ljava/lang/ClassLoader;
+
+.method public <init>(Ljava/lang/ClassLoader;Ljava/io/InputStream;)V
+.throws Ljava/io/IOException;
+.throws Ljava/io/StreamCorruptedException;
+.limit registers 3
+; this: v0 (Lorg/apache/commons/io/input/ClassLoaderObjectInputStream;)
+; parameter[0] : v1 (Ljava/lang/ClassLoader;)
+; parameter[1] : v2 (Ljava/io/InputStream;)
+.line 52
+	invoke-direct	{v0,v2},java/io/ObjectInputStream/<init>	; <init>(Ljava/io/InputStream;)V
+; v0 : Lorg/apache/commons/io/input/ClassLoaderObjectInputStream; , v2 : Ljava/io/InputStream;
+.line 53
+	iput-object	v1,v0,org/apache/commons/io/input/ClassLoaderObjectInputStream.classLoader Ljava/lang/ClassLoader;
+; v1 : Ljava/lang/ClassLoader; , v0 : Lorg/apache/commons/io/input/ClassLoaderObjectInputStream;
+.line 54
+	return-void	
+.end method
+
+.method protected resolveClass(Ljava/io/ObjectStreamClass;)Ljava/lang/Class;
+.throws Ljava/io/IOException;
+.throws Ljava/lang/ClassNotFoundException;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/io/ObjectStreamClass;" , ")" , "Ljava/lang/Class" , "<*>;" }
+.end annotation
+.limit registers 6
+; this: v4 (Lorg/apache/commons/io/input/ClassLoaderObjectInputStream;)
+; parameter[0] : v5 (Ljava/io/ObjectStreamClass;)
+.var 0 is clazz Ljava/lang/Class; from l11af46 to l11af4a
+.line 69
+	invoke-virtual	{v5},java/io/ObjectStreamClass/getName	; getName()Ljava/lang/String;
+; v5 : Ljava/io/ObjectStreamClass;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	const/4	v2,0
+; v2 : single-length
+	iget-object	v3,v4,org/apache/commons/io/input/ClassLoaderObjectInputStream.classLoader Ljava/lang/ClassLoader;
+; v3 : Ljava/lang/ClassLoader; , v4 : Lorg/apache/commons/io/input/ClassLoaderObjectInputStream;
+	invoke-static	{v1,v2,v3},java/lang/Class/forName	; forName(Ljava/lang/String;ZLjava/lang/ClassLoader;)Ljava/lang/Class;
+; v1 : Ljava/lang/String; , v2 : single-length , v3 : Ljava/lang/ClassLoader;
+	move-result-object	v0
+; v0 : Ljava/lang/Class;
+.line 71
+	if-eqz	v0,l11af4c
+; v0 : Ljava/lang/Class;
+l11af4a:
+.line 76
+	return-object	v0
+; v0 : Ljava/lang/Class;
+l11af4c:
+	invoke-super	{v4,v5},java/io/ObjectInputStream/resolveClass	; resolveClass(Ljava/io/ObjectStreamClass;)Ljava/lang/Class;
+; v4 : Lorg/apache/commons/io/input/ClassLoaderObjectInputStream; , v5 : Ljava/io/ObjectStreamClass;
+	move-result-object	v0
+; v0 : Ljava/lang/Class;
+	goto	l11af4a
+.end method
+
+.method protected resolveProxyClass([Ljava/lang/String;)Ljava/lang/Class;
+.throws Ljava/io/IOException;
+.throws Ljava/lang/ClassNotFoundException;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "([" , "Ljava/lang/String;" , ")" , "Ljava/lang/Class" , "<*>;" }
+.end annotation
+.limit registers 8
+; this: v6 (Lorg/apache/commons/io/input/ClassLoaderObjectInputStream;)
+; parameter[0] : v7 ([Ljava/lang/String;)
+.catch java/lang/IllegalArgumentException from l11af92 to l11af9c using l11afa0
+.line 94
+	array-length	v3,v7
+; v3 : single-length , v7 : [Ljava/lang/String;
+	new-array	v2,v3,[Ljava/lang/Class;
+; v2 : [Ljava/lang/Class; , v3 : single-length
+.line 95
+	const/4	v1,0
+; v1 : single-length
+l11af70:
+	array-length	v3,v7
+; v3 : single-length , v7 : [Ljava/lang/String;
+	if-ge	v1,v3,l11af92
+; v1 : single-length , v3 : single-length
+.line 96
+	aget-object	v3,v7,v1
+; v3 : Ljava/lang/String; , v7 : [Ljava/lang/String; , v1 : single-length
+	const/4	v4,0
+; v4 : single-length
+	iget-object	v5,v6,org/apache/commons/io/input/ClassLoaderObjectInputStream.classLoader Ljava/lang/ClassLoader;
+; v5 : Ljava/lang/ClassLoader; , v6 : Lorg/apache/commons/io/input/ClassLoaderObjectInputStream;
+	invoke-static	{v3,v4,v5},java/lang/Class/forName	; forName(Ljava/lang/String;ZLjava/lang/ClassLoader;)Ljava/lang/Class;
+; v3 : Ljava/lang/String; , v4 : single-length , v5 : Ljava/lang/ClassLoader;
+	move-result-object	v3
+; v3 : Ljava/lang/Class;
+	aput-object	v3,v2,v1
+; v3 : Ljava/lang/Class; , v2 : [Ljava/lang/Class; , v1 : single-length
+.line 95
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	l11af70
+l11af92:
+.line 99
+	iget-object	v3,v6,org/apache/commons/io/input/ClassLoaderObjectInputStream.classLoader Ljava/lang/ClassLoader;
+; v3 : Ljava/lang/ClassLoader; , v6 : Lorg/apache/commons/io/input/ClassLoaderObjectInputStream;
+	invoke-static	{v3,v2},java/lang/reflect/Proxy/getProxyClass	; getProxyClass(Ljava/lang/ClassLoader;[Ljava/lang/Class;)Ljava/lang/Class;
+; v3 : Ljava/lang/ClassLoader; , v2 : [Ljava/lang/Class;
+l11af9c:
+	move-result-object	v3
+; v3 : Ljava/lang/Class;
+l11af9e:
+.line 101
+	return-object	v3
+; v3 : Ljava/lang/Class;
+l11afa0:
+.line 100
+	move-exception	v0
+; v0 : java/lang/IllegalArgumentException
+.line 101
+	invoke-super	{v6,v7},java/io/ObjectInputStream/resolveProxyClass	; resolveProxyClass([Ljava/lang/String;)Ljava/lang/Class;
+; v6 : Lorg/apache/commons/io/input/ClassLoaderObjectInputStream; , v7 : [Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/Class;
+	goto	l11af9e
+.end method
+
+

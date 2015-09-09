@@ -1,0 +1,1289 @@
+.class public final com/facebook/android/Util
+.super java/lang/Object
+.source Util.java
+
+.field private static ENABLE_LOG Z
+
+.method static <clinit>()V
+.limit registers 1
+.line 54
+	const/4	v0,0
+; v0 : single-length
+	sput-boolean	v0,com/facebook/android/Util.ENABLE_LOG Z
+; v0 : Z
+	return-void	
+.end method
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lcom/facebook/android/Util;)
+.line 48
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lcom/facebook/android/Util;
+	return-void	
+.end method
+
+.method public static clearCookies(Landroid/content/Context;)V
+.limit registers 3
+; parameter[0] : v2 (Landroid/content/Context;)
+.line 240
+	invoke-static	{v2},android/webkit/CookieSyncManager/createInstance	; createInstance(Landroid/content/Context;)Landroid/webkit/CookieSyncManager;
+; v2 : Landroid/content/Context;
+	move-result-object	v1
+; v1 : Landroid/webkit/CookieSyncManager;
+.line 242
+	invoke-static	{},android/webkit/CookieManager/getInstance	; getInstance()Landroid/webkit/CookieManager;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Landroid/webkit/CookieManager;
+.line 243
+	invoke-virtual	{v0},android/webkit/CookieManager/removeAllCookie	; removeAllCookie()V
+; v0 : Landroid/webkit/CookieManager;
+.line 244
+	return-void	
+.end method
+
+.method public static decodeUrl(Ljava/lang/String;)Landroid/os/Bundle;
+.limit registers 10
+; parameter[0] : v9 (Ljava/lang/String;)
+.var 0 is arr$ [Ljava/lang/String; from lb3370 to lb33b8
+.var 1 is array [Ljava/lang/String; from lb336e to lb33b8
+.var 2 is i$ I from lb3374 to lb33b8
+.var 3 is len$ I from lb3372 to lb33b8
+.var 4 is parameter Ljava/lang/String; from lb337c to lb33b8
+.var 6 is v [Ljava/lang/String; from lb3388 to lb33b8
+.line 103
+	new-instance	v5,android/os/Bundle
+; v5 : Landroid/os/Bundle;
+	invoke-direct	{v5},android/os/Bundle/<init>	; <init>()V
+; v5 : Landroid/os/Bundle;
+.line 104
+	if-eqz	v9,lb33b8
+; v9 : Ljava/lang/String;
+.line 105
+	const-string	v7,"&"
+; v7 : Ljava/lang/String;
+	invoke-virtual	{v9,v7},java/lang/String/split	; split(Ljava/lang/String;)[Ljava/lang/String;
+; v9 : Ljava/lang/String; , v7 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : [Ljava/lang/String;
+.line 106
+	move-object	v0,v1
+; v0 : [Ljava/lang/String; , v1 : [Ljava/lang/String;
+lb3370:
+	array-length	v3,v0
+; v3 : single-length , v0 : [Ljava/lang/String;
+lb3372:
+	const/4	v2,0
+; v2 : single-length
+lb3374:
+	if-ge	v2,v3,lb33b8
+; v2 : single-length , v3 : single-length
+	aget-object	v4,v0,v2
+; v4 : Ljava/lang/String; , v0 : [Ljava/lang/String; , v2 : single-length
+.line 107
+	const-string	v7,"="
+; v7 : Ljava/lang/String;
+	invoke-virtual	{v4,v7},java/lang/String/split	; split(Ljava/lang/String;)[Ljava/lang/String;
+; v4 : Ljava/lang/String; , v7 : Ljava/lang/String;
+	move-result-object	v6
+; v6 : [Ljava/lang/String;
+.line 108
+	array-length	v7,v6
+; v7 : single-length , v6 : [Ljava/lang/String;
+	const/4	v8,2
+; v8 : single-length
+	if-ne	v7,v8,lb33b2
+; v7 : single-length , v8 : single-length
+.line 109
+	const/4	v7,0
+; v7 : single-length
+	aget-object	v7,v6,v7
+; v7 : Ljava/lang/String; , v6 : [Ljava/lang/String; , v7 : Ljava/lang/String;
+	invoke-static	{v7},java/net/URLDecoder/decode	; decode(Ljava/lang/String;)Ljava/lang/String;
+; v7 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	const/4	v8,1
+; v8 : single-length
+	aget-object	v8,v6,v8
+; v8 : Ljava/lang/String; , v6 : [Ljava/lang/String; , v8 : Ljava/lang/String;
+	invoke-static	{v8},java/net/URLDecoder/decode	; decode(Ljava/lang/String;)Ljava/lang/String;
+; v8 : Ljava/lang/String;
+	move-result-object	v8
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v5,v7,v8},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v5 : Landroid/os/Bundle; , v7 : Ljava/lang/String; , v8 : Ljava/lang/String;
+lb33b2:
+.line 106
+	add-int/lit8	v2,v2,1
+; v2 : single-length , v2 : single-length
+	goto	lb3374
+lb33b8:
+.line 114
+	return-object	v5
+; v5 : Landroid/os/Bundle;
+.end method
+
+.method public static encodePostBody(Landroid/os/Bundle;Ljava/lang/String;)Ljava/lang/String;
+.limit registers 8
+; parameter[0] : v6 (Landroid/os/Bundle;)
+; parameter[1] : v7 (Ljava/lang/String;)
+.var 2 is parameter Ljava/lang/Object; from lb3410 to lb3446
+.var 1 is key Ljava/lang/String; from lb3408 to lb3496
+.line 65
+	if-nez	v6,lb33d6
+; v6 : Landroid/os/Bundle;
+	const-string	v4,""
+; v4 : Ljava/lang/String;
+lb33d4:
+.line 79
+	return-object	v4
+; v4 : Ljava/lang/String;
+lb33d6:
+.line 66
+	new-instance	v3,java/lang/StringBuilder
+; v3 : Ljava/lang/StringBuilder;
+	invoke-direct	{v3},java/lang/StringBuilder/<init>	; <init>()V
+; v3 : Ljava/lang/StringBuilder;
+.line 68
+	invoke-virtual	{v6},android/os/Bundle/keySet	; keySet()Ljava/util/Set;
+; v6 : Landroid/os/Bundle;
+	move-result-object	v4
+; v4 : Ljava/util/Set;
+	invoke-interface	{v4},java/util/Set/iterator	; iterator()Ljava/util/Iterator;
+; v4 : Ljava/util/Set;
+	move-result-object	v0
+; v0 : Ljava/util/Iterator;
+lb33f0:
+	invoke-interface	{v0},java/util/Iterator/hasNext	; hasNext()Z
+; v0 : Ljava/util/Iterator;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,lb3496
+; v4 : single-length
+	invoke-interface	{v0},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v0 : Ljava/util/Iterator;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,java/lang/String
+; v1 : Ljava/lang/String;
+.line 69
+	invoke-virtual	{v6,v1},android/os/Bundle/get	; get(Ljava/lang/String;)Ljava/lang/Object;
+; v6 : Landroid/os/Bundle; , v1 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+.line 70
+	instance-of	v4,v2,java/lang/String
+; v4 : single-length , v2 : Ljava/lang/Object;
+	if-eqz	v4,lb33f0
+; v4 : single-length
+.line 74
+	new-instance	v4,java/lang/StringBuilder
+; v4 : Ljava/lang/StringBuilder;
+	invoke-direct	{v4},java/lang/StringBuilder/<init>	; <init>()V
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,"Content-Disposition: form-data; name=""
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,""
+
+"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	check-cast	v2,java/lang/String
+; v2 : Ljava/lang/String;
+lb3446:
+	invoke-virtual	{v4,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v4 : Ljava/lang/StringBuilder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+.line 76
+	new-instance	v4,java/lang/StringBuilder
+; v4 : Ljava/lang/StringBuilder;
+	invoke-direct	{v4},java/lang/StringBuilder/<init>	; <init>()V
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,"
+--"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4,v7},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v7 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,"
+"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v4 : Ljava/lang/StringBuilder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	goto	lb33f0
+lb3496:
+.line 79
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	goto	lb33d4
+.end method
+
+.method public static encodeUrl(Landroid/os/Bundle;)Ljava/lang/String;
+.limit registers 8
+; parameter[0] : v7 (Landroid/os/Bundle;)
+.var 2 is key Ljava/lang/String; from lb34ee to lb355e
+.var 3 is parameter Ljava/lang/Object; from lb34f6 to lb355e
+.line 83
+	if-nez	v7,lb34ba
+; v7 : Landroid/os/Bundle;
+.line 84
+	const-string	v5,""
+; v5 : Ljava/lang/String;
+lb34b8:
+.line 99
+	return-object	v5
+; v5 : Ljava/lang/String;
+lb34ba:
+.line 87
+	new-instance	v4,java/lang/StringBuilder
+; v4 : Ljava/lang/StringBuilder;
+	invoke-direct	{v4},java/lang/StringBuilder/<init>	; <init>()V
+; v4 : Ljava/lang/StringBuilder;
+.line 88
+	const/4	v0,1
+; v0 : single-length
+.line 89
+	invoke-virtual	{v7},android/os/Bundle/keySet	; keySet()Ljava/util/Set;
+; v7 : Landroid/os/Bundle;
+	move-result-object	v5
+; v5 : Ljava/util/Set;
+	invoke-interface	{v5},java/util/Set/iterator	; iterator()Ljava/util/Iterator;
+; v5 : Ljava/util/Set;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+lb34d6:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,lb355e
+; v5 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/lang/String
+; v2 : Ljava/lang/String;
+.line 90
+	invoke-virtual	{v7,v2},android/os/Bundle/get	; get(Ljava/lang/String;)Ljava/lang/Object;
+; v7 : Landroid/os/Bundle; , v2 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+.line 91
+	instance-of	v5,v3,java/lang/String
+; v5 : single-length , v3 : Ljava/lang/Object;
+	if-eqz	v5,lb34d6
+; v5 : single-length
+.line 95
+	if-eqz	v0,lb3552
+; v0 : single-length
+	const/4	v0,0
+; v0 : single-length
+lb3504:
+.line 96
+	new-instance	v5,java/lang/StringBuilder
+; v5 : Ljava/lang/StringBuilder;
+	invoke-direct	{v5},java/lang/StringBuilder/<init>	; <init>()V
+; v5 : Ljava/lang/StringBuilder;
+	invoke-static	{v2},java/net/URLEncoder/encode	; encode(Ljava/lang/String;)Ljava/lang/String;
+; v2 : Ljava/lang/String;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v5,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v5 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/StringBuilder;
+	const-string	v6,"="
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v5,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v5 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v7,v2},android/os/Bundle/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v7 : Landroid/os/Bundle; , v2 : Ljava/lang/String;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-static	{v6},java/net/URLEncoder/encode	; encode(Ljava/lang/String;)Ljava/lang/String;
+; v6 : Ljava/lang/String;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v5,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v5 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v5},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v5 : Ljava/lang/StringBuilder;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	goto	lb34d6
+lb3552:
+.line 95
+	const-string	v5,"&"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	goto	lb3504
+lb355e:
+.line 99
+	invoke-virtual	{v4},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v4 : Ljava/lang/StringBuilder;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	goto	lb34b8
+.end method
+
+.method public static logd(Ljava/lang/String;Ljava/lang/String;)V
+.limit registers 3
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (Ljava/lang/String;)
+.line 325
+	sget-boolean	v0,com/facebook/android/Util.ENABLE_LOG Z
+; v0 : single-length
+	if-eqz	v0,lb3586
+; v0 : single-length
+.line 326
+	invoke-static	{v1,v2},android/util/Log/d	; d(Ljava/lang/String;Ljava/lang/String;)I
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+lb3586:
+.line 328
+	return-void	
+.end method
+
+.method public static openUrl(Ljava/lang/String;Ljava/lang/String;Landroid/os/Bundle;)Ljava/lang/String;
+.throws Ljava/net/MalformedURLException;
+.throws Ljava/io/IOException;
+.limit registers 20
+; parameter[0] : v17 (Ljava/lang/String;)
+; parameter[1] : v18 (Ljava/lang/String;)
+; parameter[2] : v19 (Landroid/os/Bundle;)
+.catch java/io/FileNotFoundException from lb3976 to lb3984 using lb3988
+.var 10 is parameter Ljava/lang/Object; from lb36de to lb36ea
+.var 8 is key Ljava/lang/String; from lb36d2 to lb36f6
+.var 4 is decoded_token Ljava/lang/String; from lb3748 to lb3756
+.var 8 is key Ljava/lang/String; from lb3894 to lb396c
+.var 3 is dataparams Landroid/os/Bundle; from lb36aa to lb3972
+.var 7 is i$ Ljava/util/Iterator; from lb36ba to lb3972
+.var 9 is os Ljava/io/OutputStream; from lb37c6 to lb3972
+.line 153
+	const-string	v12,"3i2ndDfv2rTHiSisAbouNdArYfORhtTPEefj3q2f"
+; v12 : Ljava/lang/String;
+.line 154
+	const-string	v6,"
+"
+; v6 : Ljava/lang/String;
+.line 158
+	const-string	v13,"GET"
+; v13 : Ljava/lang/String;
+	move-object/from16	v0,v18
+; v0 : Ljava/lang/String; , v18 : Ljava/lang/String;
+	invoke-virtual	{v0,v13},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v0 : Ljava/lang/String; , v13 : Ljava/lang/String;
+	move-result	v13
+; v13 : single-length
+	if-eqz	v13,lb35ee
+; v13 : single-length
+.line 159
+	new-instance	v13,java/lang/StringBuilder
+; v13 : Ljava/lang/StringBuilder;
+	invoke-direct	{v13},java/lang/StringBuilder/<init>	; <init>()V
+; v13 : Ljava/lang/StringBuilder;
+	move-object/from16	v0,v17
+; v0 : Ljava/lang/String; , v17 : Ljava/lang/String;
+	invoke-virtual	{v13,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	const-string	v14,"?"
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-static/range	{v19},com/facebook/android/Util/encodeUrl;	encodeUrl(Landroid/os/Bundle;)Ljava/lang/String;
+; v19 : Landroid/os/Bundle;
+	move-result-object	v14
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v13 : Ljava/lang/StringBuilder;
+	move-result-object	v17
+; v17 : Ljava/lang/String;
+lb35ee:
+.line 161
+	const-string	v13,"Facebook-Util"
+; v13 : Ljava/lang/String;
+	new-instance	v14,java/lang/StringBuilder
+; v14 : Ljava/lang/StringBuilder;
+	invoke-direct	{v14},java/lang/StringBuilder/<init>	; <init>()V
+; v14 : Ljava/lang/StringBuilder;
+	move-object/from16	v0,v18
+; v0 : Ljava/lang/String; , v18 : Ljava/lang/String;
+	invoke-virtual	{v14,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v14 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v14
+; v14 : Ljava/lang/StringBuilder;
+	const-string	v15," URL: "
+; v15 : Ljava/lang/String;
+	invoke-virtual	{v14,v15},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v14 : Ljava/lang/StringBuilder; , v15 : Ljava/lang/String;
+	move-result-object	v14
+; v14 : Ljava/lang/StringBuilder;
+	move-object/from16	v0,v17
+; v0 : Ljava/lang/String; , v17 : Ljava/lang/String;
+	invoke-virtual	{v14,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v14 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v14
+; v14 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v14},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v14 : Ljava/lang/StringBuilder;
+	move-result-object	v14
+; v14 : Ljava/lang/String;
+	invoke-static	{v13,v14},com/facebook/android/Util/logd	; logd(Ljava/lang/String;Ljava/lang/String;)V
+; v13 : Ljava/lang/String; , v14 : Ljava/lang/String;
+.line 162
+	new-instance	v13,java/net/URL
+; v13 : Ljava/net/URL;
+	move-object/from16	v0,v17
+; v0 : Ljava/lang/String; , v17 : Ljava/lang/String;
+	invoke-direct	{v13,v0},java/net/URL/<init>	; <init>(Ljava/lang/String;)V
+; v13 : Ljava/net/URL; , v0 : Ljava/lang/String;
+	invoke-virtual	{v13},java/net/URL/openConnection	; openConnection()Ljava/net/URLConnection;
+; v13 : Ljava/net/URL;
+	move-result-object	v2
+; v2 : Ljava/net/URLConnection;
+	check-cast	v2,java/net/HttpURLConnection
+; v2 : Ljava/net/HttpURLConnection;
+.line 164
+	const-string	v13,"User-Agent"
+; v13 : Ljava/lang/String;
+	new-instance	v14,java/lang/StringBuilder
+; v14 : Ljava/lang/StringBuilder;
+	invoke-direct	{v14},java/lang/StringBuilder/<init>	; <init>()V
+; v14 : Ljava/lang/StringBuilder;
+	invoke-static	{},java/lang/System/getProperties	; getProperties()Ljava/util/Properties;
+; 
+	nop	
+	move-result-object	v15
+; v15 : Ljava/util/Properties;
+	const-string	v16,"http.agent"
+; v16 : Ljava/lang/String;
+	invoke-virtual/range	{v15..v16},java/util/Properties/getProperty;	getProperty(Ljava/lang/String;)Ljava/lang/String;
+; v15 : Ljava/util/Properties; , v16 : Ljava/lang/String;
+	move-result-object	v15
+; v15 : Ljava/lang/String;
+	invoke-virtual	{v14,v15},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v14 : Ljava/lang/StringBuilder; , v15 : Ljava/lang/String;
+	move-result-object	v14
+; v14 : Ljava/lang/StringBuilder;
+	const-string	v15," FacebookAndroidSDK"
+; v15 : Ljava/lang/String;
+	invoke-virtual	{v14,v15},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v14 : Ljava/lang/StringBuilder; , v15 : Ljava/lang/String;
+	move-result-object	v14
+; v14 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v14},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v14 : Ljava/lang/StringBuilder;
+	move-result-object	v14
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v2,v13,v14},java/net/HttpURLConnection/setRequestProperty	; setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Ljava/net/HttpURLConnection; , v13 : Ljava/lang/String; , v14 : Ljava/lang/String;
+.line 166
+	const-string	v13,"GET"
+; v13 : Ljava/lang/String;
+	move-object/from16	v0,v18
+; v0 : Ljava/lang/String; , v18 : Ljava/lang/String;
+	invoke-virtual	{v0,v13},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v0 : Ljava/lang/String; , v13 : Ljava/lang/String;
+	move-result	v13
+; v13 : single-length
+	if-nez	v13,lb3972
+; v13 : single-length
+.line 167
+	new-instance	v3,android/os/Bundle
+; v3 : Landroid/os/Bundle;
+	invoke-direct	{v3},android/os/Bundle/<init>	; <init>()V
+; v3 : Landroid/os/Bundle;
+.line 168
+	invoke-virtual/range	{v19},android/os/Bundle/keySet;	keySet()Ljava/util/Set;
+; v19 : Landroid/os/Bundle;
+	move-result-object	v13
+; v13 : Ljava/util/Set;
+	invoke-interface	{v13},java/util/Set/iterator	; iterator()Ljava/util/Iterator;
+; v13 : Ljava/util/Set;
+	move-result-object	v7
+; v7 : Ljava/util/Iterator;
+lb36ba:
+	invoke-interface	{v7},java/util/Iterator/hasNext	; hasNext()Z
+; v7 : Ljava/util/Iterator;
+	move-result	v13
+; v13 : single-length
+	if-eqz	v13,lb36f6
+; v13 : single-length
+	invoke-interface	{v7},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v7 : Ljava/util/Iterator;
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	check-cast	v8,java/lang/String
+; v8 : Ljava/lang/String;
+.line 169
+	move-object/from16	v0,v19
+; v0 : Landroid/os/Bundle; , v19 : Landroid/os/Bundle;
+	invoke-virtual	{v0,v8},android/os/Bundle/get	; get(Ljava/lang/String;)Ljava/lang/Object;
+; v0 : Landroid/os/Bundle; , v8 : Ljava/lang/String;
+	move-result-object	v10
+; v10 : Ljava/lang/Object;
+.line 170
+	instance-of	v13,v10,[B
+; v13 : single-length , v10 : Ljava/lang/Object;
+	if-eqz	v13,lb36ba
+; v13 : single-length
+.line 171
+	check-cast	v10,[B
+; v10 : [B
+lb36ea:
+	check-cast	v10,[B
+; v10 : [B
+	invoke-virtual	{v3,v8,v10},android/os/Bundle/putByteArray	; putByteArray(Ljava/lang/String;[B)V
+; v3 : Landroid/os/Bundle; , v8 : Ljava/lang/String; , v10 : [B
+	goto	lb36ba
+lb36f6:
+.line 176
+	const-string	v13,"method"
+; v13 : Ljava/lang/String;
+	move-object/from16	v0,v19
+; v0 : Landroid/os/Bundle; , v19 : Landroid/os/Bundle;
+	invoke-virtual	{v0,v13},android/os/Bundle/containsKey	; containsKey(Ljava/lang/String;)Z
+; v0 : Landroid/os/Bundle; , v13 : Ljava/lang/String;
+	move-result	v13
+; v13 : single-length
+	if-nez	v13,lb371c
+; v13 : single-length
+.line 177
+	const-string	v13,"method"
+; v13 : Ljava/lang/String;
+	move-object/from16	v0,v19
+; v0 : Landroid/os/Bundle; , v19 : Landroid/os/Bundle;
+	move-object/from16	v1,v18
+; v1 : Ljava/lang/String; , v18 : Ljava/lang/String;
+	invoke-virtual	{v0,v13,v1},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Landroid/os/Bundle; , v13 : Ljava/lang/String; , v1 : Ljava/lang/String;
+lb371c:
+.line 180
+	const-string	v13,"access_token"
+; v13 : Ljava/lang/String;
+	move-object/from16	v0,v19
+; v0 : Landroid/os/Bundle; , v19 : Landroid/os/Bundle;
+	invoke-virtual	{v0,v13},android/os/Bundle/containsKey	; containsKey(Ljava/lang/String;)Z
+; v0 : Landroid/os/Bundle; , v13 : Ljava/lang/String;
+	move-result	v13
+; v13 : single-length
+	if-eqz	v13,lb3756
+; v13 : single-length
+.line 181
+	const-string	v13,"access_token"
+; v13 : Ljava/lang/String;
+	move-object/from16	v0,v19
+; v0 : Landroid/os/Bundle; , v19 : Landroid/os/Bundle;
+	invoke-virtual	{v0,v13},android/os/Bundle/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v0 : Landroid/os/Bundle; , v13 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/String;
+	invoke-static	{v13},java/net/URLDecoder/decode	; decode(Ljava/lang/String;)Ljava/lang/String;
+; v13 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+.line 183
+	const-string	v13,"access_token"
+; v13 : Ljava/lang/String;
+	move-object/from16	v0,v19
+; v0 : Landroid/os/Bundle; , v19 : Landroid/os/Bundle;
+	invoke-virtual	{v0,v13,v4},android/os/Bundle/putString	; putString(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Landroid/os/Bundle; , v13 : Ljava/lang/String; , v4 : Ljava/lang/String;
+lb3756:
+.line 186
+	const-string	v13,"POST"
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v2,v13},java/net/HttpURLConnection/setRequestMethod	; setRequestMethod(Ljava/lang/String;)V
+; v2 : Ljava/net/HttpURLConnection; , v13 : Ljava/lang/String;
+.line 187
+	const-string	v13,"Content-Type"
+; v13 : Ljava/lang/String;
+	new-instance	v14,java/lang/StringBuilder
+; v14 : Ljava/lang/StringBuilder;
+	invoke-direct	{v14},java/lang/StringBuilder/<init>	; <init>()V
+; v14 : Ljava/lang/StringBuilder;
+	const-string	v15,"multipart/form-data;boundary="
+; v15 : Ljava/lang/String;
+	invoke-virtual	{v14,v15},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v14 : Ljava/lang/StringBuilder; , v15 : Ljava/lang/String;
+	move-result-object	v14
+; v14 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v14,v12},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v14 : Ljava/lang/StringBuilder; , v12 : Ljava/lang/String;
+	move-result-object	v14
+; v14 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v14},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v14 : Ljava/lang/StringBuilder;
+	move-result-object	v14
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v2,v13,v14},java/net/HttpURLConnection/setRequestProperty	; setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Ljava/net/HttpURLConnection; , v13 : Ljava/lang/String; , v14 : Ljava/lang/String;
+.line 190
+	const/4	v13,1
+; v13 : single-length
+	invoke-virtual	{v2,v13},java/net/HttpURLConnection/setDoOutput	; setDoOutput(Z)V
+; v2 : Ljava/net/HttpURLConnection; , v13 : single-length
+.line 191
+	const/4	v13,1
+; v13 : single-length
+	invoke-virtual	{v2,v13},java/net/HttpURLConnection/setDoInput	; setDoInput(Z)V
+; v2 : Ljava/net/HttpURLConnection; , v13 : single-length
+.line 192
+	const-string	v13,"Connection"
+; v13 : Ljava/lang/String;
+	const-string	v14,"Keep-Alive"
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v2,v13,v14},java/net/HttpURLConnection/setRequestProperty	; setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
+; v2 : Ljava/net/HttpURLConnection; , v13 : Ljava/lang/String; , v14 : Ljava/lang/String;
+.line 193
+	invoke-virtual	{v2},java/net/HttpURLConnection/connect	; connect()V
+; v2 : Ljava/net/HttpURLConnection;
+.line 194
+	new-instance	v9,java/io/BufferedOutputStream
+; v9 : Ljava/io/BufferedOutputStream;
+	invoke-virtual	{v2},java/net/HttpURLConnection/getOutputStream	; getOutputStream()Ljava/io/OutputStream;
+; v2 : Ljava/net/HttpURLConnection;
+	move-result-object	v13
+; v13 : Ljava/io/OutputStream;
+	invoke-direct	{v9,v13},java/io/BufferedOutputStream/<init>	; <init>(Ljava/io/OutputStream;)V
+; v9 : Ljava/io/BufferedOutputStream; , v13 : Ljava/io/OutputStream;
+.line 196
+	new-instance	v13,java/lang/StringBuilder
+; v13 : Ljava/lang/StringBuilder;
+	invoke-direct	{v13},java/lang/StringBuilder/<init>	; <init>()V
+; v13 : Ljava/lang/StringBuilder;
+	const-string	v14,"--"
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v12},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v12 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v13 : Ljava/lang/StringBuilder;
+	move-result-object	v13
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v13},java/lang/String/getBytes	; getBytes()[B
+; v13 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : [B
+	invoke-virtual	{v9,v13},java/io/OutputStream/write	; write([B)V
+; v9 : Ljava/io/BufferedOutputStream; , v13 : [B
+.line 197
+	move-object/from16	v0,v19
+; v0 : Landroid/os/Bundle; , v19 : Landroid/os/Bundle;
+	invoke-static	{v0,v12},com/facebook/android/Util/encodePostBody	; encodePostBody(Landroid/os/Bundle;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Landroid/os/Bundle; , v12 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v13},java/lang/String/getBytes	; getBytes()[B
+; v13 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : [B
+	invoke-virtual	{v9,v13},java/io/OutputStream/write	; write([B)V
+; v9 : Ljava/io/BufferedOutputStream; , v13 : [B
+.line 198
+	new-instance	v13,java/lang/StringBuilder
+; v13 : Ljava/lang/StringBuilder;
+	invoke-direct	{v13},java/lang/StringBuilder/<init>	; <init>()V
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	const-string	v14,"--"
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v12},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v12 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v13 : Ljava/lang/StringBuilder;
+	move-result-object	v13
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v13},java/lang/String/getBytes	; getBytes()[B
+; v13 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : [B
+	invoke-virtual	{v9,v13},java/io/OutputStream/write	; write([B)V
+; v9 : Ljava/io/BufferedOutputStream; , v13 : [B
+.line 200
+	invoke-virtual	{v3},android/os/Bundle/isEmpty	; isEmpty()Z
+; v3 : Landroid/os/Bundle;
+	move-result	v13
+; v13 : single-length
+	if-nez	v13,lb396c
+; v13 : single-length
+.line 202
+	invoke-virtual	{v3},android/os/Bundle/keySet	; keySet()Ljava/util/Set;
+; v3 : Landroid/os/Bundle;
+	move-result-object	v13
+; v13 : Ljava/util/Set;
+	invoke-interface	{v13},java/util/Set/iterator	; iterator()Ljava/util/Iterator;
+; v13 : Ljava/util/Set;
+	move-result-object	v7
+; v7 : Ljava/util/Iterator;
+lb387c:
+	invoke-interface	{v7},java/util/Iterator/hasNext	; hasNext()Z
+; v7 : Ljava/util/Iterator;
+	move-result	v13
+; v13 : single-length
+	if-eqz	v13,lb396c
+; v13 : single-length
+	invoke-interface	{v7},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v7 : Ljava/util/Iterator;
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	check-cast	v8,java/lang/String
+; v8 : Ljava/lang/String;
+.line 203
+	new-instance	v13,java/lang/StringBuilder
+; v13 : Ljava/lang/StringBuilder;
+	invoke-direct	{v13},java/lang/StringBuilder/<init>	; <init>()V
+; v13 : Ljava/lang/StringBuilder;
+	const-string	v14,"Content-Disposition: form-data; filename=""
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v8},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v8 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	const-string	v14,"""
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v13 : Ljava/lang/StringBuilder;
+	move-result-object	v13
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v13},java/lang/String/getBytes	; getBytes()[B
+; v13 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : [B
+	invoke-virtual	{v9,v13},java/io/OutputStream/write	; write([B)V
+; v9 : Ljava/io/BufferedOutputStream; , v13 : [B
+.line 204
+	new-instance	v13,java/lang/StringBuilder
+; v13 : Ljava/lang/StringBuilder;
+	invoke-direct	{v13},java/lang/StringBuilder/<init>	; <init>()V
+; v13 : Ljava/lang/StringBuilder;
+	const-string	v14,"Content-Type: content/unknown"
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v13 : Ljava/lang/StringBuilder;
+	move-result-object	v13
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v13},java/lang/String/getBytes	; getBytes()[B
+; v13 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : [B
+	invoke-virtual	{v9,v13},java/io/OutputStream/write	; write([B)V
+; v9 : Ljava/io/BufferedOutputStream; , v13 : [B
+.line 205
+	invoke-virtual	{v3,v8},android/os/Bundle/getByteArray	; getByteArray(Ljava/lang/String;)[B
+; v3 : Landroid/os/Bundle; , v8 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : [B
+	invoke-virtual	{v9,v13},java/io/OutputStream/write	; write([B)V
+; v9 : Ljava/io/BufferedOutputStream; , v13 : [B
+.line 206
+	new-instance	v13,java/lang/StringBuilder
+; v13 : Ljava/lang/StringBuilder;
+	invoke-direct	{v13},java/lang/StringBuilder/<init>	; <init>()V
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	const-string	v14,"--"
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v12},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v12 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v6},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v6 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v13 : Ljava/lang/StringBuilder;
+	move-result-object	v13
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v13},java/lang/String/getBytes	; getBytes()[B
+; v13 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : [B
+	invoke-virtual	{v9,v13},java/io/OutputStream/write	; write([B)V
+; v9 : Ljava/io/BufferedOutputStream; , v13 : [B
+	goto	lb387c
+lb396c:
+.line 210
+	invoke-virtual	{v9},java/io/OutputStream/flush	; flush()V
+; v9 : Ljava/io/BufferedOutputStream;
+lb3972:
+.line 213
+	const-string	v11,""
+; v11 : Ljava/lang/String;
+lb3976:
+.line 215
+	invoke-virtual	{v2},java/net/HttpURLConnection/getInputStream	; getInputStream()Ljava/io/InputStream;
+; v2 : Ljava/net/HttpURLConnection;
+	move-result-object	v13
+; v13 : Ljava/io/InputStream;
+	invoke-static	{v13},com/facebook/android/Util/read	; read(Ljava/io/InputStream;)Ljava/lang/String;
+; v13 : Ljava/io/InputStream;
+lb3984:
+	move-result-object	v11
+; v11 : Ljava/lang/String;
+lb3986:
+.line 220
+	return-object	v11
+; v11 : Ljava/lang/String;
+lb3988:
+.line 216
+	move-exception	v5
+; v5 : java/io/FileNotFoundException
+.line 218
+	invoke-virtual	{v2},java/net/HttpURLConnection/getErrorStream	; getErrorStream()Ljava/io/InputStream;
+; v2 : Ljava/net/HttpURLConnection;
+	move-result-object	v13
+; v13 : Ljava/io/InputStream;
+	invoke-static	{v13},com/facebook/android/Util/read	; read(Ljava/io/InputStream;)Ljava/lang/String;
+; v13 : Ljava/io/InputStream;
+	move-result-object	v11
+; v11 : Ljava/lang/String;
+	goto	lb3986
+.end method
+
+.method public static parseJson(Ljava/lang/String;)Lorg/json/JSONObject;
+.throws Lorg/json/JSONException;
+.throws Lcom/facebook/android/FacebookError;
+.limit registers 7
+; parameter[0] : v6 (Ljava/lang/String;)
+.var 0 is error Lorg/json/JSONObject; from lb3a16 to lb3a3c
+.line 267
+	const-string	v2,"false"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v6,v2},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v6 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lb39dc
+; v2 : single-length
+.line 268
+	new-instance	v2,com/facebook/android/FacebookError
+; v2 : Lcom/facebook/android/FacebookError;
+	const-string	v3,"request failed"
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},com/facebook/android/FacebookError/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Lcom/facebook/android/FacebookError; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Lcom/facebook/android/FacebookError;
+lb39dc:
+.line 270
+	const-string	v2,"true"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v6,v2},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v6 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lb39f0
+; v2 : single-length
+.line 271
+	const-string	v6,"{value : true}"
+; v6 : Ljava/lang/String;
+lb39f0:
+.line 273
+	new-instance	v1,org/json/JSONObject
+; v1 : Lorg/json/JSONObject;
+	invoke-direct	{v1,v6},org/json/JSONObject/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Lorg/json/JSONObject; , v6 : Ljava/lang/String;
+.line 277
+	const-string	v2,"error"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},org/json/JSONObject/has	; has(Ljava/lang/String;)Z
+; v1 : Lorg/json/JSONObject; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lb3a3c
+; v2 : single-length
+.line 278
+	const-string	v2,"error"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},org/json/JSONObject/getJSONObject	; getJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
+; v1 : Lorg/json/JSONObject; , v2 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Lorg/json/JSONObject;
+.line 279
+	new-instance	v2,com/facebook/android/FacebookError
+; v2 : Lcom/facebook/android/FacebookError;
+	const-string	v3,"message"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v0,v3},org/json/JSONObject/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v0 : Lorg/json/JSONObject; , v3 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	const-string	v4,"type"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v0,v4},org/json/JSONObject/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v0 : Lorg/json/JSONObject; , v4 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	const/4	v5,0
+; v5 : single-length
+	invoke-direct	{v2,v3,v4,v5},com/facebook/android/FacebookError/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;I)V
+; v2 : Lcom/facebook/android/FacebookError; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String; , v5 : single-length
+	throw	v2
+; v2 : Lcom/facebook/android/FacebookError;
+lb3a3c:
+.line 282
+	const-string	v2,"error_code"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},org/json/JSONObject/has	; has(Ljava/lang/String;)Z
+; v1 : Lorg/json/JSONObject; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lb3a8c
+; v2 : single-length
+	const-string	v2,"error_msg"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},org/json/JSONObject/has	; has(Ljava/lang/String;)Z
+; v1 : Lorg/json/JSONObject; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lb3a8c
+; v2 : single-length
+.line 283
+	new-instance	v2,com/facebook/android/FacebookError
+; v2 : Lcom/facebook/android/FacebookError;
+	const-string	v3,"error_msg"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v1,v3},org/json/JSONObject/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v1 : Lorg/json/JSONObject; , v3 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	const-string	v4,""
+; v4 : Ljava/lang/String;
+	const-string	v5,"error_code"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},org/json/JSONObject/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v1 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-static	{v5},java/lang/Integer/parseInt	; parseInt(Ljava/lang/String;)I
+; v5 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	invoke-direct	{v2,v3,v4,v5},com/facebook/android/FacebookError/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;I)V
+; v2 : Lcom/facebook/android/FacebookError; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String; , v5 : single-length
+	throw	v2
+; v2 : Lcom/facebook/android/FacebookError;
+lb3a8c:
+.line 286
+	const-string	v2,"error_code"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},org/json/JSONObject/has	; has(Ljava/lang/String;)Z
+; v1 : Lorg/json/JSONObject; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lb3ac4
+; v2 : single-length
+.line 287
+	new-instance	v2,com/facebook/android/FacebookError
+; v2 : Lcom/facebook/android/FacebookError;
+	const-string	v3,"request failed"
+; v3 : Ljava/lang/String;
+	const-string	v4,""
+; v4 : Ljava/lang/String;
+	const-string	v5,"error_code"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},org/json/JSONObject/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v1 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-static	{v5},java/lang/Integer/parseInt	; parseInt(Ljava/lang/String;)I
+; v5 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	invoke-direct	{v2,v3,v4,v5},com/facebook/android/FacebookError/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;I)V
+; v2 : Lcom/facebook/android/FacebookError; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String; , v5 : single-length
+	throw	v2
+; v2 : Lcom/facebook/android/FacebookError;
+lb3ac4:
+.line 290
+	const-string	v2,"error_msg"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},org/json/JSONObject/has	; has(Ljava/lang/String;)Z
+; v1 : Lorg/json/JSONObject; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lb3aec
+; v2 : single-length
+.line 291
+	new-instance	v2,com/facebook/android/FacebookError
+; v2 : Lcom/facebook/android/FacebookError;
+	const-string	v3,"error_msg"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v1,v3},org/json/JSONObject/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v1 : Lorg/json/JSONObject; , v3 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},com/facebook/android/FacebookError/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Lcom/facebook/android/FacebookError; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Lcom/facebook/android/FacebookError;
+lb3aec:
+.line 293
+	const-string	v2,"error_reason"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},org/json/JSONObject/has	; has(Ljava/lang/String;)Z
+; v1 : Lorg/json/JSONObject; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lb3b14
+; v2 : single-length
+.line 294
+	new-instance	v2,com/facebook/android/FacebookError
+; v2 : Lcom/facebook/android/FacebookError;
+	const-string	v3,"error_reason"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v1,v3},org/json/JSONObject/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v1 : Lorg/json/JSONObject; , v3 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},com/facebook/android/FacebookError/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Lcom/facebook/android/FacebookError; , v3 : Ljava/lang/String;
+	throw	v2
+; v2 : Lcom/facebook/android/FacebookError;
+lb3b14:
+.line 296
+	return-object	v1
+; v1 : Lorg/json/JSONObject;
+.end method
+
+.method public static parseUrl(Ljava/lang/String;)Landroid/os/Bundle;
+.limit registers 6
+; parameter[0] : v5 (Ljava/lang/String;)
+.catch java/net/MalformedURLException from lb3b38 to lb3b68 using lb3b6a
+.var 0 is b Landroid/os/Bundle; from lb3b52 to lb3b68
+.var 2 is u Ljava/net/URL; from lb3b42 to lb3b68
+.line 125
+	const-string	v3,"fbconnect"
+; v3 : Ljava/lang/String;
+	const-string	v4,"http"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v5,v3,v4},java/lang/String/replace	; replace(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String;
+; v5 : Ljava/lang/String; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+lb3b38:
+.line 127
+	new-instance	v2,java/net/URL
+; v2 : Ljava/net/URL;
+	invoke-direct	{v2,v5},java/net/URL/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/net/URL; , v5 : Ljava/lang/String;
+.line 128
+	invoke-virtual	{v2},java/net/URL/getQuery	; getQuery()Ljava/lang/String;
+; v2 : Ljava/net/URL;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-static	{v3},com/facebook/android/Util/decodeUrl	; decodeUrl(Ljava/lang/String;)Landroid/os/Bundle;
+; v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Landroid/os/Bundle;
+.line 129
+	invoke-virtual	{v2},java/net/URL/getRef	; getRef()Ljava/lang/String;
+; v2 : Ljava/net/URL;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-static	{v3},com/facebook/android/Util/decodeUrl	; decodeUrl(Ljava/lang/String;)Landroid/os/Bundle;
+; v3 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Landroid/os/Bundle;
+	invoke-virtual	{v0,v3},android/os/Bundle/putAll	; putAll(Landroid/os/Bundle;)V
+; v0 : Landroid/os/Bundle; , v3 : Landroid/os/Bundle;
+lb3b68:
+.line 132
+	return-object	v0
+; v0 : Landroid/os/Bundle;
+lb3b6a:
+.line 131
+	move-exception	v1
+; v1 : java/net/MalformedURLException
+.line 132
+	new-instance	v0,android/os/Bundle
+; v0 : Landroid/os/Bundle;
+	invoke-direct	{v0},android/os/Bundle/<init>	; <init>()V
+; v0 : Landroid/os/Bundle;
+	goto	lb3b68
+.end method
+
+.method private static read(Ljava/io/InputStream;)Ljava/lang/String;
+.throws Ljava/io/IOException;
+.limit registers 6
+; parameter[0] : v5 (Ljava/io/InputStream;)
+.line 224
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+.line 225
+	new-instance	v1,java/io/BufferedReader
+; v1 : Ljava/io/BufferedReader;
+	new-instance	v3,java/io/InputStreamReader
+; v3 : Ljava/io/InputStreamReader;
+	invoke-direct	{v3,v5},java/io/InputStreamReader/<init>	; <init>(Ljava/io/InputStream;)V
+; v3 : Ljava/io/InputStreamReader; , v5 : Ljava/io/InputStream;
+	const/16	v4,1000
+; v4 : single-length
+	invoke-direct	{v1,v3,v4},java/io/BufferedReader/<init>	; <init>(Ljava/io/Reader;I)V
+; v1 : Ljava/io/BufferedReader; , v3 : Ljava/io/InputStreamReader; , v4 : single-length
+.line 226
+	invoke-virtual	{v1},java/io/BufferedReader/readLine	; readLine()Ljava/lang/String;
+; v1 : Ljava/io/BufferedReader;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+lb3bc2:
+	if-eqz	v0,lb3bd6
+; v0 : Ljava/lang/String;
+.line 227
+	invoke-virtual	{v2,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+.line 226
+	invoke-virtual	{v1},java/io/BufferedReader/readLine	; readLine()Ljava/lang/String;
+; v1 : Ljava/io/BufferedReader;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	lb3bc2
+lb3bd6:
+.line 229
+	invoke-virtual	{v5},java/io/InputStream/close	; close()V
+; v5 : Ljava/io/InputStream;
+.line 230
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	return-object	v3
+; v3 : Ljava/lang/String;
+.end method
+
+.method public static showAlert(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V
+.limit registers 5
+; parameter[0] : v2 (Landroid/content/Context;)
+; parameter[1] : v3 (Ljava/lang/String;)
+; parameter[2] : v4 (Ljava/lang/String;)
+.line 310
+	new-instance	v0,android/app/AlertDialog$Builder
+; v0 : Landroid/app/AlertDialog$Builder;
+	invoke-direct	{v0,v2},android/app/AlertDialog$Builder/<init>	; <init>(Landroid/content/Context;)V
+; v0 : Landroid/app/AlertDialog$Builder; , v2 : Landroid/content/Context;
+.line 311
+	invoke-virtual	{v0,v3},android/app/AlertDialog$Builder/setTitle	; setTitle(Ljava/lang/CharSequence;)Landroid/app/AlertDialog$Builder;
+; v0 : Landroid/app/AlertDialog$Builder; , v3 : Ljava/lang/String;
+.line 312
+	invoke-virtual	{v0,v4},android/app/AlertDialog$Builder/setMessage	; setMessage(Ljava/lang/CharSequence;)Landroid/app/AlertDialog$Builder;
+; v0 : Landroid/app/AlertDialog$Builder; , v4 : Ljava/lang/String;
+.line 313
+	invoke-virtual	{v0},android/app/AlertDialog$Builder/create	; create()Landroid/app/AlertDialog;
+; v0 : Landroid/app/AlertDialog$Builder;
+	move-result-object	v1
+; v1 : Landroid/app/AlertDialog;
+	invoke-virtual	{v1},android/app/AlertDialog/show	; show()V
+; v1 : Landroid/app/AlertDialog;
+.line 314
+	return-void	
+.end method
+
+

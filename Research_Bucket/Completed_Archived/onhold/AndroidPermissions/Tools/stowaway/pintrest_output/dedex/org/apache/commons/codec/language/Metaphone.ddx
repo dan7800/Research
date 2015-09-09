@@ -1,0 +1,1129 @@
+.class public org/apache/commons/codec/language/Metaphone
+.super java/lang/Object
+.source Metaphone.java
+.implements org/apache/commons/codec/StringEncoder
+
+.field private static final FRONTV Ljava/lang/String; = "EIY"
+.field private static final VARSON Ljava/lang/String; = "CSPTG"
+.field private static final VOWELS Ljava/lang/String; = "AEIOU"
+.field private maxCodeLen I
+
+.method public <init>()V
+.limit registers 2
+; this: v1 (Lorg/apache/commons/codec/language/Metaphone;)
+.line 69
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lorg/apache/commons/codec/language/Metaphone;
+.line 63
+	const/4	v0,4
+; v0 : single-length
+	iput	v0,v1,org/apache/commons/codec/language/Metaphone.maxCodeLen I
+; v0 : single-length , v1 : Lorg/apache/commons/codec/language/Metaphone;
+.line 70
+	return-void	
+.end method
+
+.method private isLastChar(II)Z
+.limit registers 4
+; this: v1 (Lorg/apache/commons/codec/language/Metaphone;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+.line 350
+	add-int/lit8	v0,v3,1
+; v0 : single-length , v3 : single-length
+	if-ne	v0,v2,l10b3a0
+; v0 : single-length , v2 : single-length
+	const/4	v0,1
+; v0 : single-length
+l10b39e:
+	return	v0
+; v0 : single-length
+l10b3a0:
+	const/4	v0,0
+; v0 : single-length
+	goto	l10b39e
+.end method
+
+.method private isNextChar(Ljava/lang/StringBuffer;IC)Z
+.limit registers 6
+; this: v2 (Lorg/apache/commons/codec/language/Metaphone;)
+; parameter[0] : v3 (Ljava/lang/StringBuffer;)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (C)
+.line 331
+	const/4	v0,0
+; v0 : single-length
+.line 332
+	if-ltz	v4,l10b3dc
+; v4 : single-length
+	invoke-virtual	{v3},java/lang/StringBuffer/length	; length()I
+; v3 : Ljava/lang/StringBuffer;
+	move-result	v1
+; v1 : single-length
+	add-int/lit8	v1,v1,255
+; v1 : single-length , v1 : single-length
+	if-ge	v4,v1,l10b3dc
+; v4 : single-length , v1 : single-length
+.line 334
+	add-int/lit8	v1,v4,1
+; v1 : single-length , v4 : single-length
+	invoke-virtual	{v3,v1},java/lang/StringBuffer/charAt	; charAt(I)C
+; v3 : Ljava/lang/StringBuffer; , v1 : single-length
+	move-result	v1
+; v1 : single-length
+	if-ne	v1,v5,l10b3de
+; v1 : single-length , v5 : single-length
+	const/4	v0,1
+; v0 : single-length
+l10b3dc:
+.line 336
+	return	v0
+; v0 : single-length
+l10b3de:
+.line 334
+	const/4	v0,0
+; v0 : single-length
+	goto	l10b3dc
+.end method
+
+.method private isPreviousChar(Ljava/lang/StringBuffer;IC)Z
+.limit registers 6
+; this: v2 (Lorg/apache/commons/codec/language/Metaphone;)
+; parameter[0] : v3 (Ljava/lang/StringBuffer;)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (C)
+.line 322
+	const/4	v0,0
+; v0 : single-length
+.line 323
+	if-lez	v4,l10b418
+; v4 : single-length
+	invoke-virtual	{v3},java/lang/StringBuffer/length	; length()I
+; v3 : Ljava/lang/StringBuffer;
+	move-result	v1
+; v1 : single-length
+	if-ge	v4,v1,l10b418
+; v4 : single-length , v1 : single-length
+.line 325
+	add-int/lit8	v1,v4,255
+; v1 : single-length , v4 : single-length
+	invoke-virtual	{v3,v1},java/lang/StringBuffer/charAt	; charAt(I)C
+; v3 : Ljava/lang/StringBuffer; , v1 : single-length
+	move-result	v1
+; v1 : single-length
+	if-ne	v1,v5,l10b41a
+; v1 : single-length , v5 : single-length
+	const/4	v0,1
+; v0 : single-length
+l10b418:
+.line 327
+	return	v0
+; v0 : single-length
+l10b41a:
+.line 325
+	const/4	v0,0
+; v0 : single-length
+	goto	l10b418
+.end method
+
+.method private isVowel(Ljava/lang/StringBuffer;I)Z
+.limit registers 5
+; this: v2 (Lorg/apache/commons/codec/language/Metaphone;)
+; parameter[0] : v3 (Ljava/lang/StringBuffer;)
+; parameter[1] : v4 (I)
+.line 318
+	const-string	v0,"AEIOU"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuffer/charAt	; charAt(I)C
+; v3 : Ljava/lang/StringBuffer; , v4 : single-length
+	move-result	v1
+; v1 : single-length
+	invoke-virtual	{v0,v1},java/lang/String/indexOf	; indexOf(I)I
+; v0 : Ljava/lang/String; , v1 : single-length
+	move-result	v0
+; v0 : single-length
+	if-ltz	v0,l10b44c
+; v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l10b44a:
+	return	v0
+; v0 : single-length
+l10b44c:
+	const/4	v0,0
+; v0 : single-length
+	goto	l10b44a
+.end method
+
+.method private regionMatch(Ljava/lang/StringBuffer;ILjava/lang/String;)Z
+.limit registers 8
+; this: v4 (Lorg/apache/commons/codec/language/Metaphone;)
+; parameter[0] : v5 (Ljava/lang/StringBuffer;)
+; parameter[1] : v6 (I)
+; parameter[2] : v7 (Ljava/lang/String;)
+.var 1 is substring Ljava/lang/String; from l10b492 to l10b49a
+.line 340
+	const/4	v0,0
+; v0 : single-length
+.line 341
+	if-ltz	v6,l10b49a
+; v6 : single-length
+	invoke-virtual	{v7},java/lang/String/length	; length()I
+; v7 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	add-int/2addr	v2,v6
+; v2 : single-length , v6 : single-length
+	add-int/lit8	v2,v2,255
+; v2 : single-length , v2 : single-length
+	invoke-virtual	{v5},java/lang/StringBuffer/length	; length()I
+; v5 : Ljava/lang/StringBuffer;
+	move-result	v3
+; v3 : single-length
+	if-ge	v2,v3,l10b49a
+; v2 : single-length , v3 : single-length
+.line 343
+	invoke-virtual	{v7},java/lang/String/length	; length()I
+; v7 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	add-int/2addr	v2,v6
+; v2 : single-length , v6 : single-length
+	invoke-virtual	{v5,v6,v2},java/lang/StringBuffer/substring	; substring(II)Ljava/lang/String;
+; v5 : Ljava/lang/StringBuffer; , v6 : single-length , v2 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 344
+	invoke-virtual	{v1,v7},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v1 : Ljava/lang/String; , v7 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+l10b49a:
+.line 346
+	return	v0
+; v0 : single-length
+.end method
+
+.method public encode(Ljava/lang/Object;)Ljava/lang/Object;
+.throws Lorg/apache/commons/codec/EncoderException;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/codec/language/Metaphone;)
+; parameter[0] : v3 (Ljava/lang/Object;)
+.line 367
+	instance-of	v0,v3,java/lang/String
+; v0 : single-length , v3 : Ljava/lang/Object;
+	if-nez	v0,l10b4c4
+; v0 : single-length
+.line 368
+	new-instance	v0,org/apache/commons/codec/EncoderException
+; v0 : Lorg/apache/commons/codec/EncoderException;
+	const-string	v1,"Parameter supplied to Metaphone encode is not of type java.lang.String"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},org/apache/commons/codec/EncoderException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/codec/EncoderException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Lorg/apache/commons/codec/EncoderException;
+l10b4c4:
+.line 370
+	check-cast	v3,java/lang/String
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},org/apache/commons/codec/language/Metaphone/metaphone	; metaphone(Ljava/lang/String;)Ljava/lang/String;
+; v2 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public encode(Ljava/lang/String;)Ljava/lang/String;
+.throws Lorg/apache/commons/codec/EncoderException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/codec/language/Metaphone;)
+; parameter[0] : v2 (Ljava/lang/String;)
+.line 380
+	invoke-virtual	{v1,v2},org/apache/commons/codec/language/Metaphone/metaphone	; metaphone(Ljava/lang/String;)Ljava/lang/String;
+; v1 : Lorg/apache/commons/codec/language/Metaphone; , v2 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getMaxCodeLen()I
+.limit registers 2
+; this: v1 (Lorg/apache/commons/codec/language/Metaphone;)
+.line 399
+	iget	v0,v1,org/apache/commons/codec/language/Metaphone.maxCodeLen I
+; v0 : single-length , v1 : Lorg/apache/commons/codec/language/Metaphone;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public isMetaphoneEqual(Ljava/lang/String;Ljava/lang/String;)Z
+.limit registers 5
+; this: v2 (Lorg/apache/commons/codec/language/Metaphone;)
+; parameter[0] : v3 (Ljava/lang/String;)
+; parameter[1] : v4 (Ljava/lang/String;)
+.line 392
+	invoke-virtual	{v2,v3},org/apache/commons/codec/language/Metaphone/metaphone	; metaphone(Ljava/lang/String;)Ljava/lang/String;
+; v2 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v2,v4},org/apache/commons/codec/language/Metaphone/metaphone	; metaphone(Ljava/lang/String;)Ljava/lang/String;
+; v2 : Lorg/apache/commons/codec/language/Metaphone; , v4 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public metaphone(Ljava/lang/String;)Ljava/lang/String;
+.limit registers 16
+; this: v14 (Lorg/apache/commons/codec/language/Metaphone;)
+; parameter[0] : v15 (Ljava/lang/String;)
+.var 4 is n I from l10b5d4 to l10b630
+.var 5 is symb C from l10b5f4 to l10b630
+.var 6 is wdsz I from l10b5d2 to l10b630
+.var 5 is symb C from l10b6c6 to l10ba9e
+	const/16	v13,88
+; v13 : single-length
+	const/16	v12,75
+; v12 : single-length
+	const/16	v11,83
+; v11 : single-length
+	const/16	v10,72
+; v10 : single-length
+	const/4	v9,1
+; v9 : single-length
+.line 83
+	const/4	v1,0
+; v1 : single-length
+.line 84
+	if-eqz	v15,l10b568
+; v15 : Ljava/lang/String;
+	invoke-virtual	{v15},java/lang/String/length	; length()I
+; v15 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b56e
+; v7 : single-length
+l10b568:
+.line 85
+	const-string	v7,""
+; v7 : Ljava/lang/String;
+l10b56c:
+.line 314
+	return-object	v7
+; v7 : Ljava/lang/String;
+l10b56e:
+.line 88
+	invoke-virtual	{v15},java/lang/String/length	; length()I
+; v15 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-ne	v7,v9,l10b588
+; v7 : single-length , v9 : single-length
+.line 89
+	sget-object	v7,java/util/Locale.ENGLISH Ljava/util/Locale;
+; v7 : Ljava/util/Locale;
+	invoke-virtual	{v15,v7},java/lang/String/toUpperCase	; toUpperCase(Ljava/util/Locale;)Ljava/lang/String;
+; v15 : Ljava/lang/String; , v7 : Ljava/util/Locale;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	goto	l10b56c
+l10b588:
+.line 92
+	sget-object	v7,java/util/Locale.ENGLISH Ljava/util/Locale;
+; v7 : Ljava/util/Locale;
+	invoke-virtual	{v15,v7},java/lang/String/toUpperCase	; toUpperCase(Ljava/util/Locale;)Ljava/lang/String;
+; v15 : Ljava/lang/String; , v7 : Ljava/util/Locale;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	invoke-virtual	{v7},java/lang/String/toCharArray	; toCharArray()[C
+; v7 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : [C
+.line 94
+	new-instance	v3,java/lang/StringBuffer
+; v3 : Ljava/lang/StringBuffer;
+	const/16	v7,40
+; v7 : single-length
+	invoke-direct	{v3,v7},java/lang/StringBuffer/<init>	; <init>(I)V
+; v3 : Ljava/lang/StringBuffer; , v7 : single-length
+.line 95
+	new-instance	v0,java/lang/StringBuffer
+; v0 : Ljava/lang/StringBuffer;
+	const/16	v7,10
+; v7 : single-length
+	invoke-direct	{v0,v7},java/lang/StringBuffer/<init>	; <init>(I)V
+; v0 : Ljava/lang/StringBuffer; , v7 : single-length
+.line 97
+	const/4	v7,0
+; v7 : single-length
+	aget-char	v7,v2,v7
+; v7 : single-length , v2 : [C , v7 : single-length
+	sparse-switch	v7
+		65 : sp10b5be_10b652
+		71 : sp10b5be_10b630
+		75 : sp10b5be_10b630
+		80 : sp10b5be_10b630
+		87 : sp10b5be_10b674
+		88 : sp10b5be_10b6b8
+		default: sp10b5be_default
+; v7 : single-length
+sp10b5be_default:
+.line 131
+	invoke-virtual	{v3,v2},java/lang/StringBuffer/append	; append([C)Ljava/lang/StringBuffer;
+; v3 : Ljava/lang/StringBuffer; , v2 : [C
+l10b5ca:
+.line 134
+	invoke-virtual	{v3},java/lang/StringBuffer/length	; length()I
+; v3 : Ljava/lang/StringBuffer;
+	move-result	v6
+; v6 : single-length
+.line 135
+	const/4	v4,0
+; v4 : single-length
+l10b5d4:
+.line 137
+	invoke-virtual	{v0},java/lang/StringBuffer/length	; length()I
+; v0 : Ljava/lang/StringBuffer;
+	move-result	v7
+; v7 : single-length
+	invoke-virtual	{v14},org/apache/commons/codec/language/Metaphone/getMaxCodeLen	; getMaxCodeLen()I
+; v14 : Lorg/apache/commons/codec/language/Metaphone;
+	move-result	v8
+; v8 : single-length
+	if-ge	v7,v8,l10ba9e
+; v7 : single-length , v8 : single-length
+	if-ge	v4,v6,l10ba9e
+; v4 : single-length , v6 : single-length
+.line 139
+	invoke-virtual	{v3,v4},java/lang/StringBuffer/charAt	; charAt(I)C
+; v3 : Ljava/lang/StringBuffer; , v4 : single-length
+	move-result	v5
+; v5 : single-length
+.line 141
+	const/16	v7,67
+; v7 : single-length
+	if-eq	v5,v7,l10b6c6
+; v5 : single-length , v7 : single-length
+	invoke-direct	{v14,v3,v4,v5},org/apache/commons/codec/language/Metaphone/isPreviousChar	; isPreviousChar(Ljava/lang/StringBuffer;IC)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v5 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b6c6
+; v7 : single-length
+.line 142
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+l10b60c:
+.line 310
+	invoke-virtual	{v0},java/lang/StringBuffer/length	; length()I
+; v0 : Ljava/lang/StringBuffer;
+	move-result	v7
+; v7 : single-length
+	invoke-virtual	{v14},org/apache/commons/codec/language/Metaphone/getMaxCodeLen	; getMaxCodeLen()I
+; v14 : Lorg/apache/commons/codec/language/Metaphone;
+	move-result	v8
+; v8 : single-length
+	if-le	v7,v8,l10b5d4
+; v7 : single-length , v8 : single-length
+.line 311
+	invoke-virtual	{v14},org/apache/commons/codec/language/Metaphone/getMaxCodeLen	; getMaxCodeLen()I
+; v14 : Lorg/apache/commons/codec/language/Metaphone;
+	move-result	v7
+; v7 : single-length
+	invoke-virtual	{v0,v7},java/lang/StringBuffer/setLength	; setLength(I)V
+; v0 : Ljava/lang/StringBuffer; , v7 : single-length
+	goto	l10b5d4
+sp10b5be_10b630:
+.line 101
+	aget-char	v7,v2,v9
+; v7 : single-length , v2 : [C , v9 : single-length
+	const/16	v8,78
+; v8 : single-length
+	if-ne	v7,v8,l10b64a
+; v7 : single-length , v8 : single-length
+.line 102
+	array-length	v7,v2
+; v7 : single-length , v2 : [C
+	add-int/lit8	v7,v7,255
+; v7 : single-length , v7 : single-length
+	invoke-virtual	{v3,v2,v9,v7},java/lang/StringBuffer/append	; append([CII)Ljava/lang/StringBuffer;
+; v3 : Ljava/lang/StringBuffer; , v2 : [C , v9 : single-length , v7 : single-length
+	goto	l10b5ca
+l10b64a:
+.line 104
+	invoke-virtual	{v3,v2},java/lang/StringBuffer/append	; append([C)Ljava/lang/StringBuffer;
+; v3 : Ljava/lang/StringBuffer; , v2 : [C
+	goto	l10b5ca
+sp10b5be_10b652:
+.line 108
+	aget-char	v7,v2,v9
+; v7 : single-length , v2 : [C , v9 : single-length
+	const/16	v8,69
+; v8 : single-length
+	if-ne	v7,v8,l10b66c
+; v7 : single-length , v8 : single-length
+.line 109
+	array-length	v7,v2
+; v7 : single-length , v2 : [C
+	add-int/lit8	v7,v7,255
+; v7 : single-length , v7 : single-length
+	invoke-virtual	{v3,v2,v9,v7},java/lang/StringBuffer/append	; append([CII)Ljava/lang/StringBuffer;
+; v3 : Ljava/lang/StringBuffer; , v2 : [C , v9 : single-length , v7 : single-length
+	goto	l10b5ca
+l10b66c:
+.line 111
+	invoke-virtual	{v3,v2},java/lang/StringBuffer/append	; append([C)Ljava/lang/StringBuffer;
+; v3 : Ljava/lang/StringBuffer; , v2 : [C
+	goto	l10b5ca
+sp10b5be_10b674:
+.line 115
+	aget-char	v7,v2,v9
+; v7 : single-length , v2 : [C , v9 : single-length
+	const/16	v8,82
+; v8 : single-length
+	if-ne	v7,v8,l10b68e
+; v7 : single-length , v8 : single-length
+.line 116
+	array-length	v7,v2
+; v7 : single-length , v2 : [C
+	add-int/lit8	v7,v7,255
+; v7 : single-length , v7 : single-length
+	invoke-virtual	{v3,v2,v9,v7},java/lang/StringBuffer/append	; append([CII)Ljava/lang/StringBuffer;
+; v3 : Ljava/lang/StringBuffer; , v2 : [C , v9 : single-length , v7 : single-length
+	goto	l10b5ca
+l10b68e:
+.line 119
+	aget-char	v7,v2,v9
+; v7 : single-length , v2 : [C , v9 : single-length
+	if-ne	v7,v10,l10b6b0
+; v7 : single-length , v10 : single-length
+.line 120
+	array-length	v7,v2
+; v7 : single-length , v2 : [C
+	add-int/lit8	v7,v7,255
+; v7 : single-length , v7 : single-length
+	invoke-virtual	{v3,v2,v9,v7},java/lang/StringBuffer/append	; append([CII)Ljava/lang/StringBuffer;
+; v3 : Ljava/lang/StringBuffer; , v2 : [C , v9 : single-length , v7 : single-length
+.line 121
+	const/4	v7,0
+; v7 : single-length
+	const/16	v8,87
+; v8 : single-length
+	invoke-virtual	{v3,v7,v8},java/lang/StringBuffer/setCharAt	; setCharAt(IC)V
+; v3 : Ljava/lang/StringBuffer; , v7 : single-length , v8 : single-length
+	goto	l10b5ca
+l10b6b0:
+.line 123
+	invoke-virtual	{v3,v2},java/lang/StringBuffer/append	; append([C)Ljava/lang/StringBuffer;
+; v3 : Ljava/lang/StringBuffer; , v2 : [C
+	goto	l10b5ca
+sp10b5be_10b6b8:
+.line 127
+	const/4	v7,0
+; v7 : single-length
+	aput-char	v11,v2,v7
+; v11 : single-length , v2 : [C , v7 : single-length
+.line 128
+	invoke-virtual	{v3,v2},java/lang/StringBuffer/append	; append([C)Ljava/lang/StringBuffer;
+; v3 : Ljava/lang/StringBuffer; , v2 : [C
+	goto	l10b5ca
+l10b6c6:
+.line 144
+	packed-switch	v5,65
+		ps10b6c6_10b6d2	; case 65
+		ps10b6c6_10b6de	; case 66
+		ps10b6c6_10b702	; case 67
+		ps10b6c6_10b7de	; case 68
+		ps10b6c6_10b6d2	; case 69
+		ps10b6c6_10b946	; case 70
+		ps10b6c6_10b83a	; case 71
+		ps10b6c6_10b900	; case 72
+		ps10b6c6_10b6d2	; case 73
+		ps10b6c6_10b946	; case 74
+		ps10b6c6_10b950	; case 75
+		ps10b6c6_10b946	; case 76
+		ps10b6c6_10b946	; case 77
+		ps10b6c6_10b946	; case 78
+		ps10b6c6_10b6d2	; case 79
+		ps10b6c6_10b978	; case 80
+		ps10b6c6_10b99c	; case 81
+		ps10b6c6_10b946	; case 82
+		ps10b6c6_10b9a6	; case 83
+		ps10b6c6_10b9ea	; case 84
+		ps10b6c6_10b6d2	; case 85
+		ps10b6c6_10ba50	; case 86
+		ps10b6c6_10ba5e	; case 87
+		ps10b6c6_10ba84	; case 88
+		ps10b6c6_10ba5e	; case 89
+		ps10b6c6_10ba94	; case 90
+		default: ps10b6c6_default
+; v5 : single-length
+l10b6cc:
+.line 308
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	goto	l10b60c
+ps10b6c6_10b6d2:
+.line 146
+	if-nez	v4,l10b6cc
+; v4 : single-length
+.line 147
+	invoke-virtual	{v0,v5},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v5 : single-length
+	goto	l10b6cc
+ps10b6c6_10b6de:
+.line 151
+	const/16	v7,77
+; v7 : single-length
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/isPreviousChar	; isPreviousChar(Ljava/lang/StringBuffer;IC)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b6fa
+; v7 : single-length
+	invoke-direct	{v14,v6,v4},org/apache/commons/codec/language/Metaphone/isLastChar	; isLastChar(II)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v6 : single-length , v4 : single-length
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b6cc
+; v7 : single-length
+l10b6fa:
+.line 155
+	invoke-virtual	{v0,v5},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v5 : single-length
+	goto	l10b6cc
+ps10b6c6_10b702:
+.line 159
+	invoke-direct	{v14,v3,v4,v11},org/apache/commons/codec/language/Metaphone/isPreviousChar	; isPreviousChar(Ljava/lang/StringBuffer;IC)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v11 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b736
+; v7 : single-length
+	invoke-direct	{v14,v6,v4},org/apache/commons/codec/language/Metaphone/isLastChar	; isLastChar(II)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v6 : single-length , v4 : single-length
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b736
+; v7 : single-length
+	const-string	v7,"EIY"
+; v7 : Ljava/lang/String;
+	add-int/lit8	v8,v4,1
+; v8 : single-length , v4 : single-length
+	invoke-virtual	{v3,v8},java/lang/StringBuffer/charAt	; charAt(I)C
+; v3 : Ljava/lang/StringBuffer; , v8 : single-length
+	move-result	v8
+; v8 : single-length
+	invoke-virtual	{v7,v8},java/lang/String/indexOf	; indexOf(I)I
+; v7 : Ljava/lang/String; , v8 : single-length
+	move-result	v7
+; v7 : single-length
+	if-gez	v7,l10b6cc
+; v7 : single-length
+l10b736:
+.line 164
+	const-string	v7,"CIA"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/regionMatch	; regionMatch(Ljava/lang/StringBuffer;ILjava/lang/String;)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b74e
+; v7 : single-length
+.line 165
+	invoke-virtual	{v0,v13},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v13 : single-length
+	goto	l10b6cc
+l10b74e:
+.line 168
+	invoke-direct	{v14,v6,v4},org/apache/commons/codec/language/Metaphone/isLastChar	; isLastChar(II)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v6 : single-length , v4 : single-length
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b77e
+; v7 : single-length
+	const-string	v7,"EIY"
+; v7 : Ljava/lang/String;
+	add-int/lit8	v8,v4,1
+; v8 : single-length , v4 : single-length
+	invoke-virtual	{v3,v8},java/lang/StringBuffer/charAt	; charAt(I)C
+; v3 : Ljava/lang/StringBuffer; , v8 : single-length
+	move-result	v8
+; v8 : single-length
+	invoke-virtual	{v7,v8},java/lang/String/indexOf	; indexOf(I)I
+; v7 : Ljava/lang/String; , v8 : single-length
+	move-result	v7
+; v7 : single-length
+	if-ltz	v7,l10b77e
+; v7 : single-length
+.line 170
+	invoke-virtual	{v0,v11},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v11 : single-length
+	goto	l10b6cc
+l10b77e:
+.line 173
+	invoke-direct	{v14,v3,v4,v11},org/apache/commons/codec/language/Metaphone/isPreviousChar	; isPreviousChar(Ljava/lang/StringBuffer;IC)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v11 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b79e
+; v7 : single-length
+	invoke-direct	{v14,v3,v4,v10},org/apache/commons/codec/language/Metaphone/isNextChar	; isNextChar(Ljava/lang/StringBuffer;IC)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v10 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b79e
+; v7 : single-length
+.line 175
+	invoke-virtual	{v0,v12},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v12 : single-length
+	goto	l10b6cc
+l10b79e:
+.line 178
+	invoke-direct	{v14,v3,v4,v10},org/apache/commons/codec/language/Metaphone/isNextChar	; isNextChar(Ljava/lang/StringBuffer;IC)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v10 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b7d4
+; v7 : single-length
+.line 179
+	if-nez	v4,l10b7ca
+; v4 : single-length
+	const/4	v7,3
+; v7 : single-length
+	if-lt	v6,v7,l10b7ca
+; v6 : single-length , v7 : single-length
+	const/4	v7,2
+; v7 : single-length
+	invoke-direct	{v14,v3,v7},org/apache/commons/codec/language/Metaphone/isVowel	; isVowel(Ljava/lang/StringBuffer;I)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v7 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b7ca
+; v7 : single-length
+.line 182
+	invoke-virtual	{v0,v12},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v12 : single-length
+	goto	l10b6cc
+l10b7ca:
+.line 184
+	invoke-virtual	{v0,v13},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v13 : single-length
+	goto/16	l10b6cc
+l10b7d4:
+.line 187
+	invoke-virtual	{v0,v12},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v12 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10b7de:
+.line 191
+	add-int/lit8	v7,v4,1
+; v7 : single-length , v4 : single-length
+	invoke-direct	{v14,v6,v7},org/apache/commons/codec/language/Metaphone/isLastChar	; isLastChar(II)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v6 : single-length , v7 : single-length
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b82c
+; v7 : single-length
+	const/16	v7,71
+; v7 : single-length
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/isNextChar	; isNextChar(Ljava/lang/StringBuffer;IC)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b82c
+; v7 : single-length
+	const-string	v7,"EIY"
+; v7 : Ljava/lang/String;
+	add-int/lit8	v8,v4,2
+; v8 : single-length , v4 : single-length
+	invoke-virtual	{v3,v8},java/lang/StringBuffer/charAt	; charAt(I)C
+; v3 : Ljava/lang/StringBuffer; , v8 : single-length
+	move-result	v8
+; v8 : single-length
+	invoke-virtual	{v7,v8},java/lang/String/indexOf	; indexOf(I)I
+; v7 : Ljava/lang/String; , v8 : single-length
+	move-result	v7
+; v7 : single-length
+	if-ltz	v7,l10b82c
+; v7 : single-length
+.line 194
+	const/16	v7,74
+; v7 : single-length
+	invoke-virtual	{v0,v7},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v7 : single-length
+	add-int/lit8	v4,v4,2
+; v4 : single-length , v4 : single-length
+	goto/16	l10b6cc
+l10b82c:
+.line 196
+	const/16	v7,84
+; v7 : single-length
+	invoke-virtual	{v0,v7},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v7 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10b83a:
+.line 200
+	add-int/lit8	v7,v4,1
+; v7 : single-length , v4 : single-length
+	invoke-direct	{v14,v6,v7},org/apache/commons/codec/language/Metaphone/isLastChar	; isLastChar(II)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v6 : single-length , v7 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b856
+; v7 : single-length
+	invoke-direct	{v14,v3,v4,v10},org/apache/commons/codec/language/Metaphone/isNextChar	; isNextChar(Ljava/lang/StringBuffer;IC)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v10 : single-length
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b6cc
+; v7 : single-length
+l10b856:
+.line 204
+	add-int/lit8	v7,v4,1
+; v7 : single-length , v4 : single-length
+	invoke-direct	{v14,v6,v7},org/apache/commons/codec/language/Metaphone/isLastChar	; isLastChar(II)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v6 : single-length , v7 : single-length
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b882
+; v7 : single-length
+	invoke-direct	{v14,v3,v4,v10},org/apache/commons/codec/language/Metaphone/isNextChar	; isNextChar(Ljava/lang/StringBuffer;IC)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v10 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b882
+; v7 : single-length
+	add-int/lit8	v7,v4,2
+; v7 : single-length , v4 : single-length
+	invoke-direct	{v14,v3,v7},org/apache/commons/codec/language/Metaphone/isVowel	; isVowel(Ljava/lang/StringBuffer;I)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v7 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b6cc
+; v7 : single-length
+l10b882:
+.line 209
+	if-lez	v4,l10b8a6
+; v4 : single-length
+	const-string	v7,"GN"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/regionMatch	; regionMatch(Ljava/lang/StringBuffer;ILjava/lang/String;)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b6cc
+; v7 : single-length
+	const-string	v7,"GNED"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/regionMatch	; regionMatch(Ljava/lang/StringBuffer;ILjava/lang/String;)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b6cc
+; v7 : single-length
+l10b8a6:
+.line 214
+	const/16	v7,71
+; v7 : single-length
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/isPreviousChar	; isPreviousChar(Ljava/lang/StringBuffer;IC)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b8f2
+; v7 : single-length
+.line 216
+	const/4	v1,1
+; v1 : single-length
+l10b8b8:
+.line 220
+	invoke-direct	{v14,v6,v4},org/apache/commons/codec/language/Metaphone/isLastChar	; isLastChar(II)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v6 : single-length , v4 : single-length
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b8f6
+; v7 : single-length
+	const-string	v7,"EIY"
+; v7 : Ljava/lang/String;
+	add-int/lit8	v8,v4,1
+; v8 : single-length , v4 : single-length
+	invoke-virtual	{v3,v8},java/lang/StringBuffer/charAt	; charAt(I)C
+; v3 : Ljava/lang/StringBuffer; , v8 : single-length
+	move-result	v8
+; v8 : single-length
+	invoke-virtual	{v7,v8},java/lang/String/indexOf	; indexOf(I)I
+; v7 : Ljava/lang/String; , v8 : single-length
+	move-result	v7
+; v7 : single-length
+	if-ltz	v7,l10b8f6
+; v7 : single-length
+	if-nez	v1,l10b8f6
+; v1 : single-length
+.line 223
+	const/16	v7,74
+; v7 : single-length
+	invoke-virtual	{v0,v7},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v7 : single-length
+	goto/16	l10b6cc
+l10b8f2:
+.line 218
+	const/4	v1,0
+; v1 : single-length
+	goto	l10b8b8
+l10b8f6:
+.line 225
+	invoke-virtual	{v0,v12},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v12 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10b900:
+.line 229
+	invoke-direct	{v14,v6,v4},org/apache/commons/codec/language/Metaphone/isLastChar	; isLastChar(II)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v6 : single-length , v4 : single-length
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b6cc
+; v7 : single-length
+.line 232
+	if-lez	v4,l10b92c
+; v4 : single-length
+	const-string	v7,"CSPTG"
+; v7 : Ljava/lang/String;
+	add-int/lit8	v8,v4,255
+; v8 : single-length , v4 : single-length
+	invoke-virtual	{v3,v8},java/lang/StringBuffer/charAt	; charAt(I)C
+; v3 : Ljava/lang/StringBuffer; , v8 : single-length
+	move-result	v8
+; v8 : single-length
+	invoke-virtual	{v7,v8},java/lang/String/indexOf	; indexOf(I)I
+; v7 : Ljava/lang/String; , v8 : single-length
+	move-result	v7
+; v7 : single-length
+	if-gez	v7,l10b6cc
+; v7 : single-length
+l10b92c:
+.line 236
+	add-int/lit8	v7,v4,1
+; v7 : single-length , v4 : single-length
+	invoke-direct	{v14,v3,v7},org/apache/commons/codec/language/Metaphone/isVowel	; isVowel(Ljava/lang/StringBuffer;I)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v7 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b6cc
+; v7 : single-length
+.line 237
+	invoke-virtual	{v0,v10},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v10 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10b946:
+.line 246
+	invoke-virtual	{v0,v5},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v5 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10b950:
+.line 249
+	if-lez	v4,l10b96e
+; v4 : single-length
+.line 250
+	const/16	v7,67
+; v7 : single-length
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/isPreviousChar	; isPreviousChar(Ljava/lang/StringBuffer;IC)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : single-length
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b6cc
+; v7 : single-length
+.line 251
+	invoke-virtual	{v0,v5},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v5 : single-length
+	goto/16	l10b6cc
+l10b96e:
+.line 254
+	invoke-virtual	{v0,v5},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v5 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10b978:
+.line 258
+	invoke-direct	{v14,v3,v4,v10},org/apache/commons/codec/language/Metaphone/isNextChar	; isNextChar(Ljava/lang/StringBuffer;IC)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v10 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b992
+; v7 : single-length
+.line 260
+	const/16	v7,70
+; v7 : single-length
+	invoke-virtual	{v0,v7},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v7 : single-length
+	goto/16	l10b6cc
+l10b992:
+.line 262
+	invoke-virtual	{v0,v5},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v5 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10b99c:
+.line 266
+	invoke-virtual	{v0,v12},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v12 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10b9a6:
+.line 269
+	const-string	v7,"SH"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/regionMatch	; regionMatch(Ljava/lang/StringBuffer;ILjava/lang/String;)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b9d6
+; v7 : single-length
+	const-string	v7,"SIO"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/regionMatch	; regionMatch(Ljava/lang/StringBuffer;ILjava/lang/String;)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b9d6
+; v7 : single-length
+	const-string	v7,"SIA"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/regionMatch	; regionMatch(Ljava/lang/StringBuffer;ILjava/lang/String;)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b9e0
+; v7 : single-length
+l10b9d6:
+.line 272
+	invoke-virtual	{v0,v13},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v13 : single-length
+	goto/16	l10b6cc
+l10b9e0:
+.line 274
+	invoke-virtual	{v0,v11},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v11 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10b9ea:
+.line 278
+	const-string	v7,"TIA"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/regionMatch	; regionMatch(Ljava/lang/StringBuffer;ILjava/lang/String;)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10ba0a
+; v7 : single-length
+	const-string	v7,"TIO"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/regionMatch	; regionMatch(Ljava/lang/StringBuffer;ILjava/lang/String;)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10ba14
+; v7 : single-length
+l10ba0a:
+.line 280
+	invoke-virtual	{v0,v13},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v13 : single-length
+	goto/16	l10b6cc
+l10ba14:
+.line 283
+	const-string	v7,"TCH"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/regionMatch	; regionMatch(Ljava/lang/StringBuffer;ILjava/lang/String;)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b6cc
+; v7 : single-length
+.line 288
+	const-string	v7,"TH"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v14,v3,v4,v7},org/apache/commons/codec/language/Metaphone/regionMatch	; regionMatch(Ljava/lang/StringBuffer;ILjava/lang/String;)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v4 : single-length , v7 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10ba42
+; v7 : single-length
+.line 289
+	const/16	v7,48
+; v7 : single-length
+	invoke-virtual	{v0,v7},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v7 : single-length
+	goto/16	l10b6cc
+l10ba42:
+.line 291
+	const/16	v7,84
+; v7 : single-length
+	invoke-virtual	{v0,v7},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v7 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10ba50:
+.line 295
+	const/16	v7,70
+; v7 : single-length
+	invoke-virtual	{v0,v7},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v7 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10ba5e:
+.line 297
+	invoke-direct	{v14,v6,v4},org/apache/commons/codec/language/Metaphone/isLastChar	; isLastChar(II)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v6 : single-length , v4 : single-length
+	move-result	v7
+; v7 : single-length
+	if-nez	v7,l10b6cc
+; v7 : single-length
+	add-int/lit8	v7,v4,1
+; v7 : single-length , v4 : single-length
+	invoke-direct	{v14,v3,v7},org/apache/commons/codec/language/Metaphone/isVowel	; isVowel(Ljava/lang/StringBuffer;I)Z
+; v14 : Lorg/apache/commons/codec/language/Metaphone; , v3 : Ljava/lang/StringBuffer; , v7 : single-length
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,l10b6cc
+; v7 : single-length
+.line 299
+	invoke-virtual	{v0,v5},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v5 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10ba84:
+.line 303
+	invoke-virtual	{v0,v12},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v12 : single-length
+	invoke-virtual	{v0,v11},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v11 : single-length
+	goto/16	l10b6cc
+ps10b6c6_10ba94:
+.line 306
+	invoke-virtual	{v0,v11},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v11 : single-length
+	goto/16	l10b6cc
+l10ba9e:
+.line 314
+	invoke-virtual	{v0},java/lang/StringBuffer/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuffer;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	goto/16	l10b56c
+.line 97
+l10baaa:	data-array
+		0x00, 0x00
+	end data-array
+.end method
+
+.method public setMaxCodeLen(I)V
+.limit registers 2
+; this: v0 (Lorg/apache/commons/codec/language/Metaphone;)
+; parameter[0] : v1 (I)
+.line 405
+	iput	v1,v0,org/apache/commons/codec/language/Metaphone.maxCodeLen I
+; v1 : single-length , v0 : Lorg/apache/commons/codec/language/Metaphone;
+	return-void	
+.end method
+
+

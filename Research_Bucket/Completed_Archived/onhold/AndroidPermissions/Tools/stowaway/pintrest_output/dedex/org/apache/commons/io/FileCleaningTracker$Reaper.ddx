@@ -1,0 +1,112 @@
+.class final org/apache/commons/io/FileCleaningTracker$Reaper
+.super java/lang/Thread
+.source FileCleaningTracker.java
+
+.inner class Reaper inner org/apache/commons/io/FileCleaningTracker$Reaper outer org/apache/commons/io/FileCleaningTracker
+.field final this$0 Lorg/apache/commons/io/FileCleaningTracker;
+
+.method <init>(Lorg/apache/commons/io/FileCleaningTracker;)V
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/FileCleaningTracker$Reaper;)
+; parameter[0] : v2 (Lorg/apache/commons/io/FileCleaningTracker;)
+.line 206
+	iput-object	v2,v1,org/apache/commons/io/FileCleaningTracker$Reaper.this$0 Lorg/apache/commons/io/FileCleaningTracker;
+; v2 : Lorg/apache/commons/io/FileCleaningTracker; , v1 : Lorg/apache/commons/io/FileCleaningTracker$Reaper;
+.line 207
+	const-string	v0,"File Reaper"
+; v0 : Ljava/lang/String;
+	invoke-direct	{v1,v0},java/lang/Thread/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Lorg/apache/commons/io/FileCleaningTracker$Reaper; , v0 : Ljava/lang/String;
+.line 208
+	const/16	v0,10
+; v0 : single-length
+	invoke-virtual	{v1,v0},org/apache/commons/io/FileCleaningTracker$Reaper/setPriority	; setPriority(I)V
+; v1 : Lorg/apache/commons/io/FileCleaningTracker$Reaper; , v0 : single-length
+.line 209
+	const/4	v0,1
+; v0 : single-length
+	invoke-virtual	{v1,v0},org/apache/commons/io/FileCleaningTracker$Reaper/setDaemon	; setDaemon(Z)V
+; v1 : Lorg/apache/commons/io/FileCleaningTracker$Reaper; , v0 : single-length
+.line 210
+	return-void	
+.end method
+
+.method public run()V
+.limit registers 5
+; this: v4 (Lorg/apache/commons/io/FileCleaningTracker$Reaper;)
+.catch java/lang/InterruptedException from l111358 to l1113a2 using l1113a4
+.var 1 is tracker Lorg/apache/commons/io/FileCleaningTracker$Tracker; from l11136c to l1113a4
+.var 0 is e Ljava/lang/InterruptedException; from l1113a6 to l1113a8
+l111338:
+.line 219
+	iget-object	v2,v4,org/apache/commons/io/FileCleaningTracker$Reaper.this$0 Lorg/apache/commons/io/FileCleaningTracker;
+; v2 : Lorg/apache/commons/io/FileCleaningTracker; , v4 : Lorg/apache/commons/io/FileCleaningTracker$Reaper;
+	iget-boolean	v2,v2,org/apache/commons/io/FileCleaningTracker.exitWhenFinished Z
+; v2 : single-length , v2 : single-length
+	if-eqz	v2,l111358
+; v2 : single-length
+	iget-object	v2,v4,org/apache/commons/io/FileCleaningTracker$Reaper.this$0 Lorg/apache/commons/io/FileCleaningTracker;
+; v2 : Lorg/apache/commons/io/FileCleaningTracker; , v4 : Lorg/apache/commons/io/FileCleaningTracker$Reaper;
+	iget-object	v2,v2,org/apache/commons/io/FileCleaningTracker.trackers Ljava/util/Collection;
+; v2 : Ljava/util/Collection; , v2 : Ljava/util/Collection;
+	invoke-interface	{v2},java/util/Collection/size	; size()I
+; v2 : Ljava/util/Collection;
+	move-result	v2
+; v2 : single-length
+	if-lez	v2,l1113a8
+; v2 : single-length
+l111358:
+.line 222
+	iget-object	v2,v4,org/apache/commons/io/FileCleaningTracker$Reaper.this$0 Lorg/apache/commons/io/FileCleaningTracker;
+; v2 : Lorg/apache/commons/io/FileCleaningTracker; , v4 : Lorg/apache/commons/io/FileCleaningTracker$Reaper;
+	iget-object	v2,v2,org/apache/commons/io/FileCleaningTracker.q Ljava/lang/ref/ReferenceQueue;
+; v2 : Ljava/lang/ref/ReferenceQueue; , v2 : Ljava/lang/ref/ReferenceQueue;
+	invoke-virtual	{v2},java/lang/ref/ReferenceQueue/remove	; remove()Ljava/lang/ref/Reference;
+; v2 : Ljava/lang/ref/ReferenceQueue;
+	move-result-object	v1
+; v1 : Ljava/lang/ref/Reference;
+	check-cast	v1,org/apache/commons/io/FileCleaningTracker$Tracker
+; v1 : Lorg/apache/commons/io/FileCleaningTracker$Tracker;
+.line 223
+	iget-object	v2,v4,org/apache/commons/io/FileCleaningTracker$Reaper.this$0 Lorg/apache/commons/io/FileCleaningTracker;
+; v2 : Lorg/apache/commons/io/FileCleaningTracker; , v4 : Lorg/apache/commons/io/FileCleaningTracker$Reaper;
+	iget-object	v2,v2,org/apache/commons/io/FileCleaningTracker.trackers Ljava/util/Collection;
+; v2 : Ljava/util/Collection; , v2 : Ljava/util/Collection;
+	invoke-interface	{v2,v1},java/util/Collection/remove	; remove(Ljava/lang/Object;)Z
+; v2 : Ljava/util/Collection; , v1 : Lorg/apache/commons/io/FileCleaningTracker$Tracker;
+.line 224
+	invoke-virtual	{v1},org/apache/commons/io/FileCleaningTracker$Tracker/delete	; delete()Z
+; v1 : Lorg/apache/commons/io/FileCleaningTracker$Tracker;
+	move-result	v2
+; v2 : single-length
+	if-nez	v2,l11139c
+; v2 : single-length
+.line 225
+	iget-object	v2,v4,org/apache/commons/io/FileCleaningTracker$Reaper.this$0 Lorg/apache/commons/io/FileCleaningTracker;
+; v2 : Lorg/apache/commons/io/FileCleaningTracker; , v4 : Lorg/apache/commons/io/FileCleaningTracker$Reaper;
+	iget-object	v2,v2,org/apache/commons/io/FileCleaningTracker.deleteFailures Ljava/util/List;
+; v2 : Ljava/util/List; , v2 : Ljava/util/List;
+	invoke-virtual	{v1},org/apache/commons/io/FileCleaningTracker$Tracker/getPath	; getPath()Ljava/lang/String;
+; v1 : Lorg/apache/commons/io/FileCleaningTracker$Tracker;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-interface	{v2,v3},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v2 : Ljava/util/List; , v3 : Ljava/lang/String;
+l11139c:
+.line 227
+	invoke-virtual	{v1},org/apache/commons/io/FileCleaningTracker$Tracker/clear	; clear()V
+; v1 : Lorg/apache/commons/io/FileCleaningTracker$Tracker;
+l1113a2:
+	goto	l111338
+l1113a4:
+.line 228
+	move-exception	v0
+; v0 : java/lang/InterruptedException
+.line 229
+	goto	l111338
+l1113a8:
+.line 232
+	return-void	
+.end method
+
+

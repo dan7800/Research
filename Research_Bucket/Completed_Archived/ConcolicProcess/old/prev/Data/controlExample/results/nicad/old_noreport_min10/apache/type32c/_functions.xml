@@ -1,0 +1,918 @@
+<source file="examples/apache//smallApache/http_core.c.ifdefed" startline="47" endline="57">
+static const char *set_keep_alive_timeout (cmd_parms *cmd, void *dummy, const char *arg) {
+    const char *err = ap_check_cmd_context (cmd, NOT_IN_DIR_LOC_FILE | NOT_IN_LIMIT);
+    if (err != NULL) {
+        return err;
+    }
+    cmd->server->keep_alive_timeout = apr_time_from_sec (atoi (arg));
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/http_core.c.ifdefed" startline="59" endline="77">
+static const char *set_keep_alive (cmd_parms *cmd, void *dummy, const char *arg) {
+    const char *err = ap_check_cmd_context (cmd, NOT_IN_DIR_LOC_FILE | NOT_IN_LIMIT);
+    if (err != NULL) {
+        return err;
+    }
+    if (!strcasecmp (arg, "off") || !strcmp (arg, "0")) {
+        cmd->server->keep_alive = 0;
+    }
+    else {
+        cmd->server->keep_alive = 1;
+    }
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/http_core.c.ifdefed" startline="79" endline="89">
+static const char *set_keep_alive_max (cmd_parms *cmd, void *dummy, const char *arg) {
+    const char *err = ap_check_cmd_context (cmd, NOT_IN_DIR_LOC_FILE | NOT_IN_LIMIT);
+    if (err != NULL) {
+        return err;
+    }
+    cmd->server->keep_alive_max = atoi (arg);
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/http_core.c.ifdefed" startline="102" endline="113">
+static const char *http_scheme (const request_rec *r) {
+    if (r->server->server_scheme && (strcmp (r->server->server_scheme, "https") == 0))
+        return "https";
+    return "http";
+}
+</source>
+<source file="examples/apache//smallApache/http_core.c.ifdefed" startline="115" endline="122">
+static apr_port_t http_port (const request_rec *r) {
+    if (r->server->server_scheme && (strcmp (r->server->server_scheme, "https") == 0))
+        return DEFAULT_HTTPS_PORT;
+    return DEFAULT_HTTP_PORT;
+}
+</source>
+<source file="examples/apache//smallApache/http_core.c.ifdefed" startline="124" endline="170">
+static int ap_process_http_async_connection (conn_rec *c) {
+    request_rec *r;
+    conn_state_t *cs = c->cs;
+    if (c->clogging_input_filters) {
+        return ap_process_http_connection (c);
+    }
+    AP_DEBUG_ASSERT (cs -> state == CONN_STATE_READ_REQUEST_LINE);
+    while (cs->state == CONN_STATE_READ_REQUEST_LINE) {
+        ap_update_child_status (c -> sbh, SERVER_BUSY_READ, NULL);
+        if ((r = ap_read_request (c))) {
+            c->keepalive = AP_CONN_UNKNOWN;
+            ap_update_child_status (c -> sbh, SERVER_BUSY_WRITE, r);
+            if (r->status == HTTP_OK)
+                ap_process_request (r);
+            if (ap_extended_status)
+                ap_increment_counts (c->sbh, r);
+            if (c->keepalive != AP_CONN_KEEPALIVE || c->aborted || ap_graceful_stop_signalled ()) {
+                cs->state = CONN_STATE_LINGER;
+            }
+            else if (!c->data_in_input_filters) {
+                cs->state = CONN_STATE_CHECK_REQUEST_LINE_READABLE;
+            }
+            apr_pool_destroy (r -> pool);
+        }
+        else {
+            cs->state = CONN_STATE_LINGER;
+        }
+    }
+    return OK;
+}
+</source>
+<source file="examples/apache//smallApache/http_core.c.ifdefed" startline="172" endline="213">
+static int ap_process_http_connection (conn_rec *c) {
+    request_rec *r;
+    apr_socket_t *csd = NULL;
+    ap_update_child_status (c -> sbh, SERVER_BUSY_READ, NULL);
+    while ((r = ap_read_request (c)) != NULL) {
+        c->keepalive = AP_CONN_UNKNOWN;
+        ap_update_child_status (c -> sbh, SERVER_BUSY_WRITE, r);
+        if (r->status == HTTP_OK)
+            ap_process_request (r);
+        if (ap_extended_status)
+            ap_increment_counts (c->sbh, r);
+        if (c->keepalive != AP_CONN_KEEPALIVE || c->aborted)
+            break;
+        ap_update_child_status (c -> sbh, SERVER_BUSY_KEEPALIVE, r);
+        apr_pool_destroy (r -> pool);
+        if (ap_graceful_stop_signalled ())
+            break;
+        if (!csd) {
+            csd = ap_get_module_config (c->conn_config, &core_module);
+        }
+        apr_socket_opt_set (csd, APR_INCOMPLETE_READ, 1);
+        apr_socket_timeout_set (csd, c -> base_server -> keep_alive_timeout);
+    }
+    return OK;
+}
+</source>
+<source file="examples/apache//smallApache/http_core.c.ifdefed" startline="215" endline="229">
+static int http_create_request (request_rec *r) {
+    if (!r->main && !r->prev) {
+        ap_add_output_filter_handle (ap_byterange_filter_handle, NULL, r, r -> connection);
+        ap_add_output_filter_handle (ap_content_length_filter_handle, NULL, r, r -> connection);
+        ap_add_output_filter_handle (ap_http_header_filter_handle, NULL, r, r -> connection);
+        ap_add_output_filter_handle (ap_http_outerror_filter_handle, NULL, r, r -> connection);
+    }
+    return OK;
+}
+</source>
+<source file="examples/apache//smallApache/http_core.c.ifdefed" startline="231" endline="238">
+static int http_send_options (request_rec *r) {
+    if ((r->method_number == M_OPTIONS) && r->uri && (r->uri[0] == '*') && (r->uri[1] == '\0')) {
+        return DONE;
+    }
+    return DECLINED;
+}
+</source>
+<source file="examples/apache//smallApache/http_core.c.ifdefed" startline="240" endline="278">
+static void register_hooks (apr_pool_t *p) {
+    int async_mpm = 0;
+    if (ap_mpm_query (AP_MPMQ_IS_ASYNC, &async_mpm) == APR_SUCCESS && async_mpm == 1) {
+        ap_hook_process_connection (ap_process_http_async_connection, NULL, NULL, APR_HOOK_REALLY_LAST);
+    }
+    else {
+        ap_hook_process_connection (ap_process_http_connection, NULL, NULL, APR_HOOK_REALLY_LAST);
+    }
+    ap_hook_map_to_storage (ap_send_http_trace, NULL, NULL, APR_HOOK_MIDDLE);
+    ap_hook_map_to_storage (http_send_options, NULL, NULL, APR_HOOK_MIDDLE);
+    ap_hook_http_scheme (http_scheme, NULL, NULL, APR_HOOK_REALLY_LAST);
+    ap_hook_default_port (http_port, NULL, NULL, APR_HOOK_REALLY_LAST);
+    ap_hook_create_request (http_create_request, NULL, NULL, APR_HOOK_REALLY_LAST);
+    ap_http_input_filter_handle = ap_register_input_filter ("HTTP_IN", ap_http_filter, NULL, AP_FTYPE_PROTOCOL);
+    ap_http_header_filter_handle = ap_register_output_filter ("HTTP_HEADER", ap_http_header_filter, NULL, AP_FTYPE_PROTOCOL);
+    ap_chunk_filter_handle = ap_register_output_filter ("CHUNK", ap_http_chunk_filter, NULL, AP_FTYPE_TRANSCODE);
+    ap_http_outerror_filter_handle = ap_register_output_filter ("HTTP_OUTERROR", ap_http_outerror_filter, NULL, AP_FTYPE_PROTOCOL);
+    ap_byterange_filter_handle = ap_register_output_filter ("BYTERANGE", ap_byterange_filter, NULL, AP_FTYPE_PROTOCOL);
+    ap_method_registry_init (p);
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="51" endline="257">
+static int cache_url_handler (request_rec *r, int lookup) {
+    apr_status_t rv;
+    const char *auth;
+    cache_provider_list *providers;
+    cache_request_rec *cache;
+    cache_server_conf *conf;
+    apr_bucket_brigade *out;
+    ap_filter_t *next;
+    ap_filter_rec_t *cache_out_handle;
+    if (r->method_number != M_GET) {
+        return DECLINED;
+    }
+    conf = (cache_server_conf *) ap_get_module_config (r->server->module_config, &cache_module);
+    if (!(providers = ap_cache_get_providers (r, conf, r->parsed_uri))) {
+        return DECLINED;
+    }
+    cache = (cache_request_rec *) ap_get_module_config (r->request_config, &cache_module);
+    if (!cache) {
+        cache = apr_pcalloc (r->pool, sizeof (cache_request_rec));
+        ap_set_module_config (r -> request_config, & cache_module, cache);
+    }
+    cache->providers = providers;
+    auth = apr_table_get (r->headers_in, "Authorization");
+    if (auth) {
+        return DECLINED;
+    }
+    rv = cache_select (r);
+    if (rv != OK) {
+        if (rv == DECLINED) {
+            if (!lookup) {
+                if (r->main) {
+                    ap_log_error (APLOG_MARK, APLOG_DEBUG, APR_SUCCESS, r -> server, "Adding CACHE_SAVE_SUBREQ filter for %s", r -> uri);
+                    ap_add_output_filter_handle (cache_save_subreq_filter_handle, NULL, r, r -> connection);
+                }
+                else {
+                    ap_log_error (APLOG_MARK, APLOG_DEBUG, APR_SUCCESS, r -> server, "Adding CACHE_SAVE filter for %s", r -> uri);
+                    ap_add_output_filter_handle (cache_save_filter_handle, NULL, r, r -> connection);
+                }
+                ap_log_error (APLOG_MARK, APLOG_DEBUG, APR_SUCCESS, r -> server, "Adding CACHE_REMOVE_URL filter for %s", r -> uri);
+                cache->remove_url_filter = ap_add_output_filter_handle (cache_remove_url_filter_handle, cache, r, r->connection);
+            }
+            else {
+                if (cache->stale_headers) {
+                    ap_log_error (APLOG_MARK, APLOG_DEBUG, APR_SUCCESS, r -> server, "Restoring request headers for %s", r -> uri);
+                    r->headers_in = cache->stale_headers;
+                }
+                ap_set_module_config (r -> request_config, & cache_module, NULL);
+            }
+        }
+        else {
+            ap_log_error (APLOG_MARK, APLOG_ERR, rv, r -> server, "cache: error returned while checking for cached " "file by %s cache", cache -> provider_name);
+        }
+        return DECLINED;
+    }
+    if (lookup) {
+        if (cache->stale_headers) {
+            ap_log_error (APLOG_MARK, APLOG_DEBUG, APR_SUCCESS, r -> server, "Restoring request headers.");
+            r->headers_in = cache->stale_headers;
+        }
+        ap_set_module_config (r -> request_config, & cache_module, NULL);
+    }
+    rv = ap_meets_conditions (r);
+    if (rv != OK) {
+        if (lookup) {
+            return DECLINED;
+        }
+        return rv;
+    }
+    if (lookup) {
+        return OK;
+    }
+    ap_run_insert_filter (r);
+    if (r->main) {
+        cache_out_handle = cache_out_subreq_filter_handle;
+    }
+    else {
+        cache_out_handle = cache_out_filter_handle;
+    }
+    ap_add_output_filter_handle (cache_out_handle, NULL, r, r -> connection);
+    next = r->output_filters;
+    while (next && (next->frec != cache_out_handle)) {
+        ap_remove_output_filter (next);
+        next = next->next;
+    }
+    out = apr_brigade_create (r->pool, r->connection->bucket_alloc);
+    rv = ap_pass_brigade (r->output_filters, out);
+    if (rv != APR_SUCCESS) {
+        if (rv != AP_FILTER_ERROR) {
+            ap_log_error (APLOG_MARK, APLOG_ERR, rv, r -> server, "cache: error returned while trying to return %s " "cached data", cache -> provider_name);
+        }
+        return rv;
+    }
+    return OK;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="265" endline="299">
+static int cache_out_filter (ap_filter_t *f, apr_bucket_brigade *bb) {
+    request_rec *r = f->r;
+    cache_request_rec *cache;
+    cache = (cache_request_rec *) ap_get_module_config (r->request_config, &cache_module);
+    if (!cache) {
+        ap_log_error (APLOG_MARK, APLOG_ERR, 0, r -> server, "CACHE_OUT enabled unexpectedly");
+        ap_remove_output_filter (f);
+        return ap_pass_brigade (f->next, bb);
+    }
+    ap_log_error (APLOG_MARK, APLOG_DEBUG, APR_SUCCESS, r -> server, "cache: running CACHE_OUT filter");
+    r->status = cache->handle->cache_obj->info.status;
+    cache->provider->recall_body (cache->handle, r->pool, bb);
+    ap_remove_output_filter (f);
+    ap_log_error (APLOG_MARK, APLOG_DEBUG, APR_SUCCESS, r -> server, "cache: serving %s", r -> uri);
+    return ap_pass_brigade (f->next, bb);
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="318" endline="869">
+static int cache_save_filter (ap_filter_t *f, apr_bucket_brigade *in) {
+    int rv = !OK;
+    request_rec *r = f->r;
+    cache_request_rec *cache;
+    cache_server_conf *conf;
+    const char *cc_out, *cl;
+    const char *exps, *lastmods, *dates, *etag;
+    apr_time_t exp, date, lastmod, now;
+    apr_off_t size;
+    cache_info *info = NULL;
+    char *reason;
+    apr_pool_t *p;
+    conf = (cache_server_conf *) ap_get_module_config (r->server->module_config, &cache_module);
+    cache = (cache_request_rec *) ap_get_module_config (r->request_config, &cache_module);
+    if (!cache) {
+        cache = apr_pcalloc (r->pool, sizeof (cache_request_rec));
+        ap_set_module_config (r -> request_config, & cache_module, cache);
+    }
+    reason = NULL;
+    p = r->pool;
+    if (cache->block_response) {
+        return APR_SUCCESS;
+    }
+    if (cache->in_checked) {
+        rv = cache->provider->store_body (cache->handle, r, in);
+        if (rv != APR_SUCCESS) {
+            ap_log_error (APLOG_MARK, APLOG_DEBUG, rv, r -> server, "cache: Cache provider's store_body failed!");
+            ap_remove_output_filter (f);
+        }
+        return ap_pass_brigade (f->next, in);
+    }
+    exps = apr_table_get (r->err_headers_out, "Expires");
+    if (exps == NULL) {
+        exps = apr_table_get (r->headers_out, "Expires");
+    }
+    if (exps != NULL) {
+        if (APR_DATE_BAD == (exp = apr_date_parse_http (exps))) {
+            exps = NULL;
+        }
+    }
+    else {
+        exp = APR_DATE_BAD;
+    }
+    lastmods = apr_table_get (r->err_headers_out, "Last-Modified");
+    if (lastmods == NULL) {
+        lastmods = apr_table_get (r->headers_out, "Last-Modified");
+    }
+    if (lastmods != NULL) {
+        lastmod = apr_date_parse_http (lastmods);
+        if (lastmod == APR_DATE_BAD) {
+            lastmods = NULL;
+        }
+    }
+    else {
+        lastmod = APR_DATE_BAD;
+    }
+    etag = apr_table_get (r->err_headers_out, "Etag");
+    if (etag == NULL) {
+        etag = apr_table_get (r->headers_out, "Etag");
+    }
+    cc_out = apr_table_get (r->err_headers_out, "Cache-Control");
+    if (cc_out == NULL) {
+        cc_out = apr_table_get (r->headers_out, "Cache-Control");
+    }
+    if (r->status != HTTP_OK && r->status != HTTP_NON_AUTHORITATIVE && r->status != HTTP_MULTIPLE_CHOICES && r->status != HTTP_MOVED_PERMANENTLY && r->status != HTTP_NOT_MODIFIED) {
+        if (exps != NULL || cc_out != NULL) {
+        }
+        else {
+            reason = apr_psprintf (p, "Response status %d", r->status);
+        }
+    }
+    if (reason) {
+    }
+    else if (exps != NULL && exp == APR_DATE_BAD) {
+        reason = apr_pstrcat (p, "Broken expires header: ", exps, NULL);
+    }
+    else if (exp != APR_DATE_BAD && exp < r->request_time) {
+        reason = "Expires header already expired, not cacheable";
+    }
+    else if (!conf->ignorequerystring && r->parsed_uri.query && exps == NULL && !ap_cache_liststr (NULL, cc_out, "max-age", NULL)) {
+        reason = "Query string present but no explicit expiration time";
+    }
+    else if (r->status == HTTP_NOT_MODIFIED && !cache->handle && !cache->stale_handle) {
+        reason = "HTTP Status 304 Not Modified";
+    }
+    else if (r->status == HTTP_OK && lastmods == NULL && etag == NULL && (exps == NULL) && (conf->no_last_mod_ignore == 0)) {
+        reason = "No Last-Modified, Etag, or Expires headers";
+    }
+    else if (r->header_only && !cache->stale_handle) {
+        reason = "HTTP HEAD request";
+    }
+    else if (!conf->store_nostore && ap_cache_liststr (NULL, cc_out, "no-store", NULL)) {
+        reason = "Cache-Control: no-store present";
+    }
+    else if (!conf->store_private && ap_cache_liststr (NULL, cc_out, "private", NULL)) {
+        reason = "Cache-Control: private present";
+    }
+    else if (apr_table_get (r->headers_in, "Authorization") != NULL && !(ap_cache_liststr (NULL, cc_out, "s-maxage", NULL) || ap_cache_liststr (NULL, cc_out, "must-revalidate", NULL) || ap_cache_liststr (NULL, cc_out, "public", NULL))) {
+        reason = "Authorization required";
+    }
+    else if (ap_cache_liststr (NULL, apr_table_get (r->headers_out, "Vary"), "*", NULL)) {
+        reason = "Vary header contains '*'";
+    }
+    else if (apr_table_get (r->subprocess_env, "no-cache") != NULL) {
+        reason = "environment variable 'no-cache' is set";
+    }
+    else if (r->no_cache) {
+        reason = "r->no_cache present";
+    }
+    if (reason) {
+        ap_log_error (APLOG_MARK, APLOG_DEBUG, 0, r -> server, "cache: %s not cached. Reason: %s", r -> unparsed_uri, reason);
+        ap_remove_output_filter (f);
+        return ap_pass_brigade (f->next, in);
+    }
+    cache->in_checked = 1;
+    cl = apr_table_get (r->err_headers_out, "Content-Length");
+    if (cl == NULL) {
+        cl = apr_table_get (r->headers_out, "Content-Length");
+    }
+    if (cl) {
+        char *errp;
+        if (apr_strtoff (&size, cl, &errp, 10) || *errp || size < 0) {
+            cl = NULL;
+        }
+    }
+    if (!cl) {
+        apr_bucket *e;
+        int all_buckets_here = 0;
+        int unresolved_length = 0;
+        size = 0;
+        for (e = APR_BRIGADE_FIRST (in); e != APR_BRIGADE_SENTINEL (in); e = APR_BUCKET_NEXT (e)) {
+            if (APR_BUCKET_IS_EOS (e)) {
+                all_buckets_here = 1;
+                break;
+            }
+            if (APR_BUCKET_IS_FLUSH (e)) {
+                unresolved_length = 1;
+                continue;
+            }
+            if (e->length == (apr_size_t) -1) {
+                break;
+            }
+            size += e->length;
+        }
+        if (!all_buckets_here) {
+            size = -1;
+        }
+    }
+    if (cache->stale_handle) {
+        if (r->status == HTTP_NOT_MODIFIED) {
+            cache->handle = cache->stale_handle;
+            info = &cache->handle->cache_obj->info;
+            rv = OK;
+        }
+        else if (!r->header_only) {
+            cache->provider->remove_entity (cache->stale_handle);
+            cache->stale_handle = NULL;
+            r->headers_in = cache->stale_headers;
+        }
+    }
+    if (!cache->handle && !r->header_only) {
+        rv = cache_create_entity (r, size);
+        info = apr_pcalloc (r->pool, sizeof (cache_info));
+        info->status = r->status;
+    }
+    if (rv != OK) {
+        ap_remove_output_filter (f);
+        return ap_pass_brigade (f->next, in);
+    }
+    ap_log_error (APLOG_MARK, APLOG_DEBUG, 0, r -> server, "cache: Caching url: %s", r -> unparsed_uri);
+    ap_log_error (APLOG_MARK, APLOG_DEBUG, 0, r -> server, "cache: Removing CACHE_REMOVE_URL filter.");
+    ap_remove_output_filter (cache -> remove_url_filter);
+    dates = apr_table_get (r->err_headers_out, "Date");
+    if (dates == NULL) {
+        dates = apr_table_get (r->headers_out, "Date");
+    }
+    if (dates != NULL) {
+        info->date = apr_date_parse_http (dates);
+    }
+    else {
+        info->date = APR_DATE_BAD;
+    }
+    now = apr_time_now ();
+    if (info->date == APR_DATE_BAD) {
+        info->date = now;
+    }
+    date = info->date;
+    info->response_time = now;
+    info->request_time = r->request_time;
+    if (lastmod != APR_DATE_BAD && lastmod > date) {
+        lastmod = date;
+        lastmods = dates;
+        ap_log_error (APLOG_MARK, APLOG_DEBUG, 0, r -> server, "cache: Last modified is in the future, " "replacing with now");
+    }
+    if (exp == APR_DATE_BAD) {
+        char *max_age_val;
+        if (ap_cache_liststr (r->pool, cc_out, "max-age", &max_age_val) && max_age_val != NULL) {
+            apr_int64_t x;
+            errno = 0;
+            x = apr_atoi64 (max_age_val);
+            if (errno) {
+                x = conf->defex;
+            }
+            else {
+                x = x * MSEC_ONE_SEC;
+            }
+            if (x > conf->maxex) {
+                x = conf->maxex;
+            }
+            exp = date + x;
+        }
+        else if ((lastmod != APR_DATE_BAD) && (lastmod < date)) {
+            apr_time_t x = (apr_time_t) ((date - lastmod) * conf->factor);
+            if (x > conf->maxex) {
+                x = conf->maxex;
+            }
+            exp = date + x;
+        }
+        else {
+            exp = date + conf->defex;
+        }
+    }
+    info->expire = exp;
+    if (cache->stale_handle) {
+        r->status = info->status;
+        r->status_line = NULL;
+        r->headers_out = apr_table_overlay (r->pool, r->headers_out, r->err_headers_out);
+        r->headers_out = ap_cache_cacheable_hdrs_out (r->pool, r->headers_out, r->server);
+        apr_table_clear (r -> err_headers_out);
+        ap_cache_accept_headers (cache -> handle, r, 1);
+    }
+    rv = cache->provider->store_headers (cache->handle, r, info);
+    if (cache->stale_handle) {
+        apr_bucket_brigade *bb;
+        apr_bucket *bkt;
+        int status;
+        bb = apr_brigade_create (r->pool, r->connection->bucket_alloc);
+        r->headers_in = cache->stale_headers;
+        status = ap_meets_conditions (r);
+        if (status != OK) {
+            r->status = status;
+            bkt = apr_bucket_flush_create (bb->bucket_alloc);
+            APR_BRIGADE_INSERT_TAIL (bb, bkt);
+        }
+        else {
+            cache->provider->recall_body (cache->handle, r->pool, bb);
+        }
+        cache->block_response = 1;
+        if (rv != APR_SUCCESS) {
+            ap_log_error (APLOG_MARK, APLOG_DEBUG, rv, r -> server, "cache: updating headers with store_headers failed. " "Removing cached url.");
+            rv = cache->provider->remove_url (cache->stale_handle, r->pool);
+            if (rv != OK) {
+                ap_log_error (APLOG_MARK, APLOG_DEBUG, rv, r -> server, "cache: attempt to remove url from cache unsuccessful.");
+            }
+        }
+        return ap_pass_brigade (f->next, bb);
+    }
+    if (rv != APR_SUCCESS) {
+        ap_log_error (APLOG_MARK, APLOG_DEBUG, rv, r -> server, "cache: store_headers failed");
+        ap_remove_output_filter (f);
+        return ap_pass_brigade (f->next, in);
+    }
+    rv = cache->provider->store_body (cache->handle, r, in);
+    if (rv != APR_SUCCESS) {
+        ap_log_error (APLOG_MARK, APLOG_DEBUG, rv, r -> server, "cache: store_body failed");
+        ap_remove_output_filter (f);
+    }
+    return ap_pass_brigade (f->next, in);
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="892" endline="917">
+static int cache_remove_url_filter (ap_filter_t *f, apr_bucket_brigade *in) {
+    request_rec *r = f->r;
+    cache_request_rec *cache;
+    cache = (cache_request_rec *) f->ctx;
+    if (!cache) {
+        ap_log_error (APLOG_MARK, APLOG_DEBUG, 0, r -> server, "cache: CACHE_REMOVE_URL enabled unexpectedly");
+        ap_remove_output_filter (f);
+        return ap_pass_brigade (f->next, in);
+    }
+    cache_remove_url (cache, r -> pool);
+    ap_remove_output_filter (f);
+    return ap_pass_brigade (f->next, in);
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="922" endline="957">
+static void *create_cache_config (apr_pool_t *p, server_rec *s) {
+    cache_server_conf *ps = apr_pcalloc (p, sizeof (cache_server_conf));
+    ps->cacheenable = apr_array_make (p, 10, sizeof (struct cache_enable));
+    ps->cachedisable = apr_array_make (p, 10, sizeof (struct cache_disable));
+    ps->maxex = DEFAULT_CACHE_MAXEXPIRE;
+    ps->maxex_set = 0;
+    ps->defex = DEFAULT_CACHE_EXPIRE;
+    ps->defex_set = 0;
+    ps->factor = DEFAULT_CACHE_LMFACTOR;
+    ps->factor_set = 0;
+    ps->no_last_mod_ignore_set = 0;
+    ps->no_last_mod_ignore = 0;
+    ps->ignorecachecontrol = 0;
+    ps->ignorecachecontrol_set = 0;
+    ps->store_private = 0;
+    ps->store_private_set = 0;
+    ps->store_nostore = 0;
+    ps->store_nostore_set = 0;
+    ps->ignore_headers = apr_array_make (p, 10, sizeof (char *));
+    ps->ignore_headers_set = CACHE_IGNORE_HEADERS_UNSET;
+    ps->ignorequerystring = 0;
+    ps->ignorequerystring_set = 0;
+    ps->ignore_session_id = apr_array_make (p, 10, sizeof (char *));
+    ps->ignore_session_id_set = CACHE_IGNORE_SESSION_ID_UNSET;
+    return ps;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="959" endline="1010">
+static void *merge_cache_config (apr_pool_t *p, void *basev, void *overridesv) {
+    cache_server_conf *ps = apr_pcalloc (p, sizeof (cache_server_conf));
+    cache_server_conf *base = (cache_server_conf *) basev;
+    cache_server_conf *overrides = (cache_server_conf *) overridesv;
+    ps->cachedisable = apr_array_append (p, base->cachedisable, overrides->cachedisable);
+    ps->cacheenable = apr_array_append (p, base->cacheenable, overrides->cacheenable);
+    ps->maxex = (overrides->maxex_set == 0) ? base->maxex : overrides->maxex;
+    ps->defex = (overrides->defex_set == 0) ? base->defex : overrides->defex;
+    ps->factor = (overrides->factor_set == 0) ? base->factor : overrides->factor;
+    ps->no_last_mod_ignore = (overrides->no_last_mod_ignore_set == 0) ? base->no_last_mod_ignore : overrides->no_last_mod_ignore;
+    ps->ignorecachecontrol = (overrides->ignorecachecontrol_set == 0) ? base->ignorecachecontrol : overrides->ignorecachecontrol;
+    ps->store_private = (overrides->store_private_set == 0) ? base->store_private : overrides->store_private;
+    ps->store_nostore = (overrides->store_nostore_set == 0) ? base->store_nostore : overrides->store_nostore;
+    ps->ignore_headers = (overrides->ignore_headers_set == CACHE_IGNORE_HEADERS_UNSET) ? base->ignore_headers : overrides->ignore_headers;
+    ps->ignorequerystring = (overrides->ignorequerystring_set == 0) ? base->ignorequerystring : overrides->ignorequerystring;
+    ps->ignore_session_id = (overrides->ignore_session_id_set == CACHE_IGNORE_SESSION_ID_UNSET) ? base->ignore_session_id : overrides->ignore_session_id;
+    return ps;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1011" endline="1023">
+static const char *set_cache_ignore_no_last_mod (cmd_parms *parms, void *dummy, int flag) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->no_last_mod_ignore = flag;
+    conf->no_last_mod_ignore_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1025" endline="1036">
+static const char *set_cache_ignore_cachecontrol (cmd_parms *parms, void *dummy, int flag) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->ignorecachecontrol = flag;
+    conf->ignorecachecontrol_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1038" endline="1049">
+static const char *set_cache_store_private (cmd_parms *parms, void *dummy, int flag) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->store_private = flag;
+    conf->store_private_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1051" endline="1062">
+static const char *set_cache_store_nostore (cmd_parms *parms, void *dummy, int flag) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->store_nostore = flag;
+    conf->store_nostore_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1064" endline="1090">
+static const char *add_ignore_header (cmd_parms *parms, void *dummy, const char *header) {
+    cache_server_conf *conf;
+    char **new;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    if (!strncasecmp (header, "None", 4)) {
+        conf->ignore_headers->nelts = 0;
+    }
+    else {
+        if ((conf->ignore_headers_set == CACHE_IGNORE_HEADERS_UNSET) || (conf->ignore_headers->nelts)) {
+            new = (char **) apr_array_push (conf->ignore_headers);
+            (*new) = (char *) header;
+        }
+    }
+    conf->ignore_headers_set = CACHE_IGNORE_HEADERS_SET;
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1092" endline="1118">
+static const char *add_ignore_session_id (cmd_parms *parms, void *dummy, const char *identifier) {
+    cache_server_conf *conf;
+    char **new;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    if (!strncasecmp (identifier, "None", 4)) {
+        conf->ignore_session_id->nelts = 0;
+    }
+    else {
+        if ((conf->ignore_session_id_set == CACHE_IGNORE_SESSION_ID_UNSET) || (conf->ignore_session_id->nelts)) {
+            new = (char **) apr_array_push (conf->ignore_session_id);
+            (*new) = (char *) identifier;
+        }
+    }
+    conf->ignore_session_id_set = CACHE_IGNORE_SESSION_ID_SET;
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1120" endline="1148">
+static const char *add_cache_enable (cmd_parms *parms, void *dummy, const char *type, const char *url) {
+    cache_server_conf *conf;
+    struct cache_enable *new;
+    if (*type == '/') {
+        return apr_psprintf (parms->pool, "provider (%s) starts with a '/'.  Are url and provider switched?", type);
+    }
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    new = apr_array_push (conf->cacheenable);
+    new->type = type;
+    if (apr_uri_parse (parms->pool, url, &(new->url))) {
+        return NULL;
+    }
+    if (new->url.path) {
+        new->pathlen = strlen (new->url.path);
+    }
+    else {
+        new->pathlen = 1;
+        new->url.path = "/";
+    }
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1150" endline="1170">
+static const char *add_cache_disable (cmd_parms *parms, void *dummy, const char *url) {
+    cache_server_conf *conf;
+    struct cache_disable *new;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    new = apr_array_push (conf->cachedisable);
+    if (apr_uri_parse (parms->pool, url, &(new->url))) {
+        return NULL;
+    }
+    if (new->url.path) {
+        new->pathlen = strlen (new->url.path);
+    }
+    else {
+        new->pathlen = 1;
+        new->url.path = "/";
+    }
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1172" endline="1183">
+static const char *set_cache_maxex (cmd_parms *parms, void *dummy, const char *arg) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->maxex = (apr_time_t) (atol (arg) * MSEC_ONE_SEC);
+    conf->maxex_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1185" endline="1196">
+static const char *set_cache_defex (cmd_parms *parms, void *dummy, const char *arg) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->defex = (apr_time_t) (atol (arg) * MSEC_ONE_SEC);
+    conf->defex_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1198" endline="1213">
+static const char *set_cache_factor (cmd_parms *parms, void *dummy, const char *arg) {
+    cache_server_conf *conf;
+    double val;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    if (sscanf (arg, "%lg", &val) != 1) {
+        return "CacheLastModifiedFactor value must be a float";
+    }
+    conf->factor = val;
+    conf->factor_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1215" endline="1226">
+static const char *set_cache_ignore_querystring (cmd_parms *parms, void *dummy, int flag) {
+    cache_server_conf *conf;
+    conf = (cache_server_conf *) ap_get_module_config (parms->server->module_config, &cache_module);
+    conf->ignorequerystring = flag;
+    conf->ignorequerystring_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1228" endline="1239">
+static int cache_post_config (apr_pool_t *p, apr_pool_t *plog, apr_pool_t *ptemp, server_rec *s) {
+    cache_generate_key = APR_RETRIEVE_OPTIONAL_FN (ap_cache_generate_key);
+    if (!cache_generate_key) {
+        cache_generate_key = cache_generate_key_default;
+    }
+    return OK;
+}
+</source>
+<source file="examples/apache//smallApache/mod_cache.c.ifdefed" startline="1290" endline="1358">
+static void register_hooks (apr_pool_t *p) {
+    ap_hook_quick_handler (cache_url_handler, NULL, NULL, APR_HOOK_FIRST);
+    cache_save_filter_handle = ap_register_output_filter ("CACHE_SAVE", cache_save_filter, NULL, AP_FTYPE_CONTENT_SET +1);
+    cache_save_subreq_filter_handle = ap_register_output_filter ("CACHE_SAVE_SUBREQ", cache_save_filter, NULL, AP_FTYPE_CONTENT_SET -1);
+    cache_out_filter_handle = ap_register_output_filter ("CACHE_OUT", cache_out_filter, NULL, AP_FTYPE_CONTENT_SET +1);
+    cache_out_subreq_filter_handle = ap_register_output_filter ("CACHE_OUT_SUBREQ", cache_out_filter, NULL, AP_FTYPE_CONTENT_SET -1);
+    cache_remove_url_filter_handle = ap_register_output_filter ("CACHE_REMOVE_URL", cache_remove_url_filter, NULL, AP_FTYPE_PROTOCOL);
+    ap_hook_post_config (cache_post_config, NULL, NULL, APR_HOOK_REALLY_FIRST);
+}
+</source>
+<source file="examples/apache//smallApache/mod_file_cache.c.ifdefed" startline="119" endline="125">
+static void *create_server_config (apr_pool_t *p, server_rec *s) {
+    a_server_config *sconf = apr_palloc (p, sizeof (*sconf));
+    sconf->fileht = apr_hash_make (p);
+    return sconf;
+}
+</source>
+<source file="examples/apache//smallApache/mod_file_cache.c.ifdefed" startline="127" endline="206">
+static void cache_the_file (cmd_parms *cmd, const char *filename, int mmap) {
+    a_server_config *sconf;
+    a_file *new_file;
+    a_file tmp;
+    apr_file_t *fd = NULL;
+    apr_status_t rc;
+    const char *fspec;
+    fspec = ap_server_root_relative (cmd->pool, filename);
+    if (!fspec) {
+        ap_log_error (APLOG_MARK, APLOG_WARNING, APR_EBADPATH, cmd -> server, "mod_file_cache: invalid file path " "%s, skipping", filename);
+        return;
+    }
+    if ((rc = apr_stat (&tmp.finfo, fspec, APR_FINFO_MIN, cmd->temp_pool)) != APR_SUCCESS) {
+        ap_log_error (APLOG_MARK, APLOG_WARNING, rc, cmd -> server, "mod_file_cache: unable to stat(%s), skipping", fspec);
+        return;
+    }
+    if (tmp.finfo.filetype != APR_REG) {
+        ap_log_error (APLOG_MARK, APLOG_WARNING, 0, cmd -> server, "mod_file_cache: %s isn't a regular file, skipping", fspec);
+        return;
+    }
+    if (tmp.finfo.size > AP_MAX_SENDFILE) {
+        ap_log_error (APLOG_MARK, APLOG_WARNING, 0, cmd -> server, "mod_file_cache: %s is too large to cache, skipping", fspec);
+        return;
+    }
+    rc = apr_file_open (&fd, fspec, APR_READ | APR_BINARY | APR_XTHREAD, APR_OS_DEFAULT, cmd->pool);
+    if (rc != APR_SUCCESS) {
+        ap_log_error (APLOG_MARK, APLOG_WARNING, rc, cmd -> server, "mod_file_cache: unable to open(%s, O_RDONLY), skipping", fspec);
+        return;
+    }
+    apr_file_inherit_set (fd);
+    new_file = apr_pcalloc (cmd->pool, sizeof (a_file));
+    new_file->finfo = tmp.finfo;
+    new_file->filename = fspec;
+    apr_rfc822_date (new_file -> mtimestr, new_file -> finfo.mtime);
+    apr_snprintf (new_file -> sizestr, sizeof new_file -> sizestr, "%" APR_OFF_T_FMT, new_file -> finfo.size);
+    sconf = ap_get_module_config (cmd->server->module_config, &file_cache_module);
+    apr_hash_set (sconf -> fileht, new_file -> filename, strlen (new_file -> filename), new_file);
+}
+</source>
+<source file="examples/apache//smallApache/mod_file_cache.c.ifdefed" startline="208" endline="218">
+static const char *cachefilehandle (cmd_parms *cmd, void *dummy, const char *filename) {
+    ap_log_error (APLOG_MARK, APLOG_WARNING, 0, cmd -> server, "mod_file_cache: unable to cache file: %s. Sendfile is not supported on this OS", filename);
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_file_cache.c.ifdefed" startline="219" endline="229">
+static const char *cachefilemmap (cmd_parms *cmd, void *dummy, const char *filename) {
+    ap_log_error (APLOG_MARK, APLOG_WARNING, 0, cmd -> server, "mod_file_cache: unable to cache file: %s. MMAP is not supported by this OS", filename);
+    return NULL;
+}
+</source>
+<source file="examples/apache//smallApache/mod_file_cache.c.ifdefed" startline="231" endline="236">
+static int file_cache_post_config (apr_pool_t *p, apr_pool_t *plog, apr_pool_t *ptemp, server_rec *s) {
+    return OK;
+}
+</source>
+<source file="examples/apache//smallApache/mod_file_cache.c.ifdefed" startline="241" endline="270">
+static int file_cache_xlat (request_rec *r) {
+    a_server_config *sconf;
+    a_file *match;
+    int res;
+    sconf = ap_get_module_config (r->server->module_config, &file_cache_module);
+    if (!apr_hash_count (sconf->fileht)) {
+        return DECLINED;
+    }
+    res = ap_core_translate (r);
+    if (res != OK || !r->filename) {
+        return res;
+    }
+    match = (a_file *) apr_hash_get (sconf->fileht, r->filename, APR_HASH_KEY_STRING);
+    if (match == NULL)
+        return DECLINED;
+    ap_set_module_config (r -> request_config, & file_cache_module, match);
+    r->finfo = match->finfo;
+    return OK;
+}
+</source>
+<source file="examples/apache//smallApache/mod_file_cache.c.ifdefed" startline="272" endline="291">
+static int mmap_handler (request_rec *r, a_file *file) {
+    return OK;
+}
+</source>
+<source file="examples/apache//smallApache/mod_file_cache.c.ifdefed" startline="293" endline="310">
+static int sendfile_handler (request_rec *r, a_file *file) {
+    return OK;
+}
+</source>
+<source file="examples/apache//smallApache/mod_file_cache.c.ifdefed" startline="312" endline="384">
+static int file_cache_handler (request_rec *r) {
+    a_file *match;
+    int errstatus;
+    int rc = OK;
+    if (ap_strcmp_match (r->handler, "*/*")) {
+        return DECLINED;
+    }
+    if (r->method_number != M_GET)
+        return DECLINED;
+    match = ap_get_module_config (r->request_config, &file_cache_module);
+    if (match == NULL) {
+        return DECLINED;
+    }
+    r->allowed |= (AP_METHOD_BIT << M_GET);
+    if ((errstatus = ap_discard_request_body (r)) != OK)
+        return errstatus;
+    ap_update_mtime (r, match -> finfo.mtime);
+    {
+        apr_time_t mod_time;
+        char *datestr;
+        mod_time = ap_rationalize_mtime (r, r->mtime);
+        if (mod_time == match->finfo.mtime)
+            datestr = match->mtimestr;
+        else {
+            datestr = apr_palloc (r->pool, APR_RFC822_DATE_LEN);
+            apr_rfc822_date (datestr, mod_time);
+        }
+        apr_table_setn (r -> headers_out, "Last-Modified", datestr);
+    }
+    ap_set_etag (r);
+    if ((errstatus = ap_meets_conditions (r)) != OK) {
+        return errstatus;
+    }
+    r->clength = match->finfo.size;
+    apr_table_setn (r -> headers_out, "Content-Length", match -> sizestr);
+    if (!r->header_only) {
+        if (match->is_mmapped == TRUE)
+            rc = mmap_handler (r, match);
+        else
+            rc = sendfile_handler (r, match);
+    }
+    return rc;
+}
+</source>
+<source file="examples/apache//smallApache/mod_file_cache.c.ifdefed" startline="395" endline="406">
+static void register_hooks (apr_pool_t *p) {
+    ap_hook_handler (file_cache_handler, NULL, NULL, APR_HOOK_LAST);
+    ap_hook_post_config (file_cache_post_config, NULL, NULL, APR_HOOK_MIDDLE);
+    ap_hook_translate_name (file_cache_xlat, NULL, NULL, APR_HOOK_MIDDLE);
+}
+</source>

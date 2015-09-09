@@ -1,0 +1,1946 @@
+.class com/android/debug/hv/ViewServer$ViewServerWorker
+.super java/lang/Object
+.source ViewServer.java
+.implements java/lang/Runnable
+.implements com/android/debug/hv/ViewServer$WindowListener
+
+.inner class ViewServerWorker inner com/android/debug/hv/ViewServer$ViewServerWorker outer com/android/debug/hv/ViewServer
+.field private mClient Ljava/net/Socket;
+.field private final mLock [Ljava/lang/Object;
+.field private mNeedFocusedWindowUpdate Z
+.field private mNeedWindowListUpdate Z
+.field final this$0 Lcom/android/debug/hv/ViewServer;
+
+.method public <init>(Lcom/android/debug/hv/ViewServer;Ljava/net/Socket;)V
+.limit registers 5
+; this: v2 (Lcom/android/debug/hv/ViewServer$ViewServerWorker;)
+; parameter[0] : v3 (Lcom/android/debug/hv/ViewServer;)
+; parameter[1] : v4 (Ljava/net/Socket;)
+	const/4	v1,0
+; v1 : single-length
+.line 529
+	iput-object	v3,v2,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v3 : Lcom/android/debug/hv/ViewServer; , v2 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-direct	{v2},java/lang/Object/<init>	; <init>()V
+; v2 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+.line 527
+	new-array	v0,v1,[Ljava/lang/Object;
+; v0 : [Ljava/lang/Object; , v1 : single-length
+	iput-object	v0,v2,com/android/debug/hv/ViewServer$ViewServerWorker.mLock [Ljava/lang/Object;
+; v0 : [Ljava/lang/Object; , v2 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+.line 530
+	iput-object	v4,v2,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v4 : Ljava/net/Socket; , v2 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+.line 531
+	iput-boolean	v1,v2,com/android/debug/hv/ViewServer$ViewServerWorker.mNeedWindowListUpdate Z
+; v1 : single-length , v2 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+.line 532
+	iput-boolean	v1,v2,com/android/debug/hv/ViewServer$ViewServerWorker.mNeedFocusedWindowUpdate Z
+; v1 : single-length , v2 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+.line 533
+	return-void	
+.end method
+
+.method private findWindow(I)Landroid/view/View;
+.limit registers 7
+; this: v5 (Lcom/android/debug/hv/ViewServer$ViewServerWorker;)
+; parameter[0] : v6 (I)
+.catch java/lang/Exception from la9dba to la9e0e using la9e4a
+.catch java/lang/Exception from la9d5a to la9d64 using la9d82
+.var 2 is window Landroid/view/View; from la9d40 to la9d80
+.var 2 is window Landroid/view/View; from la9d82 to la9da0
+.var 0 is entry Ljava/util/Map$Entry; from la9dee to la9e2c
+.var 1 is i$ Ljava/util/Iterator; from la9dd6 to la9e4a
+.line 649
+	const/4	v3,15
+; v3 : single-length
+	if-ne	v6,v3,la9da0
+; v6 : single-length , v3 : single-length
+.line 650
+	const/4	v2,0
+; v2 : single-length
+.line 651
+	iget-object	v3,v5,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v3 : Lcom/android/debug/hv/ViewServer; , v5 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v3},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v3 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v3
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v3},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v3
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v3},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/lock	; lock()V
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+la9d5a:
+.line 653
+	iget-object	v3,v5,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v3 : Lcom/android/debug/hv/ViewServer; , v5 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v3},com/android/debug/hv/ViewServer/access$400	; access$400(Lcom/android/debug/hv/ViewServer;)Landroid/view/View;
+; v3 : Lcom/android/debug/hv/ViewServer;
+la9d64:
+	move-result-object	v2
+; v2 : Landroid/view/View;
+.line 655
+	iget-object	v3,v5,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v3 : Lcom/android/debug/hv/ViewServer; , v5 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v3},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v3 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v3
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v3},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v3
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v3},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/unlock	; unlock()V
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+la9d80:
+.line 672
+	return-object	v2
+; v2 : Landroid/view/View;
+la9d82:
+.line 655
+	move-exception	v3
+; v3 : java/lang/Exception
+	iget-object	v4,v5,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v4 : Lcom/android/debug/hv/ViewServer; , v5 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v4},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v4 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v4
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v4},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v4
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v4},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/unlock	; unlock()V
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	throw	v3
+; v3 : java/lang/Exception
+la9da0:
+.line 661
+	iget-object	v3,v5,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v3 : Lcom/android/debug/hv/ViewServer; , v5 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v3},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v3 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v3
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v3},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v3
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v3},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/lock	; lock()V
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+la9dba:
+.line 663
+	iget-object	v3,v5,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v3 : Lcom/android/debug/hv/ViewServer; , v5 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v3},com/android/debug/hv/ViewServer/access$500	; access$500(Lcom/android/debug/hv/ViewServer;)Ljava/util/HashMap;
+; v3 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v3
+; v3 : Ljava/util/HashMap;
+	invoke-virtual	{v3},java/util/HashMap/entrySet	; entrySet()Ljava/util/Set;
+; v3 : Ljava/util/HashMap;
+	move-result-object	v3
+; v3 : Ljava/util/Set;
+	invoke-interface	{v3},java/util/Set/iterator	; iterator()Ljava/util/Iterator;
+; v3 : Ljava/util/Set;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+la9dd6:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v3
+; v3 : single-length
+	if-eqz	v3,la9e2c
+; v3 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/util/Map$Entry
+; v0 : Ljava/util/Map$Entry;
+.line 664
+	invoke-interface	{v0},java/util/Map$Entry/getKey	; getKey()Ljava/lang/Object;
+; v0 : Ljava/util/Map$Entry;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	invoke-static	{v3},java/lang/System/identityHashCode	; identityHashCode(Ljava/lang/Object;)I
+; v3 : Ljava/lang/Object;
+	move-result	v3
+; v3 : single-length
+	if-ne	v3,v6,la9dd6
+; v3 : single-length , v6 : single-length
+.line 665
+	invoke-interface	{v0},java/util/Map$Entry/getKey	; getKey()Ljava/lang/Object;
+; v0 : Ljava/util/Map$Entry;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,android/view/View
+; v3 : Landroid/view/View;
+la9e0e:
+.line 669
+	iget-object	v4,v5,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v4 : Lcom/android/debug/hv/ViewServer; , v5 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v4},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v4 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v4
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v4},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v4
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v4},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/unlock	; unlock()V
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	move-object	v2,v3
+; v2 : Landroid/view/View; , v3 : Landroid/view/View;
+	goto	la9d80
+la9e2c:
+	iget-object	v3,v5,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v3 : Lcom/android/debug/hv/ViewServer; , v5 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v3},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v3 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v3
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v3},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v3
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v3},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/unlock	; unlock()V
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+.line 672
+	const/4	v2,0
+; v2 : single-length
+	goto	la9d80
+la9e4a:
+.line 669
+	move-exception	v3
+; v3 : java/lang/Exception
+	iget-object	v4,v5,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v4 : Lcom/android/debug/hv/ViewServer; , v5 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v4},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v4 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v4
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v4},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v4
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v4},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/unlock	; unlock()V
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	throw	v3
+; v3 : java/lang/Exception
+.end method
+
+.method private getFocusedWindow(Ljava/net/Socket;)Z
+.limit registers 12
+; this: v10 (Lcom/android/debug/hv/ViewServer$ViewServerWorker;)
+; parameter[0] : v11 (Ljava/net/Socket;)
+.catch java/io/IOException from la9ff8 to la9ffe using laa008
+.catch java/lang/Exception from la9fd4 to la9ff0 using la9fba
+.catch java/lang/Exception from la9fd4 to la9ff0 using la9ff0
+.catch java/io/IOException from la9fc4 to la9fca using la9fcc
+.catch java/lang/Exception from la9f9e to la9fba using la9fba
+.catch java/lang/Exception from la9f9e to la9fba using la9ff0
+.catch java/io/IOException from la9f92 to la9f98 using laa000
+.catch java/lang/Exception from la9f3e to la9f8e using la9fba
+.catch java/lang/Exception from la9f3e to la9f8e using la9ff0
+.catch java/lang/Exception from la9f16 to la9f3e using la9fd2
+.catch java/lang/Exception from la9ede to la9f16 using la9fba
+.catch java/lang/Exception from la9ede to la9f16 using la9ff0
+.catch java/lang/Exception from la9ed2 to la9edc using la9f9c
+.catch java/lang/Exception from la9eb8 to la9ed2 using la9fba
+.catch java/lang/Exception from la9eb8 to la9ed2 using la9ff0
+.catch java/lang/Exception from la9e96 to la9eb6 using laa012
+.catch java/lang/Exception from la9e96 to la9eb6 using laa00e
+.var 5 is out Ljava/io/BufferedWriter; from la9e96 to la9eb6
+.var 1 is clientStream Ljava/io/OutputStream; from la9e9e to la9f9a
+.var 4 is focusedWindow Landroid/view/View; from la9eb8 to la9f9a
+.var 6 is out Ljava/io/BufferedWriter; from la9eb6 to la9f9a
+.var 5 is out Ljava/io/BufferedWriter; from la9f9a to la9f9c
+.var 1 is clientStream Ljava/io/OutputStream; from la9f9c to la9fbe
+.var 4 is focusedWindow Landroid/view/View; from la9f9c to la9fbe
+.var 6 is out Ljava/io/BufferedWriter; from la9f9c to la9fbe
+.var 2 is e Ljava/io/IOException; from la9fce to la9fd2
+.var 5 is out Ljava/io/BufferedWriter; from la9fbe to la9fd2
+.var 1 is clientStream Ljava/io/OutputStream; from la9fd2 to la9ff4
+.var 4 is focusedWindow Landroid/view/View; from la9fd2 to la9ff4
+.var 6 is out Ljava/io/BufferedWriter; from la9fd2 to la9ff4
+.var 5 is out Ljava/io/BufferedWriter; from la9ff4 to laa000
+.var 6 is out Ljava/io/BufferedWriter; from laa000 to laa006
+.var 1 is clientStream Ljava/io/OutputStream; from laa000 to laa008
+.var 2 is e Ljava/io/IOException; from laa002 to laa008
+.var 4 is focusedWindow Landroid/view/View; from laa000 to laa008
+.var 2 is e Ljava/io/IOException; from laa00a to laa00e
+.var 5 is out Ljava/io/BufferedWriter; from laa006 to laa016
+.var 6 is out Ljava/io/BufferedWriter; from laa016 to laa018
+.line 712
+	const/4	v7,1
+; v7 : single-length
+.line 713
+	const/4	v3,0
+; v3 : single-length
+.line 715
+	const/4	v5,0
+; v5 : single-length
+la9e96:
+.line 717
+	invoke-virtual	{v11},java/net/Socket/getOutputStream	; getOutputStream()Ljava/io/OutputStream;
+; v11 : Ljava/net/Socket;
+	move-result-object	v1
+; v1 : Ljava/io/OutputStream;
+.line 718
+	new-instance	v6,java/io/BufferedWriter
+; v6 : Ljava/io/BufferedWriter;
+	new-instance	v8,java/io/OutputStreamWriter
+; v8 : Ljava/io/OutputStreamWriter;
+	invoke-direct	{v8,v1},java/io/OutputStreamWriter/<init>	; <init>(Ljava/io/OutputStream;)V
+; v8 : Ljava/io/OutputStreamWriter; , v1 : Ljava/io/OutputStream;
+	const/16	v9,8192
+; v9 : single-length
+	invoke-direct	{v6,v8,v9},java/io/BufferedWriter/<init>	; <init>(Ljava/io/Writer;I)V
+; v6 : Ljava/io/BufferedWriter; , v8 : Ljava/io/OutputStreamWriter; , v9 : single-length
+la9eb6:
+.line 720
+	const/4	v4,0
+; v4 : single-length
+la9eb8:
+.line 722
+	iget-object	v8,v10,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v8 : Lcom/android/debug/hv/ViewServer; , v10 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v8},com/android/debug/hv/ViewServer/access$600	; access$600(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v8 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v8
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v8},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v8
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v8},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/lock	; lock()V
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+la9ed2:
+.line 724
+	iget-object	v8,v10,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v8 : Lcom/android/debug/hv/ViewServer; , v10 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v8},com/android/debug/hv/ViewServer/access$400	; access$400(Lcom/android/debug/hv/ViewServer;)Landroid/view/View;
+; v8 : Lcom/android/debug/hv/ViewServer;
+la9edc:
+	move-result-object	v4
+; v4 : Landroid/view/View;
+la9ede:
+.line 726
+	iget-object	v8,v10,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v8 : Lcom/android/debug/hv/ViewServer; , v10 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v8},com/android/debug/hv/ViewServer/access$600	; access$600(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v8 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v8
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v8},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v8
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v8},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/unlock	; unlock()V
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+.line 729
+	if-eqz	v4,la9f7e
+; v4 : Landroid/view/View;
+.line 730
+	iget-object	v8,v10,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v8 : Lcom/android/debug/hv/ViewServer; , v10 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v8},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v8 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v8
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v8},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v8
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v8},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/lock	; lock()V
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+la9f16:
+.line 732
+	iget-object	v8,v10,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v8 : Lcom/android/debug/hv/ViewServer; , v10 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v8},com/android/debug/hv/ViewServer/access$500	; access$500(Lcom/android/debug/hv/ViewServer;)Ljava/util/HashMap;
+; v8 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v8
+; v8 : Ljava/util/HashMap;
+	iget-object	v9,v10,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v9 : Lcom/android/debug/hv/ViewServer; , v10 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v9},com/android/debug/hv/ViewServer/access$400	; access$400(Lcom/android/debug/hv/ViewServer;)Landroid/view/View;
+; v9 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v9
+; v9 : Landroid/view/View;
+	invoke-virtual	{v8,v9},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v8 : Ljava/util/HashMap; , v9 : Landroid/view/View;
+	move-result-object	v8
+; v8 : Ljava/lang/Object;
+	move-object	v0,v8
+; v0 : Ljava/lang/Object; , v8 : Ljava/lang/Object;
+	check-cast	v0,java/lang/String
+; v0 : Ljava/lang/String;
+	move-object	v3,v0
+; v3 : Ljava/lang/String; , v0 : Ljava/lang/String;
+la9f3e:
+.line 734
+	iget-object	v8,v10,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v8 : Lcom/android/debug/hv/ViewServer; , v10 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v8},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v8 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v8
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v8},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v8
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v8},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/unlock	; unlock()V
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+.line 737
+	invoke-static	{v4},java/lang/System/identityHashCode	; identityHashCode(Ljava/lang/Object;)I
+; v4 : Landroid/view/View;
+	move-result	v8
+; v8 : single-length
+	invoke-static	{v8},java/lang/Integer/toHexString	; toHexString(I)Ljava/lang/String;
+; v8 : single-length
+	move-result-object	v8
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v6,v8},java/io/BufferedWriter/write	; write(Ljava/lang/String;)V
+; v6 : Ljava/io/BufferedWriter; , v8 : Ljava/lang/String;
+.line 738
+	const/16	v8,32
+; v8 : single-length
+	invoke-virtual	{v6,v8},java/io/BufferedWriter/write	; write(I)V
+; v6 : Ljava/io/BufferedWriter; , v8 : single-length
+.line 739
+	invoke-virtual	{v6,v3},java/io/BufferedWriter/append	; append(Ljava/lang/CharSequence;)Ljava/io/Writer;
+; v6 : Ljava/io/BufferedWriter; , v3 : Ljava/lang/String;
+la9f7e:
+.line 741
+	const/16	v8,10
+; v8 : single-length
+	invoke-virtual	{v6,v8},java/io/BufferedWriter/write	; write(I)V
+; v6 : Ljava/io/BufferedWriter; , v8 : single-length
+.line 742
+	invoke-virtual	{v6},java/io/BufferedWriter/flush	; flush()V
+; v6 : Ljava/io/BufferedWriter;
+la9f8e:
+.line 746
+	if-eqz	v6,laa016
+; v6 : Ljava/io/BufferedWriter;
+la9f92:
+.line 748
+	invoke-virtual	{v6},java/io/BufferedWriter/close	; close()V
+; v6 : Ljava/io/BufferedWriter;
+la9f98:
+	move-object	v5,v6
+; v5 : Ljava/io/BufferedWriter; , v6 : Ljava/io/BufferedWriter;
+la9f9a:
+.line 755
+	return	v7
+; v7 : single-length
+la9f9c:
+.line 726
+	move-exception	v8
+; v8 : java/lang/Exception
+la9f9e:
+	iget-object	v9,v10,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v9 : Lcom/android/debug/hv/ViewServer; , v10 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v9},com/android/debug/hv/ViewServer/access$600	; access$600(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v9 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v9
+; v9 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v9},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v9 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v9
+; v9 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v9},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/unlock	; unlock()V
+; v9 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	throw	v8
+; v8 : java/lang/Exception
+la9fba:
+.line 743
+	move-exception	v2
+; v2 : java/lang/Exception
+	move-object	v5,v6
+; v5 : Ljava/io/BufferedWriter; , v6 : Ljava/io/BufferedWriter;
+la9fbe:
+.line 744
+	const/4	v7,0
+; v7 : single-length
+.line 746
+	if-eqz	v5,la9f9a
+; v5 : Ljava/io/BufferedWriter;
+la9fc4:
+.line 748
+	invoke-virtual	{v5},java/io/BufferedWriter/close	; close()V
+; v5 : Ljava/io/BufferedWriter;
+la9fca:
+	goto	la9f9a
+la9fcc:
+.line 749
+	move-exception	v2
+; v2 : java/io/IOException
+.line 750
+	const/4	v7,0
+; v7 : single-length
+.line 751
+	goto	la9f9a
+la9fd2:
+.line 734
+	move-exception	v8
+; v8 : java/lang/Exception
+la9fd4:
+	iget-object	v9,v10,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v9 : Lcom/android/debug/hv/ViewServer; , v10 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v9},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v9 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v9
+; v9 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v9},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v9 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v9
+; v9 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v9},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/unlock	; unlock()V
+; v9 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	throw	v8
+; v8 : java/lang/Exception
+la9ff0:
+.line 746
+	move-exception	v8
+; v8 : java/lang/Exception
+	move-object	v5,v6
+; v5 : Ljava/io/BufferedWriter; , v6 : Ljava/io/BufferedWriter;
+la9ff4:
+	if-eqz	v5,la9ffe
+; v5 : Ljava/io/BufferedWriter;
+la9ff8:
+.line 748
+	invoke-virtual	{v5},java/io/BufferedWriter/close	; close()V
+; v5 : Ljava/io/BufferedWriter;
+la9ffe:
+.line 751
+	throw	v8
+; v8 : java/lang/Exception
+laa000:
+.line 749
+	move-exception	v2
+; v2 : java/io/IOException
+.line 750
+	const/4	v7,0
+; v7 : single-length
+	move-object	v5,v6
+; v5 : Ljava/io/BufferedWriter; , v6 : Ljava/io/BufferedWriter;
+.line 751
+	goto	la9f9a
+laa008:
+.line 749
+	move-exception	v2
+; v2 : java/io/IOException
+.line 750
+	const/4	v7,0
+; v7 : single-length
+	goto	la9ffe
+laa00e:
+.line 746
+	move-exception	v8
+; v8 : java/lang/Exception
+	goto	la9ff4
+laa012:
+.line 743
+	move-exception	v2
+; v2 : java/lang/Exception
+	goto	la9fbe
+laa016:
+	move-object	v5,v6
+; v5 : Ljava/io/BufferedWriter; , v6 : Ljava/io/BufferedWriter;
+laa018:
+	goto	la9f9a
+.end method
+
+.method private listWindows(Ljava/net/Socket;)Z
+.limit registers 11
+; this: v9 (Lcom/android/debug/hv/ViewServer$ViewServerWorker;)
+; parameter[0] : v10 (Ljava/net/Socket;)
+.catch java/io/IOException from laa1f2 to laa1f8 using laa1fa
+.catch java/io/IOException from laa1ba to laa1c0 using laa1c4
+.catch java/lang/Exception from laa18c to laa19c using laa160
+.catch java/lang/Exception from laa18c to laa19c using laa200
+.catch java/io/IOException from laa184 to laa18a using laa1cc
+.catch java/lang/Exception from laa0e6 to laa15e using laa160
+.catch java/lang/Exception from laa0e6 to laa15e using laa200
+.catch java/lang/Exception from laa0ac to laa0e6 using laa206
+.catch java/lang/Exception from laa0ac to laa0e6 using laa1d2
+.var 4 is out Ljava/io/BufferedWriter; from laa0ac to laa0e6
+.var 2 is entry Ljava/util/Map$Entry; from laa11a to laa160
+.var 3 is i$ Ljava/util/Iterator; from laa102 to laa160
+.var 0 is clientStream Ljava/io/OutputStream; from laa0ce to laa164
+.var 5 is out Ljava/io/BufferedWriter; from laa0e6 to laa164
+.var 1 is e Ljava/lang/Exception; from laa164 to laa18a
+.var 4 is out Ljava/io/BufferedWriter; from laa164 to laa18c
+.var 5 is out Ljava/io/BufferedWriter; from laa18c to laa1c2
+.var 4 is out Ljava/io/BufferedWriter; from laa1c2 to laa1c4
+.var 5 is out Ljava/io/BufferedWriter; from laa1c4 to laa1ca
+.var 0 is clientStream Ljava/io/OutputStream; from laa18c to laa1cc
+.var 3 is i$ Ljava/util/Iterator; from laa18c to laa1cc
+.var 1 is e Ljava/io/IOException; from laa1ce to laa1d2
+.var 1 is e Ljava/io/IOException; from laa1fc to laa200
+.var 4 is out Ljava/io/BufferedWriter; from laa1ca to laa200
+.var 5 is out Ljava/io/BufferedWriter; from laa200 to laa204
+.var 0 is clientStream Ljava/io/OutputStream; from laa200 to laa206
+.var 4 is out Ljava/io/BufferedWriter; from laa204 to laa20a
+.var 5 is out Ljava/io/BufferedWriter; from laa20a to laa20c
+.line 676
+	const/4	v6,1
+; v6 : single-length
+.line 677
+	const/4	v4,0
+; v4 : single-length
+laa0ac:
+.line 680
+	iget-object	v7,v9,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v7 : Lcom/android/debug/hv/ViewServer; , v9 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v7},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v7 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v7
+; v7 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v7},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v7 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v7
+; v7 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v7},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/lock	; lock()V
+; v7 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+.line 682
+	invoke-virtual	{v10},java/net/Socket/getOutputStream	; getOutputStream()Ljava/io/OutputStream;
+; v10 : Ljava/net/Socket;
+	move-result-object	v0
+; v0 : Ljava/io/OutputStream;
+.line 683
+	new-instance	v5,java/io/BufferedWriter
+; v5 : Ljava/io/BufferedWriter;
+	new-instance	v7,java/io/OutputStreamWriter
+; v7 : Ljava/io/OutputStreamWriter;
+	invoke-direct	{v7,v0},java/io/OutputStreamWriter/<init>	; <init>(Ljava/io/OutputStream;)V
+; v7 : Ljava/io/OutputStreamWriter; , v0 : Ljava/io/OutputStream;
+	const/16	v8,8192
+; v8 : single-length
+	invoke-direct	{v5,v7,v8},java/io/BufferedWriter/<init>	; <init>(Ljava/io/Writer;I)V
+; v5 : Ljava/io/BufferedWriter; , v7 : Ljava/io/OutputStreamWriter; , v8 : single-length
+laa0e6:
+.line 685
+	iget-object	v7,v9,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v7 : Lcom/android/debug/hv/ViewServer; , v9 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v7},com/android/debug/hv/ViewServer/access$500	; access$500(Lcom/android/debug/hv/ViewServer;)Ljava/util/HashMap;
+; v7 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v7
+; v7 : Ljava/util/HashMap;
+	invoke-virtual	{v7},java/util/HashMap/entrySet	; entrySet()Ljava/util/Set;
+; v7 : Ljava/util/HashMap;
+	move-result-object	v7
+; v7 : Ljava/util/Set;
+	invoke-interface	{v7},java/util/Set/iterator	; iterator()Ljava/util/Iterator;
+; v7 : Ljava/util/Set;
+	move-result-object	v3
+; v3 : Ljava/util/Iterator;
+laa102:
+	invoke-interface	{v3},java/util/Iterator/hasNext	; hasNext()Z
+; v3 : Ljava/util/Iterator;
+	move-result	v7
+; v7 : single-length
+	if-eqz	v7,laa18c
+; v7 : single-length
+	invoke-interface	{v3},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v3 : Ljava/util/Iterator;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/util/Map$Entry
+; v2 : Ljava/util/Map$Entry;
+.line 686
+	invoke-interface	{v2},java/util/Map$Entry/getKey	; getKey()Ljava/lang/Object;
+; v2 : Ljava/util/Map$Entry;
+	move-result-object	v7
+; v7 : Ljava/lang/Object;
+	invoke-static	{v7},java/lang/System/identityHashCode	; identityHashCode(Ljava/lang/Object;)I
+; v7 : Ljava/lang/Object;
+	move-result	v7
+; v7 : single-length
+	invoke-static	{v7},java/lang/Integer/toHexString	; toHexString(I)Ljava/lang/String;
+; v7 : single-length
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	invoke-virtual	{v5,v7},java/io/BufferedWriter/write	; write(Ljava/lang/String;)V
+; v5 : Ljava/io/BufferedWriter; , v7 : Ljava/lang/String;
+.line 687
+	const/16	v7,32
+; v7 : single-length
+	invoke-virtual	{v5,v7},java/io/BufferedWriter/write	; write(I)V
+; v5 : Ljava/io/BufferedWriter; , v7 : single-length
+.line 688
+	invoke-interface	{v2},java/util/Map$Entry/getValue	; getValue()Ljava/lang/Object;
+; v2 : Ljava/util/Map$Entry;
+	move-result-object	v7
+; v7 : Ljava/lang/Object;
+	check-cast	v7,java/lang/CharSequence
+; v7 : Ljava/lang/CharSequence;
+	invoke-virtual	{v5,v7},java/io/BufferedWriter/append	; append(Ljava/lang/CharSequence;)Ljava/io/Writer;
+; v5 : Ljava/io/BufferedWriter; , v7 : Ljava/lang/CharSequence;
+.line 689
+	const/16	v7,10
+; v7 : single-length
+	invoke-virtual	{v5,v7},java/io/BufferedWriter/write	; write(I)V
+; v5 : Ljava/io/BufferedWriter; , v7 : single-length
+laa15e:
+	goto	laa102
+laa160:
+.line 694
+	move-exception	v1
+; v1 : java/lang/Exception
+	move-object	v4,v5
+; v4 : Ljava/io/BufferedWriter; , v5 : Ljava/io/BufferedWriter;
+laa164:
+.line 695
+	const/4	v6,0
+; v6 : single-length
+.line 697
+	iget-object	v7,v9,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v7 : Lcom/android/debug/hv/ViewServer; , v9 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v7},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v7 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v7
+; v7 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v7},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v7 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v7
+; v7 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v7},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/unlock	; unlock()V
+; v7 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+.line 699
+	if-eqz	v4,laa18a
+; v4 : Ljava/io/BufferedWriter;
+laa184:
+.line 701
+	invoke-virtual	{v4},java/io/BufferedWriter/close	; close()V
+; v4 : Ljava/io/BufferedWriter;
+laa18a:
+.line 708
+	return	v6
+; v6 : single-length
+laa18c:
+.line 692
+	const-string	v7,"DONE.
+"
+; v7 : Ljava/lang/String;
+	invoke-virtual	{v5,v7},java/io/BufferedWriter/write	; write(Ljava/lang/String;)V
+; v5 : Ljava/io/BufferedWriter; , v7 : Ljava/lang/String;
+.line 693
+	invoke-virtual	{v5},java/io/BufferedWriter/flush	; flush()V
+; v5 : Ljava/io/BufferedWriter;
+laa19c:
+.line 697
+	iget-object	v7,v9,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v7 : Lcom/android/debug/hv/ViewServer; , v9 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v7},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v7 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v7
+; v7 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v7},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v7 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v7
+; v7 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v7},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/unlock	; unlock()V
+; v7 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+.line 699
+	if-eqz	v5,laa20a
+; v5 : Ljava/io/BufferedWriter;
+laa1ba:
+.line 701
+	invoke-virtual	{v5},java/io/BufferedWriter/close	; close()V
+; v5 : Ljava/io/BufferedWriter;
+laa1c0:
+	move-object	v4,v5
+; v4 : Ljava/io/BufferedWriter; , v5 : Ljava/io/BufferedWriter;
+.line 704
+	goto	laa18a
+laa1c4:
+.line 702
+	move-exception	v1
+; v1 : java/io/IOException
+.line 703
+	const/4	v6,0
+; v6 : single-length
+	move-object	v4,v5
+; v4 : Ljava/io/BufferedWriter; , v5 : Ljava/io/BufferedWriter;
+.line 704
+	goto	laa18a
+laa1cc:
+.line 702
+	move-exception	v1
+; v1 : java/io/IOException
+.line 703
+	const/4	v6,0
+; v6 : single-length
+.line 704
+	goto	laa18a
+laa1d2:
+.line 697
+	move-exception	v7
+; v7 : java/lang/Exception
+laa1d4:
+	iget-object	v8,v9,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v8 : Lcom/android/debug/hv/ViewServer; , v9 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v8},com/android/debug/hv/ViewServer/access$300	; access$300(Lcom/android/debug/hv/ViewServer;)Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v8 : Lcom/android/debug/hv/ViewServer;
+	move-result-object	v8
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-virtual	{v8},java/util/concurrent/locks/ReentrantReadWriteLock/readLock	; readLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v8
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+	invoke-virtual	{v8},java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock/unlock	; unlock()V
+; v8 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$ReadLock;
+.line 699
+	if-eqz	v4,laa1f8
+; v4 : Ljava/io/BufferedWriter;
+laa1f2:
+.line 701
+	invoke-virtual	{v4},java/io/BufferedWriter/close	; close()V
+; v4 : Ljava/io/BufferedWriter;
+laa1f8:
+.line 704
+	throw	v7
+; v7 : java/lang/Exception
+laa1fa:
+.line 702
+	move-exception	v1
+; v1 : java/io/IOException
+.line 703
+	const/4	v6,0
+; v6 : single-length
+	goto	laa1f8
+laa200:
+.line 697
+	move-exception	v7
+; v7 : java/lang/Exception
+	move-object	v4,v5
+; v4 : Ljava/io/BufferedWriter; , v5 : Ljava/io/BufferedWriter;
+laa204:
+	goto	laa1d4
+laa206:
+.line 694
+	move-exception	v1
+; v1 : java/lang/Exception
+	goto	laa164
+laa20a:
+	move-object	v4,v5
+; v4 : Ljava/io/BufferedWriter; , v5 : Ljava/io/BufferedWriter;
+laa20c:
+	goto	laa18a
+.end method
+
+.method private windowCommand(Ljava/net/Socket;Ljava/lang/String;Ljava/lang/String;)Z
+.limit registers 19
+; this: v15 (Lcom/android/debug/hv/ViewServer$ViewServerWorker;)
+; parameter[0] : v16 (Ljava/net/Socket;)
+; parameter[1] : v17 (Ljava/lang/String;)
+; parameter[2] : v18 (Ljava/lang/String;)
+.catch java/io/IOException from laa424 to laa42a using laa42c
+.catch java/io/IOException from laa410 to laa416 using laa418
+.catch java/lang/Exception from laa3be to laa40a using laa41e
+.catch java/io/IOException from laa3ac to laa3b2 using laa3b6
+.catch java/lang/Exception from laa396 to laa3a6 using laa438
+.catch java/lang/Exception from laa396 to laa3a6 using laa432
+.catch java/lang/Exception from laa2e4 to laa396 using laa3bc
+.catch java/lang/Exception from laa2e4 to laa396 using laa41e
+.catch java/io/IOException from laa2dc to laa2e2 using laa2ea
+.catch java/lang/Exception from laa278 to laa2d0 using laa3bc
+.catch java/lang/Exception from laa278 to laa2d0 using laa41e
+.var 1 is code Ljava/lang/String; from laa2a0 to laa2e2
+.var 4 is hashCode I from laa2ae to laa2e2
+.var 5 is index I from laa284 to laa2e2
+.var 9 is window Landroid/view/View; from laa2d2 to laa2e2
+.var 3 is e Ljava/io/IOException; from laa2ec to laa2f0
+.var 6 is out Ljava/io/BufferedWriter; from laa274 to laa396
+.var 7 is out Ljava/io/BufferedWriter; from laa396 to laa3a8
+.var 1 is code Ljava/lang/String; from laa2e4 to laa3b2
+.var 2 is dispatch Ljava/lang/reflect/Method; from laa32e to laa3b2
+.var 4 is hashCode I from laa2e4 to laa3b2
+.var 5 is index I from laa2e4 to laa3b2
+.var 9 is window Landroid/view/View; from laa2ea to laa3b2
+.var 1 is code Ljava/lang/String; from laa3b6 to laa3bc
+.var 2 is dispatch Ljava/lang/reflect/Method; from laa3b6 to laa3bc
+.var 3 is e Ljava/io/IOException; from laa3b8 to laa3bc
+.var 4 is hashCode I from laa3b6 to laa3bc
+.var 5 is index I from laa3b6 to laa3bc
+.var 9 is window Landroid/view/View; from laa3b6 to laa3bc
+.var 3 is e Ljava/io/IOException; from laa41a to laa41e
+.var 3 is e Ljava/io/IOException; from laa42e to laa432
+.var 6 is out Ljava/io/BufferedWriter; from laa3a8 to laa432
+.var 7 is out Ljava/io/BufferedWriter; from laa432 to laa436
+.var 6 is out Ljava/io/BufferedWriter; from laa436 to laa438
+.var 7 is out Ljava/io/BufferedWriter; from laa438 to laa43c
+.line 594
+	const/4	v8,1
+; v8 : single-length
+.line 595
+	const/4	v6,0
+; v6 : single-length
+.line 599
+	const/16	v10,32
+; v10 : single-length
+laa278:
+	move-object/from16	v0,v18
+; v0 : Ljava/lang/String; , v18 : Ljava/lang/String;
+	invoke-virtual	{v0,v10},java/lang/String/indexOf	; indexOf(I)I
+; v0 : Ljava/lang/String; , v10 : single-length
+	move-result	v5
+; v5 : single-length
+.line 600
+	const/4	v10,15
+; v10 : single-length
+	if-ne	v5,v10,laa292
+; v5 : single-length , v10 : single-length
+.line 601
+	invoke-virtual/range	{v18},java/lang/String/length;	length()I
+; v18 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+laa292:
+.line 603
+	const/4	v10,0
+; v10 : single-length
+	move-object/from16	v0,v18
+; v0 : Ljava/lang/String; , v18 : Ljava/lang/String;
+	invoke-virtual	{v0,v10,v5},java/lang/String/substring	; substring(II)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v10 : single-length , v5 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 604
+	const/16	v10,16
+; v10 : single-length
+	invoke-static	{v1,v10},java/lang/Long/parseLong	; parseLong(Ljava/lang/String;I)J
+; v1 : Ljava/lang/String; , v10 : single-length
+	move-result-wide	v10
+; v10 : double-length
+	long-to-int	v4,v10
+; v4 : single-length , v10 : double-length
+.line 607
+	invoke-virtual/range	{v18},java/lang/String/length;	length()I
+; v18 : Ljava/lang/String;
+	move-result	v10
+; v10 : single-length
+	if-ge	v5,v10,laa2e4
+; v5 : single-length , v10 : single-length
+.line 608
+	add-int/lit8	v10,v5,1
+; v10 : single-length , v5 : single-length
+	move-object/from16	v0,v18
+; v0 : Ljava/lang/String; , v18 : Ljava/lang/String;
+	invoke-virtual	{v0,v10},java/lang/String/substring	; substring(I)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v10 : single-length
+	move-result-object	v18
+; v18 : Ljava/lang/String;
+laa2ca:
+.line 613
+	invoke-direct	{v15,v4},com/android/debug/hv/ViewServer$ViewServerWorker/findWindow	; findWindow(I)Landroid/view/View;
+; v15 : Lcom/android/debug/hv/ViewServer$ViewServerWorker; , v4 : single-length
+laa2d0:
+	move-result-object	v9
+; v9 : Landroid/view/View;
+.line 614
+	if-nez	v9,laa2f0
+; v9 : Landroid/view/View;
+.line 615
+	const/4	v10,0
+; v10 : single-length
+.line 636
+	if-eqz	v6,laa2e2
+; v6 : single-length
+laa2dc:
+.line 638
+	invoke-virtual	{v6},java/io/BufferedWriter/close	; close()V
+; v6 : single-length
+laa2e2:
+.line 645
+	return	v10
+; v10 : single-length
+laa2e4:
+.line 610
+	const-string	v18,""
+; v18 : Ljava/lang/String;
+	goto	laa2ca
+laa2ea:
+.line 639
+	move-exception	v3
+; v3 : java/io/IOException
+.line 640
+	const/4	v8,0
+; v8 : single-length
+	goto	laa2e2
+laa2f0:
+.line 619
+	const-class	v10,android/view/ViewDebug
+; v10 : Ljava/lang/Class;
+	const-string	v11,"dispatchCommand"
+; v11 : Ljava/lang/String;
+	const/4	v12,4
+; v12 : single-length
+	new-array	v12,v12,[Ljava/lang/Class;
+; v12 : [Ljava/lang/Class; , v12 : [Ljava/lang/Class;
+	const/4	v13,0
+; v13 : single-length
+	const-class	v14,android/view/View
+; v14 : Ljava/lang/Class;
+	aput-object	v14,v12,v13
+; v14 : Ljava/lang/Class; , v12 : [Ljava/lang/Class; , v13 : single-length
+	const/4	v13,1
+; v13 : single-length
+	const-class	v14,java/lang/String
+; v14 : Ljava/lang/Class;
+	aput-object	v14,v12,v13
+; v14 : Ljava/lang/Class; , v12 : [Ljava/lang/Class; , v13 : single-length
+	const/4	v13,2
+; v13 : single-length
+	const-class	v14,java/lang/String
+; v14 : Ljava/lang/Class;
+	aput-object	v14,v12,v13
+; v14 : Ljava/lang/Class; , v12 : [Ljava/lang/Class; , v13 : single-length
+	const/4	v13,3
+; v13 : single-length
+	const-class	v14,java/io/OutputStream
+; v14 : Ljava/lang/Class;
+	aput-object	v14,v12,v13
+; v14 : Ljava/lang/Class; , v12 : [Ljava/lang/Class; , v13 : single-length
+	invoke-virtual	{v10,v11,v12},java/lang/Class/getDeclaredMethod	; getDeclaredMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+; v10 : Ljava/lang/Class; , v11 : Ljava/lang/String; , v12 : [Ljava/lang/Class;
+	move-result-object	v2
+; v2 : Ljava/lang/reflect/Method;
+.line 621
+	const/4	v10,1
+; v10 : single-length
+	invoke-virtual	{v2,v10},java/lang/reflect/Method/setAccessible	; setAccessible(Z)V
+; v2 : Ljava/lang/reflect/Method; , v10 : single-length
+.line 622
+	const/4	v10,0
+; v10 : single-length
+	const/4	v11,4
+; v11 : single-length
+	new-array	v11,v11,[Ljava/lang/Object;
+; v11 : [Ljava/lang/Object; , v11 : [Ljava/lang/Object;
+	const/4	v12,0
+; v12 : single-length
+	aput-object	v9,v11,v12
+; v9 : Landroid/view/View; , v11 : [Ljava/lang/Object; , v12 : single-length
+	const/4	v12,1
+; v12 : single-length
+	aput-object	v17,v11,v12
+; v17 : Ljava/lang/String; , v11 : [Ljava/lang/Object; , v12 : single-length
+	const/4	v12,2
+; v12 : single-length
+	aput-object	v18,v11,v12
+; v18 : Ljava/lang/String; , v11 : [Ljava/lang/Object; , v12 : single-length
+	const/4	v12,3
+; v12 : single-length
+	new-instance	v13,com/android/debug/hv/ViewServer$UncloseableOuputStream
+; v13 : Lcom/android/debug/hv/ViewServer$UncloseableOuputStream;
+	invoke-virtual/range	{v16},java/net/Socket/getOutputStream;	getOutputStream()Ljava/io/OutputStream;
+; v16 : Ljava/net/Socket;
+	move-result-object	v14
+; v14 : Ljava/io/OutputStream;
+	invoke-direct	{v13,v14},com/android/debug/hv/ViewServer$UncloseableOuputStream/<init>	; <init>(Ljava/io/OutputStream;)V
+; v13 : Lcom/android/debug/hv/ViewServer$UncloseableOuputStream; , v14 : Ljava/io/OutputStream;
+	aput-object	v13,v11,v12
+; v13 : Lcom/android/debug/hv/ViewServer$UncloseableOuputStream; , v11 : [Ljava/lang/Object; , v12 : single-length
+	invoke-virtual	{v2,v10,v11},java/lang/reflect/Method/invoke	; invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+; v2 : Ljava/lang/reflect/Method; , v10 : single-length , v11 : [Ljava/lang/Object;
+.line 625
+	invoke-virtual/range	{v16},java/net/Socket/isOutputShutdown;	isOutputShutdown()Z
+; v16 : Ljava/net/Socket;
+	move-result	v10
+; v10 : single-length
+	if-nez	v10,laa3a8
+; v10 : single-length
+.line 626
+	new-instance	v7,java/io/BufferedWriter
+; v7 : Ljava/io/BufferedWriter;
+	new-instance	v10,java/io/OutputStreamWriter
+; v10 : Ljava/io/OutputStreamWriter;
+	invoke-virtual/range	{v16},java/net/Socket/getOutputStream;	getOutputStream()Ljava/io/OutputStream;
+; v16 : Ljava/net/Socket;
+	move-result-object	v11
+; v11 : Ljava/io/OutputStream;
+	invoke-direct	{v10,v11},java/io/OutputStreamWriter/<init>	; <init>(Ljava/io/OutputStream;)V
+; v10 : Ljava/io/OutputStreamWriter; , v11 : Ljava/io/OutputStream;
+	invoke-direct	{v7,v10},java/io/BufferedWriter/<init>	; <init>(Ljava/io/Writer;)V
+; v7 : Ljava/io/BufferedWriter; , v10 : Ljava/io/OutputStreamWriter;
+laa396:
+.line 627
+	const-string	v10,"DONE
+"
+; v10 : Ljava/lang/String;
+	invoke-virtual	{v7,v10},java/io/BufferedWriter/write	; write(Ljava/lang/String;)V
+; v7 : Ljava/io/BufferedWriter; , v10 : Ljava/lang/String;
+.line 628
+	invoke-virtual	{v7},java/io/BufferedWriter/flush	; flush()V
+; v7 : Ljava/io/BufferedWriter;
+laa3a6:
+	move-object	v6,v7
+; v6 : Ljava/io/BufferedWriter; , v7 : Ljava/io/BufferedWriter;
+laa3a8:
+.line 636
+	if-eqz	v6,laa3b2
+; v6 : Ljava/io/BufferedWriter;
+laa3ac:
+.line 638
+	invoke-virtual	{v6},java/io/BufferedWriter/close	; close()V
+; v6 : Ljava/io/BufferedWriter;
+laa3b2:
+	move	v10,v8
+; v10 : single-length , v8 : single-length
+.line 645
+	goto	laa2e2
+laa3b6:
+.line 639
+	move-exception	v3
+; v3 : java/io/IOException
+.line 640
+	const/4	v8,0
+; v8 : single-length
+.line 641
+	goto	laa3b2
+laa3bc:
+.line 631
+	move-exception	v3
+; v3 : java/lang/Exception
+laa3be:
+.line 632
+	const-string	v10,"LocalViewServer"
+; v10 : Ljava/lang/String;
+	new-instance	v11,java/lang/StringBuilder
+; v11 : Ljava/lang/StringBuilder;
+	invoke-direct	{v11},java/lang/StringBuilder/<init>	; <init>()V
+; v11 : Ljava/lang/StringBuilder;
+	const-string	v12,"Could not send command "
+; v12 : Ljava/lang/String;
+	invoke-virtual	{v11,v12},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v11 : Ljava/lang/StringBuilder; , v12 : Ljava/lang/String;
+	move-result-object	v11
+; v11 : Ljava/lang/StringBuilder;
+	move-object/from16	v0,v17
+; v0 : Ljava/lang/String; , v17 : Ljava/lang/String;
+	invoke-virtual	{v11,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v11 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v11
+; v11 : Ljava/lang/StringBuilder;
+	const-string	v12," with parameters "
+; v12 : Ljava/lang/String;
+	invoke-virtual	{v11,v12},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v11 : Ljava/lang/StringBuilder; , v12 : Ljava/lang/String;
+	move-result-object	v11
+; v11 : Ljava/lang/StringBuilder;
+	move-object/from16	v0,v18
+; v0 : Ljava/lang/String; , v18 : Ljava/lang/String;
+	invoke-virtual	{v11,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v11 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v11
+; v11 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v11},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v11 : Ljava/lang/StringBuilder;
+	move-result-object	v11
+; v11 : Ljava/lang/String;
+	invoke-static	{v10,v11,v3},android/util/Log/w	; w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+; v10 : Ljava/lang/String; , v11 : Ljava/lang/String; , v3 : java/lang/Exception
+laa40a:
+.line 634
+	const/4	v8,0
+; v8 : single-length
+.line 636
+	if-eqz	v6,laa3b2
+; v6 : Ljava/io/BufferedWriter;
+laa410:
+.line 638
+	invoke-virtual	{v6},java/io/BufferedWriter/close	; close()V
+; v6 : Ljava/io/BufferedWriter;
+laa416:
+	goto	laa3b2
+laa418:
+.line 639
+	move-exception	v3
+; v3 : java/io/IOException
+.line 640
+	const/4	v8,0
+; v8 : single-length
+.line 641
+	goto	laa3b2
+laa41e:
+.line 636
+	move-exception	v10
+; v10 : java/lang/Exception
+laa420:
+	if-eqz	v6,laa42a
+; v6 : Ljava/io/BufferedWriter;
+laa424:
+.line 638
+	invoke-virtual	{v6},java/io/BufferedWriter/close	; close()V
+; v6 : Ljava/io/BufferedWriter;
+laa42a:
+.line 641
+	throw	v10
+; v10 : java/lang/Exception
+laa42c:
+.line 639
+	move-exception	v3
+; v3 : java/io/IOException
+.line 640
+	const/4	v8,0
+; v8 : single-length
+	goto	laa42a
+laa432:
+.line 636
+	move-exception	v10
+; v10 : java/lang/Exception
+	move-object	v6,v7
+; v6 : Ljava/io/BufferedWriter; , v7 : Ljava/io/BufferedWriter;
+laa436:
+	goto	laa420
+laa438:
+.line 631
+	move-exception	v3
+; v3 : java/lang/Exception
+	move-object	v6,v7
+; v6 : Ljava/io/BufferedWriter; , v7 : Ljava/io/BufferedWriter;
+laa43c:
+	goto	laa3be
+.end method
+
+.method private windowManagerAutolistLoop()Z
+.limit registers 8
+; this: v7 (Lcom/android/debug/hv/ViewServer$ViewServerWorker;)
+.catch java/io/IOException from laa5b0 to laa5b6 using laa5c4
+.catch java/io/IOException from laa59a to laa5a0 using laa5cc
+.catch java/lang/Exception from laa56c to laa590 using laa51c
+.catch java/lang/Exception from laa56c to laa590 using laa592
+.catch java/lang/Exception from laa546 to laa568 using laa516
+.catch java/io/IOException from laa532 to laa538 using laa5c8
+.catch java/lang/Exception from laa520 to laa52e using laa5d0
+.catch java/lang/Exception from laa51a to laa51c using laa51c
+.catch java/lang/Exception from laa51a to laa51c using laa592
+.catch java/lang/Exception from laa4fa to laa51a using laa516
+.catch java/lang/Exception from laa4e4 to laa4fa using laa51c
+.catch java/lang/Exception from laa4e4 to laa4fa using laa592
+.catch java/lang/Exception from laa4c4 to laa4e4 using laa5d4
+.catch java/lang/Exception from laa4c4 to laa4e4 using laa5d0
+.var 3 is out Ljava/io/BufferedWriter; from laa4c4 to laa4e4
+.var 1 is needFocusedWindowUpdate Z from laa4f4 to laa51c
+.var 2 is needWindowListUpdate Z from laa4f2 to laa51c
+.var 4 is out Ljava/io/BufferedWriter; from laa4e4 to laa520
+.var 0 is e Ljava/lang/Exception; from laa520 to laa542
+.var 3 is out Ljava/io/BufferedWriter; from laa520 to laa546
+.var 1 is needFocusedWindowUpdate Z from laa546 to laa592
+.var 2 is needWindowListUpdate Z from laa546 to laa592
+.var 4 is out Ljava/io/BufferedWriter; from laa546 to laa596
+.var 3 is out Ljava/io/BufferedWriter; from laa596 to laa5ac
+.var 4 is out Ljava/io/BufferedWriter; from laa5ac to laa5c2
+.var 3 is out Ljava/io/BufferedWriter; from laa5c2 to laa5c4
+.var 4 is out Ljava/io/BufferedWriter; from laa5c4 to laa5c8
+.var 0 is e Ljava/lang/Exception; from laa5c8 to laa5cc
+.line 773
+	iget-object	v5,v7,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v5 : Lcom/android/debug/hv/ViewServer; , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v5,v7},com/android/debug/hv/ViewServer/access$700	; access$700(Lcom/android/debug/hv/ViewServer;Lcom/android/debug/hv/ViewServer$WindowListener;)V
+; v5 : Lcom/android/debug/hv/ViewServer; , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+.line 774
+	const/4	v3,0
+; v3 : single-length
+laa4c4:
+.line 776
+	new-instance	v4,java/io/BufferedWriter
+; v4 : Ljava/io/BufferedWriter;
+	new-instance	v5,java/io/OutputStreamWriter
+; v5 : Ljava/io/OutputStreamWriter;
+	iget-object	v6,v7,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v6 : Ljava/net/Socket; , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-virtual	{v6},java/net/Socket/getOutputStream	; getOutputStream()Ljava/io/OutputStream;
+; v6 : Ljava/net/Socket;
+	move-result-object	v6
+; v6 : Ljava/io/OutputStream;
+	invoke-direct	{v5,v6},java/io/OutputStreamWriter/<init>	; <init>(Ljava/io/OutputStream;)V
+; v5 : Ljava/io/OutputStreamWriter; , v6 : Ljava/io/OutputStream;
+	invoke-direct	{v4,v5},java/io/BufferedWriter/<init>	; <init>(Ljava/io/Writer;)V
+; v4 : Ljava/io/BufferedWriter; , v5 : Ljava/io/OutputStreamWriter;
+laa4e4:
+.line 777
+	invoke-static	{},java/lang/Thread/interrupted	; interrupted()Z
+; 
+	nop	
+	move-result	v5
+; v5 : single-length
+	if-nez	v5,laa5ac
+; v5 : single-length
+.line 778
+	const/4	v2,0
+; v2 : single-length
+.line 779
+	const/4	v1,0
+; v1 : single-length
+.line 780
+	iget-object	v6,v7,com/android/debug/hv/ViewServer$ViewServerWorker.mLock [Ljava/lang/Object;
+; v6 : [Ljava/lang/Object; , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	monitor-enter	v6
+; v6 : [Ljava/lang/Object;
+laa4fa:
+.line 781
+	iget-boolean	v5,v7,com/android/debug/hv/ViewServer$ViewServerWorker.mNeedWindowListUpdate Z
+; v5 : single-length , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	if-nez	v5,laa546
+; v5 : single-length
+	iget-boolean	v5,v7,com/android/debug/hv/ViewServer$ViewServerWorker.mNeedFocusedWindowUpdate Z
+; v5 : single-length , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	if-nez	v5,laa546
+; v5 : single-length
+.line 782
+	iget-object	v5,v7,com/android/debug/hv/ViewServer$ViewServerWorker.mLock [Ljava/lang/Object;
+; v5 : [Ljava/lang/Object; , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-virtual	{v5},java/lang/Object/wait	; wait()V
+; v5 : [Ljava/lang/Object;
+	goto	laa4fa
+laa516:
+.line 792
+	move-exception	v5
+; v5 : java/lang/Exception
+	monitor-exit	v6
+; v6 : [Ljava/lang/Object;
+laa51a:
+	throw	v5
+; v5 : java/lang/Exception
+laa51c:
+.line 802
+	move-exception	v0
+; v0 : java/lang/Exception
+	move-object	v3,v4
+; v3 : Ljava/io/BufferedWriter; , v4 : Ljava/io/BufferedWriter;
+laa520:
+.line 803
+	const-string	v5,"LocalViewServer"
+; v5 : Ljava/lang/String;
+	const-string	v6,"Connection error: "
+; v6 : Ljava/lang/String;
+	invoke-static	{v5,v6,v0},android/util/Log/w	; w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+; v5 : Ljava/lang/String; , v6 : Ljava/lang/String; , v0 : java/lang/Exception
+laa52e:
+.line 805
+	if-eqz	v3,laa538
+; v3 : Ljava/io/BufferedWriter;
+laa532:
+.line 807
+	invoke-virtual	{v3},java/io/BufferedWriter/close	; close()V
+; v3 : Ljava/io/BufferedWriter;
+laa538:
+.line 812
+	iget-object	v5,v7,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v5 : Lcom/android/debug/hv/ViewServer; , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v5,v7},com/android/debug/hv/ViewServer/access$800	; access$800(Lcom/android/debug/hv/ViewServer;Lcom/android/debug/hv/ViewServer$WindowListener;)V
+; v5 : Lcom/android/debug/hv/ViewServer; , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+laa542:
+.line 814
+	const/4	v5,1
+; v5 : single-length
+	return	v5
+; v5 : single-length
+laa546:
+.line 784
+	iget-boolean	v5,v7,com/android/debug/hv/ViewServer$ViewServerWorker.mNeedWindowListUpdate Z
+; v5 : single-length , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	if-eqz	v5,laa556
+; v5 : single-length
+.line 785
+	const/4	v5,0
+; v5 : single-length
+	iput-boolean	v5,v7,com/android/debug/hv/ViewServer$ViewServerWorker.mNeedWindowListUpdate Z
+; v5 : single-length , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+.line 786
+	const/4	v2,1
+; v2 : single-length
+laa556:
+.line 788
+	iget-boolean	v5,v7,com/android/debug/hv/ViewServer$ViewServerWorker.mNeedFocusedWindowUpdate Z
+; v5 : single-length , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	if-eqz	v5,laa566
+; v5 : single-length
+.line 789
+	const/4	v5,0
+; v5 : single-length
+	iput-boolean	v5,v7,com/android/debug/hv/ViewServer$ViewServerWorker.mNeedFocusedWindowUpdate Z
+; v5 : single-length , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+.line 790
+	const/4	v1,1
+; v1 : single-length
+laa566:
+.line 792
+	monitor-exit	v6
+; v6 : [Ljava/lang/Object;
+laa568:
+.line 793
+	if-eqz	v2,laa57c
+; v2 : single-length
+laa56c:
+.line 794
+	const-string	v5,"LIST UPDATE
+"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/io/BufferedWriter/write	; write(Ljava/lang/String;)V
+; v4 : Ljava/io/BufferedWriter; , v5 : Ljava/lang/String;
+.line 795
+	invoke-virtual	{v4},java/io/BufferedWriter/flush	; flush()V
+; v4 : Ljava/io/BufferedWriter;
+laa57c:
+.line 797
+	if-eqz	v1,laa4e4
+; v1 : single-length
+.line 798
+	const-string	v5,"FOCUS UPDATE
+"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/io/BufferedWriter/write	; write(Ljava/lang/String;)V
+; v4 : Ljava/io/BufferedWriter; , v5 : Ljava/lang/String;
+.line 799
+	invoke-virtual	{v4},java/io/BufferedWriter/flush	; flush()V
+; v4 : Ljava/io/BufferedWriter;
+laa590:
+	goto	laa4e4
+laa592:
+.line 805
+	move-exception	v5
+; v5 : java/lang/Exception
+	move-object	v3,v4
+; v3 : Ljava/io/BufferedWriter; , v4 : Ljava/io/BufferedWriter;
+laa596:
+	if-eqz	v3,laa5a0
+; v3 : Ljava/io/BufferedWriter;
+laa59a:
+.line 807
+	invoke-virtual	{v3},java/io/BufferedWriter/close	; close()V
+; v3 : Ljava/io/BufferedWriter;
+laa5a0:
+.line 812
+	iget-object	v6,v7,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v6 : Lcom/android/debug/hv/ViewServer; , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v6,v7},com/android/debug/hv/ViewServer/access$800	; access$800(Lcom/android/debug/hv/ViewServer;Lcom/android/debug/hv/ViewServer$WindowListener;)V
+; v6 : Lcom/android/debug/hv/ViewServer; , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	throw	v5
+; v5 : java/lang/Exception
+laa5ac:
+.line 805
+	if-eqz	v4,laa5b6
+; v4 : Ljava/io/BufferedWriter;
+laa5b0:
+.line 807
+	invoke-virtual	{v4},java/io/BufferedWriter/close	; close()V
+; v4 : Ljava/io/BufferedWriter;
+laa5b6:
+.line 812
+	iget-object	v5,v7,com/android/debug/hv/ViewServer$ViewServerWorker.this$0 Lcom/android/debug/hv/ViewServer;
+; v5 : Lcom/android/debug/hv/ViewServer; , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-static	{v5,v7},com/android/debug/hv/ViewServer/access$800	; access$800(Lcom/android/debug/hv/ViewServer;Lcom/android/debug/hv/ViewServer$WindowListener;)V
+; v5 : Lcom/android/debug/hv/ViewServer; , v7 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	move-object	v3,v4
+; v3 : Ljava/io/BufferedWriter; , v4 : Ljava/io/BufferedWriter;
+.line 813
+	goto	laa542
+laa5c4:
+.line 808
+	move-exception	v5
+; v5 : java/io/IOException
+	goto	laa5b6
+laa5c8:
+	move-exception	v5
+; v5 : java/io/IOException
+	goto	laa538
+laa5cc:
+	move-exception	v6
+; v6 : java/io/IOException
+	goto	laa5a0
+laa5d0:
+.line 805
+	move-exception	v5
+; v5 : java/lang/Exception
+	goto	laa596
+laa5d4:
+.line 802
+	move-exception	v0
+; v0 : java/lang/Exception
+	goto	laa520
+.end method
+
+.method public focusChanged()V
+.limit registers 3
+; this: v2 (Lcom/android/debug/hv/ViewServer$ViewServerWorker;)
+.catch java/lang/Exception from laa664 to laa67a using laa676
+.line 766
+	iget-object	v1,v2,com/android/debug/hv/ViewServer$ViewServerWorker.mLock [Ljava/lang/Object;
+; v1 : [Ljava/lang/Object; , v2 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	monitor-enter	v1
+; v1 : [Ljava/lang/Object;
+.line 767
+	const/4	v0,1
+; v0 : single-length
+laa664:
+	iput-boolean	v0,v2,com/android/debug/hv/ViewServer$ViewServerWorker.mNeedFocusedWindowUpdate Z
+; v0 : single-length , v2 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+.line 768
+	iget-object	v0,v2,com/android/debug/hv/ViewServer$ViewServerWorker.mLock [Ljava/lang/Object;
+; v0 : [Ljava/lang/Object; , v2 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-virtual	{v0},java/lang/Object/notifyAll	; notifyAll()V
+; v0 : [Ljava/lang/Object;
+.line 769
+	monitor-exit	v1
+; v1 : [Ljava/lang/Object;
+.line 770
+	return-void	
+laa676:
+.line 769
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : [Ljava/lang/Object;
+laa67a:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+.method public run()V
+.limit registers 12
+; this: v11 (Lcom/android/debug/hv/ViewServer$ViewServerWorker;)
+.catch java/io/IOException from laa85c to laa866 using laa872
+.catch java/io/IOException from laa84e to laa854 using laa868
+.catch java/io/IOException from laa828 to laa832 using laa834
+.catch java/io/IOException from laa81a to laa820 using laa83e
+.catch java/lang/Exception from laa808 to laa816 using laa848
+.catch java/io/IOException from laa754 to laa7ec using laa882
+.catch java/lang/Exception from laa754 to laa7ec using laa87c
+.catch java/io/IOException from laa744 to laa74e using laa7fa
+.catch java/io/IOException from laa736 to laa73c using laa7f0
+.catch java/io/IOException from laa6be to laa732 using laa882
+.catch java/lang/Exception from laa6be to laa732 using laa87c
+.catch java/io/IOException from laa69a to laa6be using laa806
+.catch java/lang/Exception from laa69a to laa6be using laa848
+.var 2 is in Ljava/io/BufferedReader; from laa69a to laa6be
+.var 0 is command Ljava/lang/String; from laa6da to laa750
+.var 3 is in Ljava/io/BufferedReader; from laa6be to laa750
+.var 4 is index I from laa6d2 to laa750
+.var 5 is parameters Ljava/lang/String; from laa6de to laa750
+.var 6 is request Ljava/lang/String; from laa6c6 to laa750
+.var 7 is result Z from laa6fe to laa750
+.var 2 is in Ljava/io/BufferedReader; from laa750 to laa752
+.var 7 is result Z from laa78a to laa78c
+.var 7 is result Z from laa7a8 to laa7aa
+.var 7 is result Z from laa7c6 to laa7c8
+.var 7 is result Z from laa7e0 to laa7e2
+.var 1 is e Ljava/io/IOException; from laa7f2 to laa7fa
+.var 3 is in Ljava/io/BufferedReader; from laa752 to laa804
+.var 0 is command Ljava/lang/String; from laa75c to laa806
+.var 1 is e Ljava/io/IOException; from laa7fc to laa806
+.var 4 is index I from laa752 to laa806
+.var 5 is parameters Ljava/lang/String; from laa768 to laa806
+.var 6 is request Ljava/lang/String; from laa752 to laa806
+.var 7 is result Z from laa7ee to laa806
+.var 1 is e Ljava/io/IOException; from laa808 to laa848
+.var 1 is e Ljava/io/IOException; from laa86a to laa872
+.var 1 is e Ljava/io/IOException; from laa874 to laa87c
+.var 2 is in Ljava/io/BufferedReader; from laa804 to laa87c
+.var 3 is in Ljava/io/BufferedReader; from laa87c to laa880
+.var 2 is in Ljava/io/BufferedReader; from laa880 to laa882
+.var 3 is in Ljava/io/BufferedReader; from laa882 to laa886
+.var 2 is in Ljava/io/BufferedReader; from laa886 to laa888
+.var 3 is in Ljava/io/BufferedReader; from laa888 to laa88a
+.line 536
+	const/4	v2,0
+; v2 : single-length
+laa69a:
+.line 538
+	new-instance	v3,java/io/BufferedReader
+; v3 : Ljava/io/BufferedReader;
+	new-instance	v8,java/io/InputStreamReader
+; v8 : Ljava/io/InputStreamReader;
+	iget-object	v9,v11,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v9 : Ljava/net/Socket; , v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-virtual	{v9},java/net/Socket/getInputStream	; getInputStream()Ljava/io/InputStream;
+; v9 : Ljava/net/Socket;
+	move-result-object	v9
+; v9 : Ljava/io/InputStream;
+	invoke-direct	{v8,v9},java/io/InputStreamReader/<init>	; <init>(Ljava/io/InputStream;)V
+; v8 : Ljava/io/InputStreamReader; , v9 : Ljava/io/InputStream;
+	const/16	v9,1024
+; v9 : single-length
+	invoke-direct	{v3,v8,v9},java/io/BufferedReader/<init>	; <init>(Ljava/io/Reader;I)V
+; v3 : Ljava/io/BufferedReader; , v8 : Ljava/io/InputStreamReader; , v9 : single-length
+laa6be:
+.line 540
+	invoke-virtual	{v3},java/io/BufferedReader/readLine	; readLine()Ljava/lang/String;
+; v3 : Ljava/io/BufferedReader;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+.line 545
+	const/16	v8,32
+; v8 : single-length
+	invoke-virtual	{v6,v8},java/lang/String/indexOf	; indexOf(I)I
+; v6 : Ljava/lang/String; , v8 : single-length
+	move-result	v4
+; v4 : single-length
+.line 546
+	const/4	v8,15
+; v8 : single-length
+	if-ne	v4,v8,laa752
+; v4 : single-length , v8 : single-length
+.line 547
+	move-object	v0,v6
+; v0 : Ljava/lang/String; , v6 : Ljava/lang/String;
+.line 548
+	const-string	v5,""
+; v5 : Ljava/lang/String;
+laa6de:
+.line 555
+	const-string	v8,"PROTOCOL"
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v8,v0},java/lang/String/equalsIgnoreCase	; equalsIgnoreCase(Ljava/lang/String;)Z
+; v8 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v8
+; v8 : single-length
+	if-eqz	v8,laa76a
+; v8 : single-length
+.line 556
+	iget-object	v8,v11,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v8 : Ljava/net/Socket; , v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	const-string	v9,"4"
+; v9 : Ljava/lang/String;
+	invoke-static	{v8,v9},com/android/debug/hv/ViewServer/access$200	; access$200(Ljava/net/Socket;Ljava/lang/String;)Z
+; v8 : Ljava/net/Socket; , v9 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+laa6fe:
+.line 569
+	if-nez	v7,laa732
+; v7 : single-length
+.line 570
+	const-string	v8,"LocalViewServer"
+; v8 : Ljava/lang/String;
+	new-instance	v9,java/lang/StringBuilder
+; v9 : Ljava/lang/StringBuilder;
+	invoke-direct	{v9},java/lang/StringBuilder/<init>	; <init>()V
+; v9 : Ljava/lang/StringBuilder;
+	const-string	v10,"An error occurred with the command: "
+; v10 : Ljava/lang/String;
+	invoke-virtual	{v9,v10},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v9 : Ljava/lang/StringBuilder; , v10 : Ljava/lang/String;
+	move-result-object	v9
+; v9 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v9,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v9 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v9
+; v9 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v9},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v9 : Ljava/lang/StringBuilder;
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+	invoke-static	{v8,v9},android/util/Log/w	; w(Ljava/lang/String;Ljava/lang/String;)I
+; v8 : Ljava/lang/String; , v9 : Ljava/lang/String;
+laa732:
+.line 575
+	if-eqz	v3,laa73c
+; v3 : Ljava/io/BufferedReader;
+laa736:
+.line 577
+	invoke-virtual	{v3},java/io/BufferedReader/close	; close()V
+; v3 : Ljava/io/BufferedReader;
+laa73c:
+.line 583
+	iget-object	v8,v11,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v8 : Ljava/net/Socket; , v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	if-eqz	v8,laa888
+; v8 : Ljava/net/Socket;
+laa744:
+.line 585
+	iget-object	v8,v11,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v8 : Ljava/net/Socket; , v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-virtual	{v8},java/net/Socket/close	; close()V
+; v8 : Ljava/net/Socket;
+laa74e:
+	move-object	v2,v3
+; v2 : Ljava/io/BufferedReader; , v3 : Ljava/io/BufferedReader;
+laa750:
+.line 591
+	return-void	
+laa752:
+.line 550
+	const/4	v8,0
+; v8 : single-length
+laa754:
+	invoke-virtual	{v6,v8,v4},java/lang/String/substring	; substring(II)Ljava/lang/String;
+; v6 : Ljava/lang/String; , v8 : single-length , v4 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 551
+	add-int/lit8	v8,v4,1
+; v8 : single-length , v4 : single-length
+	invoke-virtual	{v6,v8},java/lang/String/substring	; substring(I)Ljava/lang/String;
+; v6 : Ljava/lang/String; , v8 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+laa768:
+	goto	laa6de
+laa76a:
+.line 557
+	const-string	v8,"SERVER"
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v8,v0},java/lang/String/equalsIgnoreCase	; equalsIgnoreCase(Ljava/lang/String;)Z
+; v8 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v8
+; v8 : single-length
+	if-eqz	v8,laa78c
+; v8 : single-length
+.line 558
+	iget-object	v8,v11,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v8 : Ljava/net/Socket; , v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	const-string	v9,"4"
+; v9 : Ljava/lang/String;
+	invoke-static	{v8,v9},com/android/debug/hv/ViewServer/access$200	; access$200(Ljava/net/Socket;Ljava/lang/String;)Z
+; v8 : Ljava/net/Socket; , v9 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+laa78a:
+	goto	laa6fe
+laa78c:
+.line 559
+	const-string	v8,"LIST"
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v8,v0},java/lang/String/equalsIgnoreCase	; equalsIgnoreCase(Ljava/lang/String;)Z
+; v8 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v8
+; v8 : single-length
+	if-eqz	v8,laa7aa
+; v8 : single-length
+.line 560
+	iget-object	v8,v11,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v8 : Ljava/net/Socket; , v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-direct	{v11,v8},com/android/debug/hv/ViewServer$ViewServerWorker/listWindows	; listWindows(Ljava/net/Socket;)Z
+; v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker; , v8 : Ljava/net/Socket;
+	move-result	v7
+; v7 : single-length
+laa7a8:
+	goto	laa6fe
+laa7aa:
+.line 561
+	const-string	v8,"GET_FOCUS"
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v8,v0},java/lang/String/equalsIgnoreCase	; equalsIgnoreCase(Ljava/lang/String;)Z
+; v8 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v8
+; v8 : single-length
+	if-eqz	v8,laa7c8
+; v8 : single-length
+.line 562
+	iget-object	v8,v11,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v8 : Ljava/net/Socket; , v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-direct	{v11,v8},com/android/debug/hv/ViewServer$ViewServerWorker/getFocusedWindow	; getFocusedWindow(Ljava/net/Socket;)Z
+; v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker; , v8 : Ljava/net/Socket;
+	move-result	v7
+; v7 : single-length
+laa7c6:
+	goto	laa6fe
+laa7c8:
+.line 563
+	const-string	v8,"AUTOLIST"
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v8,v0},java/lang/String/equalsIgnoreCase	; equalsIgnoreCase(Ljava/lang/String;)Z
+; v8 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v8
+; v8 : single-length
+	if-eqz	v8,laa7e2
+; v8 : single-length
+.line 564
+	invoke-direct	{v11},com/android/debug/hv/ViewServer$ViewServerWorker/windowManagerAutolistLoop	; windowManagerAutolistLoop()Z
+; v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	move-result	v7
+; v7 : single-length
+laa7e0:
+	goto	laa6fe
+laa7e2:
+.line 566
+	iget-object	v8,v11,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v8 : Ljava/net/Socket; , v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-direct	{v11,v8,v0,v5},com/android/debug/hv/ViewServer$ViewServerWorker/windowCommand	; windowCommand(Ljava/net/Socket;Ljava/lang/String;Ljava/lang/String;)Z
+; v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker; , v8 : Ljava/net/Socket; , v0 : Ljava/lang/String; , v5 : Ljava/lang/String;
+laa7ec:
+	move-result	v7
+; v7 : single-length
+laa7ee:
+	goto	laa6fe
+laa7f0:
+.line 579
+	move-exception	v1
+; v1 : java/io/IOException
+.line 580
+	invoke-virtual	{v1},java/io/IOException/printStackTrace	; printStackTrace()V
+; v1 : java/io/IOException
+	goto	laa73c
+laa7fa:
+.line 586
+	move-exception	v1
+; v1 : java/io/IOException
+.line 587
+	invoke-virtual	{v1},java/io/IOException/printStackTrace	; printStackTrace()V
+; v1 : java/io/IOException
+	move-object	v2,v3
+; v2 : Ljava/io/BufferedReader; , v3 : Ljava/io/BufferedReader;
+.line 588
+	goto	laa750
+laa806:
+.line 572
+	move-exception	v1
+; v1 : java/io/IOException
+laa808:
+.line 573
+	const-string	v8,"LocalViewServer"
+; v8 : Ljava/lang/String;
+	const-string	v9,"Connection error: "
+; v9 : Ljava/lang/String;
+	invoke-static	{v8,v9,v1},android/util/Log/w	; w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+; v8 : Ljava/lang/String; , v9 : Ljava/lang/String; , v1 : java/io/IOException
+laa816:
+.line 575
+	if-eqz	v2,laa820
+; v2 : Ljava/io/BufferedReader;
+laa81a:
+.line 577
+	invoke-virtual	{v2},java/io/BufferedReader/close	; close()V
+; v2 : Ljava/io/BufferedReader;
+laa820:
+.line 583
+	iget-object	v8,v11,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v8 : Ljava/net/Socket; , v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	if-eqz	v8,laa750
+; v8 : Ljava/net/Socket;
+laa828:
+.line 585
+	iget-object	v8,v11,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v8 : Ljava/net/Socket; , v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-virtual	{v8},java/net/Socket/close	; close()V
+; v8 : Ljava/net/Socket;
+laa832:
+	goto	laa750
+laa834:
+.line 586
+	move-exception	v1
+; v1 : java/io/IOException
+.line 587
+	invoke-virtual	{v1},java/io/IOException/printStackTrace	; printStackTrace()V
+; v1 : java/io/IOException
+	goto	laa750
+laa83e:
+.line 579
+	move-exception	v1
+; v1 : java/io/IOException
+.line 580
+	invoke-virtual	{v1},java/io/IOException/printStackTrace	; printStackTrace()V
+; v1 : java/io/IOException
+	goto	laa820
+laa848:
+.line 575
+	move-exception	v8
+; v8 : java/lang/Exception
+laa84a:
+	if-eqz	v2,laa854
+; v2 : Ljava/io/BufferedReader;
+laa84e:
+.line 577
+	invoke-virtual	{v2},java/io/BufferedReader/close	; close()V
+; v2 : Ljava/io/BufferedReader;
+laa854:
+.line 583
+	iget-object	v9,v11,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v9 : Ljava/net/Socket; , v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	if-eqz	v9,laa866
+; v9 : Ljava/net/Socket;
+laa85c:
+.line 585
+	iget-object	v9,v11,com/android/debug/hv/ViewServer$ViewServerWorker.mClient Ljava/net/Socket;
+; v9 : Ljava/net/Socket; , v11 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-virtual	{v9},java/net/Socket/close	; close()V
+; v9 : Ljava/net/Socket;
+laa866:
+.line 588
+	throw	v8
+; v8 : java/lang/Exception
+laa868:
+.line 579
+	move-exception	v1
+; v1 : java/io/IOException
+.line 580
+	invoke-virtual	{v1},java/io/IOException/printStackTrace	; printStackTrace()V
+; v1 : java/io/IOException
+	goto	laa854
+laa872:
+.line 586
+	move-exception	v1
+; v1 : java/io/IOException
+.line 587
+	invoke-virtual	{v1},java/io/IOException/printStackTrace	; printStackTrace()V
+; v1 : java/io/IOException
+	goto	laa866
+laa87c:
+.line 575
+	move-exception	v8
+; v8 : java/lang/Exception
+	move-object	v2,v3
+; v2 : Ljava/io/BufferedReader; , v3 : Ljava/io/BufferedReader;
+laa880:
+	goto	laa84a
+laa882:
+.line 572
+	move-exception	v1
+; v1 : java/io/IOException
+	move-object	v2,v3
+; v2 : Ljava/io/BufferedReader; , v3 : Ljava/io/BufferedReader;
+laa886:
+	goto	laa808
+laa888:
+	move-object	v2,v3
+; v2 : Ljava/io/BufferedReader; , v3 : Ljava/io/BufferedReader;
+laa88a:
+	goto/16	laa750
+.end method
+
+.method public windowsChanged()V
+.limit registers 3
+; this: v2 (Lcom/android/debug/hv/ViewServer$ViewServerWorker;)
+.catch java/lang/Exception from laa928 to laa93e using laa93a
+.line 759
+	iget-object	v1,v2,com/android/debug/hv/ViewServer$ViewServerWorker.mLock [Ljava/lang/Object;
+; v1 : [Ljava/lang/Object; , v2 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	monitor-enter	v1
+; v1 : [Ljava/lang/Object;
+.line 760
+	const/4	v0,1
+; v0 : single-length
+laa928:
+	iput-boolean	v0,v2,com/android/debug/hv/ViewServer$ViewServerWorker.mNeedWindowListUpdate Z
+; v0 : single-length , v2 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+.line 761
+	iget-object	v0,v2,com/android/debug/hv/ViewServer$ViewServerWorker.mLock [Ljava/lang/Object;
+; v0 : [Ljava/lang/Object; , v2 : Lcom/android/debug/hv/ViewServer$ViewServerWorker;
+	invoke-virtual	{v0},java/lang/Object/notifyAll	; notifyAll()V
+; v0 : [Ljava/lang/Object;
+.line 762
+	monitor-exit	v1
+; v1 : [Ljava/lang/Object;
+.line 763
+	return-void	
+laa93a:
+.line 762
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : [Ljava/lang/Object;
+laa93e:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+

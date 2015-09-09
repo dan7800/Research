@@ -1,0 +1,2316 @@
+.class public org/apache/commons/codec/binary/Base32
+.super org/apache/commons/codec/binary/BaseNCodec
+.source Base32.java
+
+.field private static final BITS_PER_ENCODED_BYTE I = 5	; 0x5
+.field private static final BYTES_PER_ENCODED_BLOCK I = 8	; 0x8
+.field private static final BYTES_PER_UNENCODED_BLOCK I = 5	; 0x5
+.field private static final CHUNK_SEPARATOR [B = null
+.field private static final DECODE_TABLE [B = null
+.field private static final ENCODE_TABLE [B = null
+.field private static final HEX_DECODE_TABLE [B = null
+.field private static final HEX_ENCODE_TABLE [B = null
+.field private static final MASK_5BITS I = 31	; 0x1f
+.field private bitWorkArea J
+.field private final decodeSize I
+.field private final decodeTable [B
+.field private final encodeSize I
+.field private final encodeTable [B
+.field private final lineSeparator [B
+
+.method static <clinit>()V
+.limit registers 2
+	const/16	v1,32
+; v1 : single-length
+.line 60
+	const/4	v0,2
+; v0 : single-length
+	new-array	v0,v0,[B
+; v0 : [B , v0 : [B
+	fill-array-data	v0,l1055fc
+; v0 : [B
+	sput-object	v0,org/apache/commons/codec/binary/Base32.CHUNK_SEPARATOR [B
+; v0 : [B
+.line 68
+	const/16	v0,91
+; v0 : single-length
+	new-array	v0,v0,[B
+; v0 : [B , v0 : [B
+	fill-array-data	v0,l105608
+; v0 : [B
+	sput-object	v0,org/apache/commons/codec/binary/Base32.DECODE_TABLE [B
+; v0 : [B
+.line 82
+	new-array	v0,v1,[B
+; v0 : [B , v1 : single-length
+	fill-array-data	v0,l10566c
+; v0 : [B
+	sput-object	v0,org/apache/commons/codec/binary/Base32.ENCODE_TABLE [B
+; v0 : [B
+.line 94
+	const/16	v0,88
+; v0 : single-length
+	new-array	v0,v0,[B
+; v0 : [B , v0 : [B
+	fill-array-data	v0,l105694
+; v0 : [B
+	sput-object	v0,org/apache/commons/codec/binary/Base32.HEX_DECODE_TABLE [B
+; v0 : [B
+.line 108
+	new-array	v0,v1,[B
+; v0 : [B , v1 : single-length
+	fill-array-data	v0,l1056f4
+; v0 : [B
+	sput-object	v0,org/apache/commons/codec/binary/Base32.HEX_ENCODE_TABLE [B
+; v0 : [B
+	return-void	
+.line 60
+l1055fa:	data-array
+		0x00, 0x00
+	end data-array
+l1055fc:	data-array
+		0x0D	; #0
+		0x0A	; #1
+	end data-array
+.line 68
+l105606:	data-array
+		0x00, 0x00
+	end data-array
+l105608:	data-array
+		0xFF	; #0
+		0xFF	; #1
+		0xFF	; #2
+		0xFF	; #3
+		0xFF	; #4
+		0xFF	; #5
+		0xFF	; #6
+		0xFF	; #7
+		0xFF	; #8
+		0xFF	; #9
+		0xFF	; #10
+		0xFF	; #11
+		0xFF	; #12
+		0xFF	; #13
+		0xFF	; #14
+		0xFF	; #15
+		0xFF	; #16
+		0xFF	; #17
+		0xFF	; #18
+		0xFF	; #19
+		0xFF	; #20
+		0xFF	; #21
+		0xFF	; #22
+		0xFF	; #23
+		0xFF	; #24
+		0xFF	; #25
+		0xFF	; #26
+		0xFF	; #27
+		0xFF	; #28
+		0xFF	; #29
+		0xFF	; #30
+		0xFF	; #31
+		0xFF	; #32
+		0xFF	; #33
+		0xFF	; #34
+		0xFF	; #35
+		0xFF	; #36
+		0xFF	; #37
+		0xFF	; #38
+		0xFF	; #39
+		0xFF	; #40
+		0xFF	; #41
+		0xFF	; #42
+		0xFF	; #43
+		0xFF	; #44
+		0xFF	; #45
+		0xFF	; #46
+		0x3F	; #47
+		0xFF	; #48
+		0xFF	; #49
+		0x1A	; #50
+		0x1B	; #51
+		0x1C	; #52
+		0x1D	; #53
+		0x1E	; #54
+		0x1F	; #55
+		0xFF	; #56
+		0xFF	; #57
+		0xFF	; #58
+		0xFF	; #59
+		0xFF	; #60
+		0xFF	; #61
+		0xFF	; #62
+		0xFF	; #63
+		0xFF	; #64
+		0x00	; #65
+		0x01	; #66
+		0x02	; #67
+		0x03	; #68
+		0x04	; #69
+		0x05	; #70
+		0x06	; #71
+		0x07	; #72
+		0x08	; #73
+		0x09	; #74
+		0x0A	; #75
+		0x0B	; #76
+		0x0C	; #77
+		0x0D	; #78
+		0x0E	; #79
+		0x0F	; #80
+		0x10	; #81
+		0x11	; #82
+		0x12	; #83
+		0x13	; #84
+		0x14	; #85
+		0x15	; #86
+		0x16	; #87
+		0x17	; #88
+		0x18	; #89
+		0x19	; #90
+	end data-array
+l10566b:	data-array
+		0x00
+	end data-array
+.line 82
+l10566c:	data-array
+		0x41	; #0
+		0x42	; #1
+		0x43	; #2
+		0x44	; #3
+		0x45	; #4
+		0x46	; #5
+		0x47	; #6
+		0x48	; #7
+		0x49	; #8
+		0x4A	; #9
+		0x4B	; #10
+		0x4C	; #11
+		0x4D	; #12
+		0x4E	; #13
+		0x4F	; #14
+		0x50	; #15
+		0x51	; #16
+		0x52	; #17
+		0x53	; #18
+		0x54	; #19
+		0x55	; #20
+		0x56	; #21
+		0x57	; #22
+		0x58	; #23
+		0x59	; #24
+		0x5A	; #25
+		0x32	; #26
+		0x33	; #27
+		0x34	; #28
+		0x35	; #29
+		0x36	; #30
+		0x37	; #31
+	end data-array
+.line 94
+l105694:	data-array
+		0xFF	; #0
+		0xFF	; #1
+		0xFF	; #2
+		0xFF	; #3
+		0xFF	; #4
+		0xFF	; #5
+		0xFF	; #6
+		0xFF	; #7
+		0xFF	; #8
+		0xFF	; #9
+		0xFF	; #10
+		0xFF	; #11
+		0xFF	; #12
+		0xFF	; #13
+		0xFF	; #14
+		0xFF	; #15
+		0xFF	; #16
+		0xFF	; #17
+		0xFF	; #18
+		0xFF	; #19
+		0xFF	; #20
+		0xFF	; #21
+		0xFF	; #22
+		0xFF	; #23
+		0xFF	; #24
+		0xFF	; #25
+		0xFF	; #26
+		0xFF	; #27
+		0xFF	; #28
+		0xFF	; #29
+		0xFF	; #30
+		0xFF	; #31
+		0xFF	; #32
+		0xFF	; #33
+		0xFF	; #34
+		0xFF	; #35
+		0xFF	; #36
+		0xFF	; #37
+		0xFF	; #38
+		0xFF	; #39
+		0xFF	; #40
+		0xFF	; #41
+		0xFF	; #42
+		0xFF	; #43
+		0xFF	; #44
+		0xFF	; #45
+		0xFF	; #46
+		0x3F	; #47
+		0x00	; #48
+		0x01	; #49
+		0x02	; #50
+		0x03	; #51
+		0x04	; #52
+		0x05	; #53
+		0x06	; #54
+		0x07	; #55
+		0x08	; #56
+		0x09	; #57
+		0xFF	; #58
+		0xFF	; #59
+		0xFF	; #60
+		0xFF	; #61
+		0xFF	; #62
+		0xFF	; #63
+		0xFF	; #64
+		0x0A	; #65
+		0x0B	; #66
+		0x0C	; #67
+		0x0D	; #68
+		0x0E	; #69
+		0x0F	; #70
+		0x10	; #71
+		0x11	; #72
+		0x12	; #73
+		0x13	; #74
+		0x14	; #75
+		0x15	; #76
+		0x16	; #77
+		0x17	; #78
+		0x18	; #79
+		0x19	; #80
+		0x1A	; #81
+		0x1B	; #82
+		0x1C	; #83
+		0x1D	; #84
+		0x1E	; #85
+		0x1F	; #86
+		0x20	; #87
+	end data-array
+.line 108
+l1056f4:	data-array
+		0x30	; #0
+		0x31	; #1
+		0x32	; #2
+		0x33	; #3
+		0x34	; #4
+		0x35	; #5
+		0x36	; #6
+		0x37	; #7
+		0x38	; #8
+		0x39	; #9
+		0x41	; #10
+		0x42	; #11
+		0x43	; #12
+		0x44	; #13
+		0x45	; #14
+		0x46	; #15
+		0x47	; #16
+		0x48	; #17
+		0x49	; #18
+		0x4A	; #19
+		0x4B	; #20
+		0x4C	; #21
+		0x4D	; #22
+		0x4E	; #23
+		0x4F	; #24
+		0x50	; #25
+		0x51	; #26
+		0x52	; #27
+		0x53	; #28
+		0x54	; #29
+		0x55	; #30
+		0x56	; #31
+	end data-array
+.end method
+
+.method public <init>()V
+.limit registers 2
+; this: v1 (Lorg/apache/commons/codec/binary/Base32;)
+.line 162
+	const/4	v0,0
+; v0 : single-length
+	invoke-direct	{v1,v0},org/apache/commons/codec/binary/Base32/<init>	; <init>(Z)V
+; v1 : Lorg/apache/commons/codec/binary/Base32; , v0 : single-length
+.line 163
+	return-void	
+.end method
+
+.method public <init>(I)V
+.limit registers 3
+; this: v1 (Lorg/apache/commons/codec/binary/Base32;)
+; parameter[0] : v2 (I)
+.line 187
+	sget-object	v0,org/apache/commons/codec/binary/Base32.CHUNK_SEPARATOR [B
+; v0 : [B
+	invoke-direct	{v1,v2,v0},org/apache/commons/codec/binary/Base32/<init>	; <init>(I[B)V
+; v1 : Lorg/apache/commons/codec/binary/Base32; , v2 : single-length , v0 : [B
+.line 188
+	return-void	
+.end method
+
+.method public <init>(I[B)V
+.limit registers 4
+; this: v1 (Lorg/apache/commons/codec/binary/Base32;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 ([B)
+.line 208
+	const/4	v0,0
+; v0 : single-length
+	invoke-direct	{v1,v2,v3,v0},org/apache/commons/codec/binary/Base32/<init>	; <init>(I[BZ)V
+; v1 : Lorg/apache/commons/codec/binary/Base32; , v2 : single-length , v3 : [B , v0 : single-length
+.line 209
+	return-void	
+.end method
+
+.method public <init>(I[BZ)V
+.limit registers 9
+; this: v5 (Lorg/apache/commons/codec/binary/Base32;)
+; parameter[0] : v6 (I)
+; parameter[1] : v7 ([B)
+; parameter[2] : v8 (Z)
+.var 0 is sep Ljava/lang/String; from l105818 to l105856
+	const/16	v4,8
+; v4 : single-length
+	const/4	v2,0
+; v2 : single-length
+.line 231
+	const/4	v3,5
+; v3 : single-length
+	if-nez	v7,l1057ee
+; v7 : [B
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+l10578e:
+	invoke-direct	{v5,v3,v4,v6,v1},org/apache/commons/codec/binary/BaseNCodec/<init>	; <init>(IIII)V
+; v5 : Lorg/apache/commons/codec/binary/Base32; , v3 : single-length , v4 : single-length , v6 : single-length , v1 : single-length
+.line 234
+	if-eqz	v8,l1057f2
+; v8 : single-length
+.line 235
+	sget-object	v1,org/apache/commons/codec/binary/Base32.HEX_ENCODE_TABLE [B
+; v1 : [B
+	iput-object	v1,v5,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v1 : [B , v5 : Lorg/apache/commons/codec/binary/Base32;
+.line 236
+	sget-object	v1,org/apache/commons/codec/binary/Base32.HEX_DECODE_TABLE [B
+; v1 : [B
+	iput-object	v1,v5,org/apache/commons/codec/binary/Base32.decodeTable [B
+; v1 : [B , v5 : Lorg/apache/commons/codec/binary/Base32;
+l1057a8:
+.line 241
+	if-lez	v6,l105884
+; v6 : single-length
+.line 242
+	if-nez	v7,l105804
+; v7 : [B
+.line 243
+	new-instance	v1,java/lang/IllegalArgumentException
+; v1 : Ljava/lang/IllegalArgumentException;
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"lineLength "
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v6},java/lang/StringBuilder/append	; append(I)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v6 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3," > 0, but lineSeparator is null"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/lang/IllegalArgumentException; , v2 : Ljava/lang/String;
+	throw	v1
+; v1 : Ljava/lang/IllegalArgumentException;
+l1057ee:
+.line 231
+	array-length	v1,v7
+; v1 : single-length , v7 : [B
+	goto	l10578e
+l1057f2:
+.line 238
+	sget-object	v1,org/apache/commons/codec/binary/Base32.ENCODE_TABLE [B
+; v1 : [B
+	iput-object	v1,v5,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v1 : [B , v5 : Lorg/apache/commons/codec/binary/Base32;
+.line 239
+	sget-object	v1,org/apache/commons/codec/binary/Base32.DECODE_TABLE [B
+; v1 : [B
+	iput-object	v1,v5,org/apache/commons/codec/binary/Base32.decodeTable [B
+; v1 : [B , v5 : Lorg/apache/commons/codec/binary/Base32;
+	goto	l1057a8
+l105804:
+.line 246
+	invoke-virtual	{v5,v7},org/apache/commons/codec/binary/Base32/containsAlphabetOrPad	; containsAlphabetOrPad([B)Z
+; v5 : Lorg/apache/commons/codec/binary/Base32; , v7 : [B
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l105856
+; v1 : single-length
+.line 247
+	invoke-static	{v7},org/apache/commons/codec/binary/StringUtils/newStringUtf8	; newStringUtf8([B)Ljava/lang/String;
+; v7 : [B
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 248
+	new-instance	v1,java/lang/IllegalArgumentException
+; v1 : Ljava/lang/IllegalArgumentException;
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"lineSeparator must not contain Base32 characters: ["
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"]"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/lang/IllegalArgumentException; , v2 : Ljava/lang/String;
+	throw	v1
+; v1 : Ljava/lang/IllegalArgumentException;
+l105856:
+.line 250
+	array-length	v1,v7
+; v1 : single-length , v7 : [B
+	add-int/lit8	v1,v1,8
+; v1 : single-length , v1 : single-length
+	iput	v1,v5,org/apache/commons/codec/binary/Base32.encodeSize I
+; v1 : single-length , v5 : Lorg/apache/commons/codec/binary/Base32;
+.line 251
+	array-length	v1,v7
+; v1 : single-length , v7 : [B
+	new-array	v1,v1,[B
+; v1 : [B , v1 : [B
+	iput-object	v1,v5,org/apache/commons/codec/binary/Base32.lineSeparator [B
+; v1 : [B , v5 : Lorg/apache/commons/codec/binary/Base32;
+.line 252
+	iget-object	v1,v5,org/apache/commons/codec/binary/Base32.lineSeparator [B
+; v1 : [B , v5 : Lorg/apache/commons/codec/binary/Base32;
+	array-length	v3,v7
+; v3 : single-length , v7 : [B
+	invoke-static	{v7,v2,v1,v2,v3},java/lang/System/arraycopy	; arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+; v7 : [B , v2 : single-length , v1 : [B , v2 : single-length , v3 : single-length
+l105876:
+.line 257
+	iget	v1,v5,org/apache/commons/codec/binary/Base32.encodeSize I
+; v1 : single-length , v5 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v1,v1,255
+; v1 : single-length , v1 : single-length
+	iput	v1,v5,org/apache/commons/codec/binary/Base32.decodeSize I
+; v1 : single-length , v5 : Lorg/apache/commons/codec/binary/Base32;
+.line 258
+	return-void	
+l105884:
+.line 254
+	iput	v4,v5,org/apache/commons/codec/binary/Base32.encodeSize I
+; v4 : single-length , v5 : Lorg/apache/commons/codec/binary/Base32;
+.line 255
+	const/4	v1,0
+; v1 : single-length
+	iput-object	v1,v5,org/apache/commons/codec/binary/Base32.lineSeparator [B
+; v1 : single-length , v5 : Lorg/apache/commons/codec/binary/Base32;
+	goto	l105876
+.end method
+
+.method public <init>(Z)V
+.limit registers 4
+; this: v2 (Lorg/apache/commons/codec/binary/Base32;)
+; parameter[0] : v3 (Z)
+.line 173
+	const/4	v0,0
+; v0 : single-length
+	const/4	v1,0
+; v1 : single-length
+	invoke-direct	{v2,v0,v1,v3},org/apache/commons/codec/binary/Base32/<init>	; <init>(I[BZ)V
+; v2 : Lorg/apache/commons/codec/binary/Base32; , v0 : single-length , v1 : single-length , v3 : single-length
+.line 174
+	return-void	
+.end method
+
+.method decode([BII)V
+.limit registers 14
+; this: v10 (Lorg/apache/commons/codec/binary/Base32;)
+; parameter[0] : v11 ([B)
+; parameter[1] : v12 (I)
+; parameter[2] : v13 (I)
+.var 2 is inPos I from l1058d4 to l1058dc
+.var 0 is b B from l1058e0 to l1058ee
+.var 3 is result I from l10595e to l105a4c
+.var 0 is b B from l10593e to l105a56
+.var 2 is inPos I from l105a52 to l105a56
+.var 2 is inPos I from l105c88 to l105c8a
+.line 283
+	iget-boolean	v4,v10,org/apache/commons/codec/binary/Base32.eof Z
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	if-eqz	v4,l1058c6
+; v4 : single-length
+l1058c4:
+.line 354
+	return-void	
+l1058c6:
+.line 286
+	if-gez	v13,l1058d0
+; v13 : single-length
+.line 287
+	const/4	v4,1
+; v4 : single-length
+	iput-boolean	v4,v10,org/apache/commons/codec/binary/Base32.eof Z
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+l1058d0:
+.line 289
+	const/4	v1,0
+; v1 : single-length
+	move	v2,v12
+; v2 : single-length , v12 : single-length
+l1058d4:
+	if-ge	v1,v13,l105c88
+; v1 : single-length , v13 : single-length
+.line 290
+	add-int/lit8	v12,v2,1
+; v12 : single-length , v2 : single-length
+l1058dc:
+	aget-byte	v0,v11,v2
+; v0 : single-length , v11 : [B , v2 : single-length
+.line 291
+	const/16	v4,61
+; v4 : single-length
+	if-ne	v0,v4,l10593e
+; v0 : single-length , v4 : single-length
+.line 293
+	const/4	v4,1
+; v4 : single-length
+	iput-boolean	v4,v10,org/apache/commons/codec/binary/Base32.eof Z
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+l1058ee:
+.line 317
+	iget-boolean	v4,v10,org/apache/commons/codec/binary/Base32.eof Z
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	if-eqz	v4,l1058c4
+; v4 : single-length
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v5,2
+; v5 : single-length
+	if-lt	v4,v5,l1058c4
+; v4 : single-length , v5 : single-length
+.line 318
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.decodeSize I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	invoke-virtual	{v10,v4},org/apache/commons/codec/binary/Base32/ensureBufferSize	; ensureBufferSize(I)V
+; v10 : Lorg/apache/commons/codec/binary/Base32; , v4 : single-length
+.line 321
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	packed-switch	v4,2
+		ps10590e_105916	; case 2
+		ps10590e_105a56	; case 3
+		ps10590e_105a80	; case 4
+		ps10590e_105ada	; case 5
+		ps10590e_105b5c	; case 6
+		ps10590e_105bde	; case 7
+		default: ps10590e_default
+; v4 : single-length
+ps10590e_default:
+	goto	l1058c4
+ps10590e_105916:
+.line 323
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v8,2
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+	goto	l1058c4
+l10593e:
+.line 296
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.decodeSize I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	invoke-virtual	{v10,v4},org/apache/commons/codec/binary/Base32/ensureBufferSize	; ensureBufferSize(I)V
+; v10 : Lorg/apache/commons/codec/binary/Base32; , v4 : single-length
+.line 297
+	if-ltz	v0,l105a4c
+; v0 : single-length
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.decodeTable [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	array-length	v4,v4
+; v4 : single-length , v4 : single-length
+	if-ge	v0,v4,l105a4c
+; v0 : single-length , v4 : single-length
+.line 298
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.decodeTable [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	aget-byte	v3,v4,v0
+; v3 : single-length , v4 : [B , v0 : single-length
+.line 299
+	if-ltz	v3,l105a4c
+; v3 : single-length
+.line 300
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	rem-int/lit8	v4,v4,8
+; v4 : single-length , v4 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base32.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 301
+	iget-wide	v4,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v4 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v6,5
+; v6 : single-length
+	shl-long/2addr	v4,v6
+; v4 : double-length , v6 : single-length
+	int-to-long	v6,v3
+; v6 : double-length , v3 : single-length
+	add-long/2addr	v4,v6
+; v4 : double-length , v6 : double-length
+	iput-wide	v4,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v4 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 302
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	if-nez	v4,l105a4c
+; v4 : single-length
+.line 303
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v8,32
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 304
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v8,24
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 305
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v8,16
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 306
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v8,8
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 307
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+l105a4c:
+.line 289
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	move	v2,v12
+; v2 : single-length , v12 : single-length
+l105a52:
+	goto/16	l1058d4
+ps10590e_105a56:
+.line 326
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v8,7
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+	goto/16	l1058c4
+ps10590e_105a80:
+.line 329
+	iget-wide	v4,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v4 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v6,4
+; v6 : single-length
+	shr-long/2addr	v4,v6
+; v4 : double-length , v6 : single-length
+	iput-wide	v4,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v4 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 330
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v8,8
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 331
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+	goto/16	l1058c4
+ps10590e_105ada:
+.line 334
+	iget-wide	v4,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v4 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v6,1
+; v6 : single-length
+	shr-long/2addr	v4,v6
+; v4 : double-length , v6 : single-length
+	iput-wide	v4,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v4 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 335
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v8,16
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 336
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v8,8
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 337
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+	goto/16	l1058c4
+ps10590e_105b5c:
+.line 340
+	iget-wide	v4,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v4 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v6,6
+; v6 : single-length
+	shr-long/2addr	v4,v6
+; v4 : double-length , v6 : single-length
+	iput-wide	v4,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v4 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 341
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v8,16
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 342
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v8,8
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 343
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+	goto/16	l1058c4
+ps10590e_105bde:
+.line 346
+	iget-wide	v4,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v4 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v6,3
+; v6 : single-length
+	shr-long/2addr	v4,v6
+; v4 : double-length , v6 : single-length
+	iput-wide	v4,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v4 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 347
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v8,24
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 348
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v8,16
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 349
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v8,8
+; v8 : single-length
+	shr-long/2addr	v6,v8
+; v6 : double-length , v8 : single-length
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 350
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v6,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v6 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const-wide/16	v8,255
+; v8 : double-length
+	and-long/2addr	v6,v8
+; v6 : double-length , v8 : double-length
+	long-to-int	v6,v6
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+	goto/16	l1058c4
+l105c88:
+	move	v12,v2
+; v12 : single-length , v2 : single-length
+l105c8a:
+	goto/16	l1058ee
+.line 321
+l105c8e:	data-array
+		0x00, 0x00
+	end data-array
+.end method
+
+.method encode([BII)V
+.limit registers 14
+; this: v10 (Lorg/apache/commons/codec/binary/Base32;)
+; parameter[0] : v11 ([B)
+; parameter[1] : v12 (I)
+; parameter[2] : v13 (I)
+.var 3 is savedPos I from l105cf2 to l1061ac
+.var 2 is inPos I from l1061b0 to l1061d2
+.var 0 is b I from l1061d6 to l1063aa
+.var 2 is inPos I from l1063a6 to l1063ac
+.line 372
+	iget-boolean	v4,v10,org/apache/commons/codec/binary/Base32.eof Z
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	if-eqz	v4,l105cca
+; v4 : single-length
+l105cc8:
+.line 460
+	return-void	
+l105cca:
+.line 377
+	if-gez	v13,l1061ac
+; v13 : single-length
+.line 378
+	const/4	v4,1
+; v4 : single-length
+	iput-boolean	v4,v10,org/apache/commons/codec/binary/Base32.eof Z
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 379
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	if-nez	v4,l105ce4
+; v4 : single-length
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.lineLength I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	if-eqz	v4,l105cc8
+; v4 : single-length
+l105ce4:
+.line 382
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.encodeSize I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	invoke-virtual	{v10,v4},org/apache/commons/codec/binary/Base32/ensureBufferSize	; ensureBufferSize(I)V
+; v10 : Lorg/apache/commons/codec/binary/Base32; , v4 : single-length
+.line 383
+	iget	v3,v10,org/apache/commons/codec/binary/Base32.pos I
+; v3 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 384
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	packed-switch	v4,1
+		ps105cf6_105d48	; case 1
+		ps105cf6_105e30	; case 2
+		ps105cf6_105f3e	; case 3
+		ps105cf6_106062	; case 4
+		default: ps105cf6_default
+; v4 : single-length
+l105cfc:
+.line 427
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.currentLinePos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	sub-int/2addr	v5,v3
+; v5 : single-length , v3 : single-length
+	add-int/2addr	v4,v5
+; v4 : single-length , v5 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base32.currentLinePos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 429
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.lineLength I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	if-lez	v4,l105cc8
+; v4 : single-length
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.currentLinePos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	if-lez	v4,l105cc8
+; v4 : single-length
+.line 430
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.lineSeparator [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v5,0
+; v5 : single-length
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v7,v10,org/apache/commons/codec/binary/Base32.pos I
+; v7 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v8,v10,org/apache/commons/codec/binary/Base32.lineSeparator [B
+; v8 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	array-length	v8,v8
+; v8 : single-length , v8 : single-length
+	invoke-static	{v4,v5,v6,v7,v8},java/lang/System/arraycopy	; arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+; v4 : [B , v5 : single-length , v6 : [B , v7 : single-length , v8 : single-length
+.line 431
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.pos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v5,v10,org/apache/commons/codec/binary/Base32.lineSeparator [B
+; v5 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	array-length	v5,v5
+; v5 : single-length , v5 : single-length
+	add-int/2addr	v4,v5
+; v4 : single-length , v5 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base32.pos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	goto	l105cc8
+ps105cf6_105d48:
+.line 386
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v9,3
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 387
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v9,2
+; v9 : single-length
+	shl-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 388
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 389
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 390
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 391
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 392
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 393
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+	goto/16	l105cfc
+ps105cf6_105e30:
+.line 397
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,11
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 398
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v9,6
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 399
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v9,1
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 400
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v9,4
+; v9 : single-length
+	shl-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 401
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 402
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 403
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 404
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+	goto/16	l105cfc
+ps105cf6_105f3e:
+.line 407
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,19
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 408
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,14
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 409
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,9
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 410
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v9,4
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 411
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v9,1
+; v9 : single-length
+	shl-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 412
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 413
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 414
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+	goto/16	l105cfc
+ps105cf6_106062:
+.line 417
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,27
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 418
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,22
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 419
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,17
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 420
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,12
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 421
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v9,7
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 422
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v9,2
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 423
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v9,3
+; v9 : single-length
+	shl-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 424
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,61
+; v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+	goto/16	l105cfc
+l1061ac:
+.line 434
+	const/4	v1,0
+; v1 : single-length
+	move	v2,v12
+; v2 : single-length , v12 : single-length
+l1061b0:
+	if-ge	v1,v13,l1063aa
+; v1 : single-length , v13 : single-length
+.line 435
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.encodeSize I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	invoke-virtual	{v10,v4},org/apache/commons/codec/binary/Base32/ensureBufferSize	; ensureBufferSize(I)V
+; v10 : Lorg/apache/commons/codec/binary/Base32; , v4 : single-length
+.line 436
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	rem-int/lit8	v4,v4,5
+; v4 : single-length , v4 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base32.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 437
+	add-int/lit8	v12,v2,1
+; v12 : single-length , v2 : single-length
+l1061d2:
+	aget-byte	v0,v11,v2
+; v0 : single-length , v11 : [B , v2 : single-length
+.line 438
+	if-gez	v0,l1061de
+; v0 : single-length
+.line 439
+	add-int/lit16	v0,v0,256
+; v0 : single-length , v0 : single-length
+l1061de:
+.line 441
+	iget-wide	v4,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v4 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v6,8
+; v6 : single-length
+	shl-long/2addr	v4,v6
+; v4 : double-length , v6 : single-length
+	int-to-long	v6,v0
+; v6 : double-length , v0 : single-length
+	add-long/2addr	v4,v6
+; v4 : double-length , v6 : double-length
+	iput-wide	v4,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v4 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 442
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	if-nez	v4,l1063a0
+; v4 : single-length
+.line 443
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,35
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 444
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,30
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 445
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,25
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 446
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,20
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 447
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,15
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 448
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/16	v9,10
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 449
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v9,5
+; v9 : single-length
+	shr-long/2addr	v7,v9
+; v7 : double-length , v9 : single-length
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 450
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base32.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-wide	v7,v10,org/apache/commons/codec/binary/Base32.bitWorkArea J
+; v7 : double-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	long-to-int	v7,v7
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,31
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 451
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.currentLinePos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	add-int/lit8	v4,v4,8
+; v4 : single-length , v4 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base32.currentLinePos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 452
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.lineLength I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	if-lez	v4,l1063a0
+; v4 : single-length
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.lineLength I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v5,v10,org/apache/commons/codec/binary/Base32.currentLinePos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	if-gt	v4,v5,l1063a0
+; v4 : single-length , v5 : single-length
+.line 453
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base32.lineSeparator [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	const/4	v5,0
+; v5 : single-length
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base32.buffer [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget	v7,v10,org/apache/commons/codec/binary/Base32.pos I
+; v7 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v8,v10,org/apache/commons/codec/binary/Base32.lineSeparator [B
+; v8 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	array-length	v8,v8
+; v8 : single-length , v8 : single-length
+	invoke-static	{v4,v5,v6,v7,v8},java/lang/System/arraycopy	; arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+; v4 : [B , v5 : single-length , v6 : [B , v7 : single-length , v8 : single-length
+.line 454
+	iget	v4,v10,org/apache/commons/codec/binary/Base32.pos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+	iget-object	v5,v10,org/apache/commons/codec/binary/Base32.lineSeparator [B
+; v5 : [B , v10 : Lorg/apache/commons/codec/binary/Base32;
+	array-length	v5,v5
+; v5 : single-length , v5 : single-length
+	add-int/2addr	v4,v5
+; v4 : single-length , v5 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base32.pos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+.line 455
+	const/4	v4,0
+; v4 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base32.currentLinePos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base32;
+l1063a0:
+.line 434
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	move	v2,v12
+; v2 : single-length , v12 : single-length
+l1063a6:
+	goto/16	l1061b0
+l1063aa:
+	move	v12,v2
+; v12 : single-length , v2 : single-length
+l1063ac:
+	goto/16	l105cc8
+.line 384
+.end method
+
+.method public isInAlphabet(B)Z
+.limit registers 4
+; this: v2 (Lorg/apache/commons/codec/binary/Base32;)
+; parameter[0] : v3 (B)
+.line 471
+	if-ltz	v3,l1063f8
+; v3 : single-length
+	iget-object	v0,v2,org/apache/commons/codec/binary/Base32.decodeTable [B
+; v0 : [B , v2 : Lorg/apache/commons/codec/binary/Base32;
+	array-length	v0,v0
+; v0 : single-length , v0 : single-length
+	if-ge	v3,v0,l1063f8
+; v3 : single-length , v0 : single-length
+	iget-object	v0,v2,org/apache/commons/codec/binary/Base32.decodeTable [B
+; v0 : [B , v2 : Lorg/apache/commons/codec/binary/Base32;
+	aget-byte	v0,v0,v3
+; v0 : single-length , v0 : single-length , v3 : single-length
+	const/4	v1,15
+; v1 : single-length
+	if-eq	v0,v1,l1063f8
+; v0 : single-length , v1 : single-length
+	const/4	v0,1
+; v0 : single-length
+l1063f6:
+	return	v0
+; v0 : single-length
+l1063f8:
+	const/4	v0,0
+; v0 : single-length
+	goto	l1063f6
+.end method
+
+

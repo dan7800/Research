@@ -1,0 +1,328 @@
+.class public abstract android/support/v4/app/FragmentPagerAdapter
+.super android/support/v4/view/PagerAdapter
+.source FragmentPagerAdapter.java
+
+.field private static final DEBUG Z = false
+.field private static final TAG Ljava/lang/String; = "FragmentPagerAdapter"
+.field private mCurTransaction Landroid/support/v4/app/FragmentTransaction;
+.field private mCurrentPrimaryItem Landroid/support/v4/app/Fragment;
+.field private final mFragmentManager Landroid/support/v4/app/FragmentManager;
+
+.method public <init>(Landroid/support/v4/app/FragmentManager;)V
+.limit registers 3
+; this: v1 (Landroid/support/v4/app/FragmentPagerAdapter;)
+; parameter[0] : v2 (Landroid/support/v4/app/FragmentManager;)
+	const/4	v0,0
+; v0 : single-length
+.line 69
+	invoke-direct	{v1},android/support/v4/view/PagerAdapter/<init>	; <init>()V
+; v1 : Landroid/support/v4/app/FragmentPagerAdapter;
+.line 66
+	iput-object	v0,v1,android/support/v4/app/FragmentPagerAdapter.mCurTransaction Landroid/support/v4/app/FragmentTransaction;
+; v0 : single-length , v1 : Landroid/support/v4/app/FragmentPagerAdapter;
+.line 67
+	iput-object	v0,v1,android/support/v4/app/FragmentPagerAdapter.mCurrentPrimaryItem Landroid/support/v4/app/Fragment;
+; v0 : single-length , v1 : Landroid/support/v4/app/FragmentPagerAdapter;
+.line 70
+	iput-object	v2,v1,android/support/v4/app/FragmentPagerAdapter.mFragmentManager Landroid/support/v4/app/FragmentManager;
+; v2 : Landroid/support/v4/app/FragmentManager; , v1 : Landroid/support/v4/app/FragmentPagerAdapter;
+.line 71
+	return-void	
+.end method
+
+.method private static makeFragmentName(II)Ljava/lang/String;
+.limit registers 4
+; parameter[0] : v2 (I)
+; parameter[1] : v3 (I)
+.line 158
+	new-instance	v0,java/lang/StringBuilder
+; v0 : Ljava/lang/StringBuilder;
+	invoke-direct	{v0},java/lang/StringBuilder/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,"android:switcher:"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0,v2},java/lang/StringBuilder/append	; append(I)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,":"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0,v3},java/lang/StringBuilder/append	; append(I)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v3 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public destroyItem(Landroid/view/ViewGroup;ILjava/lang/Object;)V
+.limit registers 5
+; this: v1 (Landroid/support/v4/app/FragmentPagerAdapter;)
+; parameter[0] : v2 (Landroid/view/ViewGroup;)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (Ljava/lang/Object;)
+.line 110
+	iget-object	v0,v1,android/support/v4/app/FragmentPagerAdapter.mCurTransaction Landroid/support/v4/app/FragmentTransaction;
+; v0 : Landroid/support/v4/app/FragmentTransaction; , v1 : Landroid/support/v4/app/FragmentPagerAdapter;
+	if-nez	v0,l72240
+; v0 : Landroid/support/v4/app/FragmentTransaction;
+.line 111
+	iget-object	v0,v1,android/support/v4/app/FragmentPagerAdapter.mFragmentManager Landroid/support/v4/app/FragmentManager;
+; v0 : Landroid/support/v4/app/FragmentManager; , v1 : Landroid/support/v4/app/FragmentPagerAdapter;
+	invoke-virtual	{v0},android/support/v4/app/FragmentManager/beginTransaction	; beginTransaction()Landroid/support/v4/app/FragmentTransaction;
+; v0 : Landroid/support/v4/app/FragmentManager;
+	move-result-object	v0
+; v0 : Landroid/support/v4/app/FragmentTransaction;
+	iput-object	v0,v1,android/support/v4/app/FragmentPagerAdapter.mCurTransaction Landroid/support/v4/app/FragmentTransaction;
+; v0 : Landroid/support/v4/app/FragmentTransaction; , v1 : Landroid/support/v4/app/FragmentPagerAdapter;
+l72240:
+.line 115
+	iget-object	v0,v1,android/support/v4/app/FragmentPagerAdapter.mCurTransaction Landroid/support/v4/app/FragmentTransaction;
+; v0 : Landroid/support/v4/app/FragmentTransaction; , v1 : Landroid/support/v4/app/FragmentPagerAdapter;
+	check-cast	v4,android/support/v4/app/Fragment
+; v4 : Landroid/support/v4/app/Fragment;
+	invoke-virtual	{v0,v4},android/support/v4/app/FragmentTransaction/detach	; detach(Landroid/support/v4/app/Fragment;)Landroid/support/v4/app/FragmentTransaction;
+; v0 : Landroid/support/v4/app/FragmentTransaction; , v4 : Landroid/support/v4/app/Fragment;
+.line 116
+	return-void	
+.end method
+
+.method public finishUpdate(Landroid/view/ViewGroup;)V
+.limit registers 3
+; this: v1 (Landroid/support/v4/app/FragmentPagerAdapter;)
+; parameter[0] : v2 (Landroid/view/ViewGroup;)
+.line 136
+	iget-object	v0,v1,android/support/v4/app/FragmentPagerAdapter.mCurTransaction Landroid/support/v4/app/FragmentTransaction;
+; v0 : Landroid/support/v4/app/FragmentTransaction; , v1 : Landroid/support/v4/app/FragmentPagerAdapter;
+	if-eqz	v0,l72282
+; v0 : Landroid/support/v4/app/FragmentTransaction;
+.line 137
+	iget-object	v0,v1,android/support/v4/app/FragmentPagerAdapter.mCurTransaction Landroid/support/v4/app/FragmentTransaction;
+; v0 : Landroid/support/v4/app/FragmentTransaction; , v1 : Landroid/support/v4/app/FragmentPagerAdapter;
+	invoke-virtual	{v0},android/support/v4/app/FragmentTransaction/commitAllowingStateLoss	; commitAllowingStateLoss()I
+; v0 : Landroid/support/v4/app/FragmentTransaction;
+.line 138
+	const/4	v0,0
+; v0 : single-length
+	iput-object	v0,v1,android/support/v4/app/FragmentPagerAdapter.mCurTransaction Landroid/support/v4/app/FragmentTransaction;
+; v0 : single-length , v1 : Landroid/support/v4/app/FragmentPagerAdapter;
+.line 139
+	iget-object	v0,v1,android/support/v4/app/FragmentPagerAdapter.mFragmentManager Landroid/support/v4/app/FragmentManager;
+; v0 : Landroid/support/v4/app/FragmentManager; , v1 : Landroid/support/v4/app/FragmentPagerAdapter;
+	invoke-virtual	{v0},android/support/v4/app/FragmentManager/executePendingTransactions	; executePendingTransactions()Z
+; v0 : Landroid/support/v4/app/FragmentManager;
+l72282:
+.line 141
+	return-void	
+.end method
+
+.method public abstract getItem(I)Landroid/support/v4/app/Fragment;
+.end method
+
+.method public instantiateItem(Landroid/view/ViewGroup;I)Ljava/lang/Object;
+.limit registers 9
+; this: v6 (Landroid/support/v4/app/FragmentPagerAdapter;)
+; parameter[0] : v7 (Landroid/view/ViewGroup;)
+; parameter[1] : v8 (I)
+	const/4	v5,0
+; v5 : single-length
+.line 84
+	iget-object	v2,v6,android/support/v4/app/FragmentPagerAdapter.mCurTransaction Landroid/support/v4/app/FragmentTransaction;
+; v2 : Landroid/support/v4/app/FragmentTransaction; , v6 : Landroid/support/v4/app/FragmentPagerAdapter;
+	if-nez	v2,l722ae
+; v2 : Landroid/support/v4/app/FragmentTransaction;
+.line 85
+	iget-object	v2,v6,android/support/v4/app/FragmentPagerAdapter.mFragmentManager Landroid/support/v4/app/FragmentManager;
+; v2 : Landroid/support/v4/app/FragmentManager; , v6 : Landroid/support/v4/app/FragmentPagerAdapter;
+	invoke-virtual	{v2},android/support/v4/app/FragmentManager/beginTransaction	; beginTransaction()Landroid/support/v4/app/FragmentTransaction;
+; v2 : Landroid/support/v4/app/FragmentManager;
+	move-result-object	v2
+; v2 : Landroid/support/v4/app/FragmentTransaction;
+	iput-object	v2,v6,android/support/v4/app/FragmentPagerAdapter.mCurTransaction Landroid/support/v4/app/FragmentTransaction;
+; v2 : Landroid/support/v4/app/FragmentTransaction; , v6 : Landroid/support/v4/app/FragmentPagerAdapter;
+l722ae:
+.line 89
+	invoke-virtual	{v7},android/view/ViewGroup/getId	; getId()I
+; v7 : Landroid/view/ViewGroup;
+	move-result	v2
+; v2 : single-length
+	invoke-static	{v2,v8},android/support/v4/app/FragmentPagerAdapter/makeFragmentName	; makeFragmentName(II)Ljava/lang/String;
+; v2 : single-length , v8 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 90
+	iget-object	v2,v6,android/support/v4/app/FragmentPagerAdapter.mFragmentManager Landroid/support/v4/app/FragmentManager;
+; v2 : Landroid/support/v4/app/FragmentManager; , v6 : Landroid/support/v4/app/FragmentPagerAdapter;
+	invoke-virtual	{v2,v1},android/support/v4/app/FragmentManager/findFragmentByTag	; findFragmentByTag(Ljava/lang/String;)Landroid/support/v4/app/Fragment;
+; v2 : Landroid/support/v4/app/FragmentManager; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Landroid/support/v4/app/Fragment;
+.line 91
+	if-eqz	v0,l722ee
+; v0 : Landroid/support/v4/app/Fragment;
+.line 93
+	iget-object	v2,v6,android/support/v4/app/FragmentPagerAdapter.mCurTransaction Landroid/support/v4/app/FragmentTransaction;
+; v2 : Landroid/support/v4/app/FragmentTransaction; , v6 : Landroid/support/v4/app/FragmentPagerAdapter;
+	invoke-virtual	{v2,v0},android/support/v4/app/FragmentTransaction/attach	; attach(Landroid/support/v4/app/Fragment;)Landroid/support/v4/app/FragmentTransaction;
+; v2 : Landroid/support/v4/app/FragmentTransaction; , v0 : Landroid/support/v4/app/Fragment;
+l722d8:
+.line 100
+	iget-object	v2,v6,android/support/v4/app/FragmentPagerAdapter.mCurrentPrimaryItem Landroid/support/v4/app/Fragment;
+; v2 : Landroid/support/v4/app/Fragment; , v6 : Landroid/support/v4/app/FragmentPagerAdapter;
+	if-eq	v0,v2,l722ec
+; v0 : Landroid/support/v4/app/Fragment; , v2 : Landroid/support/v4/app/Fragment;
+.line 101
+	invoke-virtual	{v0,v5},android/support/v4/app/Fragment/setMenuVisibility	; setMenuVisibility(Z)V
+; v0 : Landroid/support/v4/app/Fragment; , v5 : single-length
+.line 102
+	invoke-virtual	{v0,v5},android/support/v4/app/Fragment/setUserVisibleHint	; setUserVisibleHint(Z)V
+; v0 : Landroid/support/v4/app/Fragment; , v5 : single-length
+l722ec:
+.line 105
+	return-object	v0
+; v0 : Landroid/support/v4/app/Fragment;
+l722ee:
+.line 95
+	invoke-virtual	{v6,v8},android/support/v4/app/FragmentPagerAdapter/getItem	; getItem(I)Landroid/support/v4/app/Fragment;
+; v6 : Landroid/support/v4/app/FragmentPagerAdapter; , v8 : single-length
+	move-result-object	v0
+; v0 : Landroid/support/v4/app/Fragment;
+.line 97
+	iget-object	v2,v6,android/support/v4/app/FragmentPagerAdapter.mCurTransaction Landroid/support/v4/app/FragmentTransaction;
+; v2 : Landroid/support/v4/app/FragmentTransaction; , v6 : Landroid/support/v4/app/FragmentPagerAdapter;
+	invoke-virtual	{v7},android/view/ViewGroup/getId	; getId()I
+; v7 : Landroid/view/ViewGroup;
+	move-result	v3
+; v3 : single-length
+	invoke-virtual	{v7},android/view/ViewGroup/getId	; getId()I
+; v7 : Landroid/view/ViewGroup;
+	move-result	v4
+; v4 : single-length
+	invoke-static	{v4,v8},android/support/v4/app/FragmentPagerAdapter/makeFragmentName	; makeFragmentName(II)Ljava/lang/String;
+; v4 : single-length , v8 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v2,v3,v0,v4},android/support/v4/app/FragmentTransaction/add	; add(ILandroid/support/v4/app/Fragment;Ljava/lang/String;)Landroid/support/v4/app/FragmentTransaction;
+; v2 : Landroid/support/v4/app/FragmentTransaction; , v3 : single-length , v0 : Landroid/support/v4/app/Fragment; , v4 : Ljava/lang/String;
+	goto	l722d8
+.end method
+
+.method public isViewFromObject(Landroid/view/View;Ljava/lang/Object;)Z
+.limit registers 4
+; this: v1 (Landroid/support/v4/app/FragmentPagerAdapter;)
+; parameter[0] : v2 (Landroid/view/View;)
+; parameter[1] : v3 (Ljava/lang/Object;)
+.line 145
+	check-cast	v3,android/support/v4/app/Fragment
+; v3 : Landroid/support/v4/app/Fragment;
+	invoke-virtual	{v3},android/support/v4/app/Fragment/getView	; getView()Landroid/view/View;
+; v3 : Landroid/support/v4/app/Fragment;
+	move-result-object	v0
+; v0 : Landroid/view/View;
+	if-ne	v0,v2,l72340
+; v0 : Landroid/view/View; , v2 : Landroid/view/View;
+	const/4	v0,1
+; v0 : single-length
+l7233e:
+	return	v0
+; v0 : single-length
+l72340:
+	const/4	v0,0
+; v0 : single-length
+	goto	l7233e
+.end method
+
+.method public restoreState(Landroid/os/Parcelable;Ljava/lang/ClassLoader;)V
+.limit registers 3
+; this: v0 (Landroid/support/v4/app/FragmentPagerAdapter;)
+; parameter[0] : v1 (Landroid/os/Parcelable;)
+; parameter[1] : v2 (Ljava/lang/ClassLoader;)
+.line 155
+	return-void	
+.end method
+
+.method public saveState()Landroid/os/Parcelable;
+.limit registers 2
+; this: v1 (Landroid/support/v4/app/FragmentPagerAdapter;)
+.line 150
+	const/4	v0,0
+; v0 : single-length
+	return-object	v0
+; v0 : single-length
+.end method
+
+.method public setPrimaryItem(Landroid/view/ViewGroup;ILjava/lang/Object;)V
+.limit registers 8
+; this: v4 (Landroid/support/v4/app/FragmentPagerAdapter;)
+; parameter[0] : v5 (Landroid/view/ViewGroup;)
+; parameter[1] : v6 (I)
+; parameter[2] : v7 (Ljava/lang/Object;)
+	const/4	v3,1
+; v3 : single-length
+	const/4	v2,0
+; v2 : single-length
+.line 120
+	move-object	v0,v7
+; v0 : Ljava/lang/Object; , v7 : Ljava/lang/Object;
+	check-cast	v0,android/support/v4/app/Fragment
+; v0 : Landroid/support/v4/app/Fragment;
+.line 121
+	iget-object	v1,v4,android/support/v4/app/FragmentPagerAdapter.mCurrentPrimaryItem Landroid/support/v4/app/Fragment;
+; v1 : Landroid/support/v4/app/Fragment; , v4 : Landroid/support/v4/app/FragmentPagerAdapter;
+	if-eq	v0,v1,l723be
+; v0 : Landroid/support/v4/app/Fragment; , v1 : Landroid/support/v4/app/Fragment;
+.line 122
+	iget-object	v1,v4,android/support/v4/app/FragmentPagerAdapter.mCurrentPrimaryItem Landroid/support/v4/app/Fragment;
+; v1 : Landroid/support/v4/app/Fragment; , v4 : Landroid/support/v4/app/FragmentPagerAdapter;
+	if-eqz	v1,l723aa
+; v1 : Landroid/support/v4/app/Fragment;
+.line 123
+	iget-object	v1,v4,android/support/v4/app/FragmentPagerAdapter.mCurrentPrimaryItem Landroid/support/v4/app/Fragment;
+; v1 : Landroid/support/v4/app/Fragment; , v4 : Landroid/support/v4/app/FragmentPagerAdapter;
+	invoke-virtual	{v1,v2},android/support/v4/app/Fragment/setMenuVisibility	; setMenuVisibility(Z)V
+; v1 : Landroid/support/v4/app/Fragment; , v2 : single-length
+.line 124
+	iget-object	v1,v4,android/support/v4/app/FragmentPagerAdapter.mCurrentPrimaryItem Landroid/support/v4/app/Fragment;
+; v1 : Landroid/support/v4/app/Fragment; , v4 : Landroid/support/v4/app/FragmentPagerAdapter;
+	invoke-virtual	{v1,v2},android/support/v4/app/Fragment/setUserVisibleHint	; setUserVisibleHint(Z)V
+; v1 : Landroid/support/v4/app/Fragment; , v2 : single-length
+l723aa:
+.line 126
+	if-eqz	v0,l723ba
+; v0 : Landroid/support/v4/app/Fragment;
+.line 127
+	invoke-virtual	{v0,v3},android/support/v4/app/Fragment/setMenuVisibility	; setMenuVisibility(Z)V
+; v0 : Landroid/support/v4/app/Fragment; , v3 : single-length
+.line 128
+	invoke-virtual	{v0,v3},android/support/v4/app/Fragment/setUserVisibleHint	; setUserVisibleHint(Z)V
+; v0 : Landroid/support/v4/app/Fragment; , v3 : single-length
+l723ba:
+.line 130
+	iput-object	v0,v4,android/support/v4/app/FragmentPagerAdapter.mCurrentPrimaryItem Landroid/support/v4/app/Fragment;
+; v0 : Landroid/support/v4/app/Fragment; , v4 : Landroid/support/v4/app/FragmentPagerAdapter;
+l723be:
+.line 132
+	return-void	
+.end method
+
+.method public startUpdate(Landroid/view/ViewGroup;)V
+.limit registers 2
+; this: v0 (Landroid/support/v4/app/FragmentPagerAdapter;)
+; parameter[0] : v1 (Landroid/view/ViewGroup;)
+.line 80
+	return-void	
+.end method
+
+

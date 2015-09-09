@@ -1,0 +1,121 @@
+.class public org/apache/commons/io/TaggedIOException
+.super org/apache/commons/io/IOExceptionWithCause
+.source TaggedIOException.java
+
+.field private static final serialVersionUID J = -1611665971	; 0xffffffff9fefedcd
+.field private final tag Ljava/io/Serializable;
+
+.method public <init>(Ljava/io/IOException;Ljava/io/Serializable;)V
+.limit registers 4
+; this: v1 (Lorg/apache/commons/io/TaggedIOException;)
+; parameter[0] : v2 (Ljava/io/IOException;)
+; parameter[1] : v3 (Ljava/io/Serializable;)
+.line 111
+	invoke-virtual	{v2},java/io/IOException/getMessage	; getMessage()Ljava/lang/String;
+; v2 : Ljava/io/IOException;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	invoke-direct	{v1,v0,v2},org/apache/commons/io/IOExceptionWithCause/<init>	; <init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+; v1 : Lorg/apache/commons/io/TaggedIOException; , v0 : Ljava/lang/String; , v2 : Ljava/io/IOException;
+.line 112
+	iput-object	v3,v1,org/apache/commons/io/TaggedIOException.tag Ljava/io/Serializable;
+; v3 : Ljava/io/Serializable; , v1 : Lorg/apache/commons/io/TaggedIOException;
+.line 113
+	return-void	
+.end method
+
+.method public static isTaggedWith(Ljava/lang/Throwable;Ljava/lang/Object;)Z
+.limit registers 3
+; parameter[0] : v1 (Ljava/lang/Throwable;)
+; parameter[1] : v2 (Ljava/lang/Object;)
+.line 65
+	if-eqz	v2,l117068
+; v2 : Ljava/lang/Object;
+	instance-of	v0,v1,org/apache/commons/io/TaggedIOException
+; v0 : single-length , v1 : Ljava/lang/Throwable;
+	if-eqz	v0,l117068
+; v0 : single-length
+	check-cast	v1,org/apache/commons/io/TaggedIOException
+; v1 : Lorg/apache/commons/io/TaggedIOException;
+	iget-object	v0,v1,org/apache/commons/io/TaggedIOException.tag Ljava/io/Serializable;
+; v0 : Ljava/io/Serializable; , v1 : Lorg/apache/commons/io/TaggedIOException;
+	invoke-virtual	{v2,v0},java/lang/Object/equals	; equals(Ljava/lang/Object;)Z
+; v2 : Ljava/lang/Object; , v0 : Ljava/io/Serializable;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l117068
+; v0 : single-length
+	const/4	v0,1
+; v0 : single-length
+l117066:
+	return	v0
+; v0 : single-length
+l117068:
+	const/4	v0,0
+; v0 : single-length
+	goto	l117066
+.end method
+
+.method public static throwCauseIfTaggedWith(Ljava/lang/Throwable;Ljava/lang/Object;)V
+.throws Ljava/io/IOException;
+.limit registers 3
+; parameter[0] : v1 (Ljava/lang/Throwable;)
+; parameter[1] : v2 (Ljava/lang/Object;)
+.line 94
+	invoke-static	{v1,v2},org/apache/commons/io/TaggedIOException/isTaggedWith	; isTaggedWith(Ljava/lang/Throwable;Ljava/lang/Object;)Z
+; v1 : Ljava/lang/Throwable; , v2 : Ljava/lang/Object;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l117096
+; v0 : single-length
+.line 95
+	check-cast	v1,org/apache/commons/io/TaggedIOException
+; v1 : Lorg/apache/commons/io/TaggedIOException;
+	invoke-virtual	{v1},org/apache/commons/io/TaggedIOException/getCause	; getCause()Ljava/io/IOException;
+; v1 : Lorg/apache/commons/io/TaggedIOException;
+	move-result-object	v0
+; v0 : Ljava/io/IOException;
+	throw	v0
+; v0 : Ljava/io/IOException;
+l117096:
+.line 97
+	return-void	
+.end method
+
+.method public getCause()Ljava/io/IOException;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/TaggedIOException;)
+.line 132
+	invoke-super	{v1},org/apache/commons/io/IOExceptionWithCause/getCause	; getCause()Ljava/lang/Throwable;
+; v1 : Lorg/apache/commons/io/TaggedIOException;
+	move-result-object	v0
+; v0 : Ljava/lang/Throwable;
+	check-cast	v0,java/io/IOException
+; v0 : Ljava/io/IOException;
+	return-object	v0
+; v0 : Ljava/io/IOException;
+.end method
+
+.method public getCause()Ljava/lang/Throwable;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/TaggedIOException;)
+.line 29
+	invoke-virtual	{v1},org/apache/commons/io/TaggedIOException/getCause	; getCause()Ljava/io/IOException;
+; v1 : Lorg/apache/commons/io/TaggedIOException;
+	move-result-object	v0
+; v0 : Ljava/io/IOException;
+	return-object	v0
+; v0 : Ljava/io/IOException;
+.end method
+
+.method public getTag()Ljava/io/Serializable;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/TaggedIOException;)
+.line 121
+	iget-object	v0,v1,org/apache/commons/io/TaggedIOException.tag Ljava/io/Serializable;
+; v0 : Ljava/io/Serializable; , v1 : Lorg/apache/commons/io/TaggedIOException;
+	return-object	v0
+; v0 : Ljava/io/Serializable;
+.end method
+
+

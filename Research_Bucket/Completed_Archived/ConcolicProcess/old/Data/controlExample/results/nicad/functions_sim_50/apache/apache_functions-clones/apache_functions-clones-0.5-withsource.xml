@@ -1,0 +1,948 @@
+<clones>
+<systeminfo processor="nicad3" system="apache" granularity="functions" threshold="50%" minlines="3" maxlines="2500"/>
+<cloneinfo npcs="40" npairs="28"/>
+<runinfo ncompares="340" cputime="5"/>
+
+<clone nlines="21" similarity="66">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1120" endline="1148" pcid="23">
+static const char *add_cache_enable(cmd_parms *parms, void *dummy,
+                                    const char *type,
+                                    const char *url)
+{
+    cache_server_conf *conf;
+    struct cache_enable *new;
+
+    if (*type == '/') {
+        return apr_psprintf(parms->pool,
+          "provider (%s) starts with a '/'.  Are url and provider switched?",
+          type);
+    }
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    new = apr_array_push(conf->cacheenable);
+    new->type = type;
+    if (apr_uri_parse(parms->pool, url, &(new->url))) {
+        return NULL;
+    }
+    if (new->url.path) {
+        new->pathlen = strlen(new->url.path);
+    } else {
+        new->pathlen = 1;
+        new->url.path = "/";
+    }
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1150" endline="1170" pcid="24">
+static const char *add_cache_disable(cmd_parms *parms, void *dummy,
+                                     const char *url)
+{
+    cache_server_conf *conf;
+    struct cache_disable *new;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    new = apr_array_push(conf->cachedisable);
+    if (apr_uri_parse(parms->pool, url, &(new->url))) {
+        return NULL;
+    }
+    if (new->url.path) {
+        new->pathlen = strlen(new->url.path);
+    } else {
+        new->pathlen = 1;
+        new->url.path = "/";
+    }
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="16" similarity="56">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1092" endline="1118" pcid="22">
+static const char *add_ignore_session_id(cmd_parms *parms, void *dummy,
+                                         const char *identifier)
+{
+    cache_server_conf *conf;
+    char **new;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    if (!strncasecmp(identifier, "None", 4)) {
+        /* if identifier None is listed clear array */
+        conf->ignore_session_id->nelts = 0;
+    }
+    else {
+        if ((conf->ignore_session_id_set == CACHE_IGNORE_SESSION_ID_UNSET) ||
+            (conf->ignore_session_id->nelts)) {
+            /*
+             * Only add identifier if no "None" has been found in identifier
+             * list so far.
+             */
+            new = (char **)apr_array_push(conf->ignore_session_id);
+            (*new) = (char *)identifier;
+        }
+    }
+    conf->ignore_session_id_set = CACHE_IGNORE_SESSION_ID_SET;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1064" endline="1090" pcid="21">
+static const char *add_ignore_header(cmd_parms *parms, void *dummy,
+                                     const char *header)
+{
+    cache_server_conf *conf;
+    char **new;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    if (!strncasecmp(header, "None", 4)) {
+        /* if header None is listed clear array */
+        conf->ignore_headers->nelts = 0;
+    }
+    else {
+        if ((conf->ignore_headers_set == CACHE_IGNORE_HEADERS_UNSET) ||
+            (conf->ignore_headers->nelts)) {
+            /* Only add header if no "None" has been found in header list
+             * so far.
+             * (When 'None' is passed, IGNORE_HEADERS_SET && nelts == 0.)
+             */
+            new = (char **)apr_array_push(conf->ignore_headers);
+            (*new) = (char *)header;
+        }
+    }
+    conf->ignore_headers_set = CACHE_IGNORE_HEADERS_SET;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="8" similarity="75">
+<source file="examples2/apache/smallApache/http_core.c.ifdefed" startline="79" endline="89" pcid="3">
+static const char *set_keep_alive_max(cmd_parms *cmd, void *dummy,
+                                      const char *arg)
+{
+    const char *err = ap_check_cmd_context(cmd, NOT_IN_DIR_LOC_FILE|NOT_IN_LIMIT);
+    if (err != NULL) {
+        return err;
+    }
+
+    cmd->server->keep_alive_max = atoi(arg);
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/http_core.c.ifdefed" startline="47" endline="57" pcid="1">
+static const char *set_keep_alive_timeout(cmd_parms *cmd, void *dummy,
+                                          const char *arg)
+{
+    const char *err = ap_check_cmd_context(cmd, NOT_IN_DIR_LOC_FILE|NOT_IN_LIMIT);
+    if (err != NULL) {
+        return err;
+    }
+
+    cmd->server->keep_alive_timeout = apr_time_from_sec(atoi(arg));
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1051" endline="1062" pcid="20">
+static const char *set_cache_store_nostore(cmd_parms *parms, void *dummy,
+                                           int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_nostore = flag;
+    conf->store_nostore_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1038" endline="1049" pcid="19">
+static const char *set_cache_store_private(cmd_parms *parms, void *dummy,
+                                           int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_private = flag;
+    conf->store_private_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1051" endline="1062" pcid="20">
+static const char *set_cache_store_nostore(cmd_parms *parms, void *dummy,
+                                           int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_nostore = flag;
+    conf->store_nostore_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1172" endline="1183" pcid="25">
+static const char *set_cache_maxex(cmd_parms *parms, void *dummy,
+                                   const char *arg)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->maxex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->maxex_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1051" endline="1062" pcid="20">
+static const char *set_cache_store_nostore(cmd_parms *parms, void *dummy,
+                                           int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_nostore = flag;
+    conf->store_nostore_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1185" endline="1196" pcid="26">
+static const char *set_cache_defex(cmd_parms *parms, void *dummy,
+                                   const char *arg)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->defex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->defex_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1051" endline="1062" pcid="20">
+static const char *set_cache_store_nostore(cmd_parms *parms, void *dummy,
+                                           int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_nostore = flag;
+    conf->store_nostore_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1025" endline="1036" pcid="18">
+static const char *set_cache_ignore_cachecontrol(cmd_parms *parms,
+                                                 void *dummy, int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorecachecontrol = flag;
+    conf->ignorecachecontrol_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1051" endline="1062" pcid="20">
+static const char *set_cache_store_nostore(cmd_parms *parms, void *dummy,
+                                           int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_nostore = flag;
+    conf->store_nostore_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1215" endline="1226" pcid="28">
+static const char *set_cache_ignore_querystring(cmd_parms *parms, void *dummy,
+                                                int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorequerystring = flag;
+    conf->ignorequerystring_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1051" endline="1062" pcid="20">
+static const char *set_cache_store_nostore(cmd_parms *parms, void *dummy,
+                                           int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_nostore = flag;
+    conf->store_nostore_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1011" endline="1023" pcid="17">
+static const char *set_cache_ignore_no_last_mod(cmd_parms *parms, void *dummy,
+                                                int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->no_last_mod_ignore = flag;
+    conf->no_last_mod_ignore_set = 1;
+    return NULL;
+
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1038" endline="1049" pcid="19">
+static const char *set_cache_store_private(cmd_parms *parms, void *dummy,
+                                           int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_private = flag;
+    conf->store_private_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1172" endline="1183" pcid="25">
+static const char *set_cache_maxex(cmd_parms *parms, void *dummy,
+                                   const char *arg)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->maxex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->maxex_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1038" endline="1049" pcid="19">
+static const char *set_cache_store_private(cmd_parms *parms, void *dummy,
+                                           int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_private = flag;
+    conf->store_private_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1185" endline="1196" pcid="26">
+static const char *set_cache_defex(cmd_parms *parms, void *dummy,
+                                   const char *arg)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->defex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->defex_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1038" endline="1049" pcid="19">
+static const char *set_cache_store_private(cmd_parms *parms, void *dummy,
+                                           int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_private = flag;
+    conf->store_private_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1025" endline="1036" pcid="18">
+static const char *set_cache_ignore_cachecontrol(cmd_parms *parms,
+                                                 void *dummy, int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorecachecontrol = flag;
+    conf->ignorecachecontrol_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1038" endline="1049" pcid="19">
+static const char *set_cache_store_private(cmd_parms *parms, void *dummy,
+                                           int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_private = flag;
+    conf->store_private_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1215" endline="1226" pcid="28">
+static const char *set_cache_ignore_querystring(cmd_parms *parms, void *dummy,
+                                                int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorequerystring = flag;
+    conf->ignorequerystring_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1038" endline="1049" pcid="19">
+static const char *set_cache_store_private(cmd_parms *parms, void *dummy,
+                                           int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->store_private = flag;
+    conf->store_private_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1011" endline="1023" pcid="17">
+static const char *set_cache_ignore_no_last_mod(cmd_parms *parms, void *dummy,
+                                                int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->no_last_mod_ignore = flag;
+    conf->no_last_mod_ignore_set = 1;
+    return NULL;
+
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1172" endline="1183" pcid="25">
+static const char *set_cache_maxex(cmd_parms *parms, void *dummy,
+                                   const char *arg)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->maxex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->maxex_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1185" endline="1196" pcid="26">
+static const char *set_cache_defex(cmd_parms *parms, void *dummy,
+                                   const char *arg)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->defex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->defex_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1172" endline="1183" pcid="25">
+static const char *set_cache_maxex(cmd_parms *parms, void *dummy,
+                                   const char *arg)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->maxex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->maxex_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1025" endline="1036" pcid="18">
+static const char *set_cache_ignore_cachecontrol(cmd_parms *parms,
+                                                 void *dummy, int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorecachecontrol = flag;
+    conf->ignorecachecontrol_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1172" endline="1183" pcid="25">
+static const char *set_cache_maxex(cmd_parms *parms, void *dummy,
+                                   const char *arg)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->maxex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->maxex_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1215" endline="1226" pcid="28">
+static const char *set_cache_ignore_querystring(cmd_parms *parms, void *dummy,
+                                                int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorequerystring = flag;
+    conf->ignorequerystring_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1172" endline="1183" pcid="25">
+static const char *set_cache_maxex(cmd_parms *parms, void *dummy,
+                                   const char *arg)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->maxex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->maxex_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1011" endline="1023" pcid="17">
+static const char *set_cache_ignore_no_last_mod(cmd_parms *parms, void *dummy,
+                                                int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->no_last_mod_ignore = flag;
+    conf->no_last_mod_ignore_set = 1;
+    return NULL;
+
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1185" endline="1196" pcid="26">
+static const char *set_cache_defex(cmd_parms *parms, void *dummy,
+                                   const char *arg)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->defex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->defex_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1025" endline="1036" pcid="18">
+static const char *set_cache_ignore_cachecontrol(cmd_parms *parms,
+                                                 void *dummy, int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorecachecontrol = flag;
+    conf->ignorecachecontrol_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1185" endline="1196" pcid="26">
+static const char *set_cache_defex(cmd_parms *parms, void *dummy,
+                                   const char *arg)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->defex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->defex_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1215" endline="1226" pcid="28">
+static const char *set_cache_ignore_querystring(cmd_parms *parms, void *dummy,
+                                                int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorequerystring = flag;
+    conf->ignorequerystring_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1185" endline="1196" pcid="26">
+static const char *set_cache_defex(cmd_parms *parms, void *dummy,
+                                   const char *arg)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->defex = (apr_time_t) (atol(arg) * MSEC_ONE_SEC);
+    conf->defex_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1011" endline="1023" pcid="17">
+static const char *set_cache_ignore_no_last_mod(cmd_parms *parms, void *dummy,
+                                                int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->no_last_mod_ignore = flag;
+    conf->no_last_mod_ignore_set = 1;
+    return NULL;
+
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1025" endline="1036" pcid="18">
+static const char *set_cache_ignore_cachecontrol(cmd_parms *parms,
+                                                 void *dummy, int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorecachecontrol = flag;
+    conf->ignorecachecontrol_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1215" endline="1226" pcid="28">
+static const char *set_cache_ignore_querystring(cmd_parms *parms, void *dummy,
+                                                int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorequerystring = flag;
+    conf->ignorequerystring_set = 1;
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1025" endline="1036" pcid="18">
+static const char *set_cache_ignore_cachecontrol(cmd_parms *parms,
+                                                 void *dummy, int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorecachecontrol = flag;
+    conf->ignorecachecontrol_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1011" endline="1023" pcid="17">
+static const char *set_cache_ignore_no_last_mod(cmd_parms *parms, void *dummy,
+                                                int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->no_last_mod_ignore = flag;
+    conf->no_last_mod_ignore_set = 1;
+    return NULL;
+
+}
+</source>
+</clone>
+
+<clone nlines="7" similarity="57">
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1215" endline="1226" pcid="28">
+static const char *set_cache_ignore_querystring(cmd_parms *parms, void *dummy,
+                                                int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->ignorequerystring = flag;
+    conf->ignorequerystring_set = 1;
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_cache.c.ifdefed" startline="1011" endline="1023" pcid="17">
+static const char *set_cache_ignore_no_last_mod(cmd_parms *parms, void *dummy,
+                                                int flag)
+{
+    cache_server_conf *conf;
+
+    conf =
+        (cache_server_conf *)ap_get_module_config(parms->server->module_config,
+                                                  &cache_module);
+    conf->no_last_mod_ignore = flag;
+    conf->no_last_mod_ignore_set = 1;
+    return NULL;
+
+}
+</source>
+</clone>
+
+<clone nlines="4" similarity="50">
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="219" endline="229" pcid="34">
+static const char *cachefilemmap(cmd_parms *cmd, void *dummy, const char *filename)
+{
+//#if APR_HAS_MMAP
+//    cache_the_file(cmd, filename, 1);
+//#else
+    /* MMAP not supported by this OS */
+    ap_log_error(APLOG_MARK, APLOG_WARNING, 0, cmd->server,
+                 "mod_file_cache: unable to cache file: %s. MMAP is not supported by this OS", filename);
+//#endif
+    return NULL;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="208" endline="218" pcid="33">
+static const char *cachefilehandle(cmd_parms *cmd, void *dummy, const char *filename)
+{
+//#if APR_HAS_SENDFILE
+//    cache_the_file(cmd, filename, 0);
+//#else
+    /* Sendfile not supported by this OS */
+    ap_log_error(APLOG_MARK, APLOG_WARNING, 0, cmd->server,
+                 "mod_file_cache: unable to cache file: %s. Sendfile is not supported on this OS", filename);
+//#endif
+    return NULL;
+}
+</source>
+</clone>
+
+<clone nlines="3" similarity="66">
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="293" endline="310" pcid="38">
+static int sendfile_handler(request_rec *r, a_file *file)
+{
+//#if APR_HAS_SENDFILE
+//    conn_rec *c = r->connection;
+//    apr_bucket *b;
+//    apr_bucket_brigade *bb = apr_brigade_create(r->pool, c->bucket_alloc);
+//
+//    b = apr_bucket_file_create(file->file, 0, (apr_size_t)file->finfo.size,
+//                               r->pool, c->bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//    b = apr_bucket_eos_create(c->bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//
+//    if (ap_pass_brigade(r->output_filters, bb) != APR_SUCCESS)
+//        return HTTP_INTERNAL_SERVER_ERROR;
+//#endif
+    return OK;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="272" endline="291" pcid="37">
+static int mmap_handler(request_rec *r, a_file *file)
+{
+//#if APR_HAS_MMAP
+//    conn_rec *c = r->connection;
+//    apr_bucket *b;
+//    apr_mmap_t *mm;
+//    apr_bucket_brigade *bb = apr_brigade_create(r->pool, c->bucket_alloc);
+//
+//    apr_mmap_dup(&mm, file->mm, r->pool);
+//    b = apr_bucket_mmap_create(mm, 0, (apr_size_t)file->finfo.size,
+//                               c->bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//    b = apr_bucket_eos_create(c->bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//
+//    if (ap_pass_brigade(r->output_filters, bb) != APR_SUCCESS)
+//        return HTTP_INTERNAL_SERVER_ERROR;
+//#endif
+    return OK;
+}
+</source>
+</clone>
+
+<clone nlines="3" similarity="66">
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="293" endline="310" pcid="38">
+static int sendfile_handler(request_rec *r, a_file *file)
+{
+//#if APR_HAS_SENDFILE
+//    conn_rec *c = r->connection;
+//    apr_bucket *b;
+//    apr_bucket_brigade *bb = apr_brigade_create(r->pool, c->bucket_alloc);
+//
+//    b = apr_bucket_file_create(file->file, 0, (apr_size_t)file->finfo.size,
+//                               r->pool, c->bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//    b = apr_bucket_eos_create(c->bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//
+//    if (ap_pass_brigade(r->output_filters, bb) != APR_SUCCESS)
+//        return HTTP_INTERNAL_SERVER_ERROR;
+//#endif
+    return OK;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="231" endline="236" pcid="35">
+static int file_cache_post_config(apr_pool_t *p, apr_pool_t *plog,
+                                   apr_pool_t *ptemp, server_rec *s)
+{
+    /* Hummm, anything to do here? */
+    return OK;
+}
+</source>
+</clone>
+
+<clone nlines="3" similarity="66">
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="272" endline="291" pcid="37">
+static int mmap_handler(request_rec *r, a_file *file)
+{
+//#if APR_HAS_MMAP
+//    conn_rec *c = r->connection;
+//    apr_bucket *b;
+//    apr_mmap_t *mm;
+//    apr_bucket_brigade *bb = apr_brigade_create(r->pool, c->bucket_alloc);
+//
+//    apr_mmap_dup(&mm, file->mm, r->pool);
+//    b = apr_bucket_mmap_create(mm, 0, (apr_size_t)file->finfo.size,
+//                               c->bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//    b = apr_bucket_eos_create(c->bucket_alloc);
+//    APR_BRIGADE_INSERT_TAIL(bb, b);
+//
+//    if (ap_pass_brigade(r->output_filters, bb) != APR_SUCCESS)
+//        return HTTP_INTERNAL_SERVER_ERROR;
+//#endif
+    return OK;
+}
+</source>
+<source file="examples2/apache/smallApache/mod_file_cache.c.ifdefed" startline="231" endline="236" pcid="35">
+static int file_cache_post_config(apr_pool_t *p, apr_pool_t *plog,
+                                   apr_pool_t *ptemp, server_rec *s)
+{
+    /* Hummm, anything to do here? */
+    return OK;
+}
+</source>
+</clone>
+
+</clones>

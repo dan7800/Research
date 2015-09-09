@@ -1,0 +1,84 @@
+.class public com/pinterest/api/PAPI$AsyncFacebookGraph
+.super android/os/AsyncTask
+.source PAPI.java
+
+.inner class AsyncFacebookGraph inner com/pinterest/api/PAPI$AsyncFacebookGraph outer com/pinterest/api/PAPI
+.inner class ResponseHandler inner com/pinterest/api/PAPI$AsyncFacebookGraph$ResponseHandler outer com/pinterest/api/PAPI$AsyncFacebookGraph
+.annotation systemVisibility Ldalvik/annotation/Signature;
+  value [Ljava/lang/String; = { "Landroid/os/AsyncTask" , "<" , "Ljava/lang/String;" , "Ljava/lang/Void;" , "Ljava/lang/Void;" , ">;" }
+.end annotation
+
+.field public handler Lcom/pinterest/api/PAPI$AsyncFacebookGraph$ResponseHandler;
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/api/PAPI$AsyncFacebookGraph;)
+.line 869
+	invoke-direct	{v0},android/os/AsyncTask/<init>	; <init>()V
+; v0 : Lcom/pinterest/api/PAPI$AsyncFacebookGraph;
+.line 885
+	return-void	
+.end method
+
+.method protected doInBackground([Ljava/lang/Object;)Ljava/lang/Object;
+.limit registers 3
+; this: v1 (Lcom/pinterest/api/PAPI$AsyncFacebookGraph;)
+; parameter[0] : v2 ([Ljava/lang/Object;)
+.line 869
+	check-cast	v2,[Ljava/lang/String
+; v2 : [Ljava/lang/String
+	invoke-virtual	{v1,v2},com/pinterest/api/PAPI$AsyncFacebookGraph/doInBackground	; doInBackground([Ljava/lang/String;)Ljava/lang/Void;
+; v1 : Lcom/pinterest/api/PAPI$AsyncFacebookGraph; , v2 : [Ljava/lang/String
+	move-result-object	v0
+; v0 : Ljava/lang/Void;
+	return-object	v0
+; v0 : Ljava/lang/Void;
+.end method
+
+.method protected doInBackground([Ljava/lang/String;)Ljava/lang/Void;
+.limit registers 6
+; this: v4 (Lcom/pinterest/api/PAPI$AsyncFacebookGraph;)
+; parameter[0] : v5 ([Ljava/lang/String;)
+.catch java/io/IOException from lebc78 to lebca4 using lebcac
+.catch org/json/JSONException from lebc78 to lebca4 using lebca8
+lebc78:
+.line 878
+	iget-object	v0,v4,com/pinterest/api/PAPI$AsyncFacebookGraph.handler Lcom/pinterest/api/PAPI$AsyncFacebookGraph$ResponseHandler;
+; v0 : Lcom/pinterest/api/PAPI$AsyncFacebookGraph$ResponseHandler; , v4 : Lcom/pinterest/api/PAPI$AsyncFacebookGraph;
+	if-eqz	v0,lebca4
+; v0 : Lcom/pinterest/api/PAPI$AsyncFacebookGraph$ResponseHandler;
+	iget-object	v0,v4,com/pinterest/api/PAPI$AsyncFacebookGraph.handler Lcom/pinterest/api/PAPI$AsyncFacebookGraph$ResponseHandler;
+; v0 : Lcom/pinterest/api/PAPI$AsyncFacebookGraph$ResponseHandler; , v4 : Lcom/pinterest/api/PAPI$AsyncFacebookGraph;
+	new-instance	v1,org/json/JSONObject
+; v1 : Lorg/json/JSONObject;
+	sget-object	v2,com/pinterest/api/PAPI.facebook Lcom/facebook/android/Facebook;
+; v2 : Lcom/facebook/android/Facebook;
+	const-string	v3,"me"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},com/facebook/android/Facebook/request	; request(Ljava/lang/String;)Ljava/lang/String;
+; v2 : Lcom/facebook/android/Facebook; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},org/json/JSONObject/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Lorg/json/JSONObject; , v2 : Ljava/lang/String;
+	invoke-interface	{v0,v1},com/pinterest/api/PAPI$AsyncFacebookGraph$ResponseHandler/onFinish	; onFinish(Lorg/json/JSONObject;)V
+; v0 : Lcom/pinterest/api/PAPI$AsyncFacebookGraph$ResponseHandler; , v1 : Lorg/json/JSONObject;
+lebca4:
+.line 882
+	const/4	v0,0
+; v0 : single-length
+	return-object	v0
+; v0 : single-length
+lebca8:
+.line 881
+	move-exception	v0
+; v0 : org/json/JSONException
+	goto	lebca4
+lebcac:
+.line 880
+	move-exception	v0
+; v0 : java/io/IOException
+	goto	lebca4
+.end method
+
+

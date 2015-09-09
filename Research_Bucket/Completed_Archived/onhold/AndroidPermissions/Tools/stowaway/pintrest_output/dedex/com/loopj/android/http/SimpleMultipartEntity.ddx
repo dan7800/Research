@@ -1,0 +1,805 @@
+.class com/loopj/android/http/SimpleMultipartEntity
+.super java/lang/Object
+.source SimpleMultipartEntity.java
+.implements org/apache/http/HttpEntity
+
+.field private static final MULTIPART_CHARS [C
+.field private boundary Ljava/lang/String;
+.field isSetFirst Z
+.field isSetLast Z
+.field out Ljava/io/ByteArrayOutputStream;
+
+.method static <clinit>()V
+.limit registers 1
+.line 41
+	const-string	v0,"-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v0},java/lang/String/toCharArray	; toCharArray()[C
+; v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : [C
+	sput-object	v0,com/loopj/android/http/SimpleMultipartEntity.MULTIPART_CHARS [C
+; v0 : [C
+	return-void	
+.end method
+
+.method public <init>()V
+.limit registers 6
+; this: v5 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+	const/4	v4,0
+; v4 : single-length
+.line 49
+	invoke-direct	{v5},java/lang/Object/<init>	; <init>()V
+; v5 : Lcom/loopj/android/http/SimpleMultipartEntity;
+.line 43
+	const/4	v3,0
+; v3 : single-length
+	iput-object	v3,v5,com/loopj/android/http/SimpleMultipartEntity.boundary Ljava/lang/String;
+; v3 : single-length , v5 : Lcom/loopj/android/http/SimpleMultipartEntity;
+.line 45
+	new-instance	v3,java/io/ByteArrayOutputStream
+; v3 : Ljava/io/ByteArrayOutputStream;
+	invoke-direct	{v3},java/io/ByteArrayOutputStream/<init>	; <init>()V
+; v3 : Ljava/io/ByteArrayOutputStream;
+	iput-object	v3,v5,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v3 : Ljava/io/ByteArrayOutputStream; , v5 : Lcom/loopj/android/http/SimpleMultipartEntity;
+.line 46
+	iput-boolean	v4,v5,com/loopj/android/http/SimpleMultipartEntity.isSetLast Z
+; v4 : single-length , v5 : Lcom/loopj/android/http/SimpleMultipartEntity;
+.line 47
+	iput-boolean	v4,v5,com/loopj/android/http/SimpleMultipartEntity.isSetFirst Z
+; v4 : single-length , v5 : Lcom/loopj/android/http/SimpleMultipartEntity;
+.line 50
+	new-instance	v0,java/lang/StringBuffer
+; v0 : Ljava/lang/StringBuffer;
+	invoke-direct	{v0},java/lang/StringBuffer/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuffer;
+.line 51
+	new-instance	v2,java/util/Random
+; v2 : Ljava/util/Random;
+	invoke-direct	{v2},java/util/Random/<init>	; <init>()V
+; v2 : Ljava/util/Random;
+.line 52
+	const/4	v1,0
+; v1 : single-length
+lc866e:
+	const/16	v3,30
+; v3 : single-length
+	if-ge	v1,v3,lc8698
+; v1 : single-length , v3 : single-length
+.line 53
+	sget-object	v3,com/loopj/android/http/SimpleMultipartEntity.MULTIPART_CHARS [C
+; v3 : [C
+	sget-object	v4,com/loopj/android/http/SimpleMultipartEntity.MULTIPART_CHARS [C
+; v4 : [C
+	array-length	v4,v4
+; v4 : single-length , v4 : single-length
+	invoke-virtual	{v2,v4},java/util/Random/nextInt	; nextInt(I)I
+; v2 : Ljava/util/Random; , v4 : single-length
+	move-result	v4
+; v4 : single-length
+	aget-char	v3,v3,v4
+; v3 : single-length , v3 : single-length , v4 : single-length
+	invoke-virtual	{v0,v3},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v3 : single-length
+.line 52
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	lc866e
+lc8698:
+.line 55
+	invoke-virtual	{v0},java/lang/StringBuffer/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuffer;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	iput-object	v3,v5,com/loopj/android/http/SimpleMultipartEntity.boundary Ljava/lang/String;
+; v3 : Ljava/lang/String; , v5 : Lcom/loopj/android/http/SimpleMultipartEntity;
+.line 57
+	return-void	
+.end method
+
+.method public addPart(Ljava/lang/String;Ljava/io/File;Z)V
+.limit registers 7
+; this: v3 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+; parameter[0] : v4 (Ljava/lang/String;)
+; parameter[1] : v5 (Ljava/io/File;)
+; parameter[2] : v6 (Z)
+.catch java/io/FileNotFoundException from lc86b8 to lc86d0 using lc86d2
+lc86b8:
+.line 129
+	invoke-virtual	{v5},java/io/File/getName	; getName()Ljava/lang/String;
+; v5 : Ljava/io/File;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	new-instance	v2,java/io/FileInputStream
+; v2 : Ljava/io/FileInputStream;
+	invoke-direct	{v2,v5},java/io/FileInputStream/<init>	; <init>(Ljava/io/File;)V
+; v2 : Ljava/io/FileInputStream; , v5 : Ljava/io/File;
+	invoke-virtual	{v3,v4,v1,v2,v6},com/loopj/android/http/SimpleMultipartEntity/addPart	; addPart(Ljava/lang/String;Ljava/lang/String;Ljava/io/InputStream;Z)V
+; v3 : Lcom/loopj/android/http/SimpleMultipartEntity; , v4 : Ljava/lang/String; , v1 : Ljava/lang/String; , v2 : Ljava/io/FileInputStream; , v6 : single-length
+lc86d0:
+.line 133
+	return-void	
+lc86d2:
+.line 130
+	move-exception	v0
+; v0 : java/io/FileNotFoundException
+.line 131
+	invoke-virtual	{v0},java/io/FileNotFoundException/printStackTrace	; printStackTrace()V
+; v0 : java/io/FileNotFoundException
+	goto	lc86d0
+.end method
+
+.method public addPart(Ljava/lang/String;Ljava/lang/String;)V
+.limit registers 7
+; this: v4 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+; parameter[0] : v5 (Ljava/lang/String;)
+; parameter[1] : v6 (Ljava/lang/String;)
+.catch java/io/IOException from lc8702 to lc87a0 using lc87a2
+.line 86
+	invoke-virtual	{v4},com/loopj/android/http/SimpleMultipartEntity/writeFirstBoundaryIfNeeds	; writeFirstBoundaryIfNeeds()V
+; v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+lc8702:
+.line 88
+	iget-object	v1,v4,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v1 : Ljava/io/ByteArrayOutputStream; , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"Content-Disposition: form-data; name=""
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,""
+
+"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v2},java/lang/String/getBytes	; getBytes()[B
+; v2 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : [B
+	invoke-virtual	{v1,v2},java/io/ByteArrayOutputStream/write	; write([B)V
+; v1 : Ljava/io/ByteArrayOutputStream; , v2 : [B
+.line 89
+	iget-object	v1,v4,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v1 : Ljava/io/ByteArrayOutputStream; , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	invoke-virtual	{v6},java/lang/String/getBytes	; getBytes()[B
+; v6 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : [B
+	invoke-virtual	{v1,v2},java/io/ByteArrayOutputStream/write	; write([B)V
+; v1 : Ljava/io/ByteArrayOutputStream; , v2 : [B
+.line 90
+	iget-object	v1,v4,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v1 : Ljava/io/ByteArrayOutputStream; , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"
+--"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	iget-object	v3,v4,com/loopj/android/http/SimpleMultipartEntity.boundary Ljava/lang/String;
+; v3 : Ljava/lang/String; , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"
+"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v2},java/lang/String/getBytes	; getBytes()[B
+; v2 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : [B
+	invoke-virtual	{v1,v2},java/io/ByteArrayOutputStream/write	; write([B)V
+; v1 : Ljava/io/ByteArrayOutputStream; , v2 : [B
+lc87a0:
+.line 94
+	return-void	
+lc87a2:
+.line 91
+	move-exception	v0
+; v0 : java/io/IOException
+.line 92
+	invoke-virtual	{v0},java/io/IOException/printStackTrace	; printStackTrace()V
+; v0 : java/io/IOException
+	goto	lc87a0
+.end method
+
+.method public addPart(Ljava/lang/String;Ljava/lang/String;Ljava/io/InputStream;Ljava/lang/String;Z)V
+.limit registers 12
+; this: v6 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+; parameter[0] : v7 (Ljava/lang/String;)
+; parameter[1] : v8 (Ljava/lang/String;)
+; parameter[2] : v9 (Ljava/io/InputStream;)
+; parameter[3] : v10 (Ljava/lang/String;)
+; parameter[4] : v11 (Z)
+.catch java/io/IOException from lc892e to lc8934 using lc8936
+.catch java/io/IOException from lc8910 to lc8916 using lc8918
+.catch java/io/IOException from lc88be to lc8910 using lc88aa
+.catch java/lang/Exception from lc88be to lc8910 using lc892c
+.catch java/io/IOException from lc88b2 to lc88b8 using lc8922
+.catch java/lang/Exception from lc88ac to lc88b2 using lc892c
+.catch java/io/IOException from lc87d2 to lc88a8 using lc88aa
+.catch java/lang/Exception from lc87d2 to lc88a8 using lc892c
+.var 1 is l I from lc888e to lc88aa
+.var 2 is tmp [B from lc888c to lc88aa
+.var 0 is e Ljava/io/IOException; from lc88ac to lc88b8
+.var 1 is l I from lc88ba to lc8922
+.var 2 is tmp [B from lc88ba to lc8922
+.var 0 is e Ljava/io/IOException; from lc891a to lc892c
+.line 101
+	invoke-virtual	{v6},com/loopj/android/http/SimpleMultipartEntity/writeFirstBoundaryIfNeeds	; writeFirstBoundaryIfNeeds()V
+; v6 : Lcom/loopj/android/http/SimpleMultipartEntity;
+lc87d2:
+.line 103
+	new-instance	v3,java/lang/StringBuilder
+; v3 : Ljava/lang/StringBuilder;
+	invoke-direct	{v3},java/lang/StringBuilder/<init>	; <init>()V
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"Content-Type: "
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3,v10},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v10 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"
+"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	move-result-object	v10
+; v10 : Ljava/lang/String;
+.line 104
+	iget-object	v3,v6,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v3 : Ljava/io/ByteArrayOutputStream; , v6 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	new-instance	v4,java/lang/StringBuilder
+; v4 : Ljava/lang/StringBuilder;
+	invoke-direct	{v4},java/lang/StringBuilder/<init>	; <init>()V
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,"Content-Disposition: form-data; name=""
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4,v7},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v7 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,""; filename=""
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4,v8},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v8 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,""
+"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v4 : Ljava/lang/StringBuilder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v4},java/lang/String/getBytes	; getBytes()[B
+; v4 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : [B
+	invoke-virtual	{v3,v4},java/io/ByteArrayOutputStream/write	; write([B)V
+; v3 : Ljava/io/ByteArrayOutputStream; , v4 : [B
+.line 105
+	iget-object	v3,v6,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v3 : Ljava/io/ByteArrayOutputStream; , v6 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	invoke-virtual	{v10},java/lang/String/getBytes	; getBytes()[B
+; v10 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : [B
+	invoke-virtual	{v3,v4},java/io/ByteArrayOutputStream/write	; write([B)V
+; v3 : Ljava/io/ByteArrayOutputStream; , v4 : [B
+.line 106
+	iget-object	v3,v6,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v3 : Ljava/io/ByteArrayOutputStream; , v6 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	const-string	v4,"Content-Transfer-Encoding: binary
+
+"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v4},java/lang/String/getBytes	; getBytes()[B
+; v4 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : [B
+	invoke-virtual	{v3,v4},java/io/ByteArrayOutputStream/write	; write([B)V
+; v3 : Ljava/io/ByteArrayOutputStream; , v4 : [B
+.line 108
+	const/16	v3,4096
+; v3 : single-length
+	new-array	v2,v3,[B
+; v2 : [B , v3 : single-length
+.line 109
+	const/4	v1,0
+; v1 : single-length
+lc888e:
+.line 110
+	invoke-virtual	{v9,v2},java/io/InputStream/read	; read([B)I
+; v9 : Ljava/io/InputStream; , v2 : [B
+	move-result	v1
+; v1 : single-length
+	const/4	v3,15
+; v3 : single-length
+	if-eq	v1,v3,lc88ba
+; v1 : single-length , v3 : single-length
+.line 111
+	iget-object	v3,v6,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v3 : Ljava/io/ByteArrayOutputStream; , v6 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	const/4	v4,0
+; v4 : single-length
+	invoke-virtual	{v3,v2,v4,v1},java/io/ByteArrayOutputStream/write	; write([BII)V
+; v3 : Ljava/io/ByteArrayOutputStream; , v2 : [B , v4 : single-length , v1 : single-length
+lc88a8:
+	goto	lc888e
+lc88aa:
+.line 116
+	move-exception	v0
+; v0 : java/io/IOException
+lc88ac:
+.line 117
+	invoke-virtual	{v0},java/io/IOException/printStackTrace	; printStackTrace()V
+; v0 : java/io/IOException
+lc88b2:
+.line 120
+	invoke-virtual	{v9},java/io/InputStream/close	; close()V
+; v9 : Ljava/io/InputStream;
+lc88b8:
+.line 125
+	return-void	
+lc88ba:
+.line 113
+	if-nez	v11,lc8906
+; v11 : single-length
+lc88be:
+.line 114
+	iget-object	v3,v6,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v3 : Ljava/io/ByteArrayOutputStream; , v6 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	new-instance	v4,java/lang/StringBuilder
+; v4 : Ljava/lang/StringBuilder;
+	invoke-direct	{v4},java/lang/StringBuilder/<init>	; <init>()V
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,"
+--"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	iget-object	v5,v6,com/loopj/android/http/SimpleMultipartEntity.boundary Ljava/lang/String;
+; v5 : Ljava/lang/String; , v6 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,"
+"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v4 : Ljava/lang/StringBuilder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v4},java/lang/String/getBytes	; getBytes()[B
+; v4 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : [B
+	invoke-virtual	{v3,v4},java/io/ByteArrayOutputStream/write	; write([B)V
+; v3 : Ljava/io/ByteArrayOutputStream; , v4 : [B
+lc8906:
+.line 115
+	iget-object	v3,v6,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v3 : Ljava/io/ByteArrayOutputStream; , v6 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	invoke-virtual	{v3},java/io/ByteArrayOutputStream/flush	; flush()V
+; v3 : Ljava/io/ByteArrayOutputStream;
+lc8910:
+.line 120
+	invoke-virtual	{v9},java/io/InputStream/close	; close()V
+; v9 : Ljava/io/InputStream;
+lc8916:
+	goto	lc88b8
+lc8918:
+.line 121
+	move-exception	v0
+; v0 : java/io/IOException
+.line 122
+	invoke-virtual	{v0},java/io/IOException/printStackTrace	; printStackTrace()V
+; v0 : java/io/IOException
+	goto	lc88b8
+lc8922:
+.line 121
+	move-exception	v0
+; v0 : java/io/IOException
+.line 122
+	invoke-virtual	{v0},java/io/IOException/printStackTrace	; printStackTrace()V
+; v0 : java/io/IOException
+	goto	lc88b8
+lc892c:
+.line 119
+	move-exception	v3
+; v3 : java/lang/Exception
+lc892e:
+.line 120
+	invoke-virtual	{v9},java/io/InputStream/close	; close()V
+; v9 : Ljava/io/InputStream;
+lc8934:
+.line 123
+	throw	v3
+; v3 : java/lang/Exception
+lc8936:
+.line 121
+	move-exception	v0
+; v0 : java/io/IOException
+.line 122
+	invoke-virtual	{v0},java/io/IOException/printStackTrace	; printStackTrace()V
+; v0 : java/io/IOException
+	goto	lc8934
+.end method
+
+.method public addPart(Ljava/lang/String;Ljava/lang/String;Ljava/io/InputStream;Z)V
+.limit registers 11
+; this: v6 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+; parameter[0] : v7 (Ljava/lang/String;)
+; parameter[1] : v8 (Ljava/lang/String;)
+; parameter[2] : v9 (Ljava/io/InputStream;)
+; parameter[3] : v10 (Z)
+.line 97
+	const-string	v4,"application/octet-stream"
+; v4 : Ljava/lang/String;
+	move-object	v0,v6
+; v0 : Lcom/loopj/android/http/SimpleMultipartEntity; , v6 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	move-object	v1,v7
+; v1 : Ljava/lang/String; , v7 : Ljava/lang/String;
+	move-object	v2,v8
+; v2 : Ljava/lang/String; , v8 : Ljava/lang/String;
+	move-object	v3,v9
+; v3 : Ljava/io/InputStream; , v9 : Ljava/io/InputStream;
+	move	v5,v10
+; v5 : single-length , v10 : single-length
+	invoke-virtual/range	{v0..v5},com/loopj/android/http/SimpleMultipartEntity/addPart;	addPart(Ljava/lang/String;Ljava/lang/String;Ljava/io/InputStream;Ljava/lang/String;Z)V
+; v0 : Lcom/loopj/android/http/SimpleMultipartEntity; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/io/InputStream; , v4 : Ljava/lang/String; , v5 : single-length
+.line 98
+	return-void	
+.end method
+
+.method public consumeContent()V
+.throws Ljava/io/IOException;
+.throws Ljava/lang/UnsupportedOperationException;
+.limit registers 3
+; this: v2 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+.line 174
+	invoke-virtual	{v2},com/loopj/android/http/SimpleMultipartEntity/isStreaming	; isStreaming()Z
+; v2 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,lc89e0
+; v0 : single-length
+.line 175
+	new-instance	v0,java/lang/UnsupportedOperationException
+; v0 : Ljava/lang/UnsupportedOperationException;
+	const-string	v1,"Streaming entity does not implement #consumeContent()"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/UnsupportedOperationException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/UnsupportedOperationException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/UnsupportedOperationException;
+lc89e0:
+.line 178
+	return-void	
+.end method
+
+.method public getContent()Ljava/io/InputStream;
+.throws Ljava/io/IOException;
+.throws Ljava/lang/UnsupportedOperationException;
+.limit registers 3
+; this: v2 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+.line 183
+	new-instance	v0,java/io/ByteArrayInputStream
+; v0 : Ljava/io/ByteArrayInputStream;
+	iget-object	v1,v2,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v1 : Ljava/io/ByteArrayOutputStream; , v2 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	invoke-virtual	{v1},java/io/ByteArrayOutputStream/toByteArray	; toByteArray()[B
+; v1 : Ljava/io/ByteArrayOutputStream;
+	move-result-object	v1
+; v1 : [B
+	invoke-direct	{v0,v1},java/io/ByteArrayInputStream/<init>	; <init>([B)V
+; v0 : Ljava/io/ByteArrayInputStream; , v1 : [B
+	return-object	v0
+; v0 : Ljava/io/ByteArrayInputStream;
+.end method
+
+.method public getContentEncoding()Lorg/apache/http/Header;
+.limit registers 2
+; this: v1 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+.line 168
+	const/4	v0,0
+; v0 : single-length
+	return-object	v0
+; v0 : single-length
+.end method
+
+.method public getContentLength()J
+.limit registers 3
+; this: v2 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+.line 137
+	invoke-virtual	{v2},com/loopj/android/http/SimpleMultipartEntity/writeLastBoundaryIfNeeds	; writeLastBoundaryIfNeeds()V
+; v2 : Lcom/loopj/android/http/SimpleMultipartEntity;
+.line 138
+	iget-object	v0,v2,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v0 : Ljava/io/ByteArrayOutputStream; , v2 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	invoke-virtual	{v0},java/io/ByteArrayOutputStream/toByteArray	; toByteArray()[B
+; v0 : Ljava/io/ByteArrayOutputStream;
+	move-result-object	v0
+; v0 : [B
+	array-length	v0,v0
+; v0 : single-length , v0 : single-length
+	int-to-long	v0,v0
+; v0 : double-length , v0 : double-length
+	return-wide	v0
+; v0 : double-length
+.end method
+
+.method public getContentType()Lorg/apache/http/Header;
+.limit registers 5
+; this: v4 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+.line 143
+	new-instance	v0,org/apache/http/message/BasicHeader
+; v0 : Lorg/apache/http/message/BasicHeader;
+	const-string	v1,"Content-Type"
+; v1 : Ljava/lang/String;
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"multipart/form-data; boundary="
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	iget-object	v3,v4,com/loopj/android/http/SimpleMultipartEntity.boundary Ljava/lang/String;
+; v3 : Ljava/lang/String; , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-direct	{v0,v1,v2},org/apache/http/message/BasicHeader/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/apache/http/message/BasicHeader; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	return-object	v0
+; v0 : Lorg/apache/http/message/BasicHeader;
+.end method
+
+.method public isChunked()Z
+.limit registers 2
+; this: v1 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+.line 148
+	const/4	v0,0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public isRepeatable()Z
+.limit registers 2
+; this: v1 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+.line 153
+	const/4	v0,0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public isStreaming()Z
+.limit registers 2
+; this: v1 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+.line 158
+	const/4	v0,0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public writeFirstBoundaryIfNeeds()V
+.limit registers 5
+; this: v4 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+.catch java/io/IOException from lc8ae8 to lc8b30 using lc8b38
+.line 60
+	iget-boolean	v1,v4,com/loopj/android/http/SimpleMultipartEntity.isSetFirst Z
+; v1 : single-length , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	if-nez	v1,lc8b30
+; v1 : single-length
+lc8ae8:
+.line 62
+	iget-object	v1,v4,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v1 : Ljava/io/ByteArrayOutputStream; , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"--"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	iget-object	v3,v4,com/loopj/android/http/SimpleMultipartEntity.boundary Ljava/lang/String;
+; v3 : Ljava/lang/String; , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"
+"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v2},java/lang/String/getBytes	; getBytes()[B
+; v2 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : [B
+	invoke-virtual	{v1,v2},java/io/ByteArrayOutputStream/write	; write([B)V
+; v1 : Ljava/io/ByteArrayOutputStream; , v2 : [B
+lc8b30:
+.line 68
+	const/4	v1,1
+; v1 : single-length
+	iput-boolean	v1,v4,com/loopj/android/http/SimpleMultipartEntity.isSetFirst Z
+; v1 : single-length , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+.line 69
+	return-void	
+lc8b38:
+.line 63
+	move-exception	v0
+; v0 : java/io/IOException
+.line 64
+	invoke-virtual	{v0},java/io/IOException/printStackTrace	; printStackTrace()V
+; v0 : java/io/IOException
+	goto	lc8b30
+.end method
+
+.method public writeLastBoundaryIfNeeds()V
+.limit registers 5
+; this: v4 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+.catch java/io/IOException from lc8b6e to lc8bb6 using lc8bbe
+.line 72
+	iget-boolean	v1,v4,com/loopj/android/http/SimpleMultipartEntity.isSetLast Z
+; v1 : single-length , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	if-eqz	v1,lc8b6e
+; v1 : single-length
+lc8b6c:
+.line 83
+	return-void	
+lc8b6e:
+.line 77
+	iget-object	v1,v4,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v1 : Ljava/io/ByteArrayOutputStream; , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"
+--"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	iget-object	v3,v4,com/loopj/android/http/SimpleMultipartEntity.boundary Ljava/lang/String;
+; v3 : Ljava/lang/String; , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"--
+"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v2},java/lang/String/getBytes	; getBytes()[B
+; v2 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : [B
+	invoke-virtual	{v1,v2},java/io/ByteArrayOutputStream/write	; write([B)V
+; v1 : Ljava/io/ByteArrayOutputStream; , v2 : [B
+lc8bb6:
+.line 82
+	const/4	v1,1
+; v1 : single-length
+	iput-boolean	v1,v4,com/loopj/android/http/SimpleMultipartEntity.isSetLast Z
+; v1 : single-length , v4 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	goto	lc8b6c
+lc8bbe:
+.line 78
+	move-exception	v0
+; v0 : java/io/IOException
+.line 79
+	invoke-virtual	{v0},java/io/IOException/printStackTrace	; printStackTrace()V
+; v0 : java/io/IOException
+	goto	lc8bb6
+.end method
+
+.method public writeTo(Ljava/io/OutputStream;)V
+.throws Ljava/io/IOException;
+.limit registers 3
+; this: v1 (Lcom/loopj/android/http/SimpleMultipartEntity;)
+; parameter[0] : v2 (Ljava/io/OutputStream;)
+.line 163
+	iget-object	v0,v1,com/loopj/android/http/SimpleMultipartEntity.out Ljava/io/ByteArrayOutputStream;
+; v0 : Ljava/io/ByteArrayOutputStream; , v1 : Lcom/loopj/android/http/SimpleMultipartEntity;
+	invoke-virtual	{v0},java/io/ByteArrayOutputStream/toByteArray	; toByteArray()[B
+; v0 : Ljava/io/ByteArrayOutputStream;
+	move-result-object	v0
+; v0 : [B
+	invoke-virtual	{v2,v0},java/io/OutputStream/write	; write([B)V
+; v2 : Ljava/io/OutputStream; , v0 : [B
+.line 164
+	return-void	
+.end method
+
+

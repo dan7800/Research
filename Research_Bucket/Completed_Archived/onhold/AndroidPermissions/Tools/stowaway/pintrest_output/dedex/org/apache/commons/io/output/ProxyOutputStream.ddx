@@ -1,0 +1,204 @@
+.class public org/apache/commons/io/output/ProxyOutputStream
+.super java/io/FilterOutputStream
+.source ProxyOutputStream.java
+
+
+.method public <init>(Ljava/io/OutputStream;)V
+.limit registers 2
+; this: v0 (Lorg/apache/commons/io/output/ProxyOutputStream;)
+; parameter[0] : v1 (Ljava/io/OutputStream;)
+.line 43
+	invoke-direct	{v0,v1},java/io/FilterOutputStream/<init>	; <init>(Ljava/io/OutputStream;)V
+; v0 : Lorg/apache/commons/io/output/ProxyOutputStream; , v1 : Ljava/io/OutputStream;
+.line 45
+	return-void	
+.end method
+
+.method protected afterWrite(I)V
+.throws Ljava/io/IOException;
+.limit registers 2
+; this: v0 (Lorg/apache/commons/io/output/ProxyOutputStream;)
+; parameter[0] : v1 (I)
+.line 155
+	return-void	
+.end method
+
+.method protected beforeWrite(I)V
+.throws Ljava/io/IOException;
+.limit registers 2
+; this: v0 (Lorg/apache/commons/io/output/ProxyOutputStream;)
+; parameter[0] : v1 (I)
+.line 138
+	return-void	
+.end method
+
+.method public close()V
+.throws Ljava/io/IOException;
+.limit registers 3
+; this: v2 (Lorg/apache/commons/io/output/ProxyOutputStream;)
+.catch java/io/IOException from l11e8f0 to l11e8fa using l11e8fc
+l11e8f0:
+.line 118
+	iget-object	v1,v2,org/apache/commons/io/output/ProxyOutputStream.out Ljava/io/OutputStream;
+; v1 : Ljava/io/OutputStream; , v2 : Lorg/apache/commons/io/output/ProxyOutputStream;
+	invoke-virtual	{v1},java/io/OutputStream/close	; close()V
+; v1 : Ljava/io/OutputStream;
+l11e8fa:
+.line 122
+	return-void	
+l11e8fc:
+.line 119
+	move-exception	v0
+; v0 : java/io/IOException
+.line 120
+	invoke-virtual	{v2,v0},org/apache/commons/io/output/ProxyOutputStream/handleIOException	; handleIOException(Ljava/io/IOException;)V
+; v2 : Lorg/apache/commons/io/output/ProxyOutputStream; , v0 : java/io/IOException
+	goto	l11e8fa
+.end method
+
+.method public flush()V
+.throws Ljava/io/IOException;
+.limit registers 3
+; this: v2 (Lorg/apache/commons/io/output/ProxyOutputStream;)
+.catch java/io/IOException from l11e928 to l11e932 using l11e934
+l11e928:
+.line 105
+	iget-object	v1,v2,org/apache/commons/io/output/ProxyOutputStream.out Ljava/io/OutputStream;
+; v1 : Ljava/io/OutputStream; , v2 : Lorg/apache/commons/io/output/ProxyOutputStream;
+	invoke-virtual	{v1},java/io/OutputStream/flush	; flush()V
+; v1 : Ljava/io/OutputStream;
+l11e932:
+.line 109
+	return-void	
+l11e934:
+.line 106
+	move-exception	v0
+; v0 : java/io/IOException
+.line 107
+	invoke-virtual	{v2,v0},org/apache/commons/io/output/ProxyOutputStream/handleIOException	; handleIOException(Ljava/io/IOException;)V
+; v2 : Lorg/apache/commons/io/output/ProxyOutputStream; , v0 : java/io/IOException
+	goto	l11e932
+.end method
+
+.method protected handleIOException(Ljava/io/IOException;)V
+.throws Ljava/io/IOException;
+.limit registers 2
+; this: v0 (Lorg/apache/commons/io/output/ProxyOutputStream;)
+; parameter[0] : v1 (Ljava/io/IOException;)
+.line 167
+	throw	v1
+; v1 : Ljava/io/IOException;
+.end method
+
+.method public write(I)V
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/io/output/ProxyOutputStream;)
+; parameter[0] : v3 (I)
+.catch java/io/IOException from l11e976 to l11e98e using l11e990
+.line 55
+	const/4	v1,1
+; v1 : single-length
+l11e976:
+	invoke-virtual	{v2,v1},org/apache/commons/io/output/ProxyOutputStream/beforeWrite	; beforeWrite(I)V
+; v2 : Lorg/apache/commons/io/output/ProxyOutputStream; , v1 : single-length
+.line 56
+	iget-object	v1,v2,org/apache/commons/io/output/ProxyOutputStream.out Ljava/io/OutputStream;
+; v1 : Ljava/io/OutputStream; , v2 : Lorg/apache/commons/io/output/ProxyOutputStream;
+	invoke-virtual	{v1,v3},java/io/OutputStream/write	; write(I)V
+; v1 : Ljava/io/OutputStream; , v3 : single-length
+.line 57
+	const/4	v1,1
+; v1 : single-length
+	invoke-virtual	{v2,v1},org/apache/commons/io/output/ProxyOutputStream/afterWrite	; afterWrite(I)V
+; v2 : Lorg/apache/commons/io/output/ProxyOutputStream; , v1 : single-length
+l11e98e:
+.line 61
+	return-void	
+l11e990:
+.line 58
+	move-exception	v0
+; v0 : java/io/IOException
+.line 59
+	invoke-virtual	{v2,v0},org/apache/commons/io/output/ProxyOutputStream/handleIOException	; handleIOException(Ljava/io/IOException;)V
+; v2 : Lorg/apache/commons/io/output/ProxyOutputStream; , v0 : java/io/IOException
+	goto	l11e98e
+.end method
+
+.method public write([B)V
+.throws Ljava/io/IOException;
+.limit registers 5
+; this: v3 (Lorg/apache/commons/io/output/ProxyOutputStream;)
+; parameter[0] : v4 ([B)
+.catch java/io/IOException from l11e9c0 to l11e9d8 using l11e9de
+.var 1 is len I from l11e9c2 to l11e9d8
+.line 71
+	if-eqz	v4,l11e9da
+; v4 : [B
+l11e9c0:
+	array-length	v1,v4
+; v1 : single-length , v4 : [B
+l11e9c2:
+.line 72
+	invoke-virtual	{v3,v1},org/apache/commons/io/output/ProxyOutputStream/beforeWrite	; beforeWrite(I)V
+; v3 : Lorg/apache/commons/io/output/ProxyOutputStream; , v1 : single-length
+.line 73
+	iget-object	v2,v3,org/apache/commons/io/output/ProxyOutputStream.out Ljava/io/OutputStream;
+; v2 : Ljava/io/OutputStream; , v3 : Lorg/apache/commons/io/output/ProxyOutputStream;
+	invoke-virtual	{v2,v4},java/io/OutputStream/write	; write([B)V
+; v2 : Ljava/io/OutputStream; , v4 : [B
+.line 74
+	invoke-virtual	{v3,v1},org/apache/commons/io/output/ProxyOutputStream/afterWrite	; afterWrite(I)V
+; v3 : Lorg/apache/commons/io/output/ProxyOutputStream; , v1 : single-length
+l11e9d8:
+.line 78
+	return-void	
+l11e9da:
+.line 71
+	const/4	v1,0
+; v1 : single-length
+	goto	l11e9c2
+l11e9de:
+.line 75
+	move-exception	v0
+; v0 : java/io/IOException
+.line 76
+	invoke-virtual	{v3,v0},org/apache/commons/io/output/ProxyOutputStream/handleIOException	; handleIOException(Ljava/io/IOException;)V
+; v3 : Lorg/apache/commons/io/output/ProxyOutputStream; , v0 : java/io/IOException
+	goto	l11e9d8
+.end method
+
+.method public write([BII)V
+.throws Ljava/io/IOException;
+.limit registers 6
+; this: v2 (Lorg/apache/commons/io/output/ProxyOutputStream;)
+; parameter[0] : v3 ([B)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (I)
+.catch java/io/IOException from l11ea08 to l11ea1e using l11ea20
+l11ea08:
+.line 90
+	invoke-virtual	{v2,v5},org/apache/commons/io/output/ProxyOutputStream/beforeWrite	; beforeWrite(I)V
+; v2 : Lorg/apache/commons/io/output/ProxyOutputStream; , v5 : single-length
+.line 91
+	iget-object	v1,v2,org/apache/commons/io/output/ProxyOutputStream.out Ljava/io/OutputStream;
+; v1 : Ljava/io/OutputStream; , v2 : Lorg/apache/commons/io/output/ProxyOutputStream;
+	invoke-virtual	{v1,v3,v4,v5},java/io/OutputStream/write	; write([BII)V
+; v1 : Ljava/io/OutputStream; , v3 : [B , v4 : single-length , v5 : single-length
+.line 92
+	invoke-virtual	{v2,v5},org/apache/commons/io/output/ProxyOutputStream/afterWrite	; afterWrite(I)V
+; v2 : Lorg/apache/commons/io/output/ProxyOutputStream; , v5 : single-length
+l11ea1e:
+.line 96
+	return-void	
+l11ea20:
+.line 93
+	move-exception	v0
+; v0 : java/io/IOException
+.line 94
+	invoke-virtual	{v2,v0},org/apache/commons/io/output/ProxyOutputStream/handleIOException	; handleIOException(Ljava/io/IOException;)V
+; v2 : Lorg/apache/commons/io/output/ProxyOutputStream; , v0 : java/io/IOException
+	goto	l11ea1e
+.end method
+
+

@@ -1,0 +1,147 @@
+.class public org/apache/commons/io/comparator/DirectoryFileComparator
+.super org/apache/commons/io/comparator/AbstractFileComparator
+.source DirectoryFileComparator.java
+.implements java/io/Serializable
+
+.field public static final DIRECTORY_COMPARATOR Ljava/util/Comparator;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/Comparator" , "<" , "Ljava/io/File;" , ">;" }
+  .end annotation
+.end field
+.field public static final DIRECTORY_REVERSE Ljava/util/Comparator;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/Comparator" , "<" , "Ljava/io/File;" , ">;" }
+  .end annotation
+.end field
+
+.method static <clinit>()V
+.limit registers 2
+.line 49
+	new-instance	v0,org/apache/commons/io/comparator/DirectoryFileComparator
+; v0 : Lorg/apache/commons/io/comparator/DirectoryFileComparator;
+	invoke-direct	{v0},org/apache/commons/io/comparator/DirectoryFileComparator/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/comparator/DirectoryFileComparator;
+	sput-object	v0,org/apache/commons/io/comparator/DirectoryFileComparator.DIRECTORY_COMPARATOR Ljava/util/Comparator;
+; v0 : Ljava/util/Comparator;
+.line 52
+	new-instance	v0,org/apache/commons/io/comparator/ReverseComparator
+; v0 : Lorg/apache/commons/io/comparator/ReverseComparator;
+	sget-object	v1,org/apache/commons/io/comparator/DirectoryFileComparator.DIRECTORY_COMPARATOR Ljava/util/Comparator;
+; v1 : Ljava/util/Comparator;
+	invoke-direct	{v0,v1},org/apache/commons/io/comparator/ReverseComparator/<init>	; <init>(Ljava/util/Comparator;)V
+; v0 : Lorg/apache/commons/io/comparator/ReverseComparator; , v1 : Ljava/util/Comparator;
+	sput-object	v0,org/apache/commons/io/comparator/DirectoryFileComparator.DIRECTORY_REVERSE Ljava/util/Comparator;
+; v0 : Ljava/util/Comparator;
+	return-void	
+.end method
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/io/comparator/DirectoryFileComparator;)
+.line 46
+	invoke-direct	{v0},org/apache/commons/io/comparator/AbstractFileComparator/<init>	; <init>()V
+; v0 : Lorg/apache/commons/io/comparator/DirectoryFileComparator;
+	return-void	
+.end method
+
+.method private getType(Ljava/io/File;)I
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/comparator/DirectoryFileComparator;)
+; parameter[0] : v2 (Ljava/io/File;)
+.line 73
+	invoke-virtual	{v2},java/io/File/isDirectory	; isDirectory()Z
+; v2 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l117580
+; v0 : single-length
+.line 74
+	const/4	v0,1
+; v0 : single-length
+l11757e:
+.line 76
+	return	v0
+; v0 : single-length
+l117580:
+	const/4	v0,2
+; v0 : single-length
+	goto	l11757e
+.end method
+
+.method public compare(Ljava/io/File;Ljava/io/File;)I
+.limit registers 5
+; this: v2 (Lorg/apache/commons/io/comparator/DirectoryFileComparator;)
+; parameter[0] : v3 (Ljava/io/File;)
+; parameter[1] : v4 (Ljava/io/File;)
+.line 63
+	invoke-direct	{v2,v3},org/apache/commons/io/comparator/DirectoryFileComparator/getType	; getType(Ljava/io/File;)I
+; v2 : Lorg/apache/commons/io/comparator/DirectoryFileComparator; , v3 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+	invoke-direct	{v2,v4},org/apache/commons/io/comparator/DirectoryFileComparator/getType	; getType(Ljava/io/File;)I
+; v2 : Lorg/apache/commons/io/comparator/DirectoryFileComparator; , v4 : Ljava/io/File;
+	move-result	v1
+; v1 : single-length
+	sub-int/2addr	v0,v1
+; v0 : single-length , v1 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public compare(Ljava/lang/Object;Ljava/lang/Object;)I
+.limit registers 4
+; this: v1 (Lorg/apache/commons/io/comparator/DirectoryFileComparator;)
+; parameter[0] : v2 (Ljava/lang/Object;)
+; parameter[1] : v3 (Ljava/lang/Object;)
+.line 46
+	check-cast	v2,java/io/File
+; v2 : Ljava/io/File;
+	check-cast	v3,java/io/File
+; v3 : Ljava/io/File;
+	invoke-virtual	{v1,v2,v3},org/apache/commons/io/comparator/DirectoryFileComparator/compare	; compare(Ljava/io/File;Ljava/io/File;)I
+; v1 : Lorg/apache/commons/io/comparator/DirectoryFileComparator; , v2 : Ljava/io/File; , v3 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public sort(Ljava/util/List;)Ljava/util/List;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/comparator/DirectoryFileComparator;)
+; parameter[0] : v2 (Ljava/util/List;)
+.line 46
+	invoke-super	{v1,v2},org/apache/commons/io/comparator/AbstractFileComparator/sort	; sort(Ljava/util/List;)Ljava/util/List;
+; v1 : Lorg/apache/commons/io/comparator/DirectoryFileComparator; , v2 : Ljava/util/List;
+	move-result-object	v0
+; v0 : Ljava/util/List;
+	return-object	v0
+; v0 : Ljava/util/List;
+.end method
+
+.method public sort([Ljava/io/File;)[Ljava/io/File;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/comparator/DirectoryFileComparator;)
+; parameter[0] : v2 ([Ljava/io/File;)
+.line 46
+	invoke-super	{v1,v2},org/apache/commons/io/comparator/AbstractFileComparator/sort	; sort([Ljava/io/File;)[Ljava/io/File;
+; v1 : Lorg/apache/commons/io/comparator/DirectoryFileComparator; , v2 : [Ljava/io/File;
+	move-result-object	v0
+; v0 : [Ljava/io/File;
+	return-object	v0
+; v0 : [Ljava/io/File;
+.end method
+
+.method public toString()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/comparator/DirectoryFileComparator;)
+.line 46
+	invoke-super	{v1},org/apache/commons/io/comparator/AbstractFileComparator/toString	; toString()Ljava/lang/String;
+; v1 : Lorg/apache/commons/io/comparator/DirectoryFileComparator;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+

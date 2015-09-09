@@ -1,0 +1,1118 @@
+.class public com/actionbarsherlock/internal/widget/IcsSpinner
+.super com/actionbarsherlock/internal/widget/IcsAbsSpinner
+.source IcsSpinner.java
+.implements android/content/DialogInterface$OnClickListener
+
+.inner class DropdownPopup inner com/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup outer com/actionbarsherlock/internal/widget/IcsSpinner
+.inner class SpinnerPopup inner com/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup outer com/actionbarsherlock/internal/widget/IcsSpinner
+.inner class DropDownAdapter inner com/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter outer com/actionbarsherlock/internal/widget/IcsSpinner
+.field private static final MAX_ITEMS_MEASURED I = 15	; 0xf
+.field public static final MODE_DROPDOWN I = 1	; 0x1
+.field private mDisableChildrenWhenDisabled Z
+.field mDropDownWidth I
+.field private mGravity I
+.field private mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+.field private mTempAdapter Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter;
+.field private mTempRect Landroid/graphics/Rect;
+
+.method public <init>(Landroid/content/Context;Landroid/util/AttributeSet;)V
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v2 (Landroid/content/Context;)
+; parameter[1] : v3 (Landroid/util/AttributeSet;)
+.line 82
+	sget	v0,com/actionbarsherlock/R$attr.actionDropDownStyle I
+; v0 : single-length
+	invoke-direct	{v1,v2,v3,v0},com/actionbarsherlock/internal/widget/IcsSpinner/<init>	; <init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v2 : Landroid/content/Context; , v3 : Landroid/util/AttributeSet; , v0 : single-length
+.line 83
+	return-void	
+.end method
+
+.method public <init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V
+.limit registers 11
+; this: v7 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v8 (Landroid/content/Context;)
+; parameter[1] : v9 (Landroid/util/AttributeSet;)
+; parameter[2] : v10 (I)
+	const/4	v6,0
+; v6 : single-length
+.line 98
+	invoke-direct	{v7,v8,v9,v10},com/actionbarsherlock/internal/widget/IcsAbsSpinner/<init>	; <init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V
+; v7 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v8 : Landroid/content/Context; , v9 : Landroid/util/AttributeSet; , v10 : single-length
+.line 79
+	new-instance	v4,android/graphics/Rect
+; v4 : Landroid/graphics/Rect;
+	invoke-direct	{v4},android/graphics/Rect/<init>	; <init>()V
+; v4 : Landroid/graphics/Rect;
+	iput-object	v4,v7,com/actionbarsherlock/internal/widget/IcsSpinner.mTempRect Landroid/graphics/Rect;
+; v4 : Landroid/graphics/Rect; , v7 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 100
+	sget-object	v4,com/actionbarsherlock/R$styleable.SherlockSpinner [I
+; v4 : [I
+	invoke-virtual	{v8,v9,v4,v10,v6},android/content/Context/obtainStyledAttributes	; obtainStyledAttributes(Landroid/util/AttributeSet;[III)Landroid/content/res/TypedArray;
+; v8 : Landroid/content/Context; , v9 : Landroid/util/AttributeSet; , v4 : [I , v10 : single-length , v6 : single-length
+	move-result-object	v0
+; v0 : Landroid/content/res/TypedArray;
+.line 104
+	new-instance	v2,com/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup;
+	invoke-direct	{v2,v7,v8,v9,v10},com/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup/<init>	; <init>(Lcom/actionbarsherlock/internal/widget/IcsSpinner;Landroid/content/Context;Landroid/util/AttributeSet;I)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup; , v7 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v8 : Landroid/content/Context; , v9 : Landroid/util/AttributeSet; , v10 : single-length
+.line 106
+	const/4	v4,4
+; v4 : single-length
+	const/4	v5,14
+; v5 : single-length
+	invoke-virtual	{v0,v4,v5},android/content/res/TypedArray/getLayoutDimension	; getLayoutDimension(II)I
+; v0 : Landroid/content/res/TypedArray; , v4 : single-length , v5 : single-length
+	move-result	v4
+; v4 : single-length
+	iput	v4,v7,com/actionbarsherlock/internal/widget/IcsSpinner.mDropDownWidth I
+; v4 : single-length , v7 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 109
+	const/4	v4,2
+; v4 : single-length
+	invoke-virtual	{v0,v4},android/content/res/TypedArray/getDrawable	; getDrawable(I)Landroid/graphics/drawable/Drawable;
+; v0 : Landroid/content/res/TypedArray; , v4 : single-length
+	move-result-object	v4
+; v4 : Landroid/graphics/drawable/Drawable;
+	invoke-virtual	{v2,v4},com/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup/setBackgroundDrawable	; setBackgroundDrawable(Landroid/graphics/drawable/Drawable;)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup; , v4 : Landroid/graphics/drawable/Drawable;
+.line 111
+	const/4	v4,6
+; v4 : single-length
+	invoke-virtual	{v0,v4,v6},android/content/res/TypedArray/getDimensionPixelOffset	; getDimensionPixelOffset(II)I
+; v0 : Landroid/content/res/TypedArray; , v4 : single-length , v6 : single-length
+	move-result	v3
+; v3 : single-length
+.line 113
+	if-eqz	v3,la46c4
+; v3 : single-length
+.line 114
+	invoke-virtual	{v2,v3},com/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup/setVerticalOffset	; setVerticalOffset(I)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup; , v3 : single-length
+la46c4:
+.line 117
+	const/4	v4,5
+; v4 : single-length
+	invoke-virtual	{v0,v4,v6},android/content/res/TypedArray/getDimensionPixelOffset	; getDimensionPixelOffset(II)I
+; v0 : Landroid/content/res/TypedArray; , v4 : single-length , v6 : single-length
+	move-result	v1
+; v1 : single-length
+.line 119
+	if-eqz	v1,la46d8
+; v1 : single-length
+.line 120
+	invoke-virtual	{v2,v1},com/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup/setHorizontalOffset	; setHorizontalOffset(I)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup; , v1 : single-length
+la46d8:
+.line 123
+	iput-object	v2,v7,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup; , v7 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 125
+	const/16	v4,17
+; v4 : single-length
+	invoke-virtual	{v0,v6,v4},android/content/res/TypedArray/getInt	; getInt(II)I
+; v0 : Landroid/content/res/TypedArray; , v6 : single-length , v4 : single-length
+	move-result	v4
+; v4 : single-length
+	iput	v4,v7,com/actionbarsherlock/internal/widget/IcsSpinner.mGravity I
+; v4 : single-length , v7 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 127
+	iget-object	v4,v7,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v7 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	const/4	v5,3
+; v5 : single-length
+	invoke-virtual	{v0,v5},android/content/res/TypedArray/getString	; getString(I)Ljava/lang/String;
+; v0 : Landroid/content/res/TypedArray; , v5 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-interface	{v4,v5},com/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup/setPromptText	; setPromptText(Ljava/lang/CharSequence;)V
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v5 : Ljava/lang/String;
+.line 129
+	const/4	v4,1
+; v4 : single-length
+	iput-boolean	v4,v7,com/actionbarsherlock/internal/widget/IcsSpinner.mDisableChildrenWhenDisabled Z
+; v4 : single-length , v7 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 131
+	invoke-virtual	{v0},android/content/res/TypedArray/recycle	; recycle()V
+; v0 : Landroid/content/res/TypedArray;
+.line 135
+	iget-object	v4,v7,com/actionbarsherlock/internal/widget/IcsSpinner.mTempAdapter Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter;
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter; , v7 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	if-eqz	v4,la4728
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter;
+.line 136
+	iget-object	v4,v7,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v7 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget-object	v5,v7,com/actionbarsherlock/internal/widget/IcsSpinner.mTempAdapter Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter;
+; v5 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter; , v7 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-interface	{v4,v5},com/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup/setAdapter	; setAdapter(Landroid/widget/ListAdapter;)V
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v5 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter;
+.line 137
+	const/4	v4,0
+; v4 : single-length
+	iput-object	v4,v7,com/actionbarsherlock/internal/widget/IcsSpinner.mTempAdapter Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter;
+; v4 : single-length , v7 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+la4728:
+.line 139
+	return-void	
+.end method
+
+.method static access$000(Lcom/actionbarsherlock/internal/widget/IcsSpinner;)Landroid/graphics/Rect;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+.line 51
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/IcsSpinner.mTempRect Landroid/graphics/Rect;
+; v0 : Landroid/graphics/Rect; , v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	return-object	v0
+; v0 : Landroid/graphics/Rect;
+.end method
+
+.method private makeAndAddView(I)Landroid/view/View;
+.limit registers 6
+; this: v4 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v5 (I)
+.var 0 is child Landroid/view/View; from la4768 to la4774
+.var 1 is child Landroid/view/View; from la4774 to la4776
+.var 0 is child Landroid/view/View; from la4784 to la478c
+.line 317
+	iget-boolean	v2,v4,com/actionbarsherlock/internal/widget/IcsSpinner.mDataChanged Z
+; v2 : single-length , v4 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	if-nez	v2,la4776
+; v2 : single-length
+.line 318
+	iget-object	v2,v4,com/actionbarsherlock/internal/widget/IcsSpinner.mRecycler Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin;
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v4 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-virtual	{v2,v5},com/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin/get	; get(I)Landroid/view/View;
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v5 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+.line 319
+	if-eqz	v0,la4776
+; v0 : Landroid/view/View;
+.line 321
+	invoke-direct	{v4,v0},com/actionbarsherlock/internal/widget/IcsSpinner/setUpChild	; setUpChild(Landroid/view/View;)V
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v0 : Landroid/view/View;
+	move-object	v1,v0
+; v1 : Landroid/view/View; , v0 : Landroid/view/View;
+la4774:
+.line 333
+	return-object	v1
+; v1 : Landroid/view/View;
+la4776:
+.line 328
+	iget-object	v2,v4,com/actionbarsherlock/internal/widget/IcsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v2 : Landroid/widget/SpinnerAdapter; , v4 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	const/4	v3,0
+; v3 : single-length
+	invoke-interface	{v2,v5,v3,v4},android/widget/SpinnerAdapter/getView	; getView(ILandroid/view/View;Landroid/view/ViewGroup;)Landroid/view/View;
+; v2 : Landroid/widget/SpinnerAdapter; , v5 : single-length , v3 : single-length , v4 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v0
+; v0 : Landroid/view/View;
+.line 331
+	invoke-direct	{v4,v0},com/actionbarsherlock/internal/widget/IcsSpinner/setUpChild	; setUpChild(Landroid/view/View;)V
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v0 : Landroid/view/View;
+	move-object	v1,v0
+; v1 : Landroid/view/View; , v0 : Landroid/view/View;
+.line 333
+	goto	la4774
+.end method
+
+.method private setUpChild(Landroid/view/View;)V
+.limit registers 13
+; this: v11 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v12 (Landroid/view/View;)
+.line 346
+	invoke-virtual	{v12},android/view/View/getLayoutParams	; getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
+; v12 : Landroid/view/View;
+	move-result-object	v6
+; v6 : Landroid/view/ViewGroup$LayoutParams;
+.line 347
+	if-nez	v6,la47b4
+; v6 : Landroid/view/ViewGroup$LayoutParams;
+.line 348
+	invoke-virtual	{v11},com/actionbarsherlock/internal/widget/IcsSpinner/generateDefaultLayoutParams	; generateDefaultLayoutParams()Landroid/view/ViewGroup$LayoutParams;
+; v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v6
+; v6 : Landroid/view/ViewGroup$LayoutParams;
+la47b4:
+.line 351
+	const/4	v8,0
+; v8 : single-length
+	invoke-virtual	{v11,v12,v8,v6},com/actionbarsherlock/internal/widget/IcsSpinner/addViewInLayout	; addViewInLayout(Landroid/view/View;ILandroid/view/ViewGroup$LayoutParams;)Z
+; v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v12 : Landroid/view/View; , v8 : single-length , v6 : Landroid/view/ViewGroup$LayoutParams;
+.line 353
+	invoke-virtual	{v11},com/actionbarsherlock/internal/widget/IcsSpinner/hasFocus	; hasFocus()Z
+; v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result	v8
+; v8 : single-length
+	invoke-virtual	{v12,v8},android/view/View/setSelected	; setSelected(Z)V
+; v12 : Landroid/view/View; , v8 : single-length
+.line 354
+	iget-boolean	v8,v11,com/actionbarsherlock/internal/widget/IcsSpinner.mDisableChildrenWhenDisabled Z
+; v8 : single-length , v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	if-eqz	v8,la47e0
+; v8 : single-length
+.line 355
+	invoke-virtual	{v11},com/actionbarsherlock/internal/widget/IcsSpinner/isEnabled	; isEnabled()Z
+; v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result	v8
+; v8 : single-length
+	invoke-virtual	{v12,v8},android/view/View/setEnabled	; setEnabled(Z)V
+; v12 : Landroid/view/View; , v8 : single-length
+la47e0:
+.line 359
+	iget	v8,v11,com/actionbarsherlock/internal/widget/IcsSpinner.mHeightMeasureSpec I
+; v8 : single-length , v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget-object	v9,v11,com/actionbarsherlock/internal/widget/IcsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v9 : Landroid/graphics/Rect; , v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget	v9,v9,android/graphics/Rect.top I
+; v9 : single-length , v9 : single-length
+	iget-object	v10,v11,com/actionbarsherlock/internal/widget/IcsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v10 : Landroid/graphics/Rect; , v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget	v10,v10,android/graphics/Rect.bottom I
+; v10 : single-length , v10 : single-length
+	add-int/2addr	v9,v10
+; v9 : single-length , v10 : single-length
+	iget	v10,v6,android/view/ViewGroup$LayoutParams.height I
+; v10 : single-length , v6 : Landroid/view/ViewGroup$LayoutParams;
+	invoke-static	{v8,v9,v10},android/view/ViewGroup/getChildMeasureSpec	; getChildMeasureSpec(III)I
+; v8 : single-length , v9 : single-length , v10 : single-length
+	move-result	v1
+; v1 : single-length
+.line 361
+	iget	v8,v11,com/actionbarsherlock/internal/widget/IcsSpinner.mWidthMeasureSpec I
+; v8 : single-length , v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget-object	v9,v11,com/actionbarsherlock/internal/widget/IcsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v9 : Landroid/graphics/Rect; , v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget	v9,v9,android/graphics/Rect.left I
+; v9 : single-length , v9 : single-length
+	iget-object	v10,v11,com/actionbarsherlock/internal/widget/IcsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v10 : Landroid/graphics/Rect; , v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget	v10,v10,android/graphics/Rect.right I
+; v10 : single-length , v10 : single-length
+	add-int/2addr	v9,v10
+; v9 : single-length , v10 : single-length
+	iget	v10,v6,android/view/ViewGroup$LayoutParams.width I
+; v10 : single-length , v6 : Landroid/view/ViewGroup$LayoutParams;
+	invoke-static	{v8,v9,v10},android/view/ViewGroup/getChildMeasureSpec	; getChildMeasureSpec(III)I
+; v8 : single-length , v9 : single-length , v10 : single-length
+	move-result	v5
+; v5 : single-length
+.line 365
+	invoke-virtual	{v12,v5,v1},android/view/View/measure	; measure(II)V
+; v12 : Landroid/view/View; , v5 : single-length , v1 : single-length
+.line 371
+	iget-object	v8,v11,com/actionbarsherlock/internal/widget/IcsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v8 : Landroid/graphics/Rect; , v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget	v8,v8,android/graphics/Rect.top I
+; v8 : single-length , v8 : single-length
+	invoke-virtual	{v11},com/actionbarsherlock/internal/widget/IcsSpinner/getMeasuredHeight	; getMeasuredHeight()I
+; v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result	v9
+; v9 : single-length
+	iget-object	v10,v11,com/actionbarsherlock/internal/widget/IcsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v10 : Landroid/graphics/Rect; , v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget	v10,v10,android/graphics/Rect.bottom I
+; v10 : single-length , v10 : single-length
+	sub-int/2addr	v9,v10
+; v9 : single-length , v10 : single-length
+	iget-object	v10,v11,com/actionbarsherlock/internal/widget/IcsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v10 : Landroid/graphics/Rect; , v11 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget	v10,v10,android/graphics/Rect.top I
+; v10 : single-length , v10 : single-length
+	sub-int/2addr	v9,v10
+; v9 : single-length , v10 : single-length
+	invoke-virtual	{v12},android/view/View/getMeasuredHeight	; getMeasuredHeight()I
+; v12 : Landroid/view/View;
+	move-result	v10
+; v10 : single-length
+	sub-int/2addr	v9,v10
+; v9 : single-length , v10 : single-length
+	div-int/lit8	v9,v9,2
+; v9 : single-length , v9 : single-length
+	add-int	v4,v8,v9
+; v4 : single-length , v8 : single-length , v9 : single-length
+.line 374
+	invoke-virtual	{v12},android/view/View/getMeasuredHeight	; getMeasuredHeight()I
+; v12 : Landroid/view/View;
+	move-result	v8
+; v8 : single-length
+	add-int	v0,v4,v8
+; v0 : single-length , v4 : single-length , v8 : single-length
+.line 376
+	invoke-virtual	{v12},android/view/View/getMeasuredWidth	; getMeasuredWidth()I
+; v12 : Landroid/view/View;
+	move-result	v7
+; v7 : single-length
+.line 377
+	const/4	v2,0
+; v2 : single-length
+.line 378
+	add-int	v3,v2,v7
+; v3 : single-length , v2 : single-length , v7 : single-length
+.line 380
+	invoke-virtual	{v12,v2,v4,v3,v0},android/view/View/layout	; layout(IIII)V
+; v12 : Landroid/view/View; , v2 : single-length , v4 : single-length , v3 : single-length , v0 : single-length
+.line 381
+	return-void	
+.end method
+
+.method public getBaseline()I
+.limit registers 6
+; this: v5 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+.var 1 is childBaseline I from la48ba to la48c8
+	const/4	v2,15
+; v2 : single-length
+	const/4	v4,0
+; v4 : single-length
+.line 183
+	const/4	v0,0
+; v0 : single-length
+.line 185
+	invoke-virtual	{v5},com/actionbarsherlock/internal/widget/IcsSpinner/getChildCount	; getChildCount()I
+; v5 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result	v3
+; v3 : single-length
+	if-lez	v3,la48ca
+; v3 : single-length
+.line 186
+	invoke-virtual	{v5,v4},com/actionbarsherlock/internal/widget/IcsSpinner/getChildAt	; getChildAt(I)Landroid/view/View;
+; v5 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v4 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+la48ae:
+.line 193
+	if-eqz	v0,la48c8
+; v0 : Landroid/view/View;
+.line 194
+	invoke-virtual	{v0},android/view/View/getBaseline	; getBaseline()I
+; v0 : Landroid/view/View;
+	move-result	v1
+; v1 : single-length
+.line 195
+	if-ltz	v1,la48c8
+; v1 : single-length
+	invoke-virtual	{v0},android/view/View/getTop	; getTop()I
+; v0 : Landroid/view/View;
+	move-result	v2
+; v2 : single-length
+	add-int/2addr	v2,v1
+; v2 : single-length , v1 : single-length
+la48c8:
+.line 197
+	return	v2
+; v2 : single-length
+la48ca:
+.line 187
+	iget-object	v3,v5,com/actionbarsherlock/internal/widget/IcsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v3 : Landroid/widget/SpinnerAdapter; , v5 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	if-eqz	v3,la48ae
+; v3 : Landroid/widget/SpinnerAdapter;
+	iget-object	v3,v5,com/actionbarsherlock/internal/widget/IcsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v3 : Landroid/widget/SpinnerAdapter; , v5 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-interface	{v3},android/widget/SpinnerAdapter/getCount	; getCount()I
+; v3 : Landroid/widget/SpinnerAdapter;
+	move-result	v3
+; v3 : single-length
+	if-lez	v3,la48ae
+; v3 : single-length
+.line 188
+	invoke-direct	{v5,v4},com/actionbarsherlock/internal/widget/IcsSpinner/makeAndAddView	; makeAndAddView(I)Landroid/view/View;
+; v5 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v4 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+.line 189
+	iget-object	v3,v5,com/actionbarsherlock/internal/widget/IcsSpinner.mRecycler Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin;
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v5 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-virtual	{v3,v4,v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin/put	; put(ILandroid/view/View;)V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v4 : single-length , v0 : Landroid/view/View;
+.line 190
+	invoke-virtual	{v5},com/actionbarsherlock/internal/widget/IcsSpinner/removeAllViewsInLayout	; removeAllViewsInLayout()V
+; v5 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	goto	la48ae
+.end method
+
+.method public getPrompt()Ljava/lang/CharSequence;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+.line 423
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-interface	{v0},com/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup/getHintText	; getHintText()Ljava/lang/CharSequence;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+	move-result-object	v0
+; v0 : Ljava/lang/CharSequence;
+	return-object	v0
+; v0 : Ljava/lang/CharSequence;
+.end method
+
+.method layout(IZ)V
+.limit registers 11
+; this: v8 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v9 (I)
+; parameter[1] : v10 (Z)
+	const/4	v7,0
+; v7 : single-length
+.line 255
+	iget-object	v5,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v5 : Landroid/graphics/Rect; , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget	v0,v5,android/graphics/Rect.left I
+; v0 : single-length , v5 : Landroid/graphics/Rect;
+.line 256
+	invoke-virtual	{v8},com/actionbarsherlock/internal/widget/IcsSpinner/getRight	; getRight()I
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result	v5
+; v5 : single-length
+	invoke-virtual	{v8},com/actionbarsherlock/internal/widget/IcsSpinner/getLeft	; getLeft()I
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result	v6
+; v6 : single-length
+	sub-int/2addr	v5,v6
+; v5 : single-length , v6 : single-length
+	iget-object	v6,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v6 : Landroid/graphics/Rect; , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget	v6,v6,android/graphics/Rect.left I
+; v6 : single-length , v6 : single-length
+	sub-int/2addr	v5,v6
+; v5 : single-length , v6 : single-length
+	iget-object	v6,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v6 : Landroid/graphics/Rect; , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget	v6,v6,android/graphics/Rect.right I
+; v6 : single-length , v6 : single-length
+	sub-int	v1,v5,v6
+; v1 : single-length , v5 : single-length , v6 : single-length
+.line 258
+	iget-boolean	v5,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mDataChanged Z
+; v5 : single-length , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	if-eqz	v5,la496c
+; v5 : single-length
+.line 259
+	invoke-virtual	{v8},com/actionbarsherlock/internal/widget/IcsSpinner/handleDataChanged	; handleDataChanged()V
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+la496c:
+.line 263
+	iget	v5,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mItemCount I
+; v5 : single-length , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	if-nez	v5,la497c
+; v5 : single-length
+.line 264
+	invoke-virtual	{v8},com/actionbarsherlock/internal/widget/IcsSpinner/resetList	; resetList()V
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+la497a:
+.line 302
+	return-void	
+la497c:
+.line 268
+	iget	v5,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mNextSelectedPosition I
+; v5 : single-length , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	if-ltz	v5,la498e
+; v5 : single-length
+.line 269
+	iget	v5,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mNextSelectedPosition I
+; v5 : single-length , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-virtual	{v8,v5},com/actionbarsherlock/internal/widget/IcsSpinner/setSelectedPositionInt	; setSelectedPositionInt(I)V
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v5 : single-length
+la498e:
+.line 272
+	invoke-virtual	{v8},com/actionbarsherlock/internal/widget/IcsSpinner/recycleAllViews	; recycleAllViews()V
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 275
+	invoke-virtual	{v8},com/actionbarsherlock/internal/widget/IcsSpinner/removeAllViewsInLayout	; removeAllViewsInLayout()V
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 278
+	iget	v5,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mSelectedPosition I
+; v5 : single-length , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iput	v5,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mFirstPosition I
+; v5 : single-length , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 279
+	iget	v5,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mSelectedPosition I
+; v5 : single-length , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-direct	{v8,v5},com/actionbarsherlock/internal/widget/IcsSpinner/makeAndAddView	; makeAndAddView(I)Landroid/view/View;
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v5 : single-length
+	move-result-object	v2
+; v2 : Landroid/view/View;
+.line 280
+	invoke-virtual	{v2},android/view/View/getMeasuredWidth	; getMeasuredWidth()I
+; v2 : Landroid/view/View;
+	move-result	v4
+; v4 : single-length
+.line 281
+	move	v3,v0
+; v3 : single-length , v0 : single-length
+.line 282
+	iget	v5,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mGravity I
+; v5 : single-length , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	and-int/lit8	v5,v5,7
+; v5 : single-length , v5 : single-length
+	sparse-switch	v5
+		1 : spa49c0_a49f6
+		5 : spa49c0_a4a06
+		default: spa49c0_default
+; v5 : single-length
+la49c6:
+.line 290
+	invoke-virtual	{v2,v3},android/view/View/offsetLeftAndRight	; offsetLeftAndRight(I)V
+; v2 : Landroid/view/View; , v3 : single-length
+.line 293
+	iget-object	v5,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mRecycler Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin;
+; v5 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-virtual	{v5},com/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin/clear	; clear()V
+; v5 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin;
+.line 295
+	invoke-virtual	{v8},com/actionbarsherlock/internal/widget/IcsSpinner/invalidate	; invalidate()V
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 297
+	invoke-virtual	{v8},com/actionbarsherlock/internal/widget/IcsSpinner/checkSelectionChanged	; checkSelectionChanged()V
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 299
+	iput-boolean	v7,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mDataChanged Z
+; v7 : single-length , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 300
+	iput-boolean	v7,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mNeedSync Z
+; v7 : single-length , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 301
+	iget	v5,v8,com/actionbarsherlock/internal/widget/IcsSpinner.mSelectedPosition I
+; v5 : single-length , v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-virtual	{v8,v5},com/actionbarsherlock/internal/widget/IcsSpinner/setNextSelectedPositionInt	; setNextSelectedPositionInt(I)V
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v5 : single-length
+	goto	la497a
+spa49c0_a49f6:
+.line 284
+	div-int/lit8	v5,v1,2
+; v5 : single-length , v1 : single-length
+	add-int/2addr	v5,v0
+; v5 : single-length , v0 : single-length
+	div-int/lit8	v6,v4,2
+; v6 : single-length , v4 : single-length
+	sub-int	v3,v5,v6
+; v3 : single-length , v5 : single-length , v6 : single-length
+.line 285
+	goto	la49c6
+spa49c0_a4a06:
+.line 287
+	add-int	v5,v0,v1
+; v5 : single-length , v0 : single-length , v1 : single-length
+	sub-int	v3,v5,v4
+; v3 : single-length , v5 : single-length , v4 : single-length
+	goto	la49c6
+.line 282
+.end method
+
+.method measureContentWidth(Landroid/widget/SpinnerAdapter;Landroid/graphics/drawable/Drawable;)I
+.limit registers 16
+; this: v13 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v14 (Landroid/widget/SpinnerAdapter;)
+; parameter[1] : v15 (Landroid/graphics/drawable/Drawable;)
+.var 6 is positionType I from la4aa4 to la4af0
+.line 427
+	if-nez	v14,la4a3c
+; v14 : Landroid/widget/SpinnerAdapter;
+.line 428
+	const/4	v8,0
+; v8 : single-length
+la4a3a:
+.line 467
+	return	v8
+; v8 : single-length
+la4a3c:
+.line 431
+	const/4	v8,0
+; v8 : single-length
+.line 432
+	const/4	v5,0
+; v5 : single-length
+.line 433
+	const/4	v4,0
+; v4 : single-length
+.line 434
+	const/4	v10,0
+; v10 : single-length
+	const/4	v11,0
+; v11 : single-length
+	invoke-static	{v10,v11},android/view/View$MeasureSpec/makeMeasureSpec	; makeMeasureSpec(II)I
+; v10 : single-length , v11 : single-length
+	move-result	v9
+; v9 : single-length
+.line 436
+	const/4	v10,0
+; v10 : single-length
+	const/4	v11,0
+; v11 : single-length
+	invoke-static	{v10,v11},android/view/View$MeasureSpec/makeMeasureSpec	; makeMeasureSpec(II)I
+; v10 : single-length , v11 : single-length
+	move-result	v2
+; v2 : single-length
+.line 441
+	const/4	v10,0
+; v10 : single-length
+	invoke-virtual	{v13},com/actionbarsherlock/internal/widget/IcsSpinner/getSelectedItemPosition	; getSelectedItemPosition()I
+; v13 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result	v11
+; v11 : single-length
+	invoke-static	{v10,v11},java/lang/Math/max	; max(II)I
+; v10 : single-length , v11 : single-length
+	move-result	v7
+; v7 : single-length
+.line 442
+	invoke-interface	{v14},android/widget/SpinnerAdapter/getCount	; getCount()I
+; v14 : Landroid/widget/SpinnerAdapter;
+	move-result	v10
+; v10 : single-length
+	add-int/lit8	v11,v7,15
+; v11 : single-length , v7 : single-length
+	invoke-static	{v10,v11},java/lang/Math/min	; min(II)I
+; v10 : single-length , v11 : single-length
+	move-result	v1
+; v1 : single-length
+.line 443
+	sub-int	v0,v1,v7
+; v0 : single-length , v1 : single-length , v7 : single-length
+.line 444
+	const/4	v10,0
+; v10 : single-length
+	sub-int/lit8	v11,v0,15
+; v11 : single-length , v0 : single-length
+	sub-int	v11,v7,v11
+; v11 : single-length , v7 : single-length , v11 : single-length
+	invoke-static	{v10,v11},java/lang/Math/max	; max(II)I
+; v10 : single-length , v11 : single-length
+	move-result	v7
+; v7 : single-length
+.line 445
+	move	v3,v7
+; v3 : single-length , v7 : single-length
+la4a98:
+	if-ge	v3,v1,la4af0
+; v3 : single-length , v1 : single-length
+.line 446
+	invoke-interface	{v14,v3},android/widget/SpinnerAdapter/getItemViewType	; getItemViewType(I)I
+; v14 : Landroid/widget/SpinnerAdapter; , v3 : single-length
+	move-result	v6
+; v6 : single-length
+.line 447
+	if-eq	v6,v4,la4aac
+; v6 : single-length , v4 : single-length
+.line 448
+	move	v4,v6
+; v4 : single-length , v6 : single-length
+.line 449
+	const/4	v5,0
+; v5 : single-length
+la4aac:
+.line 451
+	invoke-interface	{v14,v3,v5,v13},android/widget/SpinnerAdapter/getView	; getView(ILandroid/view/View;Landroid/view/ViewGroup;)Landroid/view/View;
+; v14 : Landroid/widget/SpinnerAdapter; , v3 : single-length , v5 : Landroid/view/View; , v13 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v5
+; v5 : Landroid/view/View;
+.line 452
+	invoke-virtual	{v5},android/view/View/getLayoutParams	; getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
+; v5 : Landroid/view/View;
+	move-result-object	v10
+; v10 : Landroid/view/ViewGroup$LayoutParams;
+	if-nez	v10,la4ad4
+; v10 : Landroid/view/ViewGroup$LayoutParams;
+.line 453
+	new-instance	v10,android/view/ViewGroup$LayoutParams
+; v10 : Landroid/view/ViewGroup$LayoutParams;
+	const/4	v11,14
+; v11 : single-length
+	const/4	v12,14
+; v12 : single-length
+	invoke-direct	{v10,v11,v12},android/view/ViewGroup$LayoutParams/<init>	; <init>(II)V
+; v10 : Landroid/view/ViewGroup$LayoutParams; , v11 : single-length , v12 : single-length
+	invoke-virtual	{v5,v10},android/view/View/setLayoutParams	; setLayoutParams(Landroid/view/ViewGroup$LayoutParams;)V
+; v5 : Landroid/view/View; , v10 : Landroid/view/ViewGroup$LayoutParams;
+la4ad4:
+.line 457
+	invoke-virtual	{v5,v9,v2},android/view/View/measure	; measure(II)V
+; v5 : Landroid/view/View; , v9 : single-length , v2 : single-length
+.line 458
+	invoke-virtual	{v5},android/view/View/getMeasuredWidth	; getMeasuredWidth()I
+; v5 : Landroid/view/View;
+	move-result	v10
+; v10 : single-length
+	invoke-static	{v8,v10},java/lang/Math/max	; max(II)I
+; v8 : single-length , v10 : single-length
+	move-result	v8
+; v8 : single-length
+.line 445
+	add-int/lit8	v3,v3,1
+; v3 : single-length , v3 : single-length
+	goto	la4a98
+la4af0:
+.line 462
+	if-eqz	v15,la4a3a
+; v15 : Landroid/graphics/drawable/Drawable;
+.line 463
+	iget-object	v10,v13,com/actionbarsherlock/internal/widget/IcsSpinner.mTempRect Landroid/graphics/Rect;
+; v10 : Landroid/graphics/Rect; , v13 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-virtual	{v15,v10},android/graphics/drawable/Drawable/getPadding	; getPadding(Landroid/graphics/Rect;)Z
+; v15 : Landroid/graphics/drawable/Drawable; , v10 : Landroid/graphics/Rect;
+.line 464
+	iget-object	v10,v13,com/actionbarsherlock/internal/widget/IcsSpinner.mTempRect Landroid/graphics/Rect;
+; v10 : Landroid/graphics/Rect; , v13 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget	v10,v10,android/graphics/Rect.left I
+; v10 : single-length , v10 : single-length
+	iget-object	v11,v13,com/actionbarsherlock/internal/widget/IcsSpinner.mTempRect Landroid/graphics/Rect;
+; v11 : Landroid/graphics/Rect; , v13 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget	v11,v11,android/graphics/Rect.right I
+; v11 : single-length , v11 : single-length
+	add-int/2addr	v10,v11
+; v10 : single-length , v11 : single-length
+	add-int/2addr	v8,v10
+; v8 : single-length , v10 : single-length
+	goto	la4a3a
+.end method
+
+.method public onClick(Landroid/content/DialogInterface;I)V
+.limit registers 3
+; this: v0 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v1 (Landroid/content/DialogInterface;)
+; parameter[1] : v2 (I)
+.line 399
+	invoke-virtual	{v0,v2},com/actionbarsherlock/internal/widget/IcsSpinner/setSelection	; setSelection(I)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v2 : single-length
+.line 400
+	invoke-interface	{v1},android/content/DialogInterface/dismiss	; dismiss()V
+; v1 : Landroid/content/DialogInterface;
+.line 401
+	return-void	
+.end method
+
+.method protected onDetachedFromWindow()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+.line 203
+	invoke-super	{v1},com/actionbarsherlock/internal/widget/IcsAbsSpinner/onDetachedFromWindow	; onDetachedFromWindow()V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 205
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	if-eqz	v0,la4b6c
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-interface	{v0},com/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup/isShowing	; isShowing()Z
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,la4b6c
+; v0 : single-length
+.line 206
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-interface	{v0},com/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup/dismiss	; dismiss()V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+la4b6c:
+.line 208
+	return-void	
+.end method
+
+.method protected onLayout(ZIIII)V
+.limit registers 8
+; this: v2 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v3 (Z)
+; parameter[1] : v4 (I)
+; parameter[2] : v5 (I)
+; parameter[3] : v6 (I)
+; parameter[4] : v7 (I)
+	const/4	v1,0
+; v1 : single-length
+.line 241
+	invoke-super/range	{v2..v7},com/actionbarsherlock/internal/widget/IcsAbsSpinner/onLayout;	onLayout(ZIIII)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v3 : single-length , v4 : single-length , v5 : single-length , v6 : single-length , v7 : single-length
+.line 242
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v2,com/actionbarsherlock/internal/widget/IcsSpinner.mInLayout Z
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 243
+	invoke-virtual	{v2,v1,v1},com/actionbarsherlock/internal/widget/IcsSpinner/layout	; layout(IZ)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : single-length , v1 : single-length
+.line 244
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/widget/IcsSpinner.mInLayout Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 245
+	return-void	
+.end method
+
+.method protected onMeasure(II)V
+.limit registers 6
+; this: v3 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v4 (I)
+; parameter[1] : v5 (I)
+.var 0 is measuredWidth I from la4bd2 to la4c10
+.line 223
+	invoke-super	{v3,v4,v5},com/actionbarsherlock/internal/widget/IcsAbsSpinner/onMeasure	; onMeasure(II)V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v4 : single-length , v5 : single-length
+.line 224
+	iget-object	v1,v3,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v3 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	if-eqz	v1,la4c10
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+	invoke-static	{v4},android/view/View$MeasureSpec/getMode	; getMode(I)I
+; v4 : single-length
+	move-result	v1
+; v1 : single-length
+	const/high16	v2,32768
+; v2 : single-length
+	if-ne	v1,v2,la4c10
+; v1 : single-length , v2 : single-length
+.line 225
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsSpinner/getMeasuredWidth	; getMeasuredWidth()I
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result	v0
+; v0 : single-length
+.line 226
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsSpinner/getAdapter	; getAdapter()Landroid/widget/SpinnerAdapter;
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v1
+; v1 : Landroid/widget/SpinnerAdapter;
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsSpinner/getBackground	; getBackground()Landroid/graphics/drawable/Drawable;
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v2
+; v2 : Landroid/graphics/drawable/Drawable;
+	invoke-virtual	{v3,v1,v2},com/actionbarsherlock/internal/widget/IcsSpinner/measureContentWidth	; measureContentWidth(Landroid/widget/SpinnerAdapter;Landroid/graphics/drawable/Drawable;)I
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Landroid/widget/SpinnerAdapter; , v2 : Landroid/graphics/drawable/Drawable;
+	move-result	v1
+; v1 : single-length
+	invoke-static	{v0,v1},java/lang/Math/max	; max(II)I
+; v0 : single-length , v1 : single-length
+	move-result	v1
+; v1 : single-length
+	invoke-static	{v4},android/view/View$MeasureSpec/getSize	; getSize(I)I
+; v4 : single-length
+	move-result	v2
+; v2 : single-length
+	invoke-static	{v1,v2},java/lang/Math/min	; min(II)I
+; v1 : single-length , v2 : single-length
+	move-result	v1
+; v1 : single-length
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsSpinner/getMeasuredHeight	; getMeasuredHeight()I
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result	v2
+; v2 : single-length
+	invoke-virtual	{v3,v1,v2},com/actionbarsherlock/internal/widget/IcsSpinner/setMeasuredDimension	; setMeasuredDimension(II)V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : single-length , v2 : single-length
+la4c10:
+.line 231
+	return-void	
+.end method
+
+.method public performClick()Z
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+.line 385
+	invoke-super	{v2},com/actionbarsherlock/internal/widget/IcsAbsSpinner/performClick	; performClick()Z
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result	v0
+; v0 : single-length
+.line 387
+	if-nez	v0,la4c4c
+; v0 : single-length
+.line 388
+	const/4	v0,1
+; v0 : single-length
+.line 390
+	iget-object	v1,v2,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-interface	{v1},com/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup/isShowing	; isShowing()Z
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,la4c4c
+; v1 : single-length
+.line 391
+	iget-object	v1,v2,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-interface	{v1},com/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup/show	; show()V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+la4c4c:
+.line 395
+	return	v0
+; v0 : single-length
+.end method
+
+.method public setAdapter(Landroid/widget/Adapter;)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v1 (Landroid/widget/Adapter;)
+.line 51
+	check-cast	v1,android/widget/SpinnerAdapter
+; v1 : Landroid/widget/SpinnerAdapter;
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/IcsSpinner/setAdapter	; setAdapter(Landroid/widget/SpinnerAdapter;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Landroid/widget/SpinnerAdapter;
+	return-void	
+.end method
+
+.method public setAdapter(Landroid/widget/SpinnerAdapter;)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v3 (Landroid/widget/SpinnerAdapter;)
+.line 172
+	invoke-super	{v2,v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setAdapter	; setAdapter(Landroid/widget/SpinnerAdapter;)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v3 : Landroid/widget/SpinnerAdapter;
+.line 174
+	iget-object	v0,v2,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	if-eqz	v0,la4ca0
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+.line 175
+	iget-object	v0,v2,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	new-instance	v1,com/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter;
+	invoke-direct	{v1,v3},com/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter/<init>	; <init>(Landroid/widget/SpinnerAdapter;)V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter; , v3 : Landroid/widget/SpinnerAdapter;
+	invoke-interface	{v0,v1},com/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup/setAdapter	; setAdapter(Landroid/widget/ListAdapter;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter;
+la4c9e:
+.line 179
+	return-void	
+la4ca0:
+.line 177
+	new-instance	v0,com/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter;
+	invoke-direct	{v0,v3},com/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter/<init>	; <init>(Landroid/widget/SpinnerAdapter;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter; , v3 : Landroid/widget/SpinnerAdapter;
+	iput-object	v0,v2,com/actionbarsherlock/internal/widget/IcsSpinner.mTempAdapter Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropDownAdapter; , v2 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	goto	la4c9e
+.end method
+
+.method public setEnabled(Z)V
+.limit registers 5
+; this: v3 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v4 (Z)
+.var 0 is count I from la4cd6 to la4cf0
+.var 1 is i I from la4cd8 to la4cf0
+.line 143
+	invoke-super	{v3,v4},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setEnabled	; setEnabled(Z)V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v4 : single-length
+.line 144
+	iget-boolean	v2,v3,com/actionbarsherlock/internal/widget/IcsSpinner.mDisableChildrenWhenDisabled Z
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	if-eqz	v2,la4cf0
+; v2 : single-length
+.line 145
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsSpinner/getChildCount	; getChildCount()I
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result	v0
+; v0 : single-length
+.line 146
+	const/4	v1,0
+; v1 : single-length
+la4cd8:
+	if-ge	v1,v0,la4cf0
+; v1 : single-length , v0 : single-length
+.line 147
+	invoke-virtual	{v3,v1},com/actionbarsherlock/internal/widget/IcsSpinner/getChildAt	; getChildAt(I)Landroid/view/View;
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : single-length
+	move-result-object	v2
+; v2 : Landroid/view/View;
+	invoke-virtual	{v2,v4},android/view/View/setEnabled	; setEnabled(Z)V
+; v2 : Landroid/view/View; , v4 : single-length
+.line 146
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	la4cd8
+la4cf0:
+.line 150
+	return-void	
+.end method
+
+.method public setGravity(I)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v2 (I)
+.line 161
+	iget	v0,v1,com/actionbarsherlock/internal/widget/IcsSpinner.mGravity I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	if-eq	v0,v2,la4d22
+; v0 : single-length , v2 : single-length
+.line 162
+	and-int/lit8	v0,v2,7
+; v0 : single-length , v2 : single-length
+	if-nez	v0,la4d18
+; v0 : single-length
+.line 163
+	or-int/lit8	v2,v2,3
+; v2 : single-length , v2 : single-length
+la4d18:
+.line 165
+	iput	v2,v1,com/actionbarsherlock/internal/widget/IcsSpinner.mGravity I
+; v2 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 166
+	invoke-virtual	{v1},com/actionbarsherlock/internal/widget/IcsSpinner/requestLayout	; requestLayout()V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+la4d22:
+.line 168
+	return-void	
+.end method
+
+.method public setListViewDivider(I)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v2 (I)
+.line 644
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	check-cast	v0,com/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup;
+	invoke-virtual	{v0,v2},com/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup/setListViewDivider	; setListViewDivider(I)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$DropdownPopup; , v2 : single-length
+.line 645
+	return-void	
+.end method
+
+.method public setOnItemClickListener(Landroid/widget/AdapterView$OnItemClickListener;)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v3 (Landroid/widget/AdapterView$OnItemClickListener;)
+.line 218
+	new-instance	v0,java/lang/RuntimeException
+; v0 : Ljava/lang/RuntimeException;
+	const-string	v1,"setOnItemClickListener cannot be used with a spinner."
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/RuntimeException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/RuntimeException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/RuntimeException;
+.end method
+
+.method public setPrompt(Ljava/lang/CharSequence;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v2 (Ljava/lang/CharSequence;)
+.line 408
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/IcsSpinner.mPopup Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-interface	{v0,v2},com/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup/setPromptText	; setPromptText(Ljava/lang/CharSequence;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner$SpinnerPopup; , v2 : Ljava/lang/CharSequence;
+.line 409
+	return-void	
+.end method
+
+.method public setPromptId(I)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsSpinner;)
+; parameter[0] : v2 (I)
+.line 416
+	invoke-virtual	{v1},com/actionbarsherlock/internal/widget/IcsSpinner/getContext	; getContext()Landroid/content/Context;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v0
+; v0 : Landroid/content/Context;
+	invoke-virtual	{v0,v2},android/content/Context/getText	; getText(I)Ljava/lang/CharSequence;
+; v0 : Landroid/content/Context; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/CharSequence;
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/widget/IcsSpinner/setPrompt	; setPrompt(Ljava/lang/CharSequence;)V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v0 : Ljava/lang/CharSequence;
+.line 417
+	return-void	
+.end method
+
+

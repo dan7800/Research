@@ -1,0 +1,183 @@
+.class public com/flurry/android/CrcMessageDigest
+.super java/security/MessageDigest
+.source SourceFile
+
+.field private a Ljava/util/zip/CRC32;
+
+.method public <init>()V
+.limit registers 2
+; this: v1 (Lcom/flurry/android/CrcMessageDigest;)
+.line 13
+	const-string	v0,"CRC"
+; v0 : Ljava/lang/String;
+	invoke-direct	{v1,v0},java/security/MessageDigest/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Lcom/flurry/android/CrcMessageDigest; , v0 : Ljava/lang/String;
+.line 9
+	new-instance	v0,java/util/zip/CRC32
+; v0 : Ljava/util/zip/CRC32;
+	invoke-direct	{v0},java/util/zip/CRC32/<init>	; <init>()V
+; v0 : Ljava/util/zip/CRC32;
+	iput-object	v0,v1,com/flurry/android/CrcMessageDigest.a Ljava/util/zip/CRC32;
+; v0 : Ljava/util/zip/CRC32; , v1 : Lcom/flurry/android/CrcMessageDigest;
+.line 14
+	return-void	
+.end method
+
+.method protected engineDigest()[B
+.limit registers 8
+; this: v7 (Lcom/flurry/android/CrcMessageDigest;)
+.line 37
+	iget-object	v0,v7,com/flurry/android/CrcMessageDigest.a Ljava/util/zip/CRC32;
+; v0 : Ljava/util/zip/CRC32; , v7 : Lcom/flurry/android/CrcMessageDigest;
+	invoke-virtual	{v0},java/util/zip/CRC32/getValue	; getValue()J
+; v0 : Ljava/util/zip/CRC32;
+	move-result-wide	v0
+; v0 : double-length
+.line 38
+	const/4	v2,4
+; v2 : single-length
+	new-array	v2,v2,[B
+; v2 : [B , v2 : [B
+.line 39
+	const/4	v3,0
+; v3 : single-length
+	const-wide/32	v4,4278190080	; 0xff000000
+; v4 : double-length
+	and-long/2addr	v4,v0
+; v4 : double-length , v0 : double-length
+	const/16	v6,24
+; v6 : single-length
+	shr-long/2addr	v4,v6
+; v4 : double-length , v6 : single-length
+	long-to-int	v4,v4
+; v4 : single-length , v4 : single-length
+	int-to-byte	v4,v4
+; v4 : single-length , v4 : single-length
+	aput-byte	v4,v2,v3
+; v4 : single-length , v2 : [B , v3 : single-length
+.line 40
+	const/4	v3,1
+; v3 : single-length
+	const-wide/32	v4,16711680	; 0xff0000
+; v4 : double-length
+	and-long/2addr	v4,v0
+; v4 : double-length , v0 : double-length
+	const/16	v6,16
+; v6 : single-length
+	shr-long/2addr	v4,v6
+; v4 : double-length , v6 : single-length
+	long-to-int	v4,v4
+; v4 : single-length , v4 : single-length
+	int-to-byte	v4,v4
+; v4 : single-length , v4 : single-length
+	aput-byte	v4,v2,v3
+; v4 : single-length , v2 : [B , v3 : single-length
+.line 41
+	const/4	v3,2
+; v3 : single-length
+	const-wide/32	v4,65280	; 0xff00
+; v4 : double-length
+	and-long/2addr	v4,v0
+; v4 : double-length , v0 : double-length
+	const/16	v6,8
+; v6 : single-length
+	shr-long/2addr	v4,v6
+; v4 : double-length , v6 : single-length
+	long-to-int	v4,v4
+; v4 : single-length , v4 : single-length
+	int-to-byte	v4,v4
+; v4 : single-length , v4 : single-length
+	aput-byte	v4,v2,v3
+; v4 : single-length , v2 : [B , v3 : single-length
+.line 42
+	const/4	v3,3
+; v3 : single-length
+	const-wide/16	v4,255
+; v4 : double-length
+	and-long/2addr	v0,v4
+; v0 : double-length , v4 : double-length
+	long-to-int	v0,v0
+; v0 : single-length , v0 : single-length
+	int-to-byte	v0,v0
+; v0 : single-length , v0 : single-length
+	aput-byte	v0,v2,v3
+; v0 : single-length , v2 : [B , v3 : single-length
+.line 43
+	return-object	v2
+; v2 : [B
+.end method
+
+.method protected engineReset()V
+.limit registers 2
+; this: v1 (Lcom/flurry/android/CrcMessageDigest;)
+.line 19
+	iget-object	v0,v1,com/flurry/android/CrcMessageDigest.a Ljava/util/zip/CRC32;
+; v0 : Ljava/util/zip/CRC32; , v1 : Lcom/flurry/android/CrcMessageDigest;
+	invoke-virtual	{v0},java/util/zip/CRC32/reset	; reset()V
+; v0 : Ljava/util/zip/CRC32;
+.line 20
+	return-void	
+.end method
+
+.method protected engineUpdate(B)V
+.limit registers 3
+; this: v1 (Lcom/flurry/android/CrcMessageDigest;)
+; parameter[0] : v2 (B)
+.line 25
+	iget-object	v0,v1,com/flurry/android/CrcMessageDigest.a Ljava/util/zip/CRC32;
+; v0 : Ljava/util/zip/CRC32; , v1 : Lcom/flurry/android/CrcMessageDigest;
+	invoke-virtual	{v0,v2},java/util/zip/CRC32/update	; update(I)V
+; v0 : Ljava/util/zip/CRC32; , v2 : single-length
+.line 26
+	return-void	
+.end method
+
+.method protected engineUpdate([BII)V
+.limit registers 5
+; this: v1 (Lcom/flurry/android/CrcMessageDigest;)
+; parameter[0] : v2 ([B)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+.line 31
+	iget-object	v0,v1,com/flurry/android/CrcMessageDigest.a Ljava/util/zip/CRC32;
+; v0 : Ljava/util/zip/CRC32; , v1 : Lcom/flurry/android/CrcMessageDigest;
+	invoke-virtual	{v0,v2,v3,v4},java/util/zip/CRC32/update	; update([BII)V
+; v0 : Ljava/util/zip/CRC32; , v2 : [B , v3 : single-length , v4 : single-length
+.line 32
+	return-void	
+.end method
+
+.method public getChecksum()I
+.limit registers 2
+; this: v1 (Lcom/flurry/android/CrcMessageDigest;)
+.line 53
+	invoke-virtual	{v1},com/flurry/android/CrcMessageDigest/engineDigest	; engineDigest()[B
+; v1 : Lcom/flurry/android/CrcMessageDigest;
+	move-result-object	v0
+; v0 : [B
+	invoke-static	{v0},java/nio/ByteBuffer/wrap	; wrap([B)Ljava/nio/ByteBuffer;
+; v0 : [B
+	move-result-object	v0
+; v0 : Ljava/nio/ByteBuffer;
+.line 54
+	invoke-virtual	{v0},java/nio/ByteBuffer/getInt	; getInt()I
+; v0 : Ljava/nio/ByteBuffer;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getDigest()[B
+.limit registers 2
+; this: v1 (Lcom/flurry/android/CrcMessageDigest;)
+.line 48
+	invoke-virtual	{v1},com/flurry/android/CrcMessageDigest/engineDigest	; engineDigest()[B
+; v1 : Lcom/flurry/android/CrcMessageDigest;
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+

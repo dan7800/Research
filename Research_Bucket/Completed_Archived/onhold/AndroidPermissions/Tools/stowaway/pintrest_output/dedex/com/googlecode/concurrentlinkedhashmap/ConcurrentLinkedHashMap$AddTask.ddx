@@ -1,0 +1,99 @@
+.class final com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask
+.super com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AbstractTask
+.source ConcurrentLinkedHashMap.java
+
+.inner class AddTask inner com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask outer com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap
+.field final node Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap" , "<TK;TV;>.Node;" }
+  .end annotation
+.end field
+.field final this$0 Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+.field final weight I
+
+.method <init>(Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;I)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap" , "<TK;TV;>.Node;I)V" }
+.end annotation
+.limit registers 4
+; this: v0 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask;)
+; parameter[0] : v1 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;)
+; parameter[1] : v2 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;)
+; parameter[2] : v3 (I)
+.line 601
+	iput-object	v1,v0,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask.this$0 Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+; v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap; , v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask;
+	invoke-direct	{v0,v1},com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AbstractTask/<init>	; <init>(Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;)V
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask; , v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+.line 602
+	iput	v3,v0,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask.weight I
+; v3 : single-length , v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask;
+.line 603
+	iput-object	v2,v0,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask.node Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;
+; v2 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node; , v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask;
+.line 604
+	return-void	
+.end method
+
+.method public isWrite()Z
+.limit registers 2
+; this: v1 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask;)
+.line 618
+	const/4	v0,1
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public run()V
+.annotation buildVisibility Lcom/googlecode/concurrentlinkedhashmap/GuardedBy;
+    value Ljava/lang/String; = "evictionLock"
+.end annotation
+.limit registers 4
+; this: v3 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask;)
+.line 608
+	iget-object	v0,v3,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask.this$0 Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap; , v3 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask;
+	iget	v1,v0,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap.weightedSize I
+; v1 : single-length , v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+	iget	v2,v3,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask.weight I
+; v2 : single-length , v3 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask;
+	add-int/2addr	v1,v2
+; v1 : single-length , v2 : single-length
+	iput	v1,v0,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap.weightedSize I
+; v1 : single-length , v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+.line 611
+	iget-object	v0,v3,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask.node Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node; , v3 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask;
+	invoke-virtual	{v0},com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node/get	; get()Ljava/lang/Object;
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$WeightedValue
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$WeightedValue;
+	invoke-virtual	{v0},com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$WeightedValue/isAlive	; isAlive()Z
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$WeightedValue;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,lc39d2
+; v0 : single-length
+.line 612
+	iget-object	v0,v3,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask.this$0 Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap; , v3 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask;
+	iget-object	v0,v0,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap.evictionDeque Lcom/googlecode/concurrentlinkedhashmap/LinkedDeque;
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/LinkedDeque; , v0 : Lcom/googlecode/concurrentlinkedhashmap/LinkedDeque;
+	iget-object	v1,v3,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask.node Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;
+; v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node; , v3 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask;
+	invoke-virtual	{v0,v1},com/googlecode/concurrentlinkedhashmap/LinkedDeque/add	; add(Lcom/googlecode/concurrentlinkedhashmap/Linked;)Z
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/LinkedDeque; , v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$Node;
+.line 613
+	iget-object	v0,v3,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask.this$0 Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap; , v3 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$AddTask;
+	invoke-virtual	{v0},com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap/evict	; evict()V
+; v0 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+lc39d2:
+.line 615
+	return-void	
+.end method
+
+

@@ -1,0 +1,572 @@
+.class abstract android/support/v4/content/ModernAsyncTask
+.super java/lang/Object
+.source ModernAsyncTask.java
+
+.inner class 4 inner android/support/v4/content/ModernAsyncTask$4 outer android/support/v4/content/ModernAsyncTask
+.inner class AsyncTaskResult inner android/support/v4/content/ModernAsyncTask$AsyncTaskResult outer android/support/v4/content/ModernAsyncTask
+.inner class WorkerRunnable inner android/support/v4/content/ModernAsyncTask$WorkerRunnable outer android/support/v4/content/ModernAsyncTask
+.inner class InternalHandler inner android/support/v4/content/ModernAsyncTask$InternalHandler outer android/support/v4/content/ModernAsyncTask
+.inner class Status inner android/support/v4/content/ModernAsyncTask$Status outer android/support/v4/content/ModernAsyncTask
+.annotation systemVisibility Ldalvik/annotation/Signature;
+  value [Ljava/lang/String; = { "<Params:" , "Ljava/lang/Object;" , "Progress:" , "Ljava/lang/Object;" , "Result:" , "Ljava/lang/Object;" , ">" , "Ljava/lang/Object;" }
+.end annotation
+
+.field private static final CORE_POOL_SIZE I = 5	; 0x5
+.field private static final KEEP_ALIVE I = 1	; 0x1
+.field private static final LOG_TAG Ljava/lang/String; = "AsyncTask"
+.field private static final MAXIMUM_POOL_SIZE I = 128	; 0x80
+.field private static final MESSAGE_POST_PROGRESS I = 2	; 0x2
+.field private static final MESSAGE_POST_RESULT I = 1	; 0x1
+.field public static final THREAD_POOL_EXECUTOR Ljava/util/concurrent/Executor;
+.field private static volatile sDefaultExecutor Ljava/util/concurrent/Executor;
+.field private static final sHandler Landroid/support/v4/content/ModernAsyncTask$InternalHandler;
+.field private static final sPoolWorkQueue Ljava/util/concurrent/BlockingQueue;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/concurrent/BlockingQueue" , "<" , "Ljava/lang/Runnable;" , ">;" }
+  .end annotation
+.end field
+.field private static final sThreadFactory Ljava/util/concurrent/ThreadFactory;
+.field private final mFuture Ljava/util/concurrent/FutureTask;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/concurrent/FutureTask" , "<TResult;>;" }
+  .end annotation
+.end field
+.field private volatile mStatus Landroid/support/v4/content/ModernAsyncTask$Status;
+.field private final mTaskInvoked Ljava/util/concurrent/atomic/AtomicBoolean;
+.field private final mWorker Landroid/support/v4/content/ModernAsyncTask$WorkerRunnable;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Landroid/support/v4/content/ModernAsyncTask$WorkerRunnable" , "<TParams;TResult;>;" }
+  .end annotation
+.end field
+
+.method static <clinit>()V
+.limit registers 8
+.line 54
+	new-instance	v0,android/support/v4/content/ModernAsyncTask$1
+; v0 : Landroid/support/v4/content/ModernAsyncTask$1;
+	invoke-direct	{v0},android/support/v4/content/ModernAsyncTask$1/<init>	; <init>()V
+; v0 : Landroid/support/v4/content/ModernAsyncTask$1;
+	sput-object	v0,android/support/v4/content/ModernAsyncTask.sThreadFactory Ljava/util/concurrent/ThreadFactory;
+; v0 : Ljava/util/concurrent/ThreadFactory;
+.line 62
+	new-instance	v0,java/util/concurrent/LinkedBlockingQueue
+; v0 : Ljava/util/concurrent/LinkedBlockingQueue;
+	const/16	v1,10
+; v1 : single-length
+	invoke-direct	{v0,v1},java/util/concurrent/LinkedBlockingQueue/<init>	; <init>(I)V
+; v0 : Ljava/util/concurrent/LinkedBlockingQueue; , v1 : single-length
+	sput-object	v0,android/support/v4/content/ModernAsyncTask.sPoolWorkQueue Ljava/util/concurrent/BlockingQueue;
+; v0 : Ljava/util/concurrent/BlockingQueue;
+.line 68
+	new-instance	v0,java/util/concurrent/ThreadPoolExecutor
+; v0 : Ljava/util/concurrent/ThreadPoolExecutor;
+	const/4	v1,5
+; v1 : single-length
+	const/16	v2,128
+; v2 : single-length
+	const-wide/16	v3,1
+; v3 : double-length
+	sget-object	v5,java/util/concurrent/TimeUnit.SECONDS Ljava/util/concurrent/TimeUnit;
+; v5 : Ljava/util/concurrent/TimeUnit;
+	sget-object	v6,android/support/v4/content/ModernAsyncTask.sPoolWorkQueue Ljava/util/concurrent/BlockingQueue;
+; v6 : Ljava/util/concurrent/BlockingQueue;
+	sget-object	v7,android/support/v4/content/ModernAsyncTask.sThreadFactory Ljava/util/concurrent/ThreadFactory;
+; v7 : Ljava/util/concurrent/ThreadFactory;
+	invoke-direct/range	{v0..v7},java/util/concurrent/ThreadPoolExecutor/<init>;	<init>(IIJLjava/util/concurrent/TimeUnit;Ljava/util/concurrent/BlockingQueue;Ljava/util/concurrent/ThreadFactory;)V
+; v0 : Ljava/util/concurrent/ThreadPoolExecutor; , v1 : single-length , v2 : single-length , v3 : double-length , v5 : Ljava/util/concurrent/TimeUnit; , v6 : Ljava/util/concurrent/BlockingQueue; , v7 : Ljava/util/concurrent/ThreadFactory;
+	sput-object	v0,android/support/v4/content/ModernAsyncTask.THREAD_POOL_EXECUTOR Ljava/util/concurrent/Executor;
+; v0 : Ljava/util/concurrent/Executor;
+.line 75
+	new-instance	v0,android/support/v4/content/ModernAsyncTask$InternalHandler
+; v0 : Landroid/support/v4/content/ModernAsyncTask$InternalHandler;
+	const/4	v1,0
+; v1 : single-length
+	invoke-direct	{v0,v1},android/support/v4/content/ModernAsyncTask$InternalHandler/<init>	; <init>(Landroid/support/v4/content/ModernAsyncTask$1;)V
+; v0 : Landroid/support/v4/content/ModernAsyncTask$InternalHandler; , v1 : single-length
+	sput-object	v0,android/support/v4/content/ModernAsyncTask.sHandler Landroid/support/v4/content/ModernAsyncTask$InternalHandler;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$InternalHandler;
+.line 77
+	sget-object	v0,android/support/v4/content/ModernAsyncTask.THREAD_POOL_EXECUTOR Ljava/util/concurrent/Executor;
+; v0 : Ljava/util/concurrent/Executor;
+	sput-object	v0,android/support/v4/content/ModernAsyncTask.sDefaultExecutor Ljava/util/concurrent/Executor;
+; v0 : Ljava/util/concurrent/Executor;
+	return-void	
+.end method
+
+.method public <init>()V
+.limit registers 3
+; this: v2 (Landroid/support/v4/content/ModernAsyncTask;)
+.line 117
+	invoke-direct	{v2},java/lang/Object/<init>	; <init>()V
+; v2 : Landroid/support/v4/content/ModernAsyncTask;
+.line 81
+	sget-object	v0,android/support/v4/content/ModernAsyncTask$Status.PENDING Landroid/support/v4/content/ModernAsyncTask$Status;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$Status;
+	iput-object	v0,v2,android/support/v4/content/ModernAsyncTask.mStatus Landroid/support/v4/content/ModernAsyncTask$Status;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$Status; , v2 : Landroid/support/v4/content/ModernAsyncTask;
+.line 83
+	new-instance	v0,java/util/concurrent/atomic/AtomicBoolean
+; v0 : Ljava/util/concurrent/atomic/AtomicBoolean;
+	invoke-direct	{v0},java/util/concurrent/atomic/AtomicBoolean/<init>	; <init>()V
+; v0 : Ljava/util/concurrent/atomic/AtomicBoolean;
+	iput-object	v0,v2,android/support/v4/content/ModernAsyncTask.mTaskInvoked Ljava/util/concurrent/atomic/AtomicBoolean;
+; v0 : Ljava/util/concurrent/atomic/AtomicBoolean; , v2 : Landroid/support/v4/content/ModernAsyncTask;
+.line 118
+	new-instance	v0,android/support/v4/content/ModernAsyncTask$2
+; v0 : Landroid/support/v4/content/ModernAsyncTask$2;
+	invoke-direct	{v0,v2},android/support/v4/content/ModernAsyncTask$2/<init>	; <init>(Landroid/support/v4/content/ModernAsyncTask;)V
+; v0 : Landroid/support/v4/content/ModernAsyncTask$2; , v2 : Landroid/support/v4/content/ModernAsyncTask;
+	iput-object	v0,v2,android/support/v4/content/ModernAsyncTask.mWorker Landroid/support/v4/content/ModernAsyncTask$WorkerRunnable;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$2; , v2 : Landroid/support/v4/content/ModernAsyncTask;
+.line 127
+	new-instance	v0,android/support/v4/content/ModernAsyncTask$3
+; v0 : Landroid/support/v4/content/ModernAsyncTask$3;
+	iget-object	v1,v2,android/support/v4/content/ModernAsyncTask.mWorker Landroid/support/v4/content/ModernAsyncTask$WorkerRunnable;
+; v1 : Landroid/support/v4/content/ModernAsyncTask$WorkerRunnable; , v2 : Landroid/support/v4/content/ModernAsyncTask;
+	invoke-direct	{v0,v2,v1},android/support/v4/content/ModernAsyncTask$3/<init>	; <init>(Landroid/support/v4/content/ModernAsyncTask;Ljava/util/concurrent/Callable;)V
+; v0 : Landroid/support/v4/content/ModernAsyncTask$3; , v2 : Landroid/support/v4/content/ModernAsyncTask; , v1 : Landroid/support/v4/content/ModernAsyncTask$WorkerRunnable;
+	iput-object	v0,v2,android/support/v4/content/ModernAsyncTask.mFuture Ljava/util/concurrent/FutureTask;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$3; , v2 : Landroid/support/v4/content/ModernAsyncTask;
+.line 147
+	return-void	
+.end method
+
+.method static access$200(Landroid/support/v4/content/ModernAsyncTask;)Ljava/util/concurrent/atomic/AtomicBoolean;
+.limit registers 2
+; parameter[0] : v1 (Landroid/support/v4/content/ModernAsyncTask;)
+.line 47
+	iget-object	v0,v1,android/support/v4/content/ModernAsyncTask.mTaskInvoked Ljava/util/concurrent/atomic/AtomicBoolean;
+; v0 : Ljava/util/concurrent/atomic/AtomicBoolean; , v1 : Landroid/support/v4/content/ModernAsyncTask;
+	return-object	v0
+; v0 : Ljava/util/concurrent/atomic/AtomicBoolean;
+.end method
+
+.method static access$300(Landroid/support/v4/content/ModernAsyncTask;Ljava/lang/Object;)Ljava/lang/Object;
+.limit registers 3
+; parameter[0] : v1 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[1] : v2 (Ljava/lang/Object;)
+.line 47
+	invoke-direct	{v1,v2},android/support/v4/content/ModernAsyncTask/postResult	; postResult(Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Landroid/support/v4/content/ModernAsyncTask; , v2 : Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	return-object	v0
+; v0 : Ljava/lang/Object;
+.end method
+
+.method static access$400(Landroid/support/v4/content/ModernAsyncTask;Ljava/lang/Object;)V
+.limit registers 2
+; parameter[0] : v0 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[1] : v1 (Ljava/lang/Object;)
+.line 47
+	invoke-direct	{v0,v1},android/support/v4/content/ModernAsyncTask/postResultIfNotInvoked	; postResultIfNotInvoked(Ljava/lang/Object;)V
+; v0 : Landroid/support/v4/content/ModernAsyncTask; , v1 : Ljava/lang/Object;
+	return-void	
+.end method
+
+.method static access$500(Landroid/support/v4/content/ModernAsyncTask;Ljava/lang/Object;)V
+.limit registers 2
+; parameter[0] : v0 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[1] : v1 (Ljava/lang/Object;)
+.line 47
+	invoke-direct	{v0,v1},android/support/v4/content/ModernAsyncTask/finish	; finish(Ljava/lang/Object;)V
+; v0 : Landroid/support/v4/content/ModernAsyncTask; , v1 : Ljava/lang/Object;
+	return-void	
+.end method
+
+.method public static execute(Ljava/lang/Runnable;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "([TParams;)" , "Landroid/support/v4/content/ModernAsyncTask" , "<TParams;TProgress;TResult;>;" }
+.end annotation
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/Runnable;)
+.line 433
+	sget-object	v0,android/support/v4/content/ModernAsyncTask.sDefaultExecutor Ljava/util/concurrent/Executor;
+; v0 : Ljava/util/concurrent/Executor;
+	invoke-interface	{v0,v1},java/util/concurrent/Executor/execute	; execute(Ljava/lang/Runnable;)V
+; v0 : Ljava/util/concurrent/Executor; , v1 : Ljava/lang/Runnable;
+.line 434
+	return-void	
+.end method
+
+.method private finish(Ljava/lang/Object;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(TResult;)V" }
+.end annotation
+.limit registers 3
+; this: v1 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[0] : v2 (Ljava/lang/Object;)
+.line 458
+	invoke-virtual	{v1},android/support/v4/content/ModernAsyncTask/isCancelled	; isCancelled()Z
+; v1 : Landroid/support/v4/content/ModernAsyncTask;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l76a5c
+; v0 : single-length
+.line 459
+	invoke-virtual	{v1,v2},android/support/v4/content/ModernAsyncTask/onCancelled	; onCancelled(Ljava/lang/Object;)V
+; v1 : Landroid/support/v4/content/ModernAsyncTask; , v2 : Ljava/lang/Object;
+l76a52:
+.line 463
+	sget-object	v0,android/support/v4/content/ModernAsyncTask$Status.FINISHED Landroid/support/v4/content/ModernAsyncTask$Status;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$Status;
+	iput-object	v0,v1,android/support/v4/content/ModernAsyncTask.mStatus Landroid/support/v4/content/ModernAsyncTask$Status;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$Status; , v1 : Landroid/support/v4/content/ModernAsyncTask;
+.line 464
+	return-void	
+l76a5c:
+.line 461
+	invoke-virtual	{v1,v2},android/support/v4/content/ModernAsyncTask/onPostExecute	; onPostExecute(Ljava/lang/Object;)V
+; v1 : Landroid/support/v4/content/ModernAsyncTask; , v2 : Ljava/lang/Object;
+	goto	l76a52
+.end method
+
+.method public static init()V
+.limit registers 1
+.line 106
+	sget-object	v0,android/support/v4/content/ModernAsyncTask.sHandler Landroid/support/v4/content/ModernAsyncTask$InternalHandler;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$InternalHandler;
+	invoke-virtual	{v0},android/support/v4/content/ModernAsyncTask$InternalHandler/getLooper	; getLooper()Landroid/os/Looper;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$InternalHandler;
+.line 107
+	return-void	
+.end method
+
+.method private postResult(Ljava/lang/Object;)Ljava/lang/Object;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(TResult;)TResult;" }
+.end annotation
+.limit registers 8
+; this: v6 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[0] : v7 (Ljava/lang/Object;)
+	const/4	v5,1
+; v5 : single-length
+.line 157
+	sget-object	v1,android/support/v4/content/ModernAsyncTask.sHandler Landroid/support/v4/content/ModernAsyncTask$InternalHandler;
+; v1 : Landroid/support/v4/content/ModernAsyncTask$InternalHandler;
+	new-instance	v2,android/support/v4/content/ModernAsyncTask$AsyncTaskResult
+; v2 : Landroid/support/v4/content/ModernAsyncTask$AsyncTaskResult;
+	new-array	v3,v5,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v4,0
+; v4 : single-length
+	aput-object	v7,v3,v4
+; v7 : Ljava/lang/Object; , v3 : [Ljava/lang/Object; , v4 : single-length
+	invoke-direct	{v2,v6,v3},android/support/v4/content/ModernAsyncTask$AsyncTaskResult/<init>	; <init>(Landroid/support/v4/content/ModernAsyncTask;[Ljava/lang/Object;)V
+; v2 : Landroid/support/v4/content/ModernAsyncTask$AsyncTaskResult; , v6 : Landroid/support/v4/content/ModernAsyncTask; , v3 : [Ljava/lang/Object;
+	invoke-virtual	{v1,v5,v2},android/support/v4/content/ModernAsyncTask$InternalHandler/obtainMessage	; obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
+; v1 : Landroid/support/v4/content/ModernAsyncTask$InternalHandler; , v5 : single-length , v2 : Landroid/support/v4/content/ModernAsyncTask$AsyncTaskResult;
+	move-result-object	v0
+; v0 : Landroid/os/Message;
+.line 159
+	invoke-virtual	{v0},android/os/Message/sendToTarget	; sendToTarget()V
+; v0 : Landroid/os/Message;
+.line 160
+	return-object	v7
+; v7 : Ljava/lang/Object;
+.end method
+
+.method private postResultIfNotInvoked(Ljava/lang/Object;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(TResult;)V" }
+.end annotation
+.limit registers 4
+; this: v2 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[0] : v3 (Ljava/lang/Object;)
+.line 150
+	iget-object	v1,v2,android/support/v4/content/ModernAsyncTask.mTaskInvoked Ljava/util/concurrent/atomic/AtomicBoolean;
+; v1 : Ljava/util/concurrent/atomic/AtomicBoolean; , v2 : Landroid/support/v4/content/ModernAsyncTask;
+	invoke-virtual	{v1},java/util/concurrent/atomic/AtomicBoolean/get	; get()Z
+; v1 : Ljava/util/concurrent/atomic/AtomicBoolean;
+	move-result	v0
+; v0 : single-length
+.line 151
+	if-nez	v0,l76ae2
+; v0 : single-length
+.line 152
+	invoke-direct	{v2,v3},android/support/v4/content/ModernAsyncTask/postResult	; postResult(Ljava/lang/Object;)Ljava/lang/Object;
+; v2 : Landroid/support/v4/content/ModernAsyncTask; , v3 : Ljava/lang/Object;
+l76ae2:
+.line 154
+	return-void	
+.end method
+
+.method public static setDefaultExecutor(Ljava/util/concurrent/Executor;)V
+.limit registers 1
+; parameter[0] : v0 (Ljava/util/concurrent/Executor;)
+.line 111
+	sput-object	v0,android/support/v4/content/ModernAsyncTask.sDefaultExecutor Ljava/util/concurrent/Executor;
+; v0 : Ljava/util/concurrent/Executor;
+.line 112
+	return-void	
+.end method
+
+.method public final cancel(Z)Z
+.limit registers 3
+; this: v1 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[0] : v2 (Z)
+.line 306
+	iget-object	v0,v1,android/support/v4/content/ModernAsyncTask.mFuture Ljava/util/concurrent/FutureTask;
+; v0 : Ljava/util/concurrent/FutureTask; , v1 : Landroid/support/v4/content/ModernAsyncTask;
+	invoke-virtual	{v0,v2},java/util/concurrent/FutureTask/cancel	; cancel(Z)Z
+; v0 : Ljava/util/concurrent/FutureTask; , v2 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method protected abstract doInBackground([Ljava/lang/Object;)Ljava/lang/Object;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "([TParams;)TResult;" }
+.end annotation
+.end method
+
+.method public final execute([Ljava/lang/Object;)Landroid/support/v4/content/ModernAsyncTask;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "([TParams;)" , "Landroid/support/v4/content/ModernAsyncTask" , "<TParams;TProgress;TResult;>;" }
+.end annotation
+.limit registers 3
+; this: v1 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[0] : v2 ([Ljava/lang/Object;)
+.line 371
+	sget-object	v0,android/support/v4/content/ModernAsyncTask.sDefaultExecutor Ljava/util/concurrent/Executor;
+; v0 : Ljava/util/concurrent/Executor;
+	invoke-virtual	{v1,v0,v2},android/support/v4/content/ModernAsyncTask/executeOnExecutor	; executeOnExecutor(Ljava/util/concurrent/Executor;[Ljava/lang/Object;)Landroid/support/v4/content/ModernAsyncTask;
+; v1 : Landroid/support/v4/content/ModernAsyncTask; , v0 : Ljava/util/concurrent/Executor; , v2 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Landroid/support/v4/content/ModernAsyncTask;
+	return-object	v0
+; v0 : Landroid/support/v4/content/ModernAsyncTask;
+.end method
+
+.method public final executeOnExecutor(Ljava/util/concurrent/Executor;[Ljava/lang/Object;)Landroid/support/v4/content/ModernAsyncTask;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/util/concurrent/Executor;" , "[TParams;)" , "Landroid/support/v4/content/ModernAsyncTask" , "<TParams;TProgress;TResult;>;" }
+.end annotation
+.limit registers 5
+; this: v2 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[0] : v3 (Ljava/util/concurrent/Executor;)
+; parameter[1] : v4 ([Ljava/lang/Object;)
+.line 406
+	iget-object	v0,v2,android/support/v4/content/ModernAsyncTask.mStatus Landroid/support/v4/content/ModernAsyncTask$Status;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$Status; , v2 : Landroid/support/v4/content/ModernAsyncTask;
+	sget-object	v1,android/support/v4/content/ModernAsyncTask$Status.PENDING Landroid/support/v4/content/ModernAsyncTask$Status;
+; v1 : Landroid/support/v4/content/ModernAsyncTask$Status;
+	if-eq	v0,v1,l76b72
+; v0 : Landroid/support/v4/content/ModernAsyncTask$Status; , v1 : Landroid/support/v4/content/ModernAsyncTask$Status;
+.line 407
+	sget-object	v0,android/support/v4/content/ModernAsyncTask$4.$SwitchMap$android$support$v4$content$ModernAsyncTask$Status [I
+; v0 : [I
+	iget-object	v1,v2,android/support/v4/content/ModernAsyncTask.mStatus Landroid/support/v4/content/ModernAsyncTask$Status;
+; v1 : Landroid/support/v4/content/ModernAsyncTask$Status; , v2 : Landroid/support/v4/content/ModernAsyncTask;
+	invoke-virtual	{v1},android/support/v4/content/ModernAsyncTask$Status/ordinal	; ordinal()I
+; v1 : Landroid/support/v4/content/ModernAsyncTask$Status;
+	move-result	v1
+; v1 : single-length
+	aget	v0,v0,v1
+; v0 : single-length , v0 : single-length , v1 : single-length
+	packed-switch	v0,1
+		ps76b6c_76b94	; case 1
+		ps76b6c_76ba4	; case 2
+		default: ps76b6c_default
+; v0 : single-length
+l76b72:
+.line 418
+	sget-object	v0,android/support/v4/content/ModernAsyncTask$Status.RUNNING Landroid/support/v4/content/ModernAsyncTask$Status;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$Status;
+	iput-object	v0,v2,android/support/v4/content/ModernAsyncTask.mStatus Landroid/support/v4/content/ModernAsyncTask$Status;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$Status; , v2 : Landroid/support/v4/content/ModernAsyncTask;
+.line 420
+	invoke-virtual	{v2},android/support/v4/content/ModernAsyncTask/onPreExecute	; onPreExecute()V
+; v2 : Landroid/support/v4/content/ModernAsyncTask;
+.line 422
+	iget-object	v0,v2,android/support/v4/content/ModernAsyncTask.mWorker Landroid/support/v4/content/ModernAsyncTask$WorkerRunnable;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$WorkerRunnable; , v2 : Landroid/support/v4/content/ModernAsyncTask;
+	iput-object	v4,v0,android/support/v4/content/ModernAsyncTask$WorkerRunnable.mParams [Ljava/lang/Object;
+; v4 : [Ljava/lang/Object; , v0 : Landroid/support/v4/content/ModernAsyncTask$WorkerRunnable;
+.line 423
+	iget-object	v0,v2,android/support/v4/content/ModernAsyncTask.mFuture Ljava/util/concurrent/FutureTask;
+; v0 : Ljava/util/concurrent/FutureTask; , v2 : Landroid/support/v4/content/ModernAsyncTask;
+	invoke-interface	{v3,v0},java/util/concurrent/Executor/execute	; execute(Ljava/lang/Runnable;)V
+; v3 : Ljava/util/concurrent/Executor; , v0 : Ljava/util/concurrent/FutureTask;
+.line 425
+	return-object	v2
+; v2 : Landroid/support/v4/content/ModernAsyncTask;
+ps76b6c_76b94:
+.line 409
+	new-instance	v0,java/lang/IllegalStateException
+; v0 : Ljava/lang/IllegalStateException;
+	const-string	v1,"Cannot execute task: the task is already running."
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalStateException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalStateException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalStateException;
+ps76b6c_76ba4:
+.line 412
+	new-instance	v0,java/lang/IllegalStateException
+; v0 : Ljava/lang/IllegalStateException;
+	const-string	v1,"Cannot execute task: the task has already been executed (a task can be executed only once)"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalStateException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalStateException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalStateException;
+.line 407
+.end method
+
+.method public final get()Ljava/lang/Object;
+.throws Ljava/lang/InterruptedException;
+.throws Ljava/util/concurrent/ExecutionException;
+.throws Ljava/util/concurrent/TimeoutException;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(J" , "Ljava/util/concurrent/TimeUnit;" , ")TResult;" }
+.end annotation
+.limit registers 2
+; this: v1 (Landroid/support/v4/content/ModernAsyncTask;)
+.line 321
+	iget-object	v0,v1,android/support/v4/content/ModernAsyncTask.mFuture Ljava/util/concurrent/FutureTask;
+; v0 : Ljava/util/concurrent/FutureTask; , v1 : Landroid/support/v4/content/ModernAsyncTask;
+	invoke-virtual	{v0},java/util/concurrent/FutureTask/get	; get()Ljava/lang/Object;
+; v0 : Ljava/util/concurrent/FutureTask;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	return-object	v0
+; v0 : Ljava/lang/Object;
+.end method
+
+.method public final get(JLjava/util/concurrent/TimeUnit;)Ljava/lang/Object;
+.throws Ljava/lang/InterruptedException;
+.throws Ljava/util/concurrent/ExecutionException;
+.throws Ljava/util/concurrent/TimeoutException;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(J" , "Ljava/util/concurrent/TimeUnit;" , ")TResult;" }
+.end annotation
+.limit registers 5
+; this: v1 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[0] : v2 (J)
+; parameter[1] : v4 (Ljava/util/concurrent/TimeUnit;)
+.line 341
+	iget-object	v0,v1,android/support/v4/content/ModernAsyncTask.mFuture Ljava/util/concurrent/FutureTask;
+; v0 : Ljava/util/concurrent/FutureTask; , v1 : Landroid/support/v4/content/ModernAsyncTask;
+	invoke-virtual	{v0,v2,v3,v4},java/util/concurrent/FutureTask/get	; get(JLjava/util/concurrent/TimeUnit;)Ljava/lang/Object;
+; v0 : Ljava/util/concurrent/FutureTask; , v2 : double-length , v4 : Ljava/util/concurrent/TimeUnit;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	return-object	v0
+; v0 : Ljava/lang/Object;
+.end method
+
+.method public final getStatus()Landroid/support/v4/content/ModernAsyncTask$Status;
+.limit registers 2
+; this: v1 (Landroid/support/v4/content/ModernAsyncTask;)
+.line 169
+	iget-object	v0,v1,android/support/v4/content/ModernAsyncTask.mStatus Landroid/support/v4/content/ModernAsyncTask$Status;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$Status; , v1 : Landroid/support/v4/content/ModernAsyncTask;
+	return-object	v0
+; v0 : Landroid/support/v4/content/ModernAsyncTask$Status;
+.end method
+
+.method public final isCancelled()Z
+.limit registers 2
+; this: v1 (Landroid/support/v4/content/ModernAsyncTask;)
+.line 273
+	iget-object	v0,v1,android/support/v4/content/ModernAsyncTask.mFuture Ljava/util/concurrent/FutureTask;
+; v0 : Ljava/util/concurrent/FutureTask; , v1 : Landroid/support/v4/content/ModernAsyncTask;
+	invoke-virtual	{v0},java/util/concurrent/FutureTask/isCancelled	; isCancelled()Z
+; v0 : Ljava/util/concurrent/FutureTask;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method protected onCancelled()V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(TResult;)V" }
+.end annotation
+.limit registers 1
+; this: v0 (Landroid/support/v4/content/ModernAsyncTask;)
+.line 260
+	return-void	
+.end method
+
+.method protected onCancelled(Ljava/lang/Object;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(TResult;)V" }
+.end annotation
+.limit registers 2
+; this: v0 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[0] : v1 (Ljava/lang/Object;)
+.line 244
+	invoke-virtual	{v0},android/support/v4/content/ModernAsyncTask/onCancelled	; onCancelled()V
+; v0 : Landroid/support/v4/content/ModernAsyncTask;
+.line 245
+	return-void	
+.end method
+
+.method protected onPostExecute(Ljava/lang/Object;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(TResult;)V" }
+.end annotation
+.limit registers 2
+; this: v0 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[0] : v1 (Ljava/lang/Object;)
+.line 213
+	return-void	
+.end method
+
+.method protected onPreExecute()V
+.limit registers 1
+; this: v0 (Landroid/support/v4/content/ModernAsyncTask;)
+.line 197
+	return-void	
+.end method
+
+.method protected onProgressUpdate([Ljava/lang/Object;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "([TProgress;)V" }
+.end annotation
+.limit registers 2
+; this: v0 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[0] : v1 ([Ljava/lang/Object;)
+.line 226
+	return-void	
+.end method
+
+.method protected final publishProgress([Ljava/lang/Object;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "([TProgress;)V" }
+.end annotation
+.limit registers 5
+; this: v3 (Landroid/support/v4/content/ModernAsyncTask;)
+; parameter[0] : v4 ([Ljava/lang/Object;)
+.line 451
+	invoke-virtual	{v3},android/support/v4/content/ModernAsyncTask/isCancelled	; isCancelled()Z
+; v3 : Landroid/support/v4/content/ModernAsyncTask;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l76cde
+; v0 : single-length
+.line 452
+	sget-object	v0,android/support/v4/content/ModernAsyncTask.sHandler Landroid/support/v4/content/ModernAsyncTask$InternalHandler;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$InternalHandler;
+	const/4	v1,2
+; v1 : single-length
+	new-instance	v2,android/support/v4/content/ModernAsyncTask$AsyncTaskResult
+; v2 : Landroid/support/v4/content/ModernAsyncTask$AsyncTaskResult;
+	invoke-direct	{v2,v3,v4},android/support/v4/content/ModernAsyncTask$AsyncTaskResult/<init>	; <init>(Landroid/support/v4/content/ModernAsyncTask;[Ljava/lang/Object;)V
+; v2 : Landroid/support/v4/content/ModernAsyncTask$AsyncTaskResult; , v3 : Landroid/support/v4/content/ModernAsyncTask; , v4 : [Ljava/lang/Object;
+	invoke-virtual	{v0,v1,v2},android/support/v4/content/ModernAsyncTask$InternalHandler/obtainMessage	; obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
+; v0 : Landroid/support/v4/content/ModernAsyncTask$InternalHandler; , v1 : single-length , v2 : Landroid/support/v4/content/ModernAsyncTask$AsyncTaskResult;
+	move-result-object	v0
+; v0 : Landroid/os/Message;
+	invoke-virtual	{v0},android/os/Message/sendToTarget	; sendToTarget()V
+; v0 : Landroid/os/Message;
+l76cde:
+.line 455
+	return-void	
+.end method
+
+

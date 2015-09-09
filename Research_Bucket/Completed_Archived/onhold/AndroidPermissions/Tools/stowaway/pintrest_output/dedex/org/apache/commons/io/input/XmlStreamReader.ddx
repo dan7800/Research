@@ -1,0 +1,1744 @@
+.class public org/apache/commons/io/input/XmlStreamReader
+.super java/io/Reader
+.source XmlStreamReader.java
+
+.field private static final BOMS [Lorg/apache/commons/io/ByteOrderMark; = null
+.field private static final BUFFER_SIZE I = 4096	; 0x1000
+.field private static final CHARSET_PATTERN Ljava/util/regex/Pattern; = null
+.field private static final EBCDIC Ljava/lang/String; = "CP1047"
+.field public static final ENCODING_PATTERN Ljava/util/regex/Pattern; = null
+.field private static final HTTP_EX_1 Ljava/lang/String; = "Invalid encoding, CT-MIME [{0}] CT-Enc [{1}] BOM [{2}] XML guess [{3}] XML prolog [{4}], BOM must be NULL"
+.field private static final HTTP_EX_2 Ljava/lang/String; = "Invalid encoding, CT-MIME [{0}] CT-Enc [{1}] BOM [{2}] XML guess [{3}] XML prolog [{4}], encoding mismatch"
+.field private static final HTTP_EX_3 Ljava/lang/String; = "Invalid encoding, CT-MIME [{0}] CT-Enc [{1}] BOM [{2}] XML guess [{3}] XML prolog [{4}], Invalid MIME"
+.field private static final RAW_EX_1 Ljava/lang/String; = "Invalid encoding, BOM [{0}] XML guess [{1}] XML prolog [{2}] encoding mismatch"
+.field private static final RAW_EX_2 Ljava/lang/String; = "Invalid encoding, BOM [{0}] XML guess [{1}] XML prolog [{2}] unknown BOM"
+.field private static final US_ASCII Ljava/lang/String; = "US-ASCII"
+.field private static final UTF_16 Ljava/lang/String; = "UTF-16"
+.field private static final UTF_16BE Ljava/lang/String; = "UTF-16BE"
+.field private static final UTF_16LE Ljava/lang/String; = "UTF-16LE"
+.field private static final UTF_8 Ljava/lang/String; = "UTF-8"
+.field private static final XML_GUESS_BYTES [Lorg/apache/commons/io/ByteOrderMark;
+.field private final defaultEncoding Ljava/lang/String;
+.field private final encoding Ljava/lang/String;
+.field private final reader Ljava/io/Reader;
+
+.method static <clinit>()V
+.limit registers 9
+	const/4	v8,3
+; v8 : single-length
+	const/4	v7,2
+; v7 : single-length
+	const/4	v6,1
+; v6 : single-length
+	const/4	v5,0
+; v5 : single-length
+	const/4	v4,4
+; v4 : single-length
+.line 81
+	new-array	v0,v8,[Lorg/apache/commons/io/ByteOrderMark;
+; v0 : [Lorg/apache/commons/io/ByteOrderMark; , v8 : single-length
+	sget-object	v1,org/apache/commons/io/ByteOrderMark.UTF_8 Lorg/apache/commons/io/ByteOrderMark;
+; v1 : Lorg/apache/commons/io/ByteOrderMark;
+	aput-object	v1,v0,v5
+; v1 : Lorg/apache/commons/io/ByteOrderMark; , v0 : [Lorg/apache/commons/io/ByteOrderMark; , v5 : single-length
+	sget-object	v1,org/apache/commons/io/ByteOrderMark.UTF_16BE Lorg/apache/commons/io/ByteOrderMark;
+; v1 : Lorg/apache/commons/io/ByteOrderMark;
+	aput-object	v1,v0,v6
+; v1 : Lorg/apache/commons/io/ByteOrderMark; , v0 : [Lorg/apache/commons/io/ByteOrderMark; , v6 : single-length
+	sget-object	v1,org/apache/commons/io/ByteOrderMark.UTF_16LE Lorg/apache/commons/io/ByteOrderMark;
+; v1 : Lorg/apache/commons/io/ByteOrderMark;
+	aput-object	v1,v0,v7
+; v1 : Lorg/apache/commons/io/ByteOrderMark; , v0 : [Lorg/apache/commons/io/ByteOrderMark; , v7 : single-length
+	sput-object	v0,org/apache/commons/io/input/XmlStreamReader.BOMS [Lorg/apache/commons/io/ByteOrderMark;
+; v0 : [Lorg/apache/commons/io/ByteOrderMark;
+.line 86
+	new-array	v0,v4,[Lorg/apache/commons/io/ByteOrderMark;
+; v0 : [Lorg/apache/commons/io/ByteOrderMark; , v4 : single-length
+	new-instance	v1,org/apache/commons/io/ByteOrderMark
+; v1 : Lorg/apache/commons/io/ByteOrderMark;
+	const-string	v2,"UTF-8"
+; v2 : Ljava/lang/String;
+	new-array	v3,v4,[I
+; v3 : [I , v4 : single-length
+	fill-array-data	v3,l11c930
+; v3 : [I
+	invoke-direct	{v1,v2,v3},org/apache/commons/io/ByteOrderMark/<init>	; <init>(Ljava/lang/String;[I)V
+; v1 : Lorg/apache/commons/io/ByteOrderMark; , v2 : Ljava/lang/String; , v3 : [I
+	aput-object	v1,v0,v5
+; v1 : Lorg/apache/commons/io/ByteOrderMark; , v0 : [Lorg/apache/commons/io/ByteOrderMark; , v5 : single-length
+	new-instance	v1,org/apache/commons/io/ByteOrderMark
+; v1 : Lorg/apache/commons/io/ByteOrderMark;
+	const-string	v2,"UTF-16BE"
+; v2 : Ljava/lang/String;
+	new-array	v3,v4,[I
+; v3 : [I , v4 : single-length
+	fill-array-data	v3,l11c948
+; v3 : [I
+	invoke-direct	{v1,v2,v3},org/apache/commons/io/ByteOrderMark/<init>	; <init>(Ljava/lang/String;[I)V
+; v1 : Lorg/apache/commons/io/ByteOrderMark; , v2 : Ljava/lang/String; , v3 : [I
+	aput-object	v1,v0,v6
+; v1 : Lorg/apache/commons/io/ByteOrderMark; , v0 : [Lorg/apache/commons/io/ByteOrderMark; , v6 : single-length
+	new-instance	v1,org/apache/commons/io/ByteOrderMark
+; v1 : Lorg/apache/commons/io/ByteOrderMark;
+	const-string	v2,"UTF-16LE"
+; v2 : Ljava/lang/String;
+	new-array	v3,v4,[I
+; v3 : [I , v4 : single-length
+	fill-array-data	v3,l11c960
+; v3 : [I
+	invoke-direct	{v1,v2,v3},org/apache/commons/io/ByteOrderMark/<init>	; <init>(Ljava/lang/String;[I)V
+; v1 : Lorg/apache/commons/io/ByteOrderMark; , v2 : Ljava/lang/String; , v3 : [I
+	aput-object	v1,v0,v7
+; v1 : Lorg/apache/commons/io/ByteOrderMark; , v0 : [Lorg/apache/commons/io/ByteOrderMark; , v7 : single-length
+	new-instance	v1,org/apache/commons/io/ByteOrderMark
+; v1 : Lorg/apache/commons/io/ByteOrderMark;
+	const-string	v2,"CP1047"
+; v2 : Ljava/lang/String;
+	new-array	v3,v4,[I
+; v3 : [I , v4 : single-length
+	fill-array-data	v3,l11c978
+; v3 : [I
+	invoke-direct	{v1,v2,v3},org/apache/commons/io/ByteOrderMark/<init>	; <init>(Ljava/lang/String;[I)V
+; v1 : Lorg/apache/commons/io/ByteOrderMark; , v2 : Ljava/lang/String; , v3 : [I
+	aput-object	v1,v0,v8
+; v1 : Lorg/apache/commons/io/ByteOrderMark; , v0 : [Lorg/apache/commons/io/ByteOrderMark; , v8 : single-length
+	sput-object	v0,org/apache/commons/io/input/XmlStreamReader.XML_GUESS_BYTES [Lorg/apache/commons/io/ByteOrderMark;
+; v0 : [Lorg/apache/commons/io/ByteOrderMark;
+.line 624
+	const-string	v0,"charset=["']?([.[^; "']]*)["']?"
+; v0 : Ljava/lang/String;
+	invoke-static	{v0},java/util/regex/Pattern/compile	; compile(Ljava/lang/String;)Ljava/util/regex/Pattern;
+; v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/util/regex/Pattern;
+	sput-object	v0,org/apache/commons/io/input/XmlStreamReader.CHARSET_PATTERN Ljava/util/regex/Pattern;
+; v0 : Ljava/util/regex/Pattern;
+.line 648
+	const-string	v0,"<\?xml.*encoding[\s]*=[\s]*((?:".[^"]*")|(?:'.[^']*'))"
+; v0 : Ljava/lang/String;
+	const/16	v1,8
+; v1 : single-length
+	invoke-static	{v0,v1},java/util/regex/Pattern/compile	; compile(Ljava/lang/String;I)Ljava/util/regex/Pattern;
+; v0 : Ljava/lang/String; , v1 : single-length
+	move-result-object	v0
+; v0 : Ljava/util/regex/Pattern;
+	sput-object	v0,org/apache/commons/io/input/XmlStreamReader.ENCODING_PATTERN Ljava/util/regex/Pattern;
+; v0 : Ljava/util/regex/Pattern;
+	return-void	
+.line 86
+l11c930:	data-array
+		0x3C, 0x00, 0x00, 0x00	; #0
+		0x3F, 0x00, 0x00, 0x00	; #1
+		0x78, 0x00, 0x00, 0x00	; #2
+		0x6D, 0x00, 0x00, 0x00	; #3
+	end data-array
+l11c948:	data-array
+		0x00, 0x00, 0x00, 0x00	; #0
+		0x3C, 0x00, 0x00, 0x00	; #1
+		0x00, 0x00, 0x00, 0x00	; #2
+		0x3F, 0x00, 0x00, 0x00	; #3
+	end data-array
+l11c960:	data-array
+		0x3C, 0x00, 0x00, 0x00	; #0
+		0x00, 0x00, 0x00, 0x00	; #1
+		0x3F, 0x00, 0x00, 0x00	; #2
+		0x00, 0x00, 0x00, 0x00	; #3
+	end data-array
+l11c978:	data-array
+		0x4C, 0x00, 0x00, 0x00	; #0
+		0x6F, 0x00, 0x00, 0x00	; #1
+		0xA7, 0x00, 0x00, 0x00	; #2
+		0x94, 0x00, 0x00, 0x00	; #3
+	end data-array
+.end method
+
+.method public <init>(Ljava/io/File;)V
+.throws Ljava/io/IOException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v2 (Ljava/io/File;)
+.line 125
+	new-instance	v0,java/io/FileInputStream
+; v0 : Ljava/io/FileInputStream;
+	invoke-direct	{v0,v2},java/io/FileInputStream/<init>	; <init>(Ljava/io/File;)V
+; v0 : Ljava/io/FileInputStream; , v2 : Ljava/io/File;
+	invoke-direct	{v1,v0},org/apache/commons/io/input/XmlStreamReader/<init>	; <init>(Ljava/io/InputStream;)V
+; v1 : Lorg/apache/commons/io/input/XmlStreamReader; , v0 : Ljava/io/FileInputStream;
+.line 126
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/InputStream;)V
+.throws Ljava/io/IOException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v2 (Ljava/io/InputStream;)
+.line 140
+	const/4	v0,1
+; v0 : single-length
+	invoke-direct	{v1,v2,v0},org/apache/commons/io/input/XmlStreamReader/<init>	; <init>(Ljava/io/InputStream;Z)V
+; v1 : Lorg/apache/commons/io/input/XmlStreamReader; , v2 : Ljava/io/InputStream; , v0 : single-length
+.line 141
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/InputStream;Ljava/lang/String;)V
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v1 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v2 (Ljava/io/InputStream;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.line 284
+	const/4	v0,1
+; v0 : single-length
+	invoke-direct	{v1,v2,v3,v0},org/apache/commons/io/input/XmlStreamReader/<init>	; <init>(Ljava/io/InputStream;Ljava/lang/String;Z)V
+; v1 : Lorg/apache/commons/io/input/XmlStreamReader; , v2 : Ljava/io/InputStream; , v3 : Ljava/lang/String; , v0 : single-length
+.line 285
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/InputStream;Ljava/lang/String;Z)V
+.throws Ljava/io/IOException;
+.limit registers 5
+; this: v1 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v2 (Ljava/io/InputStream;)
+; parameter[1] : v3 (Ljava/lang/String;)
+; parameter[2] : v4 (Z)
+.line 365
+	const/4	v0,0
+; v0 : single-length
+	invoke-direct	{v1,v2,v3,v4,v0},org/apache/commons/io/input/XmlStreamReader/<init>	; <init>(Ljava/io/InputStream;Ljava/lang/String;ZLjava/lang/String;)V
+; v1 : Lorg/apache/commons/io/input/XmlStreamReader; , v2 : Ljava/io/InputStream; , v3 : Ljava/lang/String; , v4 : single-length , v0 : single-length
+.line 366
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/InputStream;Ljava/lang/String;ZLjava/lang/String;)V
+.throws Ljava/io/IOException;
+.limit registers 10
+; this: v5 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v6 (Ljava/io/InputStream;)
+; parameter[1] : v7 (Ljava/lang/String;)
+; parameter[2] : v8 (Z)
+; parameter[3] : v9 (Ljava/lang/String;)
+.line 322
+	invoke-direct	{v5},java/io/Reader/<init>	; <init>()V
+; v5 : Lorg/apache/commons/io/input/XmlStreamReader;
+.line 323
+	iput-object	v9,v5,org/apache/commons/io/input/XmlStreamReader.defaultEncoding Ljava/lang/String;
+; v9 : Ljava/lang/String; , v5 : Lorg/apache/commons/io/input/XmlStreamReader;
+.line 324
+	new-instance	v0,org/apache/commons/io/input/BOMInputStream
+; v0 : Lorg/apache/commons/io/input/BOMInputStream;
+	new-instance	v2,java/io/BufferedInputStream
+; v2 : Ljava/io/BufferedInputStream;
+	const/16	v3,4096
+; v3 : single-length
+	invoke-direct	{v2,v6,v3},java/io/BufferedInputStream/<init>	; <init>(Ljava/io/InputStream;I)V
+; v2 : Ljava/io/BufferedInputStream; , v6 : Ljava/io/InputStream; , v3 : single-length
+	const/4	v3,0
+; v3 : single-length
+	sget-object	v4,org/apache/commons/io/input/XmlStreamReader.BOMS [Lorg/apache/commons/io/ByteOrderMark;
+; v4 : [Lorg/apache/commons/io/ByteOrderMark;
+	invoke-direct	{v0,v2,v3,v4},org/apache/commons/io/input/BOMInputStream/<init>	; <init>(Ljava/io/InputStream;Z[Lorg/apache/commons/io/ByteOrderMark;)V
+; v0 : Lorg/apache/commons/io/input/BOMInputStream; , v2 : Ljava/io/BufferedInputStream; , v3 : single-length , v4 : [Lorg/apache/commons/io/ByteOrderMark;
+.line 325
+	new-instance	v1,org/apache/commons/io/input/BOMInputStream
+; v1 : Lorg/apache/commons/io/input/BOMInputStream;
+	const/4	v2,1
+; v2 : single-length
+	sget-object	v3,org/apache/commons/io/input/XmlStreamReader.XML_GUESS_BYTES [Lorg/apache/commons/io/ByteOrderMark;
+; v3 : [Lorg/apache/commons/io/ByteOrderMark;
+	invoke-direct	{v1,v0,v2,v3},org/apache/commons/io/input/BOMInputStream/<init>	; <init>(Ljava/io/InputStream;Z[Lorg/apache/commons/io/ByteOrderMark;)V
+; v1 : Lorg/apache/commons/io/input/BOMInputStream; , v0 : Lorg/apache/commons/io/input/BOMInputStream; , v2 : single-length , v3 : [Lorg/apache/commons/io/ByteOrderMark;
+.line 326
+	invoke-direct	{v5,v0,v1,v7,v8},org/apache/commons/io/input/XmlStreamReader/doHttpStream	; doHttpStream(Lorg/apache/commons/io/input/BOMInputStream;Lorg/apache/commons/io/input/BOMInputStream;Ljava/lang/String;Z)Ljava/lang/String;
+; v5 : Lorg/apache/commons/io/input/XmlStreamReader; , v0 : Lorg/apache/commons/io/input/BOMInputStream; , v1 : Lorg/apache/commons/io/input/BOMInputStream; , v7 : Ljava/lang/String; , v8 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	iput-object	v2,v5,org/apache/commons/io/input/XmlStreamReader.encoding Ljava/lang/String;
+; v2 : Ljava/lang/String; , v5 : Lorg/apache/commons/io/input/XmlStreamReader;
+.line 327
+	new-instance	v2,java/io/InputStreamReader
+; v2 : Ljava/io/InputStreamReader;
+	iget-object	v3,v5,org/apache/commons/io/input/XmlStreamReader.encoding Ljava/lang/String;
+; v3 : Ljava/lang/String; , v5 : Lorg/apache/commons/io/input/XmlStreamReader;
+	invoke-direct	{v2,v1,v3},java/io/InputStreamReader/<init>	; <init>(Ljava/io/InputStream;Ljava/lang/String;)V
+; v2 : Ljava/io/InputStreamReader; , v1 : Lorg/apache/commons/io/input/BOMInputStream; , v3 : Ljava/lang/String;
+	iput-object	v2,v5,org/apache/commons/io/input/XmlStreamReader.reader Ljava/io/Reader;
+; v2 : Ljava/io/InputStreamReader; , v5 : Lorg/apache/commons/io/input/XmlStreamReader;
+.line 328
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/InputStream;Z)V
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v1 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v2 (Ljava/io/InputStream;)
+; parameter[1] : v3 (Z)
+.line 171
+	const/4	v0,0
+; v0 : single-length
+	invoke-direct	{v1,v2,v3,v0},org/apache/commons/io/input/XmlStreamReader/<init>	; <init>(Ljava/io/InputStream;ZLjava/lang/String;)V
+; v1 : Lorg/apache/commons/io/input/XmlStreamReader; , v2 : Ljava/io/InputStream; , v3 : single-length , v0 : single-length
+.line 172
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/InputStream;ZLjava/lang/String;)V
+.throws Ljava/io/IOException;
+.limit registers 9
+; this: v5 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v6 (Ljava/io/InputStream;)
+; parameter[1] : v7 (Z)
+; parameter[2] : v8 (Ljava/lang/String;)
+.line 202
+	invoke-direct	{v5},java/io/Reader/<init>	; <init>()V
+; v5 : Lorg/apache/commons/io/input/XmlStreamReader;
+.line 203
+	iput-object	v8,v5,org/apache/commons/io/input/XmlStreamReader.defaultEncoding Ljava/lang/String;
+; v8 : Ljava/lang/String; , v5 : Lorg/apache/commons/io/input/XmlStreamReader;
+.line 204
+	new-instance	v0,org/apache/commons/io/input/BOMInputStream
+; v0 : Lorg/apache/commons/io/input/BOMInputStream;
+	new-instance	v2,java/io/BufferedInputStream
+; v2 : Ljava/io/BufferedInputStream;
+	const/16	v3,4096
+; v3 : single-length
+	invoke-direct	{v2,v6,v3},java/io/BufferedInputStream/<init>	; <init>(Ljava/io/InputStream;I)V
+; v2 : Ljava/io/BufferedInputStream; , v6 : Ljava/io/InputStream; , v3 : single-length
+	const/4	v3,0
+; v3 : single-length
+	sget-object	v4,org/apache/commons/io/input/XmlStreamReader.BOMS [Lorg/apache/commons/io/ByteOrderMark;
+; v4 : [Lorg/apache/commons/io/ByteOrderMark;
+	invoke-direct	{v0,v2,v3,v4},org/apache/commons/io/input/BOMInputStream/<init>	; <init>(Ljava/io/InputStream;Z[Lorg/apache/commons/io/ByteOrderMark;)V
+; v0 : Lorg/apache/commons/io/input/BOMInputStream; , v2 : Ljava/io/BufferedInputStream; , v3 : single-length , v4 : [Lorg/apache/commons/io/ByteOrderMark;
+.line 205
+	new-instance	v1,org/apache/commons/io/input/BOMInputStream
+; v1 : Lorg/apache/commons/io/input/BOMInputStream;
+	const/4	v2,1
+; v2 : single-length
+	sget-object	v3,org/apache/commons/io/input/XmlStreamReader.XML_GUESS_BYTES [Lorg/apache/commons/io/ByteOrderMark;
+; v3 : [Lorg/apache/commons/io/ByteOrderMark;
+	invoke-direct	{v1,v0,v2,v3},org/apache/commons/io/input/BOMInputStream/<init>	; <init>(Ljava/io/InputStream;Z[Lorg/apache/commons/io/ByteOrderMark;)V
+; v1 : Lorg/apache/commons/io/input/BOMInputStream; , v0 : Lorg/apache/commons/io/input/BOMInputStream; , v2 : single-length , v3 : [Lorg/apache/commons/io/ByteOrderMark;
+.line 206
+	invoke-direct	{v5,v0,v1,v7},org/apache/commons/io/input/XmlStreamReader/doRawStream	; doRawStream(Lorg/apache/commons/io/input/BOMInputStream;Lorg/apache/commons/io/input/BOMInputStream;Z)Ljava/lang/String;
+; v5 : Lorg/apache/commons/io/input/XmlStreamReader; , v0 : Lorg/apache/commons/io/input/BOMInputStream; , v1 : Lorg/apache/commons/io/input/BOMInputStream; , v7 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	iput-object	v2,v5,org/apache/commons/io/input/XmlStreamReader.encoding Ljava/lang/String;
+; v2 : Ljava/lang/String; , v5 : Lorg/apache/commons/io/input/XmlStreamReader;
+.line 207
+	new-instance	v2,java/io/InputStreamReader
+; v2 : Ljava/io/InputStreamReader;
+	iget-object	v3,v5,org/apache/commons/io/input/XmlStreamReader.encoding Ljava/lang/String;
+; v3 : Ljava/lang/String; , v5 : Lorg/apache/commons/io/input/XmlStreamReader;
+	invoke-direct	{v2,v1,v3},java/io/InputStreamReader/<init>	; <init>(Ljava/io/InputStream;Ljava/lang/String;)V
+; v2 : Ljava/io/InputStreamReader; , v1 : Lorg/apache/commons/io/input/BOMInputStream; , v3 : Ljava/lang/String;
+	iput-object	v2,v5,org/apache/commons/io/input/XmlStreamReader.reader Ljava/io/Reader;
+; v2 : Ljava/io/InputStreamReader; , v5 : Lorg/apache/commons/io/input/XmlStreamReader;
+.line 208
+	return-void	
+.end method
+
+.method public <init>(Ljava/net/URL;)V
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v2 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v3 (Ljava/net/URL;)
+.line 228
+	invoke-virtual	{v3},java/net/URL/openConnection	; openConnection()Ljava/net/URLConnection;
+; v3 : Ljava/net/URL;
+	move-result-object	v0
+; v0 : Ljava/net/URLConnection;
+	const/4	v1,0
+; v1 : single-length
+	invoke-direct	{v2,v0,v1},org/apache/commons/io/input/XmlStreamReader/<init>	; <init>(Ljava/net/URLConnection;Ljava/lang/String;)V
+; v2 : Lorg/apache/commons/io/input/XmlStreamReader; , v0 : Ljava/net/URLConnection; , v1 : single-length
+.line 229
+	return-void	
+.end method
+
+.method public <init>(Ljava/net/URLConnection;Ljava/lang/String;)V
+.throws Ljava/io/IOException;
+.limit registers 11
+; this: v8 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v9 (Ljava/net/URLConnection;)
+; parameter[1] : v10 (Ljava/lang/String;)
+.line 250
+	invoke-direct	{v8},java/io/Reader/<init>	; <init>()V
+; v8 : Lorg/apache/commons/io/input/XmlStreamReader;
+.line 251
+	iput-object	v10,v8,org/apache/commons/io/input/XmlStreamReader.defaultEncoding Ljava/lang/String;
+; v10 : Ljava/lang/String; , v8 : Lorg/apache/commons/io/input/XmlStreamReader;
+.line 252
+	const/4	v3,1
+; v3 : single-length
+.line 253
+	invoke-virtual	{v9},java/net/URLConnection/getContentType	; getContentType()Ljava/lang/String;
+; v9 : Ljava/net/URLConnection;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 254
+	invoke-virtual	{v9},java/net/URLConnection/getInputStream	; getInputStream()Ljava/io/InputStream;
+; v9 : Ljava/net/URLConnection;
+	move-result-object	v2
+; v2 : Ljava/io/InputStream;
+.line 255
+	new-instance	v0,org/apache/commons/io/input/BOMInputStream
+; v0 : Lorg/apache/commons/io/input/BOMInputStream;
+	new-instance	v5,java/io/BufferedInputStream
+; v5 : Ljava/io/BufferedInputStream;
+	const/16	v6,4096
+; v6 : single-length
+	invoke-direct	{v5,v2,v6},java/io/BufferedInputStream/<init>	; <init>(Ljava/io/InputStream;I)V
+; v5 : Ljava/io/BufferedInputStream; , v2 : Ljava/io/InputStream; , v6 : single-length
+	const/4	v6,0
+; v6 : single-length
+	sget-object	v7,org/apache/commons/io/input/XmlStreamReader.BOMS [Lorg/apache/commons/io/ByteOrderMark;
+; v7 : [Lorg/apache/commons/io/ByteOrderMark;
+	invoke-direct	{v0,v5,v6,v7},org/apache/commons/io/input/BOMInputStream/<init>	; <init>(Ljava/io/InputStream;Z[Lorg/apache/commons/io/ByteOrderMark;)V
+; v0 : Lorg/apache/commons/io/input/BOMInputStream; , v5 : Ljava/io/BufferedInputStream; , v6 : single-length , v7 : [Lorg/apache/commons/io/ByteOrderMark;
+.line 256
+	new-instance	v4,org/apache/commons/io/input/BOMInputStream
+; v4 : Lorg/apache/commons/io/input/BOMInputStream;
+	const/4	v5,1
+; v5 : single-length
+	sget-object	v6,org/apache/commons/io/input/XmlStreamReader.XML_GUESS_BYTES [Lorg/apache/commons/io/ByteOrderMark;
+; v6 : [Lorg/apache/commons/io/ByteOrderMark;
+	invoke-direct	{v4,v0,v5,v6},org/apache/commons/io/input/BOMInputStream/<init>	; <init>(Ljava/io/InputStream;Z[Lorg/apache/commons/io/ByteOrderMark;)V
+; v4 : Lorg/apache/commons/io/input/BOMInputStream; , v0 : Lorg/apache/commons/io/input/BOMInputStream; , v5 : single-length , v6 : [Lorg/apache/commons/io/ByteOrderMark;
+.line 257
+	instance-of	v5,v9,java/net/HttpURLConnection
+; v5 : single-length , v9 : Ljava/net/URLConnection;
+	if-nez	v5,l11cb7e
+; v5 : single-length
+	if-eqz	v1,l11cb9e
+; v1 : Ljava/lang/String;
+l11cb7e:
+.line 258
+	invoke-direct	{v8,v0,v4,v1,v3},org/apache/commons/io/input/XmlStreamReader/doHttpStream	; doHttpStream(Lorg/apache/commons/io/input/BOMInputStream;Lorg/apache/commons/io/input/BOMInputStream;Ljava/lang/String;Z)Ljava/lang/String;
+; v8 : Lorg/apache/commons/io/input/XmlStreamReader; , v0 : Lorg/apache/commons/io/input/BOMInputStream; , v4 : Lorg/apache/commons/io/input/BOMInputStream; , v1 : Ljava/lang/String; , v3 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	iput-object	v5,v8,org/apache/commons/io/input/XmlStreamReader.encoding Ljava/lang/String;
+; v5 : Ljava/lang/String; , v8 : Lorg/apache/commons/io/input/XmlStreamReader;
+l11cb8a:
+.line 262
+	new-instance	v5,java/io/InputStreamReader
+; v5 : Ljava/io/InputStreamReader;
+	iget-object	v6,v8,org/apache/commons/io/input/XmlStreamReader.encoding Ljava/lang/String;
+; v6 : Ljava/lang/String; , v8 : Lorg/apache/commons/io/input/XmlStreamReader;
+	invoke-direct	{v5,v4,v6},java/io/InputStreamReader/<init>	; <init>(Ljava/io/InputStream;Ljava/lang/String;)V
+; v5 : Ljava/io/InputStreamReader; , v4 : Lorg/apache/commons/io/input/BOMInputStream; , v6 : Ljava/lang/String;
+	iput-object	v5,v8,org/apache/commons/io/input/XmlStreamReader.reader Ljava/io/Reader;
+; v5 : Ljava/io/InputStreamReader; , v8 : Lorg/apache/commons/io/input/XmlStreamReader;
+.line 263
+	return-void	
+l11cb9e:
+.line 260
+	invoke-direct	{v8,v0,v4,v3},org/apache/commons/io/input/XmlStreamReader/doRawStream	; doRawStream(Lorg/apache/commons/io/input/BOMInputStream;Lorg/apache/commons/io/input/BOMInputStream;Z)Ljava/lang/String;
+; v8 : Lorg/apache/commons/io/input/XmlStreamReader; , v0 : Lorg/apache/commons/io/input/BOMInputStream; , v4 : Lorg/apache/commons/io/input/BOMInputStream; , v3 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	iput-object	v5,v8,org/apache/commons/io/input/XmlStreamReader.encoding Ljava/lang/String;
+; v5 : Ljava/lang/String; , v8 : Lorg/apache/commons/io/input/XmlStreamReader;
+	goto	l11cb8a
+.end method
+
+.method private doHttpStream(Lorg/apache/commons/io/input/BOMInputStream;Lorg/apache/commons/io/input/BOMInputStream;Ljava/lang/String;Z)Ljava/lang/String;
+.throws Ljava/io/IOException;
+.limit registers 12
+; this: v7 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v8 (Lorg/apache/commons/io/input/BOMInputStream;)
+; parameter[1] : v9 (Lorg/apache/commons/io/input/BOMInputStream;)
+; parameter[2] : v10 (Ljava/lang/String;)
+; parameter[3] : v11 (Z)
+.catch org/apache/commons/io/input/XmlStreamReaderException from l11cbda to l11cbe0 using l11cbe4
+.line 439
+	invoke-virtual	{v8},org/apache/commons/io/input/BOMInputStream/getBOMCharsetName	; getBOMCharsetName()Ljava/lang/String;
+; v8 : Lorg/apache/commons/io/input/BOMInputStream;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+.line 440
+	invoke-virtual	{v9},org/apache/commons/io/input/BOMInputStream/getBOMCharsetName	; getBOMCharsetName()Ljava/lang/String;
+; v9 : Lorg/apache/commons/io/input/BOMInputStream;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+.line 441
+	invoke-static	{v9,v3},org/apache/commons/io/input/XmlStreamReader/getXmlProlog	; getXmlProlog(Ljava/io/InputStream;Ljava/lang/String;)Ljava/lang/String;
+; v9 : Lorg/apache/commons/io/input/BOMInputStream; , v3 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	move-object	v0,v7
+; v0 : Lorg/apache/commons/io/input/XmlStreamReader; , v7 : Lorg/apache/commons/io/input/XmlStreamReader;
+	move-object	v1,v10
+; v1 : Ljava/lang/String; , v10 : Ljava/lang/String;
+	move	v5,v11
+; v5 : single-length , v11 : single-length
+l11cbda:
+.line 443
+	invoke-virtual/range	{v0..v5},org/apache/commons/io/input/XmlStreamReader/calculateHttpEncoding;	calculateHttpEncoding(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;
+; v0 : Lorg/apache/commons/io/input/XmlStreamReader; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String; , v5 : single-length
+l11cbe0:
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+l11cbe2:
+.line 447
+	return-object	v0
+; v0 : Ljava/lang/String;
+l11cbe4:
+.line 445
+	move-exception	v6
+; v6 : org/apache/commons/io/input/XmlStreamReaderException
+.line 446
+	if-eqz	v11,l11cbf4
+; v11 : single-length
+.line 447
+	invoke-direct	{v7,v10,v6},org/apache/commons/io/input/XmlStreamReader/doLenientDetection	; doLenientDetection(Ljava/lang/String;Lorg/apache/commons/io/input/XmlStreamReaderException;)Ljava/lang/String;
+; v7 : Lorg/apache/commons/io/input/XmlStreamReader; , v10 : Ljava/lang/String; , v6 : org/apache/commons/io/input/XmlStreamReaderException
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l11cbe2
+l11cbf4:
+.line 449
+	throw	v6
+; v6 : org/apache/commons/io/input/XmlStreamReaderException
+.end method
+
+.method private doLenientDetection(Ljava/lang/String;Lorg/apache/commons/io/input/XmlStreamReaderException;)Ljava/lang/String;
+.throws Ljava/io/IOException;
+.limit registers 11
+; this: v8 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v9 (Ljava/lang/String;)
+; parameter[1] : v10 (Lorg/apache/commons/io/input/XmlStreamReaderException;)
+.catch org/apache/commons/io/input/XmlStreamReaderException from l11cc66 to l11cc8a using l11cc8e
+.var 7 is ex2 Lorg/apache/commons/io/input/XmlStreamReaderException; from l11cc90 to l11cc92
+.line 465
+	if-eqz	v9,l11cc92
+; v9 : Ljava/lang/String;
+	const-string	v0,"text/html"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v9,v0},java/lang/String/startsWith	; startsWith(Ljava/lang/String;)Z
+; v9 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l11cc92
+; v0 : single-length
+.line 466
+	const-string	v0,"text/html"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v0},java/lang/String/length	; length()I
+; v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	invoke-virtual	{v9,v0},java/lang/String/substring	; substring(I)Ljava/lang/String;
+; v9 : Ljava/lang/String; , v0 : single-length
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+.line 467
+	new-instance	v0,java/lang/StringBuilder
+; v0 : Ljava/lang/StringBuilder;
+	invoke-direct	{v0},java/lang/StringBuilder/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,"text/xml"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0,v9},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v9 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuilder;
+	move-result-object	v9
+; v9 : Ljava/lang/String;
+l11cc66:
+.line 469
+	invoke-virtual	{v10},org/apache/commons/io/input/XmlStreamReaderException/getBomEncoding	; getBomEncoding()Ljava/lang/String;
+; v10 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v10},org/apache/commons/io/input/XmlStreamReaderException/getXmlGuessEncoding	; getXmlGuessEncoding()Ljava/lang/String;
+; v10 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v10},org/apache/commons/io/input/XmlStreamReaderException/getXmlEncoding	; getXmlEncoding()Ljava/lang/String;
+; v10 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	const/4	v5,1
+; v5 : single-length
+	move-object	v0,v8
+; v0 : Lorg/apache/commons/io/input/XmlStreamReader; , v8 : Lorg/apache/commons/io/input/XmlStreamReader;
+	move-object	v1,v9
+; v1 : Ljava/lang/String; , v9 : Ljava/lang/String;
+	invoke-virtual/range	{v0..v5},org/apache/commons/io/input/XmlStreamReader/calculateHttpEncoding;	calculateHttpEncoding(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;
+; v0 : Lorg/apache/commons/io/input/XmlStreamReader; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String; , v5 : single-length
+l11cc8a:
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+l11cc8c:
+.line 482
+	return-object	v6
+; v6 : Ljava/lang/String;
+l11cc8e:
+.line 471
+	move-exception	v7
+; v7 : org/apache/commons/io/input/XmlStreamReaderException
+.line 472
+	move-object	v10,v7
+; v10 : org/apache/commons/io/input/XmlStreamReaderException , v7 : org/apache/commons/io/input/XmlStreamReaderException
+l11cc92:
+.line 475
+	invoke-virtual	{v10},org/apache/commons/io/input/XmlStreamReaderException/getXmlEncoding	; getXmlEncoding()Ljava/lang/String;
+; v10 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+.line 476
+	if-nez	v6,l11cca6
+; v6 : Ljava/lang/String;
+.line 477
+	invoke-virtual	{v10},org/apache/commons/io/input/XmlStreamReaderException/getContentTypeEncoding	; getContentTypeEncoding()Ljava/lang/String;
+; v10 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+l11cca6:
+.line 479
+	if-nez	v6,l11cc8c
+; v6 : Ljava/lang/String;
+.line 480
+	iget-object	v0,v8,org/apache/commons/io/input/XmlStreamReader.defaultEncoding Ljava/lang/String;
+; v0 : Ljava/lang/String; , v8 : Lorg/apache/commons/io/input/XmlStreamReader;
+	if-nez	v0,l11ccb8
+; v0 : Ljava/lang/String;
+	const-string	v6,"UTF-8"
+; v6 : Ljava/lang/String;
+l11ccb6:
+	goto	l11cc8c
+l11ccb8:
+	iget-object	v6,v8,org/apache/commons/io/input/XmlStreamReader.defaultEncoding Ljava/lang/String;
+; v6 : Ljava/lang/String; , v8 : Lorg/apache/commons/io/input/XmlStreamReader;
+	goto	l11ccb6
+.end method
+
+.method private doRawStream(Lorg/apache/commons/io/input/BOMInputStream;Lorg/apache/commons/io/input/BOMInputStream;Z)Ljava/lang/String;
+.throws Ljava/io/IOException;
+.limit registers 9
+; this: v5 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v6 (Lorg/apache/commons/io/input/BOMInputStream;)
+; parameter[1] : v7 (Lorg/apache/commons/io/input/BOMInputStream;)
+; parameter[2] : v8 (Z)
+.catch org/apache/commons/io/input/XmlStreamReaderException from l11ccf8 to l11ccfe using l11cd02
+.line 412
+	invoke-virtual	{v6},org/apache/commons/io/input/BOMInputStream/getBOMCharsetName	; getBOMCharsetName()Ljava/lang/String;
+; v6 : Lorg/apache/commons/io/input/BOMInputStream;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 413
+	invoke-virtual	{v7},org/apache/commons/io/input/BOMInputStream/getBOMCharsetName	; getBOMCharsetName()Ljava/lang/String;
+; v7 : Lorg/apache/commons/io/input/BOMInputStream;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+.line 414
+	invoke-static	{v7,v3},org/apache/commons/io/input/XmlStreamReader/getXmlProlog	; getXmlProlog(Ljava/io/InputStream;Ljava/lang/String;)Ljava/lang/String;
+; v7 : Lorg/apache/commons/io/input/BOMInputStream; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+l11ccf8:
+.line 416
+	invoke-virtual	{v5,v0,v3,v2},org/apache/commons/io/input/XmlStreamReader/calculateRawEncoding	; calculateRawEncoding(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v5 : Lorg/apache/commons/io/input/XmlStreamReader; , v0 : Ljava/lang/String; , v3 : Ljava/lang/String; , v2 : Ljava/lang/String;
+l11ccfe:
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+l11cd00:
+.line 419
+	return-object	v4
+; v4 : Ljava/lang/String;
+l11cd02:
+.line 417
+	move-exception	v1
+; v1 : org/apache/commons/io/input/XmlStreamReaderException
+.line 418
+	if-eqz	v8,l11cd14
+; v8 : single-length
+.line 419
+	const/4	v4,0
+; v4 : single-length
+	invoke-direct	{v5,v4,v1},org/apache/commons/io/input/XmlStreamReader/doLenientDetection	; doLenientDetection(Ljava/lang/String;Lorg/apache/commons/io/input/XmlStreamReaderException;)Ljava/lang/String;
+; v5 : Lorg/apache/commons/io/input/XmlStreamReader; , v4 : single-length , v1 : org/apache/commons/io/input/XmlStreamReaderException
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	goto	l11cd00
+l11cd14:
+.line 421
+	throw	v1
+; v1 : org/apache/commons/io/input/XmlStreamReaderException
+.end method
+
+.method static getContentTypeEncoding(Ljava/lang/String;)Ljava/lang/String;
+.limit registers 7
+; parameter[0] : v6 (Ljava/lang/String;)
+.var 1 is i I from l11cd4c to l11cd8c
+.var 2 is m Ljava/util/regex/Matcher; from l11cd6a to l11cd8c
+.var 3 is postMime Ljava/lang/String; from l11cd5e to l11cd8c
+	const/4	v4,0
+; v4 : single-length
+.line 635
+	const/4	v0,0
+; v0 : single-length
+.line 636
+	if-eqz	v6,l11cd8c
+; v6 : Ljava/lang/String;
+.line 637
+	const-string	v5,";"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v6,v5},java/lang/String/indexOf	; indexOf(Ljava/lang/String;)I
+; v6 : Ljava/lang/String; , v5 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+.line 638
+	const/4	v5,15
+; v5 : single-length
+	if-le	v1,v5,l11cd8c
+; v1 : single-length , v5 : single-length
+.line 639
+	add-int/lit8	v5,v1,1
+; v5 : single-length , v1 : single-length
+	invoke-virtual	{v6,v5},java/lang/String/substring	; substring(I)Ljava/lang/String;
+; v6 : Ljava/lang/String; , v5 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+.line 640
+	sget-object	v5,org/apache/commons/io/input/XmlStreamReader.CHARSET_PATTERN Ljava/util/regex/Pattern;
+; v5 : Ljava/util/regex/Pattern;
+	invoke-virtual	{v5,v3},java/util/regex/Pattern/matcher	; matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
+; v5 : Ljava/util/regex/Pattern; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/util/regex/Matcher;
+.line 641
+	invoke-virtual	{v2},java/util/regex/Matcher/find	; find()Z
+; v2 : Ljava/util/regex/Matcher;
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,l11cd8e
+; v5 : single-length
+	const/4	v5,1
+; v5 : single-length
+	invoke-virtual	{v2,v5},java/util/regex/Matcher/group	; group(I)Ljava/lang/String;
+; v2 : Ljava/util/regex/Matcher; , v5 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+l11cd80:
+.line 642
+	if-eqz	v0,l11cd92
+; v0 : single-length
+	invoke-virtual	{v0},java/lang/String/toUpperCase	; toUpperCase()Ljava/lang/String;
+; v0 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+l11cd8c:
+.line 645
+	return-object	v0
+; v0 : Ljava/lang/String;
+l11cd8e:
+	move-object	v0,v4
+; v0 : single-length , v4 : single-length
+.line 641
+	goto	l11cd80
+l11cd92:
+	move-object	v0,v4
+; v0 : single-length , v4 : single-length
+.line 642
+	goto	l11cd8c
+.end method
+
+.method static getContentTypeMime(Ljava/lang/String;)Ljava/lang/String;
+.limit registers 4
+; parameter[0] : v3 (Ljava/lang/String;)
+.var 0 is i I from l11cdba to l11cdd0
+.line 611
+	const/4	v1,0
+; v1 : single-length
+.line 612
+	if-eqz	v3,l11cdd0
+; v3 : Ljava/lang/String;
+.line 613
+	const-string	v2,";"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v3,v2},java/lang/String/indexOf	; indexOf(Ljava/lang/String;)I
+; v3 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+.line 614
+	if-ltz	v0,l11cdd2
+; v0 : single-length
+.line 615
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v3,v2,v0},java/lang/String/substring	; substring(II)Ljava/lang/String;
+; v3 : Ljava/lang/String; , v2 : single-length , v0 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+l11cdc8:
+.line 619
+	invoke-virtual	{v1},java/lang/String/trim	; trim()Ljava/lang/String;
+; v1 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+l11cdd0:
+.line 621
+	return-object	v1
+; v1 : Ljava/lang/String;
+l11cdd2:
+.line 617
+	move-object	v1,v3
+; v1 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	goto	l11cdc8
+.end method
+
+.method private static getXmlProlog(Ljava/io/InputStream;Ljava/lang/String;)Ljava/lang/String;
+.throws Ljava/io/IOException;
+.limit registers 18
+; parameter[0] : v16 (Ljava/io/InputStream;)
+; parameter[1] : v17 (Ljava/lang/String;)
+.var 12 is xmlProlog Ljava/lang/String; from l11ce1a to l11ce42
+.var 1 is bReader Ljava/io/BufferedReader; from l11cee4 to l11cf4a
+.var 2 is bytes [B from l11cdf6 to l11cf4a
+.var 3 is bytesRead I from l11ceb8 to l11cf4a
+.var 4 is c I from l11ce16 to l11cf4a
+.var 6 is firstGT I from l11ce18 to l11cf4a
+.var 7 is line Ljava/lang/String; from l11cef6 to l11cf4a
+.var 8 is m Ljava/util/regex/Matcher; from l11cf16 to l11cf4a
+.var 9 is max I from l11ce0a to l11cf4a
+.var 10 is offset I from l11ce06 to l11cf4a
+.var 11 is prolog Ljava/lang/StringBuffer; from l11ceee to l11cf4a
+.var 12 is xmlProlog Ljava/lang/String; from l11ce4e to l11cf4a
+.line 662
+	const/4	v5,0
+; v5 : single-length
+.line 663
+	if-eqz	v17,l11cf4a
+; v17 : Ljava/lang/String;
+.line 664
+	const/16	v13,4096
+; v13 : single-length
+	new-array	v2,v13,[B
+; v2 : [B , v13 : single-length
+.line 665
+	const/16	v13,4096
+; v13 : single-length
+	move-object/from16	v0,v16
+; v0 : Ljava/io/InputStream; , v16 : Ljava/io/InputStream;
+	invoke-virtual	{v0,v13},java/io/InputStream/mark	; mark(I)V
+; v0 : Ljava/io/InputStream; , v13 : single-length
+.line 666
+	const/4	v10,0
+; v10 : single-length
+.line 667
+	const/16	v9,4096
+; v9 : single-length
+.line 668
+	move-object/from16	v0,v16
+; v0 : Ljava/io/InputStream; , v16 : Ljava/io/InputStream;
+	invoke-virtual	{v0,v2,v10,v9},java/io/InputStream/read	; read([BII)I
+; v0 : Ljava/io/InputStream; , v2 : [B , v10 : single-length , v9 : single-length
+	move-result	v4
+; v4 : single-length
+.line 669
+	const/4	v6,15
+; v6 : single-length
+.line 670
+	const/4	v12,0
+; v12 : single-length
+l11ce1a:
+.line 671
+	const/4	v13,15
+; v13 : single-length
+	if-eq	v4,v13,l11ce5c
+; v4 : single-length , v13 : single-length
+	const/4	v13,15
+; v13 : single-length
+	if-ne	v6,v13,l11ce5c
+; v6 : single-length , v13 : single-length
+	const/16	v13,4096
+; v13 : single-length
+	if-ge	v10,v13,l11ce5c
+; v10 : single-length , v13 : single-length
+.line 672
+	add-int/2addr	v10,v4
+; v10 : single-length , v4 : single-length
+.line 673
+	sub-int/2addr	v9,v4
+; v9 : single-length , v4 : single-length
+.line 674
+	move-object/from16	v0,v16
+; v0 : Ljava/io/InputStream; , v16 : Ljava/io/InputStream;
+	invoke-virtual	{v0,v2,v10,v9},java/io/InputStream/read	; read([BII)I
+; v0 : Ljava/io/InputStream; , v2 : [B , v10 : single-length , v9 : single-length
+	move-result	v4
+; v4 : single-length
+.line 675
+	new-instance	v12,java/lang/String
+; v12 : Ljava/lang/String;
+l11ce42:
+	const/4	v13,0
+; v13 : single-length
+	move-object/from16	v0,v17
+; v0 : Ljava/lang/String; , v17 : Ljava/lang/String;
+	invoke-direct	{v12,v2,v13,v10,v0},java/lang/String/<init>	; <init>([BIILjava/lang/String;)V
+; v12 : Ljava/lang/String; , v2 : [B , v13 : single-length , v10 : single-length , v0 : Ljava/lang/String;
+.line 676
+	const/16	v13,62
+; v13 : single-length
+	invoke-virtual	{v12,v13},java/lang/String/indexOf	; indexOf(I)I
+; v12 : Ljava/lang/String; , v13 : single-length
+	move-result	v6
+; v6 : single-length
+	goto	l11ce1a
+l11ce5c:
+.line 678
+	const/4	v13,15
+; v13 : single-length
+	if-ne	v6,v13,l11ceb6
+; v6 : single-length , v13 : single-length
+.line 679
+	const/4	v13,15
+; v13 : single-length
+	if-ne	v4,v13,l11ce78
+; v4 : single-length , v13 : single-length
+.line 680
+	new-instance	v13,java/io/IOException
+; v13 : Ljava/io/IOException;
+	const-string	v14,"Unexpected end of XML stream"
+; v14 : Ljava/lang/String;
+	invoke-direct	{v13,v14},java/io/IOException/<init>	; <init>(Ljava/lang/String;)V
+; v13 : Ljava/io/IOException; , v14 : Ljava/lang/String;
+	throw	v13
+; v13 : Ljava/io/IOException;
+l11ce78:
+.line 682
+	new-instance	v13,java/io/IOException
+; v13 : Ljava/io/IOException;
+	new-instance	v14,java/lang/StringBuilder
+; v14 : Ljava/lang/StringBuilder;
+	invoke-direct	{v14},java/lang/StringBuilder/<init>	; <init>()V
+; v14 : Ljava/lang/StringBuilder;
+	const-string	v15,"XML prolog or ROOT element not found on first "
+; v15 : Ljava/lang/String;
+	invoke-virtual	{v14,v15},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v14 : Ljava/lang/StringBuilder; , v15 : Ljava/lang/String;
+	move-result-object	v14
+; v14 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v14,v10},java/lang/StringBuilder/append	; append(I)Ljava/lang/StringBuilder;
+; v14 : Ljava/lang/StringBuilder; , v10 : single-length
+	move-result-object	v14
+; v14 : Ljava/lang/StringBuilder;
+	const-string	v15," bytes"
+; v15 : Ljava/lang/String;
+	invoke-virtual	{v14,v15},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v14 : Ljava/lang/StringBuilder; , v15 : Ljava/lang/String;
+	move-result-object	v14
+; v14 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v14},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v14 : Ljava/lang/StringBuilder;
+	move-result-object	v14
+; v14 : Ljava/lang/String;
+	invoke-direct	{v13,v14},java/io/IOException/<init>	; <init>(Ljava/lang/String;)V
+; v13 : Ljava/io/IOException; , v14 : Ljava/lang/String;
+	throw	v13
+; v13 : Ljava/io/IOException;
+l11ceb6:
+.line 687
+	move	v3,v10
+; v3 : single-length , v10 : single-length
+.line 688
+	if-lez	v3,l11cf4a
+; v3 : single-length
+.line 689
+	invoke-virtual/range	{v16},java/io/InputStream/reset;	reset()V
+; v16 : Ljava/io/InputStream;
+.line 690
+	new-instance	v1,java/io/BufferedReader
+; v1 : Ljava/io/BufferedReader;
+	new-instance	v13,java/io/StringReader
+; v13 : Ljava/io/StringReader;
+	const/4	v14,0
+; v14 : single-length
+	add-int/lit8	v15,v6,1
+; v15 : single-length , v6 : single-length
+	invoke-virtual	{v12,v14,v15},java/lang/String/substring	; substring(II)Ljava/lang/String;
+; v12 : Ljava/lang/String; , v14 : single-length , v15 : single-length
+	move-result-object	v14
+; v14 : Ljava/lang/String;
+	invoke-direct	{v13,v14},java/io/StringReader/<init>	; <init>(Ljava/lang/String;)V
+; v13 : Ljava/io/StringReader; , v14 : Ljava/lang/String;
+	invoke-direct	{v1,v13},java/io/BufferedReader/<init>	; <init>(Ljava/io/Reader;)V
+; v1 : Ljava/io/BufferedReader; , v13 : Ljava/io/StringReader;
+.line 692
+	new-instance	v11,java/lang/StringBuffer
+; v11 : Ljava/lang/StringBuffer;
+	invoke-direct	{v11},java/lang/StringBuffer/<init>	; <init>()V
+; v11 : Ljava/lang/StringBuffer;
+.line 693
+	invoke-virtual	{v1},java/io/BufferedReader/readLine	; readLine()Ljava/lang/String;
+; v1 : Ljava/io/BufferedReader;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+l11cef6:
+.line 694
+	if-eqz	v7,l11cf0a
+; v7 : Ljava/lang/String;
+.line 695
+	invoke-virtual	{v11,v7},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v11 : Ljava/lang/StringBuffer; , v7 : Ljava/lang/String;
+.line 696
+	invoke-virtual	{v1},java/io/BufferedReader/readLine	; readLine()Ljava/lang/String;
+; v1 : Ljava/io/BufferedReader;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	goto	l11cef6
+l11cf0a:
+.line 698
+	sget-object	v13,org/apache/commons/io/input/XmlStreamReader.ENCODING_PATTERN Ljava/util/regex/Pattern;
+; v13 : Ljava/util/regex/Pattern;
+	invoke-virtual	{v13,v11},java/util/regex/Pattern/matcher	; matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
+; v13 : Ljava/util/regex/Pattern; , v11 : Ljava/lang/StringBuffer;
+	move-result-object	v8
+; v8 : Ljava/util/regex/Matcher;
+.line 699
+	invoke-virtual	{v8},java/util/regex/Matcher/find	; find()Z
+; v8 : Ljava/util/regex/Matcher;
+	move-result	v13
+; v13 : single-length
+	if-eqz	v13,l11cf4a
+; v13 : single-length
+.line 700
+	const/4	v13,1
+; v13 : single-length
+	invoke-virtual	{v8,v13},java/util/regex/Matcher/group	; group(I)Ljava/lang/String;
+; v8 : Ljava/util/regex/Matcher; , v13 : single-length
+	move-result-object	v13
+; v13 : Ljava/lang/String;
+	invoke-virtual	{v13},java/lang/String/toUpperCase	; toUpperCase()Ljava/lang/String;
+; v13 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+.line 701
+	const/4	v13,1
+; v13 : single-length
+	invoke-virtual	{v5},java/lang/String/length	; length()I
+; v5 : Ljava/lang/String;
+	move-result	v14
+; v14 : single-length
+	add-int/lit8	v14,v14,255
+; v14 : single-length , v14 : single-length
+	invoke-virtual	{v5,v13,v14},java/lang/String/substring	; substring(II)Ljava/lang/String;
+; v5 : Ljava/lang/String; , v13 : single-length , v14 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+l11cf4a:
+.line 705
+	return-object	v5
+; v5 : single-length
+.end method
+
+.method static isAppXml(Ljava/lang/String;)Z
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 716
+	if-eqz	v1,l11cfb4
+; v1 : Ljava/lang/String;
+	const-string	v0,"application/xml"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v0},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v1 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l11cfb0
+; v0 : single-length
+	const-string	v0,"application/xml-dtd"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v0},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v1 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l11cfb0
+; v0 : single-length
+	const-string	v0,"application/xml-external-parsed-entity"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v0},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v1 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l11cfb0
+; v0 : single-length
+	const-string	v0,"application/"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v0},java/lang/String/startsWith	; startsWith(Ljava/lang/String;)Z
+; v1 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l11cfb4
+; v0 : single-length
+	const-string	v0,"+xml"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v0},java/lang/String/endsWith	; endsWith(Ljava/lang/String;)Z
+; v1 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l11cfb4
+; v0 : single-length
+l11cfb0:
+	const/4	v0,1
+; v0 : single-length
+l11cfb2:
+	return	v0
+; v0 : single-length
+l11cfb4:
+	const/4	v0,0
+; v0 : single-length
+	goto	l11cfb2
+.end method
+
+.method static isTextXml(Ljava/lang/String;)Z
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 731
+	if-eqz	v1,l11d010
+; v1 : Ljava/lang/String;
+	const-string	v0,"text/xml"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v0},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v1 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l11d00c
+; v0 : single-length
+	const-string	v0,"text/xml-external-parsed-entity"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v0},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v1 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l11d00c
+; v0 : single-length
+	const-string	v0,"text/"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v0},java/lang/String/startsWith	; startsWith(Ljava/lang/String;)Z
+; v1 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l11d010
+; v0 : single-length
+	const-string	v0,"+xml"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v1,v0},java/lang/String/endsWith	; endsWith(Ljava/lang/String;)Z
+; v1 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l11d010
+; v0 : single-length
+l11d00c:
+	const/4	v0,1
+; v0 : single-length
+l11d00e:
+	return	v0
+; v0 : single-length
+l11d010:
+	const/4	v0,0
+; v0 : single-length
+	goto	l11d00e
+.end method
+
+.method calculateHttpEncoding(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;
+.throws Ljava/io/IOException;
+.limit registers 15
+; this: v9 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v10 (Ljava/lang/String;)
+; parameter[1] : v11 (Ljava/lang/String;)
+; parameter[2] : v12 (Ljava/lang/String;)
+; parameter[3] : v13 (Ljava/lang/String;)
+; parameter[4] : v14 (Z)
+.var 1 is msg Ljava/lang/String; from l11d088 to l11d09a
+.var 1 is msg Ljava/lang/String; from l11d116 to l11d128
+.line 558
+	if-eqz	v14,l11d030
+; v14 : single-length
+	if-eqz	v13,l11d030
+; v13 : Ljava/lang/String;
+	move-object	v3,v13
+; v3 : Ljava/lang/String; , v13 : Ljava/lang/String;
+l11d02e:
+.line 601
+	return-object	v3
+; v3 : Ljava/lang/String;
+l11d030:
+.line 563
+	invoke-static	{v10},org/apache/commons/io/input/XmlStreamReader/getContentTypeMime	; getContentTypeMime(Ljava/lang/String;)Ljava/lang/String;
+; v10 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+.line 564
+	invoke-static	{v10},org/apache/commons/io/input/XmlStreamReader/getContentTypeEncoding	; getContentTypeEncoding(Ljava/lang/String;)Ljava/lang/String;
+; v10 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+.line 565
+	invoke-static	{v2},org/apache/commons/io/input/XmlStreamReader/isAppXml	; isAppXml(Ljava/lang/String;)Z
+; v2 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+.line 566
+	invoke-static	{v2},org/apache/commons/io/input/XmlStreamReader/isTextXml	; isTextXml(Ljava/lang/String;)Z
+; v2 : Ljava/lang/String;
+	move-result	v8
+; v8 : single-length
+.line 569
+	if-nez	v7,l11d09a
+; v7 : single-length
+	if-nez	v8,l11d09a
+; v8 : single-length
+.line 570
+	const-string	v0,"Invalid encoding, CT-MIME [{0}] CT-Enc [{1}] BOM [{2}] XML guess [{3}] XML prolog [{4}], Invalid MIME"
+; v0 : Ljava/lang/String;
+	const/4	v4,5
+; v4 : single-length
+	new-array	v4,v4,[Ljava/lang/Object;
+; v4 : [Ljava/lang/Object; , v4 : [Ljava/lang/Object;
+	const/4	v5,0
+; v5 : single-length
+	aput-object	v2,v4,v5
+; v2 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,1
+; v5 : single-length
+	aput-object	v3,v4,v5
+; v3 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,2
+; v5 : single-length
+	aput-object	v11,v4,v5
+; v11 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,3
+; v5 : single-length
+	aput-object	v12,v4,v5
+; v12 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,4
+; v5 : single-length
+	aput-object	v13,v4,v5
+; v13 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v0,v4},java/text/MessageFormat/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v4 : [Ljava/lang/Object;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 571
+	new-instance	v0,org/apache/commons/io/input/XmlStreamReaderException
+; v0 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	move-object	v4,v11
+; v4 : Ljava/lang/String; , v11 : Ljava/lang/String;
+	move-object	v5,v12
+; v5 : Ljava/lang/String; , v12 : Ljava/lang/String;
+	move-object	v6,v13
+; v6 : Ljava/lang/String; , v13 : Ljava/lang/String;
+	invoke-direct/range	{v0..v6},org/apache/commons/io/input/XmlStreamReaderException/<init>;	<init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/io/input/XmlStreamReaderException; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String; , v5 : Ljava/lang/String; , v6 : Ljava/lang/String;
+	throw	v0
+; v0 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+l11d09a:
+.line 575
+	if-nez	v3,l11d0c2
+; v3 : Ljava/lang/String;
+.line 576
+	if-eqz	v7,l11d0ac
+; v7 : single-length
+.line 577
+	invoke-virtual	{v9,v11,v12,v13},org/apache/commons/io/input/XmlStreamReader/calculateRawEncoding	; calculateRawEncoding(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v9 : Lorg/apache/commons/io/input/XmlStreamReader; , v11 : Ljava/lang/String; , v12 : Ljava/lang/String; , v13 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	goto	l11d02e
+l11d0ac:
+.line 579
+	iget-object	v0,v9,org/apache/commons/io/input/XmlStreamReader.defaultEncoding Ljava/lang/String;
+; v0 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/input/XmlStreamReader;
+	if-nez	v0,l11d0bc
+; v0 : Ljava/lang/String;
+	const-string	v0,"US-ASCII"
+; v0 : Ljava/lang/String;
+l11d0b8:
+	move-object	v3,v0
+; v3 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	goto	l11d02e
+l11d0bc:
+	iget-object	v0,v9,org/apache/commons/io/input/XmlStreamReader.defaultEncoding Ljava/lang/String;
+; v0 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/input/XmlStreamReader;
+	goto	l11d0b8
+l11d0c2:
+.line 584
+	const-string	v0,"UTF-16BE"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v3,v0},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v3 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l11d0e2
+; v0 : single-length
+	const-string	v0,"UTF-16LE"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v3,v0},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v3 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l11d128
+; v0 : single-length
+l11d0e2:
+.line 585
+	if-eqz	v11,l11d02e
+; v11 : Ljava/lang/String;
+.line 586
+	const-string	v0,"Invalid encoding, CT-MIME [{0}] CT-Enc [{1}] BOM [{2}] XML guess [{3}] XML prolog [{4}], BOM must be NULL"
+; v0 : Ljava/lang/String;
+	const/4	v4,5
+; v4 : single-length
+	new-array	v4,v4,[Ljava/lang/Object;
+; v4 : [Ljava/lang/Object; , v4 : [Ljava/lang/Object;
+	const/4	v5,0
+; v5 : single-length
+	aput-object	v2,v4,v5
+; v2 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,1
+; v5 : single-length
+	aput-object	v3,v4,v5
+; v3 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,2
+; v5 : single-length
+	aput-object	v11,v4,v5
+; v11 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,3
+; v5 : single-length
+	aput-object	v12,v4,v5
+; v12 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,4
+; v5 : single-length
+	aput-object	v13,v4,v5
+; v13 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v0,v4},java/text/MessageFormat/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v4 : [Ljava/lang/Object;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 587
+	new-instance	v0,org/apache/commons/io/input/XmlStreamReaderException
+; v0 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	move-object	v4,v11
+; v4 : Ljava/lang/String; , v11 : Ljava/lang/String;
+	move-object	v5,v12
+; v5 : Ljava/lang/String; , v12 : Ljava/lang/String;
+	move-object	v6,v13
+; v6 : Ljava/lang/String; , v13 : Ljava/lang/String;
+	invoke-direct/range	{v0..v6},org/apache/commons/io/input/XmlStreamReaderException/<init>;	<init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/io/input/XmlStreamReaderException; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String; , v5 : Ljava/lang/String; , v6 : Ljava/lang/String;
+	throw	v0
+; v0 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+l11d128:
+.line 593
+	const-string	v0,"UTF-16"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v3,v0},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v3 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l11d02e
+; v0 : single-length
+.line 594
+	if-eqz	v11,l11d152
+; v11 : Ljava/lang/String;
+	const-string	v0,"UTF-16"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v11,v0},java/lang/String/startsWith	; startsWith(Ljava/lang/String;)Z
+; v11 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l11d152
+; v0 : single-length
+	move-object	v3,v11
+; v3 : Ljava/lang/String; , v11 : Ljava/lang/String;
+.line 595
+	goto/16	l11d02e
+l11d152:
+.line 597
+	const-string	v0,"Invalid encoding, CT-MIME [{0}] CT-Enc [{1}] BOM [{2}] XML guess [{3}] XML prolog [{4}], encoding mismatch"
+; v0 : Ljava/lang/String;
+	const/4	v4,5
+; v4 : single-length
+	new-array	v4,v4,[Ljava/lang/Object;
+; v4 : [Ljava/lang/Object; , v4 : [Ljava/lang/Object;
+	const/4	v5,0
+; v5 : single-length
+	aput-object	v2,v4,v5
+; v2 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,1
+; v5 : single-length
+	aput-object	v3,v4,v5
+; v3 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,2
+; v5 : single-length
+	aput-object	v11,v4,v5
+; v11 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,3
+; v5 : single-length
+	aput-object	v12,v4,v5
+; v12 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	const/4	v5,4
+; v5 : single-length
+	aput-object	v13,v4,v5
+; v13 : Ljava/lang/String; , v4 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v0,v4},java/text/MessageFormat/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v4 : [Ljava/lang/Object;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 598
+	new-instance	v0,org/apache/commons/io/input/XmlStreamReaderException
+; v0 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	move-object	v4,v11
+; v4 : Ljava/lang/String; , v11 : Ljava/lang/String;
+	move-object	v5,v12
+; v5 : Ljava/lang/String; , v12 : Ljava/lang/String;
+	move-object	v6,v13
+; v6 : Ljava/lang/String; , v13 : Ljava/lang/String;
+	invoke-direct/range	{v0..v6},org/apache/commons/io/input/XmlStreamReaderException/<init>;	<init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/apache/commons/io/input/XmlStreamReaderException; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String; , v4 : Ljava/lang/String; , v5 : Ljava/lang/String; , v6 : Ljava/lang/String;
+	throw	v0
+; v0 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+.end method
+
+.method calculateRawEncoding(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+.throws Ljava/io/IOException;
+.limit registers 10
+; this: v6 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v7 (Ljava/lang/String;)
+; parameter[1] : v8 (Ljava/lang/String;)
+; parameter[2] : v9 (Ljava/lang/String;)
+.var 0 is msg Ljava/lang/String; from l11d246 to l11d252
+.var 0 is msg Ljava/lang/String; from l11d282 to l11d28e
+.var 0 is msg Ljava/lang/String; from l11d2da to l11d2e6
+.var 0 is msg Ljava/lang/String; from l11d322 to l11d32e
+	const/4	v2,3
+; v2 : single-length
+	const/4	v5,2
+; v5 : single-length
+	const/4	v4,1
+; v4 : single-length
+	const/4	v3,0
+; v3 : single-length
+.line 498
+	if-nez	v7,l11d206
+; v7 : Ljava/lang/String;
+.line 499
+	if-eqz	v8,l11d1b8
+; v8 : Ljava/lang/String;
+	if-nez	v9,l11d1ce
+; v9 : Ljava/lang/String;
+l11d1b8:
+.line 500
+	iget-object	v1,v6,org/apache/commons/io/input/XmlStreamReader.defaultEncoding Ljava/lang/String;
+; v1 : Ljava/lang/String; , v6 : Lorg/apache/commons/io/input/XmlStreamReader;
+	if-nez	v1,l11d1c8
+; v1 : Ljava/lang/String;
+	const-string	v1,"UTF-8"
+; v1 : Ljava/lang/String;
+l11d1c4:
+	move-object	v7,v1
+; v7 : Ljava/lang/String; , v1 : Ljava/lang/String;
+l11d1c6:
+.line 532
+	return-object	v7
+; v7 : Ljava/lang/String;
+l11d1c8:
+.line 500
+	iget-object	v1,v6,org/apache/commons/io/input/XmlStreamReader.defaultEncoding Ljava/lang/String;
+; v1 : Ljava/lang/String; , v6 : Lorg/apache/commons/io/input/XmlStreamReader;
+	goto	l11d1c4
+l11d1ce:
+.line 502
+	const-string	v1,"UTF-16"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v9,v1},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v9 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l11d202
+; v1 : single-length
+	const-string	v1,"UTF-16BE"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v8,v1},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v8 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l11d1fe
+; v1 : single-length
+	const-string	v1,"UTF-16LE"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v8,v1},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v8 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l11d202
+; v1 : single-length
+l11d1fe:
+	move-object	v7,v8
+; v7 : Ljava/lang/String; , v8 : Ljava/lang/String;
+.line 504
+	goto	l11d1c6
+l11d202:
+	move-object	v7,v9
+; v7 : Ljava/lang/String; , v9 : Ljava/lang/String;
+.line 506
+	goto	l11d1c6
+l11d206:
+.line 510
+	const-string	v1,"UTF-8"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v7,v1},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v7 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l11d28e
+; v1 : single-length
+.line 511
+	if-eqz	v8,l11d252
+; v8 : Ljava/lang/String;
+	const-string	v1,"UTF-8"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v8,v1},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v8 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l11d252
+; v1 : single-length
+.line 512
+	const-string	v1,"Invalid encoding, BOM [{0}] XML guess [{1}] XML prolog [{2}] encoding mismatch"
+; v1 : Ljava/lang/String;
+	new-array	v2,v2,[Ljava/lang/Object;
+; v2 : [Ljava/lang/Object; , v2 : [Ljava/lang/Object;
+	aput-object	v7,v2,v3
+; v7 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v3 : single-length
+	aput-object	v8,v2,v4
+; v8 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v4 : single-length
+	aput-object	v9,v2,v5
+; v9 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v1,v2},java/text/MessageFormat/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 513
+	new-instance	v1,org/apache/commons/io/input/XmlStreamReaderException
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	invoke-direct	{v1,v0,v7,v8,v9},org/apache/commons/io/input/XmlStreamReaderException/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException; , v0 : Ljava/lang/String; , v7 : Ljava/lang/String; , v8 : Ljava/lang/String; , v9 : Ljava/lang/String;
+	throw	v1
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+l11d252:
+.line 515
+	if-eqz	v9,l11d1c6
+; v9 : Ljava/lang/String;
+	const-string	v1,"UTF-8"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v9,v1},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v9 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l11d1c6
+; v1 : single-length
+.line 516
+	const-string	v1,"Invalid encoding, BOM [{0}] XML guess [{1}] XML prolog [{2}] encoding mismatch"
+; v1 : Ljava/lang/String;
+	new-array	v2,v2,[Ljava/lang/Object;
+; v2 : [Ljava/lang/Object; , v2 : [Ljava/lang/Object;
+	aput-object	v7,v2,v3
+; v7 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v3 : single-length
+	aput-object	v8,v2,v4
+; v8 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v4 : single-length
+	aput-object	v9,v2,v5
+; v9 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v1,v2},java/text/MessageFormat/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 517
+	new-instance	v1,org/apache/commons/io/input/XmlStreamReaderException
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	invoke-direct	{v1,v0,v7,v8,v9},org/apache/commons/io/input/XmlStreamReaderException/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException; , v0 : Ljava/lang/String; , v7 : Ljava/lang/String; , v8 : Ljava/lang/String; , v9 : Ljava/lang/String;
+	throw	v1
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+l11d28e:
+.line 523
+	const-string	v1,"UTF-16BE"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v7,v1},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v7 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l11d2ae
+; v1 : single-length
+	const-string	v1,"UTF-16LE"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v7,v1},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v7 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l11d32e
+; v1 : single-length
+l11d2ae:
+.line 524
+	if-eqz	v8,l11d2e6
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v8,v7},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v8 : Ljava/lang/String; , v7 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l11d2e6
+; v1 : single-length
+.line 525
+	const-string	v1,"Invalid encoding, BOM [{0}] XML guess [{1}] XML prolog [{2}] encoding mismatch"
+; v1 : Ljava/lang/String;
+	new-array	v2,v2,[Ljava/lang/Object;
+; v2 : [Ljava/lang/Object; , v2 : [Ljava/lang/Object;
+	aput-object	v7,v2,v3
+; v7 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v3 : single-length
+	aput-object	v8,v2,v4
+; v8 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v4 : single-length
+	aput-object	v9,v2,v5
+; v9 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v1,v2},java/text/MessageFormat/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 526
+	new-instance	v1,org/apache/commons/io/input/XmlStreamReaderException
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	invoke-direct	{v1,v0,v7,v8,v9},org/apache/commons/io/input/XmlStreamReaderException/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException; , v0 : Ljava/lang/String; , v7 : Ljava/lang/String; , v8 : Ljava/lang/String; , v9 : Ljava/lang/String;
+	throw	v1
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+l11d2e6:
+.line 528
+	if-eqz	v9,l11d1c6
+; v9 : Ljava/lang/String;
+	const-string	v1,"UTF-16"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v9,v1},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v9 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l11d1c6
+; v1 : single-length
+	invoke-virtual	{v9,v7},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v9 : Ljava/lang/String; , v7 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l11d1c6
+; v1 : single-length
+.line 529
+	const-string	v1,"Invalid encoding, BOM [{0}] XML guess [{1}] XML prolog [{2}] encoding mismatch"
+; v1 : Ljava/lang/String;
+	new-array	v2,v2,[Ljava/lang/Object;
+; v2 : [Ljava/lang/Object; , v2 : [Ljava/lang/Object;
+	aput-object	v7,v2,v3
+; v7 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v3 : single-length
+	aput-object	v8,v2,v4
+; v8 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v4 : single-length
+	aput-object	v9,v2,v5
+; v9 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v1,v2},java/text/MessageFormat/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 530
+	new-instance	v1,org/apache/commons/io/input/XmlStreamReaderException
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	invoke-direct	{v1,v0,v7,v8,v9},org/apache/commons/io/input/XmlStreamReaderException/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException; , v0 : Ljava/lang/String; , v7 : Ljava/lang/String; , v8 : Ljava/lang/String; , v9 : Ljava/lang/String;
+	throw	v1
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+l11d32e:
+.line 536
+	const-string	v1,"Invalid encoding, BOM [{0}] XML guess [{1}] XML prolog [{2}] unknown BOM"
+; v1 : Ljava/lang/String;
+	new-array	v2,v2,[Ljava/lang/Object;
+; v2 : [Ljava/lang/Object; , v2 : [Ljava/lang/Object;
+	aput-object	v7,v2,v3
+; v7 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v3 : single-length
+	aput-object	v8,v2,v4
+; v8 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v4 : single-length
+	aput-object	v9,v2,v5
+; v9 : Ljava/lang/String; , v2 : [Ljava/lang/Object; , v5 : single-length
+	invoke-static	{v1,v2},java/text/MessageFormat/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 537
+	new-instance	v1,org/apache/commons/io/input/XmlStreamReaderException
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+	invoke-direct	{v1,v0,v7,v8,v9},org/apache/commons/io/input/XmlStreamReaderException/<init>	; <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException; , v0 : Ljava/lang/String; , v7 : Ljava/lang/String; , v8 : Ljava/lang/String; , v9 : Ljava/lang/String;
+	throw	v1
+; v1 : Lorg/apache/commons/io/input/XmlStreamReaderException;
+.end method
+
+.method public close()V
+.throws Ljava/io/IOException;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/input/XmlStreamReader;)
+.line 397
+	iget-object	v0,v1,org/apache/commons/io/input/XmlStreamReader.reader Ljava/io/Reader;
+; v0 : Ljava/io/Reader; , v1 : Lorg/apache/commons/io/input/XmlStreamReader;
+	invoke-virtual	{v0},java/io/Reader/close	; close()V
+; v0 : Ljava/io/Reader;
+.line 398
+	return-void	
+.end method
+
+.method public getDefaultEncoding()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/input/XmlStreamReader;)
+.line 109
+	iget-object	v0,v1,org/apache/commons/io/input/XmlStreamReader.defaultEncoding Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/apache/commons/io/input/XmlStreamReader;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getEncoding()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/input/XmlStreamReader;)
+.line 374
+	iget-object	v0,v1,org/apache/commons/io/input/XmlStreamReader.encoding Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/apache/commons/io/input/XmlStreamReader;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public read([CII)I
+.throws Ljava/io/IOException;
+.limit registers 5
+; this: v1 (Lorg/apache/commons/io/input/XmlStreamReader;)
+; parameter[0] : v2 ([C)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+.line 387
+	iget-object	v0,v1,org/apache/commons/io/input/XmlStreamReader.reader Ljava/io/Reader;
+; v0 : Ljava/io/Reader; , v1 : Lorg/apache/commons/io/input/XmlStreamReader;
+	invoke-virtual	{v0,v2,v3,v4},java/io/Reader/read	; read([CII)I
+; v0 : Ljava/io/Reader; , v2 : [C , v3 : single-length , v4 : single-length
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+

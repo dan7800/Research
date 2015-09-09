@@ -1,0 +1,129 @@
+.class org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer
+.super org/apache/commons/codec/language/ColognePhonetic$CologneBuffer
+.source ColognePhonetic.java
+
+.inner class CologneInputBuffer inner org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer outer org/apache/commons/codec/language/ColognePhonetic
+.field final this$0 Lorg/apache/commons/codec/language/ColognePhonetic;
+
+.method public <init>(Lorg/apache/commons/codec/language/ColognePhonetic;[C)V
+.limit registers 3
+; this: v0 (Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;)
+; parameter[0] : v1 (Lorg/apache/commons/codec/language/ColognePhonetic;)
+; parameter[1] : v2 ([C)
+.line 234
+	iput-object	v1,v0,org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer.this$0 Lorg/apache/commons/codec/language/ColognePhonetic;
+; v1 : Lorg/apache/commons/codec/language/ColognePhonetic; , v0 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+.line 235
+	invoke-direct	{v0,v1,v2},org/apache/commons/codec/language/ColognePhonetic$CologneBuffer/<init>	; <init>(Lorg/apache/commons/codec/language/ColognePhonetic;[C)V
+; v0 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer; , v1 : Lorg/apache/commons/codec/language/ColognePhonetic; , v2 : [C
+.line 236
+	return-void	
+.end method
+
+.method public addLeft(C)V
+.limit registers 4
+; this: v2 (Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;)
+; parameter[0] : v3 (C)
+.line 239
+	iget	v0,v2,org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer.length I
+; v0 : single-length , v2 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	iput	v0,v2,org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer.length I
+; v0 : single-length , v2 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+.line 240
+	iget-object	v0,v2,org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer.data [C
+; v0 : [C , v2 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+	invoke-virtual	{v2},org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer/getNextPos	; getNextPos()I
+; v2 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+	move-result	v1
+; v1 : single-length
+	aput-char	v3,v0,v1
+; v3 : single-length , v0 : [C , v1 : single-length
+.line 241
+	return-void	
+.end method
+
+.method protected copyData(II)[C
+.limit registers 7
+; this: v4 (Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;)
+; parameter[0] : v5 (I)
+; parameter[1] : v6 (I)
+.line 245
+	new-array	v0,v6,[C
+; v0 : [C , v6 : single-length
+.line 246
+	iget-object	v1,v4,org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer.data [C
+; v1 : [C , v4 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+	iget-object	v2,v4,org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer.data [C
+; v2 : [C , v4 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+	array-length	v2,v2
+; v2 : single-length , v2 : single-length
+	iget	v3,v4,org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer.length I
+; v3 : single-length , v4 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+	sub-int/2addr	v2,v3
+; v2 : single-length , v3 : single-length
+	add-int/2addr	v2,v5
+; v2 : single-length , v5 : single-length
+	const/4	v3,0
+; v3 : single-length
+	invoke-static	{v1,v2,v0,v3,v6},java/lang/System/arraycopy	; arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+; v1 : [C , v2 : single-length , v0 : [C , v3 : single-length , v6 : single-length
+.line 247
+	return-object	v0
+; v0 : [C
+.end method
+
+.method public getNextChar()C
+.limit registers 3
+; this: v2 (Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;)
+.line 251
+	iget-object	v0,v2,org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer.data [C
+; v0 : [C , v2 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+	invoke-virtual	{v2},org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer/getNextPos	; getNextPos()I
+; v2 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+	move-result	v1
+; v1 : single-length
+	aget-char	v0,v0,v1
+; v0 : single-length , v0 : single-length , v1 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method protected getNextPos()I
+.limit registers 3
+; this: v2 (Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;)
+.line 255
+	iget-object	v0,v2,org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer.data [C
+; v0 : [C , v2 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+	array-length	v0,v0
+; v0 : single-length , v0 : single-length
+	iget	v1,v2,org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer.length I
+; v1 : single-length , v2 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+	sub-int/2addr	v0,v1
+; v0 : single-length , v1 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public removeNext()C
+.limit registers 3
+; this: v2 (Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;)
+.line 259
+	invoke-virtual	{v2},org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer/getNextChar	; getNextChar()C
+; v2 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+	move-result	v0
+; v0 : single-length
+.line 260
+	iget	v1,v2,org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer.length I
+; v1 : single-length , v2 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+	add-int/lit8	v1,v1,255
+; v1 : single-length , v1 : single-length
+	iput	v1,v2,org/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer.length I
+; v1 : single-length , v2 : Lorg/apache/commons/codec/language/ColognePhonetic$CologneInputBuffer;
+.line 261
+	return	v0
+; v0 : single-length
+.end method
+
+

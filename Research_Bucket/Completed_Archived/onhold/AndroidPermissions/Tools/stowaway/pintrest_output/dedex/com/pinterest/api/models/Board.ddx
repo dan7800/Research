@@ -1,0 +1,1583 @@
+.class public com/pinterest/api/models/Board
+.super java/lang/Object
+.source Board.java
+.implements android/os/Parcelable
+
+.inner class Stats inner com/pinterest/api/models/Board$Stats outer com/pinterest/api/models/Board
+.field public static final CREATOR Landroid/os/Parcelable$Creator;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Landroid/os/Parcelable$Creator" , "<" , "Lcom/pinterest/api/models/Board;" , ">;" }
+  .end annotation
+.end field
+.field private static final boardCache Ljava/util/Map;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "Lcom/pinterest/api/models/BoardData;" , ">;" }
+  .end annotation
+.end field
+.field private id Ljava/lang/String;
+.field private partial Z
+
+.method static <clinit>()V
+.limit registers 1
+.line 23
+	new-instance	v0,java/util/HashMap
+; v0 : Ljava/util/HashMap;
+	invoke-direct	{v0},java/util/HashMap/<init>	; <init>()V
+; v0 : Ljava/util/HashMap;
+	sput-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+.line 45
+	new-instance	v0,com/pinterest/api/models/Board$1
+; v0 : Lcom/pinterest/api/models/Board$1;
+	invoke-direct	{v0},com/pinterest/api/models/Board$1/<init>	; <init>()V
+; v0 : Lcom/pinterest/api/models/Board$1;
+	sput-object	v0,com/pinterest/api/models/Board.CREATOR Landroid/os/Parcelable$Creator;
+; v0 : Landroid/os/Parcelable$Creator;
+	return-void	
+.end method
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/api/models/Board;)
+.line 32
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lcom/pinterest/api/models/Board;
+.line 33
+	return-void	
+.end method
+
+.method public <init>(Landroid/os/Parcel;)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v1 (Landroid/os/Parcel;)
+.line 60
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lcom/pinterest/api/models/Board;
+.line 61
+	invoke-direct	{v0,v1},com/pinterest/api/models/Board/readFromParcel	; readFromParcel(Landroid/os/Parcel;)V
+; v0 : Lcom/pinterest/api/models/Board; , v1 : Landroid/os/Parcel;
+.line 62
+	return-void	
+.end method
+
+.method public static makeBoard(Lorg/json/JSONObject;)Lcom/pinterest/api/models/Board;
+.limit registers 8
+; parameter[0] : v7 (Lorg/json/JSONObject;)
+.var 4 is user Lorg/json/JSONObject; from lee5ee to lee604
+	const/4	v6,0
+; v6 : single-length
+.line 362
+	new-instance	v1,com/pinterest/api/models/BoardData
+; v1 : Lcom/pinterest/api/models/BoardData;
+	invoke-direct	{v1},com/pinterest/api/models/BoardData/<init>	; <init>()V
+; v1 : Lcom/pinterest/api/models/BoardData;
+.line 363
+	if-nez	v7,lee47c
+; v7 : Lorg/json/JSONObject;
+	new-instance	v0,com/pinterest/api/models/Board
+; v0 : Lcom/pinterest/api/models/Board;
+	invoke-direct	{v0},com/pinterest/api/models/Board/<init>	; <init>()V
+; v0 : Lcom/pinterest/api/models/Board;
+lee47a:
+.line 405
+	return-object	v0
+; v0 : Lcom/pinterest/api/models/Board;
+lee47c:
+.line 366
+	const-string	v5,"status"
+; v5 : Ljava/lang/String;
+	invoke-static	{v7,v5},com/pinterest/kit/json/PJSONUtils/cleanString	; cleanString(Lorg/json/JSONObject;Ljava/lang/String;)Ljava/lang/String;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setStatus	; setStatus(Ljava/lang/String;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/lang/String;
+.line 368
+	const-string	v5,"pagination"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v7,v5},org/json/JSONObject/optJSONObject	; optJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Lorg/json/JSONObject;
+.line 369
+	if-eqz	v2,lee4b0
+; v2 : Lorg/json/JSONObject;
+.line 370
+	const-string	v5,"next"
+; v5 : Ljava/lang/String;
+	invoke-static	{v2,v5},com/pinterest/kit/json/PJSONUtils/cleanString	; cleanString(Lorg/json/JSONObject;Ljava/lang/String;)Ljava/lang/String;
+; v2 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setNextUrl	; setNextUrl(Ljava/lang/String;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/lang/String;
+lee4b0:
+.line 372
+	const-string	v5,"pins"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v7,v5},org/json/JSONObject/optJSONArray	; optJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Lorg/json/JSONArray;
+.line 373
+	if-eqz	v3,lee4cc
+; v3 : Lorg/json/JSONArray;
+.line 374
+	const-string	v5,"board"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v7,v5},org/json/JSONObject/optJSONObject	; optJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Lorg/json/JSONObject;
+lee4cc:
+.line 377
+	const-string	v5,"category"
+; v5 : Ljava/lang/String;
+	invoke-static	{v7,v5},com/pinterest/kit/json/PJSONUtils/cleanString	; cleanString(Lorg/json/JSONObject;Ljava/lang/String;)Ljava/lang/String;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setCategory	; setCategory(Ljava/lang/String;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/lang/String;
+.line 378
+	const-string	v5,"description"
+; v5 : Ljava/lang/String;
+	invoke-static	{v7,v5},com/pinterest/kit/json/PJSONUtils/cleanString	; cleanString(Lorg/json/JSONObject;Ljava/lang/String;)Ljava/lang/String;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setDescription	; setDescription(Ljava/lang/String;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/lang/String;
+.line 379
+	const-string	v5,"id"
+; v5 : Ljava/lang/String;
+	invoke-static	{v7,v5},com/pinterest/kit/json/PJSONUtils/cleanString	; cleanString(Lorg/json/JSONObject;Ljava/lang/String;)Ljava/lang/String;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setId	; setId(Ljava/lang/String;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/lang/String;
+.line 380
+	const-string	v5,"name"
+; v5 : Ljava/lang/String;
+	invoke-static	{v7,v5},com/pinterest/kit/json/PJSONUtils/cleanString	; cleanString(Lorg/json/JSONObject;Ljava/lang/String;)Ljava/lang/String;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setName	; setName(Ljava/lang/String;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/lang/String;
+.line 381
+	const-string	v5,"url"
+; v5 : Ljava/lang/String;
+	invoke-static	{v7,v5},com/pinterest/kit/json/PJSONUtils/cleanString	; cleanString(Lorg/json/JSONObject;Ljava/lang/String;)Ljava/lang/String;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setUrl	; setUrl(Ljava/lang/String;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/lang/String;
+.line 382
+	const-string	v5,"is_following"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v7,v5,v6},org/json/JSONObject/optBoolean	; optBoolean(Ljava/lang/String;Z)Z
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String; , v6 : single-length
+	move-result	v5
+; v5 : single-length
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setFollowing	; setFollowing(Z)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : single-length
+.line 383
+	const-string	v5,"user_id"
+; v5 : Ljava/lang/String;
+	invoke-static	{v7,v5},com/pinterest/kit/json/PJSONUtils/cleanString	; cleanString(Lorg/json/JSONObject;Ljava/lang/String;)Ljava/lang/String;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setUserId	; setUserId(Ljava/lang/String;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/lang/String;
+.line 384
+	const-string	v5,"is_collaborator"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v7,v5,v6},org/json/JSONObject/optBoolean	; optBoolean(Ljava/lang/String;Z)Z
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String; , v6 : single-length
+	move-result	v5
+; v5 : single-length
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setCollaborator	; setCollaborator(Z)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : single-length
+.line 385
+	const-string	v5,"stats"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v7,v5},org/json/JSONObject/optJSONObject	; optJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Lorg/json/JSONObject;
+	invoke-static	{v5},com/pinterest/api/models/Board$Stats/getStats	; getStats(Lorg/json/JSONObject;)Lcom/pinterest/api/models/Board$Stats;
+; v5 : Lorg/json/JSONObject;
+	move-result-object	v5
+; v5 : Lcom/pinterest/api/models/Board$Stats;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setStats	; setStats(Lcom/pinterest/api/models/Board$Stats;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Lcom/pinterest/api/models/Board$Stats;
+.line 386
+	const-string	v5,"thumbnails"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v7,v5},org/json/JSONObject/optJSONArray	; optJSONArray(Ljava/lang/String;)Lorg/json/JSONArray;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Lorg/json/JSONArray;
+	invoke-static	{v5},com/pinterest/api/models/Board/makeBoardThumbnails	; makeBoardThumbnails(Lorg/json/JSONArray;)Ljava/util/List;
+; v5 : Lorg/json/JSONArray;
+	move-result-object	v5
+; v5 : Ljava/util/List;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setThumbnails	; setThumbnails(Ljava/util/List;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/util/List;
+.line 387
+	invoke-static	{v3},com/pinterest/api/models/Pin/getPins	; getPins(Lorg/json/JSONArray;)Ljava/util/ArrayList;
+; v3 : Lorg/json/JSONArray;
+	move-result-object	v5
+; v5 : Ljava/util/ArrayList;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setPins	; setPins(Ljava/util/ArrayList;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/util/ArrayList;
+.line 388
+	const-string	v5,"thumbnail_url"
+; v5 : Ljava/lang/String;
+	invoke-static	{v7,v5},com/pinterest/kit/json/PJSONUtils/cleanString	; cleanString(Lorg/json/JSONObject;Ljava/lang/String;)Ljava/lang/String;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setThumbnailUrl	; setThumbnailUrl(Ljava/lang/String;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/lang/String;
+.line 389
+	const-string	v5,"thumbnail_large_url"
+; v5 : Ljava/lang/String;
+	invoke-static	{v7,v5},com/pinterest/kit/json/PJSONUtils/cleanString	; cleanString(Lorg/json/JSONObject;Ljava/lang/String;)Ljava/lang/String;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setThumbnailLargeUrl	; setThumbnailLargeUrl(Ljava/lang/String;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/lang/String;
+.line 391
+	invoke-virtual	{v1},com/pinterest/api/models/BoardData/getUserId	; getUserId()Ljava/lang/String;
+; v1 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	if-eqz	v5,lee5e2
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1},com/pinterest/api/models/BoardData/getUserId	; getUserId()Ljava/lang/String;
+; v1 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v5},java/lang/String/length	; length()I
+; v5 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	if-nez	v5,lee604
+; v5 : single-length
+lee5e2:
+.line 393
+	const-string	v5,"user"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v7,v5},org/json/JSONObject/optJSONObject	; optJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Lorg/json/JSONObject;
+.line 394
+	if-eqz	v4,lee604
+; v4 : Lorg/json/JSONObject;
+	const-string	v5,"id"
+; v5 : Ljava/lang/String;
+	invoke-static	{v7,v5},com/pinterest/kit/json/PJSONUtils/cleanString	; cleanString(Lorg/json/JSONObject;Ljava/lang/String;)Ljava/lang/String;
+; v7 : Lorg/json/JSONObject; , v5 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/setUserId	; setUserId(Ljava/lang/String;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Ljava/lang/String;
+lee604:
+.line 397
+	invoke-static	{v7},com/pinterest/kit/json/PJSONUtils/cleanJSON	; cleanJSON(Lorg/json/JSONObject;)V
+; v7 : Lorg/json/JSONObject;
+.line 398
+	const/4	v7,0
+; v7 : single-length
+.line 400
+	sget-object	v5,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v5 : Ljava/util/Map;
+	invoke-virtual	{v1},com/pinterest/api/models/BoardData/getId	; getId()Ljava/lang/String;
+; v1 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-interface	{v5,v6},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v5 : Ljava/util/Map; , v6 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Ljava/lang/Object;
+	check-cast	v5,com/pinterest/api/models/BoardData
+; v5 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v1,v5},com/pinterest/api/models/BoardData/merge	; merge(Lcom/pinterest/api/models/BoardData;)V
+; v1 : Lcom/pinterest/api/models/BoardData; , v5 : Lcom/pinterest/api/models/BoardData;
+.line 401
+	sget-object	v5,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v5 : Ljava/util/Map;
+	invoke-virtual	{v1},com/pinterest/api/models/BoardData/getId	; getId()Ljava/lang/String;
+; v1 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-interface	{v5,v6,v1},java/util/Map/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v5 : Ljava/util/Map; , v6 : Ljava/lang/String; , v1 : Lcom/pinterest/api/models/BoardData;
+.line 403
+	new-instance	v0,com/pinterest/api/models/Board
+; v0 : Lcom/pinterest/api/models/Board;
+	invoke-direct	{v0},com/pinterest/api/models/Board/<init>	; <init>()V
+; v0 : Lcom/pinterest/api/models/Board;
+.line 404
+	invoke-virtual	{v1},com/pinterest/api/models/BoardData/getId	; getId()Ljava/lang/String;
+; v1 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	iput-object	v5,v0,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v5 : Ljava/lang/String; , v0 : Lcom/pinterest/api/models/Board;
+	goto/16	lee47a
+.end method
+
+.method public static makeBoardThumbnails(Lorg/json/JSONArray;)Ljava/util/List;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/json/JSONArray;" , ")" , "Ljava/util/List" , "<" , "Ljava/lang/String;" , ">;" }
+.end annotation
+.limit registers 6
+; parameter[0] : v5 (Lorg/json/JSONArray;)
+.line 410
+	new-instance	v2,java/util/ArrayList
+; v2 : Ljava/util/ArrayList;
+	invoke-direct	{v2},java/util/ArrayList/<init>	; <init>()V
+; v2 : Ljava/util/ArrayList;
+.line 411
+	if-nez	v5,lee678
+; v5 : Lorg/json/JSONArray;
+lee676:
+.line 421
+	return-object	v2
+; v2 : Ljava/util/ArrayList;
+lee678:
+.line 413
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v5},org/json/JSONArray/length	; length()I
+; v5 : Lorg/json/JSONArray;
+	move-result	v1
+; v1 : single-length
+lee682:
+	if-ge	v0,v1,lee6c0
+; v0 : single-length , v1 : single-length
+.line 415
+	new-instance	v4,java/lang/String
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v5,v0},org/json/JSONArray/optString	; optString(I)Ljava/lang/String;
+; v5 : Lorg/json/JSONArray; , v0 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v3},java/lang/String/toCharArray	; toCharArray()[C
+; v3 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : [C
+	invoke-virtual	{v3},[C/clone	; clone()Ljava/lang/Object;
+; v3 : [C
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,[C
+; v3 : [C
+	invoke-direct	{v4,v3},java/lang/String/<init>	; <init>([C)V
+; v4 : Ljava/lang/String; , v3 : [C
+	invoke-static	{v4},com/pinterest/kit/network/PAPIClient/getAssetUrl	; getAssetUrl(Ljava/lang/String;)Ljava/lang/String;
+; v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-interface	{v2,v3},java/util/List/add	; add(Ljava/lang/Object;)Z
+; v2 : Ljava/util/ArrayList; , v3 : Ljava/lang/String;
+.line 413
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	lee682
+lee6c0:
+.line 418
+	invoke-static	{v5},com/pinterest/kit/json/PJSONUtils/cleanJSON	; cleanJSON(Lorg/json/JSONArray;)V
+; v5 : Lorg/json/JSONArray;
+.line 419
+	const/4	v5,0
+; v5 : single-length
+.line 421
+	goto	lee676
+.end method
+
+.method public static makeBoardTitles(Lorg/json/JSONArray;)Ljava/util/List;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/json/JSONArray;" , ")" , "Ljava/util/List" , "<" , "Ljava/lang/String;" , ">;" }
+.end annotation
+.limit registers 5
+; parameter[0] : v4 (Lorg/json/JSONArray;)
+.catch org/json/JSONException from lee6ec to lee71e using lee724
+.var 0 is i I from lee6f8 to lee724
+.var 1 is titles Ljava/util/ArrayList; from lee6f6 to lee724
+.line 426
+	if-nez	v4,lee6ec
+; v4 : Lorg/json/JSONArray;
+.line 427
+	new-instance	v1,java/util/ArrayList
+; v1 : Ljava/util/ArrayList;
+	invoke-direct	{v1},java/util/ArrayList/<init>	; <init>()V
+; v1 : Ljava/util/ArrayList;
+lee6ea:
+.line 436
+	return-object	v1
+; v1 : Ljava/util/ArrayList;
+lee6ec:
+.line 430
+	new-instance	v1,java/util/ArrayList
+; v1 : Ljava/util/ArrayList;
+	invoke-direct	{v1},java/util/ArrayList/<init>	; <init>()V
+; v1 : Ljava/util/ArrayList;
+.line 431
+	const/4	v0,0
+; v0 : single-length
+lee6f8:
+	invoke-virtual	{v4},org/json/JSONArray/length	; length()I
+; v4 : Lorg/json/JSONArray;
+	move-result	v2
+; v2 : single-length
+	if-ge	v0,v2,lee6ea
+; v0 : single-length , v2 : single-length
+.line 432
+	invoke-virtual	{v4,v0},org/json/JSONArray/getJSONObject	; getJSONObject(I)Lorg/json/JSONObject;
+; v4 : Lorg/json/JSONArray; , v0 : single-length
+	move-result-object	v2
+; v2 : Lorg/json/JSONObject;
+	const-string	v3,"name"
+; v3 : Ljava/lang/String;
+	invoke-static	{v2,v3},com/pinterest/kit/json/PJSONUtils/cleanString	; cleanString(Lorg/json/JSONObject;Ljava/lang/String;)Ljava/lang/String;
+; v2 : Lorg/json/JSONObject; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v1 : Ljava/util/ArrayList; , v2 : Ljava/lang/String;
+lee71e:
+.line 431
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	lee6f8
+lee724:
+.line 434
+	move-exception	v2
+; v2 : org/json/JSONException
+.line 436
+	new-instance	v1,java/util/ArrayList
+; v1 : Ljava/util/ArrayList;
+	invoke-direct	{v1},java/util/ArrayList/<init>	; <init>()V
+; v1 : Ljava/util/ArrayList;
+	goto	lee6ea
+.end method
+
+.method public static makeBoards(Lorg/json/JSONArray;)Ljava/util/ArrayList;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lorg/json/JSONArray;" , ")" , "Ljava/util/ArrayList" , "<" , "Lcom/pinterest/api/models/Board;" , ">;" }
+.end annotation
+.limit registers 5
+; parameter[0] : v4 (Lorg/json/JSONArray;)
+.line 350
+	new-instance	v0,java/util/ArrayList
+; v0 : Ljava/util/ArrayList;
+	invoke-direct	{v0},java/util/ArrayList/<init>	; <init>()V
+; v0 : Ljava/util/ArrayList;
+.line 351
+	if-nez	v4,lee764
+; v4 : Lorg/json/JSONArray;
+lee762:
+.line 357
+	return-object	v0
+; v0 : Ljava/util/ArrayList;
+lee764:
+.line 353
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v4},org/json/JSONArray/length	; length()I
+; v4 : Lorg/json/JSONArray;
+	move-result	v2
+; v2 : single-length
+lee76e:
+	if-ge	v1,v2,lee762
+; v1 : single-length , v2 : single-length
+.line 355
+	invoke-virtual	{v4,v1},org/json/JSONArray/optJSONObject	; optJSONObject(I)Lorg/json/JSONObject;
+; v4 : Lorg/json/JSONArray; , v1 : single-length
+	move-result-object	v3
+; v3 : Lorg/json/JSONObject;
+	invoke-static	{v3},com/pinterest/api/models/Board/makeBoard	; makeBoard(Lorg/json/JSONObject;)Lcom/pinterest/api/models/Board;
+; v3 : Lorg/json/JSONObject;
+	move-result-object	v3
+; v3 : Lcom/pinterest/api/models/Board;
+	invoke-virtual	{v0,v3},java/util/ArrayList/add	; add(Ljava/lang/Object;)Z
+; v0 : Ljava/util/ArrayList; , v3 : Lcom/pinterest/api/models/Board;
+.line 353
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	lee76e
+.end method
+
+.method private readFromParcel(Landroid/os/Parcel;)V
+.limit registers 7
+; this: v5 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v6 (Landroid/os/Parcel;)
+	const/4	v3,0
+; v3 : single-length
+	const/4	v2,1
+; v2 : single-length
+.line 94
+	new-instance	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-direct	{v0},com/pinterest/api/models/BoardData/<init>	; <init>()V
+; v0 : Lcom/pinterest/api/models/BoardData;
+.line 95
+	invoke-virtual	{v6},android/os/Parcel/readString	; readString()Ljava/lang/String;
+; v6 : Landroid/os/Parcel;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setThumbnailUrl	; setThumbnailUrl(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : Ljava/lang/String;
+.line 96
+	invoke-virtual	{v6},android/os/Parcel/readString	; readString()Ljava/lang/String;
+; v6 : Landroid/os/Parcel;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setThumbnailLargeUrl	; setThumbnailLargeUrl(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : Ljava/lang/String;
+.line 97
+	invoke-virtual	{v6},android/os/Parcel/readString	; readString()Ljava/lang/String;
+; v6 : Landroid/os/Parcel;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setCategory	; setCategory(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : Ljava/lang/String;
+.line 98
+	invoke-virtual	{v6},android/os/Parcel/readString	; readString()Ljava/lang/String;
+; v6 : Landroid/os/Parcel;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setDescription	; setDescription(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : Ljava/lang/String;
+.line 99
+	invoke-virtual	{v6},android/os/Parcel/readString	; readString()Ljava/lang/String;
+; v6 : Landroid/os/Parcel;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setId	; setId(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : Ljava/lang/String;
+.line 100
+	invoke-virtual	{v6},android/os/Parcel/readString	; readString()Ljava/lang/String;
+; v6 : Landroid/os/Parcel;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setName	; setName(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : Ljava/lang/String;
+.line 101
+	invoke-virtual	{v6},android/os/Parcel/readString	; readString()Ljava/lang/String;
+; v6 : Landroid/os/Parcel;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setUrl	; setUrl(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : Ljava/lang/String;
+.line 102
+	invoke-virtual	{v6},android/os/Parcel/readByte	; readByte()B
+; v6 : Landroid/os/Parcel;
+	move-result	v1
+; v1 : single-length
+	if-ne	v1,v2,lee8f6
+; v1 : single-length , v2 : single-length
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+lee81e:
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setFollowing	; setFollowing(Z)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : single-length
+.line 103
+	invoke-virtual	{v6},android/os/Parcel/readString	; readString()Ljava/lang/String;
+; v6 : Landroid/os/Parcel;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setUserId	; setUserId(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : Ljava/lang/String;
+.line 104
+	const-class	v1,com/pinterest/api/models/Board$Stats
+; v1 : Ljava/lang/Class;
+	invoke-virtual	{v1},java/lang/Class/getClassLoader	; getClassLoader()Ljava/lang/ClassLoader;
+; v1 : Ljava/lang/Class;
+	move-result-object	v1
+; v1 : Ljava/lang/ClassLoader;
+	invoke-virtual	{v6,v1},android/os/Parcel/readParcelable	; readParcelable(Ljava/lang/ClassLoader;)Landroid/os/Parcelable;
+; v6 : Landroid/os/Parcel; , v1 : Ljava/lang/ClassLoader;
+	move-result-object	v1
+; v1 : Landroid/os/Parcelable;
+	check-cast	v1,com/pinterest/api/models/Board$Stats
+; v1 : Lcom/pinterest/api/models/Board$Stats;
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setStats	; setStats(Lcom/pinterest/api/models/Board$Stats;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : Lcom/pinterest/api/models/Board$Stats;
+.line 105
+	invoke-virtual	{v6},android/os/Parcel/readByte	; readByte()B
+; v6 : Landroid/os/Parcel;
+	move-result	v1
+; v1 : single-length
+	if-ne	v1,v2,lee8fa
+; v1 : single-length , v2 : single-length
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+lee85e:
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setCollaborator	; setCollaborator(Z)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : single-length
+.line 106
+	new-instance	v1,java/util/ArrayList
+; v1 : Ljava/util/ArrayList;
+	invoke-direct	{v1},java/util/ArrayList/<init>	; <init>()V
+; v1 : Ljava/util/ArrayList;
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setThumbnails	; setThumbnails(Ljava/util/List;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : Ljava/util/ArrayList;
+.line 107
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getThumbnails	; getThumbnails()Ljava/util/List;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/util/List;
+	const/4	v4,0
+; v4 : single-length
+	invoke-virtual	{v6,v1,v4},android/os/Parcel/readList	; readList(Ljava/util/List;Ljava/lang/ClassLoader;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/util/List; , v4 : single-length
+.line 108
+	new-instance	v1,java/util/ArrayList
+; v1 : Ljava/util/ArrayList;
+	invoke-direct	{v1},java/util/ArrayList/<init>	; <init>()V
+; v1 : Ljava/util/ArrayList;
+	invoke-virtual	{v0,v1},com/pinterest/api/models/BoardData/setPins	; setPins(Ljava/util/ArrayList;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v1 : Ljava/util/ArrayList;
+.line 109
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getPins	; getPins()Ljava/util/ArrayList;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/util/ArrayList;
+	const-class	v4,com/pinterest/api/models/Pin
+; v4 : Ljava/lang/Class;
+	invoke-virtual	{v4},java/lang/Class/getClassLoader	; getClassLoader()Ljava/lang/ClassLoader;
+; v4 : Ljava/lang/Class;
+	move-result-object	v4
+; v4 : Ljava/lang/ClassLoader;
+	invoke-virtual	{v6,v1,v4},android/os/Parcel/readList	; readList(Ljava/util/List;Ljava/lang/ClassLoader;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/util/ArrayList; , v4 : Ljava/lang/ClassLoader;
+.line 111
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getId	; getId()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	iput-object	v1,v5,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v5 : Lcom/pinterest/api/models/Board;
+.line 112
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getPins	; getPins()Ljava/util/ArrayList;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/util/ArrayList;
+	invoke-virtual	{v1},java/util/ArrayList/size	; size()I
+; v1 : Ljava/util/ArrayList;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,lee8fe
+; v1 : single-length
+lee8ce:
+	iput-boolean	v2,v5,com/pinterest/api/models/Board.partial Z
+; v2 : single-length , v5 : Lcom/pinterest/api/models/Board;
+.line 113
+	sget-object	v1,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v1 : Ljava/util/Map;
+	iget-object	v2,v5,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v2 : Ljava/lang/String; , v5 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v1,v2},java/util/Map/containsKey	; containsKey(Ljava/lang/Object;)Z
+; v1 : Ljava/util/Map; , v2 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,lee8f4
+; v1 : single-length
+	sget-object	v1,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v1 : Ljava/util/Map;
+	iget-object	v2,v5,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v2 : Ljava/lang/String; , v5 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v1,v2,v0},java/util/Map/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/Map; , v2 : Ljava/lang/String; , v0 : Lcom/pinterest/api/models/BoardData;
+lee8f4:
+.line 114
+	return-void	
+lee8f6:
+	move	v1,v3
+; v1 : single-length , v3 : single-length
+.line 102
+	goto	lee81e
+lee8fa:
+	move	v1,v3
+; v1 : single-length , v3 : single-length
+.line 105
+	goto	lee85e
+lee8fe:
+	move	v2,v3
+; v2 : single-length , v3 : single-length
+.line 112
+	goto	lee8ce
+.end method
+
+.method public describeContents()I
+.limit registers 2
+; this: v1 (Lcom/pinterest/api/models/Board;)
+.line 67
+	const/4	v0,0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getCategory()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 122
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getCategory	; getCategory()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getCover()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 37
+	invoke-virtual	{v2},com/pinterest/api/models/Board/getThumbnails	; getThumbnails()Ljava/util/List;
+; v2 : Lcom/pinterest/api/models/Board;
+	move-result-object	v0
+; v0 : Ljava/util/List;
+	if-eqz	v0,lee990
+; v0 : Ljava/util/List;
+	invoke-virtual	{v2},com/pinterest/api/models/Board/getThumbnails	; getThumbnails()Ljava/util/List;
+; v2 : Lcom/pinterest/api/models/Board;
+	move-result-object	v0
+; v0 : Ljava/util/List;
+	invoke-interface	{v0},java/util/List/isEmpty	; isEmpty()Z
+; v0 : Ljava/util/List;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,lee990
+; v0 : single-length
+.line 38
+	invoke-virtual	{v2},com/pinterest/api/models/Board/getThumbnails	; getThumbnails()Ljava/util/List;
+; v2 : Lcom/pinterest/api/models/Board;
+	move-result-object	v0
+; v0 : Ljava/util/List;
+	const/4	v1,0
+; v1 : single-length
+	invoke-interface	{v0,v1},java/util/List/get	; get(I)Ljava/lang/Object;
+; v0 : Ljava/util/List; , v1 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/lang/String
+; v0 : Ljava/lang/String;
+lee98e:
+.line 39
+	return-object	v0
+; v0 : Ljava/lang/String;
+lee990:
+	const-string	v0,""
+; v0 : Ljava/lang/String;
+	goto	lee98e
+.end method
+
+.method public getDescription()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 132
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getDescription	; getDescription()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getId()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lcom/pinterest/api/models/Board;)
+.line 142
+	iget-object	v0,v1,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lcom/pinterest/api/models/Board;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getName()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 152
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getName	; getName()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getNextUrl()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 232
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getNextUrl	; getNextUrl()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getPins()Ljava/util/ArrayList;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "()" , "Ljava/util/ArrayList" , "<" , "Lcom/pinterest/api/models/Pin;" , ">;" }
+.end annotation
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 222
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getPins	; getPins()Ljava/util/ArrayList;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v0
+; v0 : Ljava/util/ArrayList;
+	return-object	v0
+; v0 : Ljava/util/ArrayList;
+.end method
+
+.method public getStats()Lcom/pinterest/api/models/Board$Stats;
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 192
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getStats	; getStats()Lcom/pinterest/api/models/Board$Stats;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v0
+; v0 : Lcom/pinterest/api/models/Board$Stats;
+	return-object	v0
+; v0 : Lcom/pinterest/api/models/Board$Stats;
+.end method
+
+.method public getStatus()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 242
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getStatus	; getStatus()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getThumbnailLargeUrl()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 262
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getThumbnailLargeUrl	; getThumbnailLargeUrl()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getThumbnailUrl()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 252
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getThumbnailUrl	; getThumbnailUrl()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getThumbnails()Ljava/util/List;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "()" , "Ljava/util/List" , "<" , "Ljava/lang/String;" , ">;" }
+.end annotation
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 212
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getThumbnails	; getThumbnails()Ljava/util/List;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v0
+; v0 : Ljava/util/List;
+	return-object	v0
+; v0 : Ljava/util/List;
+.end method
+
+.method public getUrl()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 162
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getUrl	; getUrl()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getUserId()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 182
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getUserId	; getUserId()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public isCollaborator()Z
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 202
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/isCollaborator	; isCollaborator()Z
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public isFollowing()Z
+.limit registers 3
+; this: v2 (Lcom/pinterest/api/models/Board;)
+.line 172
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/isFollowing	; isFollowing()Z
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public isPartial()Z
+.limit registers 2
+; this: v1 (Lcom/pinterest/api/models/Board;)
+.line 277
+	iget-boolean	v0,v1,com/pinterest/api/models/Board.partial Z
+; v0 : single-length , v1 : Lcom/pinterest/api/models/Board;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public setCategory(Ljava/lang/String;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 127
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setCategory	; setCategory(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : Ljava/lang/String;
+.line 128
+	return-void	
+.end method
+
+.method public setCollaborator(Z)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Z)
+.line 207
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setCollaborator	; setCollaborator(Z)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : single-length
+.line 208
+	return-void	
+.end method
+
+.method public setDescription(Ljava/lang/String;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 137
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setDescription	; setDescription(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : Ljava/lang/String;
+.line 138
+	return-void	
+.end method
+
+.method public setFollowing(Z)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Z)
+.line 177
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setFollowing	; setFollowing(Z)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : single-length
+.line 178
+	return-void	
+.end method
+
+.method public setId(Ljava/lang/String;)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 147
+	iput-object	v1,v0,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v0 : Lcom/pinterest/api/models/Board;
+.line 148
+	return-void	
+.end method
+
+.method public setName(Ljava/lang/String;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 157
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setName	; setName(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : Ljava/lang/String;
+.line 158
+	return-void	
+.end method
+
+.method public setNextUrl(Ljava/lang/String;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 237
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setNextUrl	; setNextUrl(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : Ljava/lang/String;
+.line 238
+	return-void	
+.end method
+
+.method public setPartial(Z)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v1 (Z)
+.line 272
+	iput-boolean	v1,v0,com/pinterest/api/models/Board.partial Z
+; v1 : single-length , v0 : Lcom/pinterest/api/models/Board;
+.line 273
+	return-void	
+.end method
+
+.method public setPins(Ljava/util/ArrayList;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/util/ArrayList" , "<" , "Lcom/pinterest/api/models/Pin;" , ">;)V" }
+.end annotation
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Ljava/util/ArrayList;)
+.line 227
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setPins	; setPins(Ljava/util/ArrayList;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : Ljava/util/ArrayList;
+.line 228
+	return-void	
+.end method
+
+.method public setStats(Lcom/pinterest/api/models/Board$Stats;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Lcom/pinterest/api/models/Board$Stats;)
+.line 197
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setStats	; setStats(Lcom/pinterest/api/models/Board$Stats;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : Lcom/pinterest/api/models/Board$Stats;
+.line 198
+	return-void	
+.end method
+
+.method public setStatus(Ljava/lang/String;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 247
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setStatus	; setStatus(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : Ljava/lang/String;
+.line 248
+	return-void	
+.end method
+
+.method public setThumbnailLargeUrl(Ljava/lang/String;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 267
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setThumbnailLargeUrl	; setThumbnailLargeUrl(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : Ljava/lang/String;
+.line 268
+	return-void	
+.end method
+
+.method public setThumbnailUrl(Ljava/lang/String;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 257
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setThumbnailUrl	; setThumbnailUrl(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : Ljava/lang/String;
+.line 258
+	return-void	
+.end method
+
+.method public setThumbnails(Ljava/util/List;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/util/List" , "<" , "Ljava/lang/String;" , ">;)V" }
+.end annotation
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Ljava/util/List;)
+.line 217
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setThumbnails	; setThumbnails(Ljava/util/List;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : Ljava/util/List;
+.line 218
+	return-void	
+.end method
+
+.method public setUrl(Ljava/lang/String;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 167
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0,v3},com/pinterest/api/models/BoardData/setUrl	; setUrl(Ljava/lang/String;)V
+; v0 : Lcom/pinterest/api/models/BoardData; , v3 : Ljava/lang/String;
+.line 168
+	return-void	
+.end method
+
+.method public setUserId(Ljava/lang/String;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 187
+	sget-object	v0,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v0 : Ljava/util/Map;
+	iget-object	v1,v2,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v0,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getUserId	; getUserId()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+.line 188
+	return-void	
+.end method
+
+.method public writeToParcel(Landroid/os/Parcel;I)V
+.limit registers 8
+; this: v5 (Lcom/pinterest/api/models/Board;)
+; parameter[0] : v6 (Landroid/os/Parcel;)
+; parameter[1] : v7 (I)
+	const/4	v2,1
+; v2 : single-length
+	const/4	v3,0
+; v3 : single-length
+.line 73
+	sget-object	v1,com/pinterest/api/models/Board.boardCache Ljava/util/Map;
+; v1 : Ljava/util/Map;
+	iget-object	v4,v5,com/pinterest/api/models/Board.id Ljava/lang/String;
+; v4 : Ljava/lang/String; , v5 : Lcom/pinterest/api/models/Board;
+	invoke-interface	{v1,v4},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/Map; , v4 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/pinterest/api/models/BoardData
+; v0 : Lcom/pinterest/api/models/BoardData;
+.line 74
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getThumbnailUrl	; getThumbnailUrl()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v6,v1},android/os/Parcel/writeString	; writeString(Ljava/lang/String;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/lang/String;
+.line 75
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getThumbnailLargeUrl	; getThumbnailLargeUrl()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v6,v1},android/os/Parcel/writeString	; writeString(Ljava/lang/String;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/lang/String;
+.line 76
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getCategory	; getCategory()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v6,v1},android/os/Parcel/writeString	; writeString(Ljava/lang/String;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/lang/String;
+.line 77
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getDescription	; getDescription()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v6,v1},android/os/Parcel/writeString	; writeString(Ljava/lang/String;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/lang/String;
+.line 78
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getId	; getId()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v6,v1},android/os/Parcel/writeString	; writeString(Ljava/lang/String;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/lang/String;
+.line 79
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getName	; getName()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v6,v1},android/os/Parcel/writeString	; writeString(Ljava/lang/String;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/lang/String;
+.line 80
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getUrl	; getUrl()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v6,v1},android/os/Parcel/writeString	; writeString(Ljava/lang/String;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/lang/String;
+.line 81
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/isFollowing	; isFollowing()Z
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,leefc8
+; v1 : single-length
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+leef68:
+	int-to-byte	v1,v1
+; v1 : single-length , v1 : single-length
+	invoke-virtual	{v6,v1},android/os/Parcel/writeByte	; writeByte(B)V
+; v6 : Landroid/os/Parcel; , v1 : single-length
+.line 82
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getUserId	; getUserId()Ljava/lang/String;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v6,v1},android/os/Parcel/writeString	; writeString(Ljava/lang/String;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/lang/String;
+.line 83
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getStats	; getStats()Lcom/pinterest/api/models/Board$Stats;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Lcom/pinterest/api/models/Board$Stats;
+	invoke-virtual	{v6,v1,v3},android/os/Parcel/writeParcelable	; writeParcelable(Landroid/os/Parcelable;I)V
+; v6 : Landroid/os/Parcel; , v1 : Lcom/pinterest/api/models/Board$Stats; , v3 : single-length
+.line 84
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/isCollaborator	; isCollaborator()Z
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,leefcc
+; v1 : single-length
+leef98:
+	int-to-byte	v1,v2
+; v1 : single-length , v2 : single-length
+	invoke-virtual	{v6,v1},android/os/Parcel/writeByte	; writeByte(B)V
+; v6 : Landroid/os/Parcel; , v1 : single-length
+.line 85
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getThumbnails	; getThumbnails()Ljava/util/List;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/util/List;
+	invoke-virtual	{v6,v1},android/os/Parcel/writeList	; writeList(Ljava/util/List;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/util/List;
+.line 86
+	iget-boolean	v1,v5,com/pinterest/api/models/Board.partial Z
+; v1 : single-length , v5 : Lcom/pinterest/api/models/Board;
+	if-eqz	v1,leefd0
+; v1 : single-length
+.line 87
+	new-instance	v1,java/util/ArrayList
+; v1 : Ljava/util/ArrayList;
+	invoke-direct	{v1},java/util/ArrayList/<init>	; <init>()V
+; v1 : Ljava/util/ArrayList;
+	invoke-virtual	{v6,v1},android/os/Parcel/writeList	; writeList(Ljava/util/List;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/util/ArrayList;
+leefc6:
+.line 90
+	return-void	
+leefc8:
+	move	v1,v3
+; v1 : single-length , v3 : single-length
+.line 81
+	goto	leef68
+leefcc:
+	move	v2,v3
+; v2 : single-length , v3 : single-length
+.line 84
+	goto	leef98
+leefd0:
+.line 89
+	invoke-virtual	{v0},com/pinterest/api/models/BoardData/getPins	; getPins()Ljava/util/ArrayList;
+; v0 : Lcom/pinterest/api/models/BoardData;
+	move-result-object	v1
+; v1 : Ljava/util/ArrayList;
+	invoke-virtual	{v6,v1},android/os/Parcel/writeList	; writeList(Ljava/util/List;)V
+; v6 : Landroid/os/Parcel; , v1 : Ljava/util/ArrayList;
+	goto	leefc6
+.end method
+
+

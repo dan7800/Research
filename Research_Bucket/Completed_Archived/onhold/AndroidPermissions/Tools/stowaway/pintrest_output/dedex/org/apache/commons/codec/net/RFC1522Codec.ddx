@@ -1,0 +1,302 @@
+.class abstract org/apache/commons/codec/net/RFC1522Codec
+.super java/lang/Object
+.source RFC1522Codec.java
+
+.field protected static final POSTFIX Ljava/lang/String; = "?="
+.field protected static final PREFIX Ljava/lang/String; = "=?"
+.field protected static final SEP C = '?'
+
+.method <init>()V
+.limit registers 1
+; this: v0 (Lorg/apache/commons/codec/net/RFC1522Codec;)
+.line 47
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lorg/apache/commons/codec/net/RFC1522Codec;
+	return-void	
+.end method
+
+.method protected decodeText(Ljava/lang/String;)Ljava/lang/String;
+.throws Lorg/apache/commons/codec/DecoderException;
+.throws Ljava/io/UnsupportedEncodingException;
+.limit registers 11
+; this: v9 (Lorg/apache/commons/codec/net/RFC1522Codec;)
+; parameter[0] : v10 (Ljava/lang/String;)
+	const/16	v7,63
+; v7 : single-length
+.line 115
+	if-nez	v10,l10ee24
+; v10 : Ljava/lang/String;
+.line 116
+	const/4	v6,0
+; v6 : single-length
+l10ee22:
+.line 145
+	return-object	v6
+; v6 : Ljava/lang/String;
+l10ee24:
+.line 118
+	const-string	v6,"=?"
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v10,v6},java/lang/String/startsWith	; startsWith(Ljava/lang/String;)Z
+; v10 : Ljava/lang/String; , v6 : Ljava/lang/String;
+	move-result	v6
+; v6 : single-length
+	if-eqz	v6,l10ee44
+; v6 : single-length
+	const-string	v6,"?="
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v10,v6},java/lang/String/endsWith	; endsWith(Ljava/lang/String;)Z
+; v10 : Ljava/lang/String; , v6 : Ljava/lang/String;
+	move-result	v6
+; v6 : single-length
+	if-nez	v6,l10ee54
+; v6 : single-length
+l10ee44:
+.line 119
+	new-instance	v6,org/apache/commons/codec/DecoderException
+; v6 : Lorg/apache/commons/codec/DecoderException;
+	const-string	v7,"RFC 1522 violation: malformed encoded content"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v6,v7},org/apache/commons/codec/DecoderException/<init>	; <init>(Ljava/lang/String;)V
+; v6 : Lorg/apache/commons/codec/DecoderException; , v7 : Ljava/lang/String;
+	throw	v6
+; v6 : Lorg/apache/commons/codec/DecoderException;
+l10ee54:
+.line 121
+	invoke-virtual	{v10},java/lang/String/length	; length()I
+; v10 : Ljava/lang/String;
+	move-result	v6
+; v6 : single-length
+	add-int/lit8	v4,v6,254
+; v4 : single-length , v6 : single-length
+.line 122
+	const/4	v3,2
+; v3 : single-length
+.line 123
+	invoke-virtual	{v10,v7,v3},java/lang/String/indexOf	; indexOf(II)I
+; v10 : Ljava/lang/String; , v7 : single-length , v3 : single-length
+	move-result	v5
+; v5 : single-length
+.line 124
+	if-ne	v5,v4,l10ee7e
+; v5 : single-length , v4 : single-length
+.line 125
+	new-instance	v6,org/apache/commons/codec/DecoderException
+; v6 : Lorg/apache/commons/codec/DecoderException;
+	const-string	v7,"RFC 1522 violation: charset token not found"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v6,v7},org/apache/commons/codec/DecoderException/<init>	; <init>(Ljava/lang/String;)V
+; v6 : Lorg/apache/commons/codec/DecoderException; , v7 : Ljava/lang/String;
+	throw	v6
+; v6 : Lorg/apache/commons/codec/DecoderException;
+l10ee7e:
+.line 127
+	invoke-virtual	{v10,v3,v5},java/lang/String/substring	; substring(II)Ljava/lang/String;
+; v10 : Ljava/lang/String; , v3 : single-length , v5 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 128
+	const-string	v6,""
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v0,v6},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v0 : Ljava/lang/String; , v6 : Ljava/lang/String;
+	move-result	v6
+; v6 : single-length
+	if-eqz	v6,l10eea6
+; v6 : single-length
+.line 129
+	new-instance	v6,org/apache/commons/codec/DecoderException
+; v6 : Lorg/apache/commons/codec/DecoderException;
+	const-string	v7,"RFC 1522 violation: charset not specified"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v6,v7},org/apache/commons/codec/DecoderException/<init>	; <init>(Ljava/lang/String;)V
+; v6 : Lorg/apache/commons/codec/DecoderException; , v7 : Ljava/lang/String;
+	throw	v6
+; v6 : Lorg/apache/commons/codec/DecoderException;
+l10eea6:
+.line 131
+	add-int/lit8	v3,v5,1
+; v3 : single-length , v5 : single-length
+.line 132
+	invoke-virtual	{v10,v7,v3},java/lang/String/indexOf	; indexOf(II)I
+; v10 : Ljava/lang/String; , v7 : single-length , v3 : single-length
+	move-result	v5
+; v5 : single-length
+.line 133
+	if-ne	v5,v4,l10eec6
+; v5 : single-length , v4 : single-length
+.line 134
+	new-instance	v6,org/apache/commons/codec/DecoderException
+; v6 : Lorg/apache/commons/codec/DecoderException;
+	const-string	v7,"RFC 1522 violation: encoding token not found"
+; v7 : Ljava/lang/String;
+	invoke-direct	{v6,v7},org/apache/commons/codec/DecoderException/<init>	; <init>(Ljava/lang/String;)V
+; v6 : Lorg/apache/commons/codec/DecoderException; , v7 : Ljava/lang/String;
+	throw	v6
+; v6 : Lorg/apache/commons/codec/DecoderException;
+l10eec6:
+.line 136
+	invoke-virtual	{v10,v3,v5},java/lang/String/substring	; substring(II)Ljava/lang/String;
+; v10 : Ljava/lang/String; , v3 : single-length , v5 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+.line 137
+	invoke-virtual	{v9},org/apache/commons/codec/net/RFC1522Codec/getEncoding	; getEncoding()Ljava/lang/String;
+; v9 : Lorg/apache/commons/codec/net/RFC1522Codec;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-virtual	{v6,v2},java/lang/String/equalsIgnoreCase	; equalsIgnoreCase(Ljava/lang/String;)Z
+; v6 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v6
+; v6 : single-length
+	if-nez	v6,l10ef20
+; v6 : single-length
+.line 138
+	new-instance	v6,org/apache/commons/codec/DecoderException
+; v6 : Lorg/apache/commons/codec/DecoderException;
+	new-instance	v7,java/lang/StringBuilder
+; v7 : Ljava/lang/StringBuilder;
+	invoke-direct	{v7},java/lang/StringBuilder/<init>	; <init>()V
+; v7 : Ljava/lang/StringBuilder;
+	const-string	v8,"This codec cannot decode "
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v7,v8},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v8 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v7,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	const-string	v8," encoded content"
+; v8 : Ljava/lang/String;
+	invoke-virtual	{v7,v8},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v7 : Ljava/lang/StringBuilder; , v8 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v7},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v7 : Ljava/lang/StringBuilder;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	invoke-direct	{v6,v7},org/apache/commons/codec/DecoderException/<init>	; <init>(Ljava/lang/String;)V
+; v6 : Lorg/apache/commons/codec/DecoderException; , v7 : Ljava/lang/String;
+	throw	v6
+; v6 : Lorg/apache/commons/codec/DecoderException;
+l10ef20:
+.line 141
+	add-int/lit8	v3,v5,1
+; v3 : single-length , v5 : single-length
+.line 142
+	invoke-virtual	{v10,v7,v3},java/lang/String/indexOf	; indexOf(II)I
+; v10 : Ljava/lang/String; , v7 : single-length , v3 : single-length
+	move-result	v5
+; v5 : single-length
+.line 143
+	invoke-virtual	{v10,v3,v5},java/lang/String/substring	; substring(II)Ljava/lang/String;
+; v10 : Ljava/lang/String; , v3 : single-length , v5 : single-length
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-static	{v6},org/apache/commons/codec/binary/StringUtils/getBytesUsAscii	; getBytesUsAscii(Ljava/lang/String;)[B
+; v6 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : [B
+.line 144
+	invoke-virtual	{v9,v1},org/apache/commons/codec/net/RFC1522Codec/doDecoding	; doDecoding([B)[B
+; v9 : Lorg/apache/commons/codec/net/RFC1522Codec; , v1 : [B
+	move-result-object	v1
+; v1 : [B
+.line 145
+	new-instance	v6,java/lang/String
+; v6 : Ljava/lang/String;
+	invoke-direct	{v6,v1,v0},java/lang/String/<init>	; <init>([BLjava/lang/String;)V
+; v6 : Ljava/lang/String; , v1 : [B , v0 : Ljava/lang/String;
+	goto/16	l10ee22
+.end method
+
+.method protected abstract doDecoding([B)[B
+.throws Lorg/apache/commons/codec/DecoderException;
+.end method
+
+.method protected abstract doEncoding([B)[B
+.throws Lorg/apache/commons/codec/EncoderException;
+.end method
+
+.method protected encodeText(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+.throws Lorg/apache/commons/codec/EncoderException;
+.throws Ljava/io/UnsupportedEncodingException;
+.limit registers 7
+; this: v4 (Lorg/apache/commons/codec/net/RFC1522Codec;)
+; parameter[0] : v5 (Ljava/lang/String;)
+; parameter[1] : v6 (Ljava/lang/String;)
+	const/16	v3,63
+; v3 : single-length
+.line 84
+	if-nez	v5,l10ef70
+; v5 : Ljava/lang/String;
+.line 85
+	const/4	v2,0
+; v2 : single-length
+l10ef6e:
+.line 96
+	return-object	v2
+; v2 : Ljava/lang/String;
+l10ef70:
+.line 87
+	new-instance	v0,java/lang/StringBuffer
+; v0 : Ljava/lang/StringBuffer;
+	invoke-direct	{v0},java/lang/StringBuffer/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuffer;
+.line 88
+	const-string	v2,"=?"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v2},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v2 : Ljava/lang/String;
+.line 89
+	invoke-virtual	{v0,v6},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v6 : Ljava/lang/String;
+.line 90
+	invoke-virtual	{v0,v3},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v3 : single-length
+.line 91
+	invoke-virtual	{v4},org/apache/commons/codec/net/RFC1522Codec/getEncoding	; getEncoding()Ljava/lang/String;
+; v4 : Lorg/apache/commons/codec/net/RFC1522Codec;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v2},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v2 : Ljava/lang/String;
+.line 92
+	invoke-virtual	{v0,v3},java/lang/StringBuffer/append	; append(C)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v3 : single-length
+.line 93
+	invoke-virtual	{v5,v6},java/lang/String/getBytes	; getBytes(Ljava/lang/String;)[B
+; v5 : Ljava/lang/String; , v6 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : [B
+	invoke-virtual	{v4,v2},org/apache/commons/codec/net/RFC1522Codec/doEncoding	; doEncoding([B)[B
+; v4 : Lorg/apache/commons/codec/net/RFC1522Codec; , v2 : [B
+	move-result-object	v1
+; v1 : [B
+.line 94
+	invoke-static	{v1},org/apache/commons/codec/binary/StringUtils/newStringUsAscii	; newStringUsAscii([B)Ljava/lang/String;
+; v1 : [B
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v2},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v2 : Ljava/lang/String;
+.line 95
+	const-string	v2,"?="
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v2},java/lang/StringBuffer/append	; append(Ljava/lang/String;)Ljava/lang/StringBuffer;
+; v0 : Ljava/lang/StringBuffer; , v2 : Ljava/lang/String;
+.line 96
+	invoke-virtual	{v0},java/lang/StringBuffer/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuffer;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	goto	l10ef6e
+.end method
+
+.method protected abstract getEncoding()Ljava/lang/String;
+.end method
+
+

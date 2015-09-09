@@ -1,0 +1,432 @@
+.class com/pinterest/activity/signin/LoginActivity$4
+.super com/pinterest/api/PAPIHttpResponseHandler
+.source LoginActivity.java
+
+.inner class 4 inner com/pinterest/activity/signin/LoginActivity$4 outer com/pinterest/activity/signin/LoginActivity
+.field private errorHandled Z
+.field final this$0 Lcom/pinterest/activity/signin/LoginActivity;
+
+.method <init>(Lcom/pinterest/activity/signin/LoginActivity;)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/activity/signin/LoginActivity$4;)
+; parameter[0] : v1 (Lcom/pinterest/activity/signin/LoginActivity;)
+.line 187
+	iput-object	v1,v0,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v1 : Lcom/pinterest/activity/signin/LoginActivity; , v0 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	invoke-direct	{v0},com/pinterest/api/PAPIHttpResponseHandler/<init>	; <init>()V
+; v0 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	return-void	
+.end method
+
+.method public getActivity()Landroid/app/Activity;
+.limit registers 2
+; this: v1 (Lcom/pinterest/activity/signin/LoginActivity$4;)
+.line 340
+	iget-object	v0,v1,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v1 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	return-object	v0
+; v0 : Lcom/pinterest/activity/signin/LoginActivity;
+.end method
+
+.method public onFailure(Ljava/lang/Throwable;)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/activity/signin/LoginActivity$4;)
+; parameter[0] : v1 (Ljava/lang/Throwable;)
+.line 219
+	return-void	
+.end method
+
+.method public onFailure(Ljava/lang/Throwable;Lorg/json/JSONObject;)V
+.limit registers 14
+; this: v11 (Lcom/pinterest/activity/signin/LoginActivity$4;)
+; parameter[0] : v12 (Ljava/lang/Throwable;)
+; parameter[1] : v13 (Lorg/json/JSONObject;)
+.var 8 is errorMachine Ljava/lang/String; from le349c to le3532
+	const	v5,2131427461	; 0x7f0b0085
+; v5 : single-length
+	const	v3,2131427460	; 0x7f0b0084
+; v3 : single-length
+	const	v4,2131427565	; 0x7f0b00ed
+; v4 : single-length
+	const/4	v10,1
+; v10 : single-length
+.line 225
+	const/4	v7,0
+; v7 : single-length
+.line 226
+	const/4	v1,0
+; v1 : single-length
+.line 227
+	const	v9,2130837672	; 0x7f0200a8
+; v9 : single-length
+.line 230
+	const-string	v0,"error"
+; v0 : Ljava/lang/String;
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v13,v0,v2},org/json/JSONObject/optString	; optString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v13 : Lorg/json/JSONObject; , v0 : Ljava/lang/String; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	if-eqz	v0,le3534
+; v0 : Ljava/lang/String;
+.line 232
+	const-string	v0,"error"
+; v0 : Ljava/lang/String;
+	const-string	v2,""
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v13,v0,v2},org/json/JSONObject/optString	; optString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v13 : Lorg/json/JSONObject; , v0 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result-object	v8
+; v8 : Ljava/lang/String;
+.line 233
+	const-string	v0,"Invalid email or password."
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v8,v0},java/lang/String/equalsIgnoreCase	; equalsIgnoreCase(Ljava/lang/String;)Z
+; v8 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v7
+; v7 : single-length
+.line 235
+	const-string	v0,"l10n_error"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v13,v0,v8},org/json/JSONObject/optString	; optString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v13 : Lorg/json/JSONObject; , v0 : Ljava/lang/String; , v8 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 236
+	invoke-virtual	{v8},java/lang/String/toLowerCase	; toLowerCase()Ljava/lang/String;
+; v8 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	const-string	v2,"Authentication failed"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v2},java/lang/String/contains	; contains(Ljava/lang/CharSequence;)Z
+; v0 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,le34ec
+; v0 : single-length
+	const-string	v0,"No account is associated with your facebook acount."
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v8,v0},java/lang/String/equalsIgnoreCase	; equalsIgnoreCase(Ljava/lang/String;)Z
+; v8 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,le34ec
+; v0 : single-length
+	const-string	v0,"There is no user associated with the twitter account."
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v8,v0},java/lang/String/equalsIgnoreCase	; equalsIgnoreCase(Ljava/lang/String;)Z
+; v8 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,le3534
+; v0 : single-length
+le34ec:
+.line 240
+	iget-object	v0,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	const	v2,2130837672	; 0x7f0200a8
+; v2 : single-length
+	iget-object	v3,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v3 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	invoke-virtual	{v3,v4},com/pinterest/activity/signin/LoginActivity/getString	; getString(I)Ljava/lang/String;
+; v3 : Lcom/pinterest/activity/signin/LoginActivity; , v4 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	new-instance	v4,com/pinterest/activity/signin/LoginActivity$4$1
+; v4 : Lcom/pinterest/activity/signin/LoginActivity$4$1;
+	invoke-direct	{v4,v11},com/pinterest/activity/signin/LoginActivity$4$1/<init>	; <init>(Lcom/pinterest/activity/signin/LoginActivity$4;)V
+; v4 : Lcom/pinterest/activity/signin/LoginActivity$4$1; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	iget-object	v5,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v5 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	const	v6,2131427564	; 0x7f0b00ec
+; v6 : single-length
+	invoke-virtual	{v5,v6},com/pinterest/activity/signin/LoginActivity/getString	; getString(I)Ljava/lang/String;
+; v5 : Lcom/pinterest/activity/signin/LoginActivity; , v6 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	new-instance	v6,com/pinterest/activity/signin/LoginActivity$4$2
+; v6 : Lcom/pinterest/activity/signin/LoginActivity$4$2;
+	invoke-direct	{v6,v11},com/pinterest/activity/signin/LoginActivity$4$2/<init>	; <init>(Lcom/pinterest/activity/signin/LoginActivity$4;)V
+; v6 : Lcom/pinterest/activity/signin/LoginActivity$4$2; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	invoke-static/range	{v0..v6},com/pinterest/activity/signin/LoginActivity/access$200;	access$200(Lcom/pinterest/activity/signin/LoginActivity;Ljava/lang/String;ILjava/lang/String;Landroid/view/View$OnClickListener;Ljava/lang/String;Landroid/view/View$OnClickListener;)V
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v1 : Ljava/lang/String; , v2 : single-length , v3 : Ljava/lang/String; , v4 : Lcom/pinterest/activity/signin/LoginActivity$4$1; , v5 : Ljava/lang/String; , v6 : Lcom/pinterest/activity/signin/LoginActivity$4$2;
+.line 259
+	iput-boolean	v10,v11,com/pinterest/activity/signin/LoginActivity$4.errorHandled Z
+; v10 : single-length , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+le3532:
+.line 335
+	return-void	
+le3534:
+.line 265
+	if-eqz	v7,le3578
+; v7 : single-length
+.line 269
+	iget-object	v0,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	iget-object	v2,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v2 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	invoke-virtual	{v2,v4},com/pinterest/activity/signin/LoginActivity/getString	; getString(I)Ljava/lang/String;
+; v2 : Lcom/pinterest/activity/signin/LoginActivity; , v4 : single-length
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	new-instance	v4,com/pinterest/activity/signin/LoginActivity$4$3
+; v4 : Lcom/pinterest/activity/signin/LoginActivity$4$3;
+	invoke-direct	{v4,v11},com/pinterest/activity/signin/LoginActivity$4$3/<init>	; <init>(Lcom/pinterest/activity/signin/LoginActivity$4;)V
+; v4 : Lcom/pinterest/activity/signin/LoginActivity$4$3; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	iget-object	v2,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v2 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	const	v5,2131427566	; 0x7f0b00ee
+; v5 : single-length
+	invoke-virtual	{v2,v5},com/pinterest/activity/signin/LoginActivity/getString	; getString(I)Ljava/lang/String;
+; v2 : Lcom/pinterest/activity/signin/LoginActivity; , v5 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	new-instance	v6,com/pinterest/activity/signin/LoginActivity$4$4
+; v6 : Lcom/pinterest/activity/signin/LoginActivity$4$4;
+	invoke-direct	{v6,v11},com/pinterest/activity/signin/LoginActivity$4$4/<init>	; <init>(Lcom/pinterest/activity/signin/LoginActivity$4;)V
+; v6 : Lcom/pinterest/activity/signin/LoginActivity$4$4; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	move	v2,v9
+; v2 : single-length , v9 : single-length
+	invoke-static/range	{v0..v6},com/pinterest/activity/signin/LoginActivity/access$200;	access$200(Lcom/pinterest/activity/signin/LoginActivity;Ljava/lang/String;ILjava/lang/String;Landroid/view/View$OnClickListener;Ljava/lang/String;Landroid/view/View$OnClickListener;)V
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v1 : single-length , v2 : single-length , v3 : Ljava/lang/String; , v4 : Lcom/pinterest/activity/signin/LoginActivity$4$3; , v5 : Ljava/lang/String; , v6 : Lcom/pinterest/activity/signin/LoginActivity$4$4;
+	goto	le3532
+le3578:
+.line 289
+	iget-boolean	v0,v11,com/pinterest/activity/signin/LoginActivity$4.errorHandled Z
+; v0 : single-length , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	if-nez	v0,le3532
+; v0 : single-length
+.line 291
+	if-eqz	v1,le3590
+; v1 : single-length
+	invoke-virtual	{v1},java/lang/String/length	; length()I
+; v1 : single-length
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,le35ac
+; v0 : single-length
+le3590:
+.line 293
+	invoke-static	{},com/pinterest/base/Device/hasInternet	; hasInternet()Z
+; 
+	nop	
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,le35d2
+; v0 : single-length
+.line 295
+	iget-object	v0,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	invoke-virtual	{v0,v5},com/pinterest/activity/signin/LoginActivity/getString	; getString(I)Ljava/lang/String;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v5 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 296
+	iput-boolean	v10,v11,com/pinterest/activity/signin/LoginActivity$4.errorHandled Z
+; v10 : single-length , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+le35ac:
+.line 323
+	iput-boolean	v10,v11,com/pinterest/activity/signin/LoginActivity$4.errorHandled Z
+; v10 : single-length , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+.line 326
+	iget-object	v0,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	iget-object	v2,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v2 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	invoke-virtual	{v2,v4},com/pinterest/activity/signin/LoginActivity/getString	; getString(I)Ljava/lang/String;
+; v2 : Lcom/pinterest/activity/signin/LoginActivity; , v4 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	new-instance	v3,com/pinterest/activity/signin/LoginActivity$4$5
+; v3 : Lcom/pinterest/activity/signin/LoginActivity$4$5;
+	invoke-direct	{v3,v11},com/pinterest/activity/signin/LoginActivity$4$5/<init>	; <init>(Lcom/pinterest/activity/signin/LoginActivity$4;)V
+; v3 : Lcom/pinterest/activity/signin/LoginActivity$4$5; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	invoke-static	{v0,v1,v9,v2,v3},com/pinterest/activity/signin/LoginActivity/access$500	; access$500(Lcom/pinterest/activity/signin/LoginActivity;Ljava/lang/String;ILjava/lang/String;Landroid/view/View$OnClickListener;)V
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v1 : Ljava/lang/String; , v9 : single-length , v2 : Ljava/lang/String; , v3 : Lcom/pinterest/activity/signin/LoginActivity$4$5;
+	goto	le3532
+le35d2:
+.line 298
+	if-eqz	v12,le365c
+; v12 : Ljava/lang/Throwable;
+	invoke-virtual	{v12},java/lang/Throwable/getCause	; getCause()Ljava/lang/Throwable;
+; v12 : Ljava/lang/Throwable;
+	move-result-object	v0
+; v0 : Ljava/lang/Throwable;
+	if-eqz	v0,le365c
+; v0 : Ljava/lang/Throwable;
+.line 301
+	invoke-virtual	{v12},java/lang/Throwable/getCause	; getCause()Ljava/lang/Throwable;
+; v12 : Ljava/lang/Throwable;
+	move-result-object	v0
+; v0 : Ljava/lang/Throwable;
+	instance-of	v0,v0,javax/net/ssl/SSLPeerUnverifiedException
+; v0 : single-length , v0 : single-length
+	if-nez	v0,le3602
+; v0 : single-length
+	invoke-virtual	{v12},java/lang/Throwable/getCause	; getCause()Ljava/lang/Throwable;
+; v12 : Ljava/lang/Throwable;
+	move-result-object	v0
+; v0 : Ljava/lang/Throwable;
+	instance-of	v0,v0,javax/net/ssl/SSLException
+; v0 : single-length , v0 : single-length
+	if-eqz	v0,le361a
+; v0 : single-length
+le3602:
+.line 303
+	iget-object	v0,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	const	v2,2131427459	; 0x7f0b0083
+; v2 : single-length
+	invoke-virtual	{v0,v2},com/pinterest/activity/signin/LoginActivity/getString	; getString(I)Ljava/lang/String;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v2 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+le3614:
+.line 315
+	iput-boolean	v10,v11,com/pinterest/activity/signin/LoginActivity$4.errorHandled Z
+; v10 : single-length , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	goto	le35ac
+le361a:
+.line 306
+	invoke-virtual	{v12},java/lang/Throwable/getCause	; getCause()Ljava/lang/Throwable;
+; v12 : Ljava/lang/Throwable;
+	move-result-object	v0
+; v0 : Ljava/lang/Throwable;
+	instance-of	v0,v0,org/apache/http/client/ClientProtocolException
+; v0 : single-length , v0 : single-length
+	if-nez	v0,le363a
+; v0 : single-length
+	invoke-virtual	{v12},java/lang/Throwable/getCause	; getCause()Ljava/lang/Throwable;
+; v12 : Ljava/lang/Throwable;
+	move-result-object	v0
+; v0 : Ljava/lang/Throwable;
+	instance-of	v0,v0,java/io/IOException
+; v0 : single-length , v0 : single-length
+	if-eqz	v0,le3648
+; v0 : single-length
+le363a:
+.line 308
+	iget-object	v0,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	invoke-virtual	{v0,v5},com/pinterest/activity/signin/LoginActivity/getString	; getString(I)Ljava/lang/String;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v5 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	goto	le3614
+le3648:
+.line 312
+	iget-object	v0,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	invoke-virtual	{v0,v3},com/pinterest/activity/signin/LoginActivity/getString	; getString(I)Ljava/lang/String;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v3 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 313
+	const	v9,2130837672	; 0x7f0200a8
+; v9 : single-length
+	goto	le3614
+le365c:
+.line 319
+	iget-object	v0,v11,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v11 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	invoke-virtual	{v0,v3},com/pinterest/activity/signin/LoginActivity/getString	; getString(I)Ljava/lang/String;
+; v0 : Lcom/pinterest/activity/signin/LoginActivity; , v3 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 320
+	const	v9,2130837672	; 0x7f0200a8
+; v9 : single-length
+	goto	le35ac
+.end method
+
+.method public onStart()V
+.limit registers 2
+; this: v1 (Lcom/pinterest/activity/signin/LoginActivity$4;)
+.line 193
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v1,com/pinterest/activity/signin/LoginActivity$4.errorHandled Z
+; v0 : single-length , v1 : Lcom/pinterest/activity/signin/LoginActivity$4;
+.line 194
+	return-void	
+.end method
+
+.method public onSuccess(Lorg/json/JSONObject;)V
+.limit registers 6
+; this: v4 (Lcom/pinterest/activity/signin/LoginActivity$4;)
+; parameter[0] : v5 (Lorg/json/JSONObject;)
+.catch org/json/JSONException from le369e to le36f0 using le36f2
+.var 1 is edit Landroid/content/SharedPreferences$Editor; from le36b8 to le36f0
+.line 199
+	invoke-super	{v4,v5},com/pinterest/api/PAPIHttpResponseHandler/onSuccess	; onSuccess(Lorg/json/JSONObject;)V
+; v4 : Lcom/pinterest/activity/signin/LoginActivity$4; , v5 : Lorg/json/JSONObject;
+le369e:
+.line 202
+	iget-object	v2,v4,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v2 : Lcom/pinterest/activity/signin/LoginActivity; , v4 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	invoke-static	{v2},com/pinterest/activity/ActivityHelper/notifyWidgetStateChange	; notifyWidgetStateChange(Landroid/content/Context;)V
+; v2 : Lcom/pinterest/activity/signin/LoginActivity;
+.line 203
+	invoke-static	{},com/pinterest/base/Application/getPreferences	; getPreferences()Landroid/content/SharedPreferences;
+; 
+	nop	
+	move-result-object	v2
+; v2 : Landroid/content/SharedPreferences;
+	invoke-interface	{v2},android/content/SharedPreferences/edit	; edit()Landroid/content/SharedPreferences$Editor;
+; v2 : Landroid/content/SharedPreferences;
+	move-result-object	v1
+; v1 : Landroid/content/SharedPreferences$Editor;
+.line 204
+	const-string	v2,"PREF_ACCESSTOKEN"
+; v2 : Ljava/lang/String;
+	const-string	v3,"access_token"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v5,v3},org/json/JSONObject/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v5 : Lorg/json/JSONObject; , v3 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-interface	{v1,v2,v3},android/content/SharedPreferences$Editor/putString	; putString(Ljava/lang/String;Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;
+; v1 : Landroid/content/SharedPreferences$Editor; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 205
+	invoke-interface	{v1},android/content/SharedPreferences$Editor/commit	; commit()Z
+; v1 : Landroid/content/SharedPreferences$Editor;
+.line 206
+	sget-object	v2,com/pinterest/activity/signin/LoginActivity.lastUsername Ljava/lang/String;
+; v2 : Ljava/lang/String;
+	invoke-static	{v2},com/pinterest/base/Application/setLastUsername	; setLastUsername(Ljava/lang/String;)V
+; v2 : Ljava/lang/String;
+.line 207
+	iget-object	v2,v4,com/pinterest/activity/signin/LoginActivity$4.this$0 Lcom/pinterest/activity/signin/LoginActivity;
+; v2 : Lcom/pinterest/activity/signin/LoginActivity; , v4 : Lcom/pinterest/activity/signin/LoginActivity$4;
+	invoke-static	{v2},com/pinterest/activity/signin/LoginActivity/access$100	; access$100(Lcom/pinterest/activity/signin/LoginActivity;)Lcom/pinterest/api/PAPIHttpResponseHandler;
+; v2 : Lcom/pinterest/activity/signin/LoginActivity;
+	move-result-object	v2
+; v2 : Lcom/pinterest/api/PAPIHttpResponseHandler;
+	invoke-static	{v2},com/pinterest/api/PAPI/loadMe	; loadMe(Lcom/loopj/android/http/JsonHttpResponseHandler;)V
+; v2 : Lcom/pinterest/api/PAPIHttpResponseHandler;
+le36f0:
+.line 213
+	return-void	
+le36f2:
+.line 209
+	move-exception	v0
+; v0 : org/json/JSONException
+.line 211
+	new-instance	v2,java/lang/Throwable
+; v2 : Ljava/lang/Throwable;
+	const-string	v3,""
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3},java/lang/Throwable/<init>	; <init>(Ljava/lang/String;)V
+; v2 : Ljava/lang/Throwable; , v3 : Ljava/lang/String;
+	new-instance	v3,org/json/JSONObject
+; v3 : Lorg/json/JSONObject;
+	invoke-direct	{v3},org/json/JSONObject/<init>	; <init>()V
+; v3 : Lorg/json/JSONObject;
+	invoke-virtual	{v4,v2,v3},com/pinterest/activity/signin/LoginActivity$4/onFailure	; onFailure(Ljava/lang/Throwable;Lorg/json/JSONObject;)V
+; v4 : Lcom/pinterest/activity/signin/LoginActivity$4; , v2 : Ljava/lang/Throwable; , v3 : Lorg/json/JSONObject;
+	goto	le36f0
+.end method
+
+

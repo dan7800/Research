@@ -1,0 +1,1793 @@
+.class public org/apache/commons/codec/binary/Base64
+.super org/apache/commons/codec/binary/BaseNCodec
+.source Base64.java
+
+.field private static final BITS_PER_ENCODED_BYTE I = 6	; 0x6
+.field private static final BYTES_PER_ENCODED_BLOCK I = 4	; 0x4
+.field private static final BYTES_PER_UNENCODED_BLOCK I = 3	; 0x3
+.field static final CHUNK_SEPARATOR [B = null
+.field private static final DECODE_TABLE [B = null
+.field private static final MASK_6BITS I = 63	; 0x3f
+.field private static final STANDARD_ENCODE_TABLE [B
+.field private static final URL_SAFE_ENCODE_TABLE [B
+.field private bitWorkArea I
+.field private final decodeSize I
+.field private final decodeTable [B
+.field private final encodeSize I
+.field private final encodeTable [B
+.field private final lineSeparator [B
+
+.method static <clinit>()V
+.limit registers 2
+	const/16	v1,64
+; v1 : single-length
+.line 71
+	const/4	v0,2
+; v0 : single-length
+	new-array	v0,v0,[B
+; v0 : [B , v0 : [B
+	fill-array-data	v0,l106804
+; v0 : [B
+	sput-object	v0,org/apache/commons/codec/binary/Base64.CHUNK_SEPARATOR [B
+; v0 : [B
+.line 80
+	new-array	v0,v1,[B
+; v0 : [B , v1 : single-length
+	fill-array-data	v0,l106810
+; v0 : [B
+	sput-object	v0,org/apache/commons/codec/binary/Base64.STANDARD_ENCODE_TABLE [B
+; v0 : [B
+.line 93
+	new-array	v0,v1,[B
+; v0 : [B , v1 : single-length
+	fill-array-data	v0,l106858
+; v0 : [B
+	sput-object	v0,org/apache/commons/codec/binary/Base64.URL_SAFE_ENCODE_TABLE [B
+; v0 : [B
+.line 112
+	const/16	v0,123
+; v0 : single-length
+	new-array	v0,v0,[B
+; v0 : [B , v0 : [B
+	fill-array-data	v0,l1068a0
+; v0 : [B
+	sput-object	v0,org/apache/commons/codec/binary/Base64.DECODE_TABLE [B
+; v0 : [B
+	return-void	
+.line 71
+l106804:	data-array
+		0x0D	; #0
+		0x0A	; #1
+	end data-array
+.line 80
+l10680e:	data-array
+		0x00, 0x00
+	end data-array
+l106810:	data-array
+		0x41	; #0
+		0x42	; #1
+		0x43	; #2
+		0x44	; #3
+		0x45	; #4
+		0x46	; #5
+		0x47	; #6
+		0x48	; #7
+		0x49	; #8
+		0x4A	; #9
+		0x4B	; #10
+		0x4C	; #11
+		0x4D	; #12
+		0x4E	; #13
+		0x4F	; #14
+		0x50	; #15
+		0x51	; #16
+		0x52	; #17
+		0x53	; #18
+		0x54	; #19
+		0x55	; #20
+		0x56	; #21
+		0x57	; #22
+		0x58	; #23
+		0x59	; #24
+		0x5A	; #25
+		0x61	; #26
+		0x62	; #27
+		0x63	; #28
+		0x64	; #29
+		0x65	; #30
+		0x66	; #31
+		0x67	; #32
+		0x68	; #33
+		0x69	; #34
+		0x6A	; #35
+		0x6B	; #36
+		0x6C	; #37
+		0x6D	; #38
+		0x6E	; #39
+		0x6F	; #40
+		0x70	; #41
+		0x71	; #42
+		0x72	; #43
+		0x73	; #44
+		0x74	; #45
+		0x75	; #46
+		0x76	; #47
+		0x77	; #48
+		0x78	; #49
+		0x79	; #50
+		0x7A	; #51
+		0x30	; #52
+		0x31	; #53
+		0x32	; #54
+		0x33	; #55
+		0x34	; #56
+		0x35	; #57
+		0x36	; #58
+		0x37	; #59
+		0x38	; #60
+		0x39	; #61
+		0x2B	; #62
+		0x2F	; #63
+	end data-array
+.line 93
+l106858:	data-array
+		0x41	; #0
+		0x42	; #1
+		0x43	; #2
+		0x44	; #3
+		0x45	; #4
+		0x46	; #5
+		0x47	; #6
+		0x48	; #7
+		0x49	; #8
+		0x4A	; #9
+		0x4B	; #10
+		0x4C	; #11
+		0x4D	; #12
+		0x4E	; #13
+		0x4F	; #14
+		0x50	; #15
+		0x51	; #16
+		0x52	; #17
+		0x53	; #18
+		0x54	; #19
+		0x55	; #20
+		0x56	; #21
+		0x57	; #22
+		0x58	; #23
+		0x59	; #24
+		0x5A	; #25
+		0x61	; #26
+		0x62	; #27
+		0x63	; #28
+		0x64	; #29
+		0x65	; #30
+		0x66	; #31
+		0x67	; #32
+		0x68	; #33
+		0x69	; #34
+		0x6A	; #35
+		0x6B	; #36
+		0x6C	; #37
+		0x6D	; #38
+		0x6E	; #39
+		0x6F	; #40
+		0x70	; #41
+		0x71	; #42
+		0x72	; #43
+		0x73	; #44
+		0x74	; #45
+		0x75	; #46
+		0x76	; #47
+		0x77	; #48
+		0x78	; #49
+		0x79	; #50
+		0x7A	; #51
+		0x30	; #52
+		0x31	; #53
+		0x32	; #54
+		0x33	; #55
+		0x34	; #56
+		0x35	; #57
+		0x36	; #58
+		0x37	; #59
+		0x38	; #60
+		0x39	; #61
+		0x2D	; #62
+		0x5F	; #63
+	end data-array
+.line 112
+l1068a0:	data-array
+		0xFF	; #0
+		0xFF	; #1
+		0xFF	; #2
+		0xFF	; #3
+		0xFF	; #4
+		0xFF	; #5
+		0xFF	; #6
+		0xFF	; #7
+		0xFF	; #8
+		0xFF	; #9
+		0xFF	; #10
+		0xFF	; #11
+		0xFF	; #12
+		0xFF	; #13
+		0xFF	; #14
+		0xFF	; #15
+		0xFF	; #16
+		0xFF	; #17
+		0xFF	; #18
+		0xFF	; #19
+		0xFF	; #20
+		0xFF	; #21
+		0xFF	; #22
+		0xFF	; #23
+		0xFF	; #24
+		0xFF	; #25
+		0xFF	; #26
+		0xFF	; #27
+		0xFF	; #28
+		0xFF	; #29
+		0xFF	; #30
+		0xFF	; #31
+		0xFF	; #32
+		0xFF	; #33
+		0xFF	; #34
+		0xFF	; #35
+		0xFF	; #36
+		0xFF	; #37
+		0xFF	; #38
+		0xFF	; #39
+		0xFF	; #40
+		0xFF	; #41
+		0xFF	; #42
+		0x3E	; #43
+		0xFF	; #44
+		0x3E	; #45
+		0xFF	; #46
+		0x3F	; #47
+		0x34	; #48
+		0x35	; #49
+		0x36	; #50
+		0x37	; #51
+		0x38	; #52
+		0x39	; #53
+		0x3A	; #54
+		0x3B	; #55
+		0x3C	; #56
+		0x3D	; #57
+		0xFF	; #58
+		0xFF	; #59
+		0xFF	; #60
+		0xFF	; #61
+		0xFF	; #62
+		0xFF	; #63
+		0xFF	; #64
+		0x00	; #65
+		0x01	; #66
+		0x02	; #67
+		0x03	; #68
+		0x04	; #69
+		0x05	; #70
+		0x06	; #71
+		0x07	; #72
+		0x08	; #73
+		0x09	; #74
+		0x0A	; #75
+		0x0B	; #76
+		0x0C	; #77
+		0x0D	; #78
+		0x0E	; #79
+		0x0F	; #80
+		0x10	; #81
+		0x11	; #82
+		0x12	; #83
+		0x13	; #84
+		0x14	; #85
+		0x15	; #86
+		0x16	; #87
+		0x17	; #88
+		0x18	; #89
+		0x19	; #90
+		0xFF	; #91
+		0xFF	; #92
+		0xFF	; #93
+		0xFF	; #94
+		0x3F	; #95
+		0xFF	; #96
+		0x1A	; #97
+		0x1B	; #98
+		0x1C	; #99
+		0x1D	; #100
+		0x1E	; #101
+		0x1F	; #102
+		0x20	; #103
+		0x21	; #104
+		0x22	; #105
+		0x23	; #106
+		0x24	; #107
+		0x25	; #108
+		0x26	; #109
+		0x27	; #110
+		0x28	; #111
+		0x29	; #112
+		0x2A	; #113
+		0x2B	; #114
+		0x2C	; #115
+		0x2D	; #116
+		0x2E	; #117
+		0x2F	; #118
+		0x30	; #119
+		0x31	; #120
+		0x32	; #121
+		0x33	; #122
+	end data-array
+l106923:	data-array
+		0x00
+	end data-array
+.end method
+
+.method public <init>()V
+.limit registers 2
+; this: v1 (Lorg/apache/commons/codec/binary/Base64;)
+.line 176
+	const/4	v0,0
+; v0 : single-length
+	invoke-direct	{v1,v0},org/apache/commons/codec/binary/Base64/<init>	; <init>(I)V
+; v1 : Lorg/apache/commons/codec/binary/Base64; , v0 : single-length
+.line 177
+	return-void	
+.end method
+
+.method public <init>(I)V
+.limit registers 3
+; this: v1 (Lorg/apache/commons/codec/binary/Base64;)
+; parameter[0] : v2 (I)
+.line 217
+	sget-object	v0,org/apache/commons/codec/binary/Base64.CHUNK_SEPARATOR [B
+; v0 : [B
+	invoke-direct	{v1,v2,v0},org/apache/commons/codec/binary/Base64/<init>	; <init>(I[B)V
+; v1 : Lorg/apache/commons/codec/binary/Base64; , v2 : single-length , v0 : [B
+.line 218
+	return-void	
+.end method
+
+.method public <init>(I[B)V
+.limit registers 4
+; this: v1 (Lorg/apache/commons/codec/binary/Base64;)
+; parameter[0] : v2 (I)
+; parameter[1] : v3 ([B)
+.line 243
+	const/4	v0,0
+; v0 : single-length
+	invoke-direct	{v1,v2,v3,v0},org/apache/commons/codec/binary/Base64/<init>	; <init>(I[BZ)V
+; v1 : Lorg/apache/commons/codec/binary/Base64; , v2 : single-length , v3 : [B , v0 : single-length
+.line 244
+	return-void	
+.end method
+
+.method public <init>(I[BZ)V
+.limit registers 10
+; this: v6 (Lorg/apache/commons/codec/binary/Base64;)
+; parameter[0] : v7 (I)
+; parameter[1] : v8 ([B)
+; parameter[2] : v9 (Z)
+.var 0 is sep Ljava/lang/String; from l1069bc to l1069fa
+	const/4	v5,0
+; v5 : single-length
+	const/4	v4,4
+; v4 : single-length
+	const/4	v2,0
+; v2 : single-length
+.line 272
+	const/4	v3,3
+; v3 : single-length
+	if-nez	v8,l1069fa
+; v8 : [B
+	move	v1,v2
+; v1 : single-length , v2 : single-length
+l106996:
+	invoke-direct	{v6,v3,v4,v7,v1},org/apache/commons/codec/binary/BaseNCodec/<init>	; <init>(IIII)V
+; v6 : Lorg/apache/commons/codec/binary/Base64; , v3 : single-length , v4 : single-length , v7 : single-length , v1 : single-length
+.line 140
+	sget-object	v1,org/apache/commons/codec/binary/Base64.DECODE_TABLE [B
+; v1 : [B
+	iput-object	v1,v6,org/apache/commons/codec/binary/Base64.decodeTable [B
+; v1 : [B , v6 : Lorg/apache/commons/codec/binary/Base64;
+.line 277
+	if-eqz	v8,l106a46
+; v8 : [B
+.line 278
+	invoke-virtual	{v6,v8},org/apache/commons/codec/binary/Base64/containsAlphabetOrPad	; containsAlphabetOrPad([B)Z
+; v6 : Lorg/apache/commons/codec/binary/Base64; , v8 : [B
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,l1069fe
+; v1 : single-length
+.line 279
+	invoke-static	{v8},org/apache/commons/codec/binary/StringUtils/newStringUtf8	; newStringUtf8([B)Ljava/lang/String;
+; v8 : [B
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 280
+	new-instance	v1,java/lang/IllegalArgumentException
+; v1 : Ljava/lang/IllegalArgumentException;
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"lineSeparator must not contain base64 characters: ["
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v0},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v0 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"]"
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/lang/IllegalArgumentException; , v2 : Ljava/lang/String;
+	throw	v1
+; v1 : Ljava/lang/IllegalArgumentException;
+l1069fa:
+.line 272
+	array-length	v1,v8
+; v1 : single-length , v8 : [B
+	goto	l106996
+l1069fe:
+.line 282
+	if-lez	v7,l106a3c
+; v7 : single-length
+.line 283
+	array-length	v1,v8
+; v1 : single-length , v8 : [B
+	add-int/lit8	v1,v1,4
+; v1 : single-length , v1 : single-length
+	iput	v1,v6,org/apache/commons/codec/binary/Base64.encodeSize I
+; v1 : single-length , v6 : Lorg/apache/commons/codec/binary/Base64;
+.line 284
+	array-length	v1,v8
+; v1 : single-length , v8 : [B
+	new-array	v1,v1,[B
+; v1 : [B , v1 : [B
+	iput-object	v1,v6,org/apache/commons/codec/binary/Base64.lineSeparator [B
+; v1 : [B , v6 : Lorg/apache/commons/codec/binary/Base64;
+.line 285
+	iget-object	v1,v6,org/apache/commons/codec/binary/Base64.lineSeparator [B
+; v1 : [B , v6 : Lorg/apache/commons/codec/binary/Base64;
+	array-length	v3,v8
+; v3 : single-length , v8 : [B
+	invoke-static	{v8,v2,v1,v2,v3},java/lang/System/arraycopy	; arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+; v8 : [B , v2 : single-length , v1 : [B , v2 : single-length , v3 : single-length
+l106a22:
+.line 294
+	iget	v1,v6,org/apache/commons/codec/binary/Base64.encodeSize I
+; v1 : single-length , v6 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v1,v1,255
+; v1 : single-length , v1 : single-length
+	iput	v1,v6,org/apache/commons/codec/binary/Base64.decodeSize I
+; v1 : single-length , v6 : Lorg/apache/commons/codec/binary/Base64;
+.line 295
+	if-eqz	v9,l106a50
+; v9 : single-length
+	sget-object	v1,org/apache/commons/codec/binary/Base64.URL_SAFE_ENCODE_TABLE [B
+; v1 : [B
+l106a36:
+	iput-object	v1,v6,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v1 : [B , v6 : Lorg/apache/commons/codec/binary/Base64;
+.line 296
+	return-void	
+l106a3c:
+.line 287
+	iput	v4,v6,org/apache/commons/codec/binary/Base64.encodeSize I
+; v4 : single-length , v6 : Lorg/apache/commons/codec/binary/Base64;
+.line 288
+	iput-object	v5,v6,org/apache/commons/codec/binary/Base64.lineSeparator [B
+; v5 : single-length , v6 : Lorg/apache/commons/codec/binary/Base64;
+	goto	l106a22
+l106a46:
+.line 291
+	iput	v4,v6,org/apache/commons/codec/binary/Base64.encodeSize I
+; v4 : single-length , v6 : Lorg/apache/commons/codec/binary/Base64;
+.line 292
+	iput-object	v5,v6,org/apache/commons/codec/binary/Base64.lineSeparator [B
+; v5 : single-length , v6 : Lorg/apache/commons/codec/binary/Base64;
+	goto	l106a22
+l106a50:
+.line 295
+	sget-object	v1,org/apache/commons/codec/binary/Base64.STANDARD_ENCODE_TABLE [B
+; v1 : [B
+	goto	l106a36
+.end method
+
+.method public <init>(Z)V
+.limit registers 4
+; this: v2 (Lorg/apache/commons/codec/binary/Base64;)
+; parameter[0] : v3 (Z)
+.line 195
+	const/16	v0,76
+; v0 : single-length
+	sget-object	v1,org/apache/commons/codec/binary/Base64.CHUNK_SEPARATOR [B
+; v1 : [B
+	invoke-direct	{v2,v0,v1,v3},org/apache/commons/codec/binary/Base64/<init>	; <init>(I[BZ)V
+; v2 : Lorg/apache/commons/codec/binary/Base64; , v0 : single-length , v1 : [B , v3 : single-length
+.line 196
+	return-void	
+.end method
+
+.method public static decodeBase64(Ljava/lang/String;)[B
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 669
+	new-instance	v0,org/apache/commons/codec/binary/Base64
+; v0 : Lorg/apache/commons/codec/binary/Base64;
+	invoke-direct	{v0},org/apache/commons/codec/binary/Base64/<init>	; <init>()V
+; v0 : Lorg/apache/commons/codec/binary/Base64;
+	invoke-virtual	{v0,v1},org/apache/commons/codec/binary/Base64/decode	; decode(Ljava/lang/String;)[B
+; v0 : Lorg/apache/commons/codec/binary/Base64; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+.method public static decodeBase64([B)[B
+.limit registers 2
+; parameter[0] : v1 ([B)
+.line 680
+	new-instance	v0,org/apache/commons/codec/binary/Base64
+; v0 : Lorg/apache/commons/codec/binary/Base64;
+	invoke-direct	{v0},org/apache/commons/codec/binary/Base64/<init>	; <init>()V
+; v0 : Lorg/apache/commons/codec/binary/Base64;
+	invoke-virtual	{v0,v1},org/apache/commons/codec/binary/Base64/decode	; decode([B)[B
+; v0 : Lorg/apache/commons/codec/binary/Base64; , v1 : [B
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+.method public static decodeInteger([B)Ljava/math/BigInteger;
+.limit registers 4
+; parameter[0] : v3 ([B)
+.line 695
+	new-instance	v0,java/math/BigInteger
+; v0 : Ljava/math/BigInteger;
+	const/4	v1,1
+; v1 : single-length
+	invoke-static	{v3},org/apache/commons/codec/binary/Base64/decodeBase64	; decodeBase64([B)[B
+; v3 : [B
+	move-result-object	v2
+; v2 : [B
+	invoke-direct	{v0,v1,v2},java/math/BigInteger/<init>	; <init>(I[B)V
+; v0 : Ljava/math/BigInteger; , v1 : single-length , v2 : [B
+	return-object	v0
+; v0 : Ljava/math/BigInteger;
+.end method
+
+.method public static encodeBase64([B)[B
+.limit registers 2
+; parameter[0] : v1 ([B)
+.line 537
+	const/4	v0,0
+; v0 : single-length
+	invoke-static	{v1,v0},org/apache/commons/codec/binary/Base64/encodeBase64	; encodeBase64([BZ)[B
+; v1 : [B , v0 : single-length
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+.method public static encodeBase64([BZ)[B
+.limit registers 3
+; parameter[0] : v1 ([B)
+; parameter[1] : v2 (Z)
+.line 604
+	const/4	v0,0
+; v0 : single-length
+	invoke-static	{v1,v2,v0},org/apache/commons/codec/binary/Base64/encodeBase64	; encodeBase64([BZZ)[B
+; v1 : [B , v2 : single-length , v0 : single-length
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+.method public static encodeBase64([BZZ)[B
+.limit registers 4
+; parameter[0] : v1 ([B)
+; parameter[1] : v2 (Z)
+; parameter[2] : v3 (Z)
+.line 622
+	const	v0,2147483647	; 0x7fffffff
+; v0 : single-length
+	invoke-static	{v1,v2,v3,v0},org/apache/commons/codec/binary/Base64/encodeBase64	; encodeBase64([BZZI)[B
+; v1 : [B , v2 : single-length , v3 : single-length , v0 : single-length
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+.method public static encodeBase64([BZZI)[B
+.limit registers 10
+; parameter[0] : v6 ([B)
+; parameter[1] : v7 (Z)
+; parameter[2] : v8 (Z)
+; parameter[3] : v9 (I)
+.var 0 is b64 Lorg/apache/commons/codec/binary/Base64; from l106b6a to l106bc2
+.var 1 is len J from l106b72 to l106bc2
+.line 642
+	if-eqz	v6,l106b5a
+; v6 : [B
+	array-length	v3,v6
+; v3 : single-length , v6 : [B
+	if-nez	v3,l106b5c
+; v3 : single-length
+l106b5a:
+.line 657
+	return-object	v6
+; v6 : [B
+l106b5c:
+.line 648
+	if-eqz	v7,l106bc2
+; v7 : single-length
+	new-instance	v0,org/apache/commons/codec/binary/Base64
+; v0 : Lorg/apache/commons/codec/binary/Base64;
+	invoke-direct	{v0,v8},org/apache/commons/codec/binary/Base64/<init>	; <init>(Z)V
+; v0 : Lorg/apache/commons/codec/binary/Base64; , v8 : single-length
+l106b6a:
+.line 649
+	invoke-virtual	{v0,v6},org/apache/commons/codec/binary/Base64/getEncodedLength	; getEncodedLength([B)J
+; v0 : Lorg/apache/commons/codec/binary/Base64; , v6 : [B
+	move-result-wide	v1
+; v1 : double-length
+.line 650
+	int-to-long	v3,v9
+; v3 : double-length , v9 : single-length
+	cmp-long	v3,v1,v3
+; v3 : single-length , v1 : double-length , v3 : single-length
+	if-lez	v3,l106bd4
+; v3 : single-length
+.line 651
+	new-instance	v3,java/lang/IllegalArgumentException
+; v3 : Ljava/lang/IllegalArgumentException;
+	new-instance	v4,java/lang/StringBuilder
+; v4 : Ljava/lang/StringBuilder;
+	invoke-direct	{v4},java/lang/StringBuilder/<init>	; <init>()V
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,"Input array too big, the output array would be bigger ("
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4,v1,v2},java/lang/StringBuilder/append	; append(J)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v1 : double-length
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	const-string	v5,") than the specified maximum size of "
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v5 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4,v9},java/lang/StringBuilder/append	; append(I)Ljava/lang/StringBuilder;
+; v4 : Ljava/lang/StringBuilder; , v9 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v4},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v4 : Ljava/lang/StringBuilder;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-direct	{v3,v4},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v3 : Ljava/lang/IllegalArgumentException; , v4 : Ljava/lang/String;
+	throw	v3
+; v3 : Ljava/lang/IllegalArgumentException;
+l106bc2:
+.line 648
+	new-instance	v0,org/apache/commons/codec/binary/Base64
+; v0 : Lorg/apache/commons/codec/binary/Base64;
+	const/4	v3,0
+; v3 : single-length
+	sget-object	v4,org/apache/commons/codec/binary/Base64.CHUNK_SEPARATOR [B
+; v4 : [B
+	invoke-direct	{v0,v3,v4,v8},org/apache/commons/codec/binary/Base64/<init>	; <init>(I[BZ)V
+; v0 : Lorg/apache/commons/codec/binary/Base64; , v3 : single-length , v4 : [B , v8 : single-length
+	goto	l106b6a
+l106bd4:
+.line 657
+	invoke-virtual	{v0,v6},org/apache/commons/codec/binary/Base64/encode	; encode([B)[B
+; v0 : Lorg/apache/commons/codec/binary/Base64; , v6 : [B
+	move-result-object	v6
+; v6 : [B
+	goto	l106b5a
+.end method
+
+.method public static encodeBase64Chunked([B)[B
+.limit registers 2
+; parameter[0] : v1 ([B)
+.line 589
+	const/4	v0,1
+; v0 : single-length
+	invoke-static	{v1,v0},org/apache/commons/codec/binary/Base64/encodeBase64	; encodeBase64([BZ)[B
+; v1 : [B , v0 : single-length
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+.method public static encodeBase64String([B)Ljava/lang/String;
+.limit registers 2
+; parameter[0] : v1 ([B)
+.line 552
+	const/4	v0,0
+; v0 : single-length
+	invoke-static	{v1,v0},org/apache/commons/codec/binary/Base64/encodeBase64	; encodeBase64([BZ)[B
+; v1 : [B , v0 : single-length
+	move-result-object	v0
+; v0 : [B
+	invoke-static	{v0},org/apache/commons/codec/binary/StringUtils/newStringUtf8	; newStringUtf8([B)Ljava/lang/String;
+; v0 : [B
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static encodeBase64URLSafe([B)[B
+.limit registers 3
+; parameter[0] : v2 ([B)
+.line 565
+	const/4	v0,0
+; v0 : single-length
+	const/4	v1,1
+; v1 : single-length
+	invoke-static	{v2,v0,v1},org/apache/commons/codec/binary/Base64/encodeBase64	; encodeBase64([BZZ)[B
+; v2 : [B , v0 : single-length , v1 : single-length
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+.method public static encodeBase64URLSafeString([B)Ljava/lang/String;
+.limit registers 3
+; parameter[0] : v2 ([B)
+.line 578
+	const/4	v0,0
+; v0 : single-length
+	const/4	v1,1
+; v1 : single-length
+	invoke-static	{v2,v0,v1},org/apache/commons/codec/binary/Base64/encodeBase64	; encodeBase64([BZZ)[B
+; v2 : [B , v0 : single-length , v1 : single-length
+	move-result-object	v0
+; v0 : [B
+	invoke-static	{v0},org/apache/commons/codec/binary/StringUtils/newStringUtf8	; newStringUtf8([B)Ljava/lang/String;
+; v0 : [B
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public static encodeInteger(Ljava/math/BigInteger;)[B
+.limit registers 3
+; parameter[0] : v2 (Ljava/math/BigInteger;)
+.line 709
+	if-nez	v2,l106c8c
+; v2 : Ljava/math/BigInteger;
+.line 710
+	new-instance	v0,java/lang/NullPointerException
+; v0 : Ljava/lang/NullPointerException;
+	const-string	v1,"encodeInteger called with null parameter"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/NullPointerException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/NullPointerException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/NullPointerException;
+l106c8c:
+.line 712
+	invoke-static	{v2},org/apache/commons/codec/binary/Base64/toIntegerBytes	; toIntegerBytes(Ljava/math/BigInteger;)[B
+; v2 : Ljava/math/BigInteger;
+	move-result-object	v0
+; v0 : [B
+	const/4	v1,0
+; v1 : single-length
+	invoke-static	{v0,v1},org/apache/commons/codec/binary/Base64/encodeBase64	; encodeBase64([BZ)[B
+; v0 : [B , v1 : single-length
+	move-result-object	v0
+; v0 : [B
+	return-object	v0
+; v0 : [B
+.end method
+
+.method public static isArrayByteBase64([B)Z
+.limit registers 2
+; parameter[0] : v1 ([B)
+.line 481
+	invoke-static	{v1},org/apache/commons/codec/binary/Base64/isBase64	; isBase64([B)Z
+; v1 : [B
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public static isBase64(B)Z
+.limit registers 3
+; parameter[0] : v2 (B)
+.line 493
+	const/16	v0,61
+; v0 : single-length
+	if-eq	v2,v0,l106cf0
+; v2 : single-length , v0 : single-length
+	if-ltz	v2,l106cf4
+; v2 : single-length
+	sget-object	v0,org/apache/commons/codec/binary/Base64.DECODE_TABLE [B
+; v0 : [B
+	array-length	v0,v0
+; v0 : single-length , v0 : single-length
+	if-ge	v2,v0,l106cf4
+; v2 : single-length , v0 : single-length
+	sget-object	v0,org/apache/commons/codec/binary/Base64.DECODE_TABLE [B
+; v0 : [B
+	aget-byte	v0,v0,v2
+; v0 : single-length , v0 : single-length , v2 : single-length
+	const/4	v1,15
+; v1 : single-length
+	if-eq	v0,v1,l106cf4
+; v0 : single-length , v1 : single-length
+l106cf0:
+	const/4	v0,1
+; v0 : single-length
+l106cf2:
+	return	v0
+; v0 : single-length
+l106cf4:
+	const/4	v0,0
+; v0 : single-length
+	goto	l106cf2
+.end method
+
+.method public static isBase64(Ljava/lang/String;)Z
+.limit registers 2
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 507
+	invoke-static	{v1},org/apache/commons/codec/binary/StringUtils/getBytesUtf8	; getBytesUtf8(Ljava/lang/String;)[B
+; v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : [B
+	invoke-static	{v0},org/apache/commons/codec/binary/Base64/isBase64	; isBase64([B)Z
+; v0 : [B
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public static isBase64([B)Z
+.limit registers 3
+; parameter[0] : v2 ([B)
+.line 521
+	const/4	v0,0
+; v0 : single-length
+l106d2e:
+	array-length	v1,v2
+; v1 : single-length , v2 : [B
+	if-ge	v0,v1,l106d5e
+; v0 : single-length , v1 : single-length
+.line 522
+	aget-byte	v1,v2,v0
+; v1 : single-length , v2 : [B , v0 : single-length
+	invoke-static	{v1},org/apache/commons/codec/binary/Base64/isBase64	; isBase64(B)Z
+; v1 : single-length
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l106d58
+; v1 : single-length
+	aget-byte	v1,v2,v0
+; v1 : single-length , v2 : [B , v0 : single-length
+	invoke-static	{v1},org/apache/commons/codec/binary/Base64/isWhiteSpace	; isWhiteSpace(B)Z
+; v1 : single-length
+	move-result	v1
+; v1 : single-length
+	if-nez	v1,l106d58
+; v1 : single-length
+.line 523
+	const/4	v1,0
+; v1 : single-length
+l106d56:
+.line 526
+	return	v1
+; v1 : single-length
+l106d58:
+.line 521
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	l106d2e
+l106d5e:
+.line 526
+	const/4	v1,1
+; v1 : single-length
+	goto	l106d56
+.end method
+
+.method static toIntegerBytes(Ljava/math/BigInteger;)[B
+.limit registers 9
+; parameter[0] : v8 (Ljava/math/BigInteger;)
+.var 0 is bigBytes [B from l106d90 to l106db8
+.line 723
+	invoke-virtual	{v8},java/math/BigInteger/bitLength	; bitLength()I
+; v8 : Ljava/math/BigInteger;
+	move-result	v1
+; v1 : single-length
+.line 725
+	add-int/lit8	v6,v1,7
+; v6 : single-length , v1 : single-length
+	shr-int/lit8	v6,v6,3
+; v6 : single-length , v6 : single-length
+	shl-int/lit8	v1,v6,3
+; v1 : single-length , v6 : single-length
+.line 726
+	invoke-virtual	{v8},java/math/BigInteger/toByteArray	; toByteArray()[B
+; v8 : Ljava/math/BigInteger;
+	move-result-object	v0
+; v0 : [B
+.line 728
+	invoke-virtual	{v8},java/math/BigInteger/bitLength	; bitLength()I
+; v8 : Ljava/math/BigInteger;
+	move-result	v6
+; v6 : single-length
+	rem-int/lit8	v6,v6,8
+; v6 : single-length , v6 : single-length
+	if-eqz	v6,l106dba
+; v6 : single-length
+	invoke-virtual	{v8},java/math/BigInteger/bitLength	; bitLength()I
+; v8 : Ljava/math/BigInteger;
+	move-result	v6
+; v6 : single-length
+	div-int/lit8	v6,v6,8
+; v6 : single-length , v6 : single-length
+	add-int/lit8	v6,v6,1
+; v6 : single-length , v6 : single-length
+	div-int/lit8	v7,v1,8
+; v7 : single-length , v1 : single-length
+	if-ne	v6,v7,l106dba
+; v6 : single-length , v7 : single-length
+l106db8:
+.line 743
+	return-object	v0
+; v0 : [B
+l106dba:
+.line 732
+	const/4	v5,0
+; v5 : single-length
+.line 733
+	array-length	v2,v0
+; v2 : single-length , v0 : [B
+.line 736
+	invoke-virtual	{v8},java/math/BigInteger/bitLength	; bitLength()I
+; v8 : Ljava/math/BigInteger;
+	move-result	v6
+; v6 : single-length
+	rem-int/lit8	v6,v6,8
+; v6 : single-length , v6 : single-length
+	if-nez	v6,l106dd4
+; v6 : single-length
+.line 737
+	const/4	v5,1
+; v5 : single-length
+.line 738
+	add-int/lit8	v2,v2,255
+; v2 : single-length , v2 : single-length
+l106dd4:
+.line 740
+	div-int/lit8	v6,v1,8
+; v6 : single-length , v1 : single-length
+	sub-int	v4,v6,v2
+; v4 : single-length , v6 : single-length , v2 : single-length
+.line 741
+	div-int/lit8	v6,v1,8
+; v6 : single-length , v1 : single-length
+	new-array	v3,v6,[B
+; v3 : [B , v6 : single-length
+.line 742
+	invoke-static	{v0,v5,v3,v4,v2},java/lang/System/arraycopy	; arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+; v0 : [B , v5 : single-length , v3 : [B , v4 : single-length , v2 : single-length
+	move-object	v0,v3
+; v0 : [B , v3 : [B
+.line 743
+	goto	l106db8
+.end method
+
+.method decode([BII)V
+.limit registers 12
+; this: v8 (Lorg/apache/commons/codec/binary/Base64;)
+; parameter[0] : v9 ([B)
+; parameter[1] : v10 (I)
+; parameter[2] : v11 (I)
+.var 2 is inPos I from l106e18 to l106e2a
+.var 0 is b B from l106e2e to l106e3a
+.var 3 is result I from l106ea2 to l106f2e
+.var 0 is b B from l106e8c to l106f38
+.var 2 is inPos I from l106f34 to l106f38
+.var 2 is inPos I from l106f88 to l106f8a
+	const/4	v7,1
+; v7 : single-length
+.line 417
+	iget-boolean	v4,v8,org/apache/commons/codec/binary/Base64.eof Z
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	if-eqz	v4,l106e0c
+; v4 : single-length
+l106e0a:
+.line 468
+	return-void	
+l106e0c:
+.line 420
+	if-gez	v11,l106e14
+; v11 : single-length
+.line 421
+	iput-boolean	v7,v8,org/apache/commons/codec/binary/Base64.eof Z
+; v7 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+l106e14:
+.line 423
+	const/4	v1,0
+; v1 : single-length
+	move	v2,v10
+; v2 : single-length , v10 : single-length
+l106e18:
+	if-ge	v1,v11,l106f88
+; v1 : single-length , v11 : single-length
+.line 424
+	iget	v4,v8,org/apache/commons/codec/binary/Base64.decodeSize I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	invoke-virtual	{v8,v4},org/apache/commons/codec/binary/Base64/ensureBufferSize	; ensureBufferSize(I)V
+; v8 : Lorg/apache/commons/codec/binary/Base64; , v4 : single-length
+.line 425
+	add-int/lit8	v10,v2,1
+; v10 : single-length , v2 : single-length
+l106e2a:
+	aget-byte	v0,v9,v2
+; v0 : single-length , v9 : [B , v2 : single-length
+.line 426
+	const/16	v4,61
+; v4 : single-length
+	if-ne	v0,v4,l106e8c
+; v0 : single-length , v4 : single-length
+.line 428
+	iput-boolean	v7,v8,org/apache/commons/codec/binary/Base64.eof Z
+; v7 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+l106e3a:
+.line 449
+	iget-boolean	v4,v8,org/apache/commons/codec/binary/Base64.eof Z
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	if-eqz	v4,l106e0a
+; v4 : single-length
+	iget	v4,v8,org/apache/commons/codec/binary/Base64.modulus I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	if-eqz	v4,l106e0a
+; v4 : single-length
+.line 450
+	iget	v4,v8,org/apache/commons/codec/binary/Base64.decodeSize I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	invoke-virtual	{v8,v4},org/apache/commons/codec/binary/Base64/ensureBufferSize	; ensureBufferSize(I)V
+; v8 : Lorg/apache/commons/codec/binary/Base64; , v4 : single-length
+.line 454
+	iget	v4,v8,org/apache/commons/codec/binary/Base64.modulus I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	packed-switch	v4,2
+		ps106e58_106e60	; case 2
+		ps106e58_106f38	; case 3
+		default: ps106e58_default
+; v4 : single-length
+ps106e58_default:
+	goto	l106e0a
+ps106e58_106e60:
+.line 458
+	iget	v4,v8,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	shr-int/lit8	v4,v4,4
+; v4 : single-length , v4 : single-length
+	iput	v4,v8,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+.line 459
+	iget-object	v4,v8,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v8 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v8,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v8,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v6,v8,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v6 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	and-int/lit16	v6,v6,255
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+	goto	l106e0a
+l106e8c:
+.line 431
+	if-ltz	v0,l106f2e
+; v0 : single-length
+	sget-object	v4,org/apache/commons/codec/binary/Base64.DECODE_TABLE [B
+; v4 : [B
+	array-length	v4,v4
+; v4 : single-length , v4 : single-length
+	if-ge	v0,v4,l106f2e
+; v0 : single-length , v4 : single-length
+.line 432
+	sget-object	v4,org/apache/commons/codec/binary/Base64.DECODE_TABLE [B
+; v4 : [B
+	aget-byte	v3,v4,v0
+; v3 : single-length , v4 : [B , v0 : single-length
+.line 433
+	if-ltz	v3,l106f2e
+; v3 : single-length
+.line 434
+	iget	v4,v8,org/apache/commons/codec/binary/Base64.modulus I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	rem-int/lit8	v4,v4,4
+; v4 : single-length , v4 : single-length
+	iput	v4,v8,org/apache/commons/codec/binary/Base64.modulus I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+.line 435
+	iget	v4,v8,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	shl-int/lit8	v4,v4,6
+; v4 : single-length , v4 : single-length
+	add-int/2addr	v4,v3
+; v4 : single-length , v3 : single-length
+	iput	v4,v8,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+.line 436
+	iget	v4,v8,org/apache/commons/codec/binary/Base64.modulus I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	if-nez	v4,l106f2e
+; v4 : single-length
+.line 437
+	iget-object	v4,v8,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v8 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v8,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v8,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v6,v8,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v6 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	shr-int/lit8	v6,v6,16
+; v6 : single-length , v6 : single-length
+	and-int/lit16	v6,v6,255
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 438
+	iget-object	v4,v8,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v8 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v8,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v8,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v6,v8,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v6 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	shr-int/lit8	v6,v6,8
+; v6 : single-length , v6 : single-length
+	and-int/lit16	v6,v6,255
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 439
+	iget-object	v4,v8,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v8 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v8,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v8,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v6,v8,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v6 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	and-int/lit16	v6,v6,255
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+l106f2e:
+.line 423
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	move	v2,v10
+; v2 : single-length , v10 : single-length
+l106f34:
+	goto/16	l106e18
+ps106e58_106f38:
+.line 462
+	iget	v4,v8,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	shr-int/lit8	v4,v4,2
+; v4 : single-length , v4 : single-length
+	iput	v4,v8,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v4 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+.line 463
+	iget-object	v4,v8,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v8 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v8,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v8,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v6,v8,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v6 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	shr-int/lit8	v6,v6,8
+; v6 : single-length , v6 : single-length
+	and-int/lit16	v6,v6,255
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 464
+	iget-object	v4,v8,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v8 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v8,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v8,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v6,v8,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v6 : single-length , v8 : Lorg/apache/commons/codec/binary/Base64;
+	and-int/lit16	v6,v6,255
+; v6 : single-length , v6 : single-length
+	int-to-byte	v6,v6
+; v6 : single-length , v6 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+	goto/16	l106e0a
+l106f88:
+	move	v10,v2
+; v10 : single-length , v2 : single-length
+l106f8a:
+	goto/16	l106e3a
+.line 454
+l106f8e:	data-array
+		0x00, 0x00
+	end data-array
+.end method
+
+.method encode([BII)V
+.limit registers 14
+; this: v10 (Lorg/apache/commons/codec/binary/Base64;)
+; parameter[0] : v11 ([B)
+; parameter[1] : v12 (I)
+; parameter[2] : v13 (I)
+.var 3 is savedPos I from l106fe8 to l10715e
+.var 2 is inPos I from l107162 to l107184
+.var 0 is b I from l107188 to l107298
+.var 2 is inPos I from l107294 to l10729a
+	const/16	v9,61
+; v9 : single-length
+	const/4	v8,0
+; v8 : single-length
+.line 328
+	iget-boolean	v4,v10,org/apache/commons/codec/binary/Base64.eof Z
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	if-eqz	v4,l106fc0
+; v4 : single-length
+l106fbe:
+.line 390
+	return-void	
+l106fc0:
+.line 333
+	if-gez	v13,l10715e
+; v13 : single-length
+.line 334
+	const/4	v4,1
+; v4 : single-length
+	iput-boolean	v4,v10,org/apache/commons/codec/binary/Base64.eof Z
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+.line 335
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	if-nez	v4,l106fda
+; v4 : single-length
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.lineLength I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	if-eqz	v4,l106fbe
+; v4 : single-length
+l106fda:
+.line 338
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.encodeSize I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	invoke-virtual	{v10,v4},org/apache/commons/codec/binary/Base64/ensureBufferSize	; ensureBufferSize(I)V
+; v10 : Lorg/apache/commons/codec/binary/Base64; , v4 : single-length
+.line 339
+	iget	v3,v10,org/apache/commons/codec/binary/Base64.pos I
+; v3 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+.line 340
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	packed-switch	v4,1
+		ps106fec_10703c	; case 1
+		ps106fec_1070c2	; case 2
+		default: ps106fec_default
+; v4 : single-length
+l106ff2:
+.line 361
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.currentLinePos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	sub-int/2addr	v5,v3
+; v5 : single-length , v3 : single-length
+	add-int/2addr	v4,v5
+; v4 : single-length , v5 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base64.currentLinePos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+.line 363
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.lineLength I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	if-lez	v4,l106fbe
+; v4 : single-length
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.currentLinePos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	if-lez	v4,l106fbe
+; v4 : single-length
+.line 364
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.lineSeparator [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v5,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v5 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v7,v10,org/apache/commons/codec/binary/Base64.lineSeparator [B
+; v7 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	array-length	v7,v7
+; v7 : single-length , v7 : single-length
+	invoke-static	{v4,v8,v5,v6,v7},java/lang/System/arraycopy	; arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+; v4 : [B , v8 : single-length , v5 : [B , v6 : single-length , v7 : single-length
+.line 365
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.pos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v5,v10,org/apache/commons/codec/binary/Base64.lineSeparator [B
+; v5 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	array-length	v5,v5
+; v5 : single-length , v5 : single-length
+	add-int/2addr	v4,v5
+; v4 : single-length , v5 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base64.pos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	goto	l106fbe
+ps106fec_10703c:
+.line 342
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v7,v10,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v7 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	shr-int/lit8	v7,v7,2
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,63
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 343
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v7,v10,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v7 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	shl-int/lit8	v7,v7,4
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,63
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 345
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	sget-object	v5,org/apache/commons/codec/binary/Base64.STANDARD_ENCODE_TABLE [B
+; v5 : [B
+	if-ne	v4,v5,l106ff2
+; v4 : [B , v5 : [B
+.line 346
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	aput-byte	v9,v4,v5
+; v9 : single-length , v4 : [B , v5 : single-length
+.line 347
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	aput-byte	v9,v4,v5
+; v9 : single-length , v4 : [B , v5 : single-length
+	goto	l106ff2
+ps106fec_1070c2:
+.line 352
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v7,v10,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v7 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	shr-int/lit8	v7,v7,10
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,63
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 353
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v7,v10,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v7 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	shr-int/lit8	v7,v7,4
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,63
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 354
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v7,v10,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v7 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	shl-int/lit8	v7,v7,2
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,63
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 356
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	sget-object	v5,org/apache/commons/codec/binary/Base64.STANDARD_ENCODE_TABLE [B
+; v5 : [B
+	if-ne	v4,v5,l106ff2
+; v4 : [B , v5 : [B
+.line 357
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	aput-byte	v9,v4,v5
+; v9 : single-length , v4 : [B , v5 : single-length
+	goto/16	l106ff2
+l10715e:
+.line 368
+	const/4	v1,0
+; v1 : single-length
+	move	v2,v12
+; v2 : single-length , v12 : single-length
+l107162:
+	if-ge	v1,v13,l107298
+; v1 : single-length , v13 : single-length
+.line 369
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.encodeSize I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	invoke-virtual	{v10,v4},org/apache/commons/codec/binary/Base64/ensureBufferSize	; ensureBufferSize(I)V
+; v10 : Lorg/apache/commons/codec/binary/Base64; , v4 : single-length
+.line 370
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v4,v4,1
+; v4 : single-length , v4 : single-length
+	rem-int/lit8	v4,v4,3
+; v4 : single-length , v4 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base64.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+.line 371
+	add-int/lit8	v12,v2,1
+; v12 : single-length , v2 : single-length
+l107184:
+	aget-byte	v0,v11,v2
+; v0 : single-length , v11 : [B , v2 : single-length
+.line 372
+	if-gez	v0,l107190
+; v0 : single-length
+.line 373
+	add-int/lit16	v0,v0,256
+; v0 : single-length , v0 : single-length
+l107190:
+.line 375
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	shl-int/lit8	v4,v4,8
+; v4 : single-length , v4 : single-length
+	add-int/2addr	v4,v0
+; v4 : single-length , v0 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+.line 376
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.modulus I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	if-nez	v4,l10728e
+; v4 : single-length
+.line 377
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v7,v10,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v7 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	shr-int/lit8	v7,v7,18
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,63
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 378
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v7,v10,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v7 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	shr-int/lit8	v7,v7,12
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,63
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 379
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v7,v10,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v7 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	shr-int/lit8	v7,v7,6
+; v7 : single-length , v7 : single-length
+	and-int/lit8	v7,v7,63
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 380
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.pos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v6,v5,1
+; v6 : single-length , v5 : single-length
+	iput	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v6,v10,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v6 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v7,v10,org/apache/commons/codec/binary/Base64.bitWorkArea I
+; v7 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	and-int/lit8	v7,v7,63
+; v7 : single-length , v7 : single-length
+	aget-byte	v6,v6,v7
+; v6 : single-length , v6 : single-length , v7 : single-length
+	aput-byte	v6,v4,v5
+; v6 : single-length , v4 : [B , v5 : single-length
+.line 381
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.currentLinePos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	add-int/lit8	v4,v4,4
+; v4 : single-length , v4 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base64.currentLinePos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+.line 382
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.lineLength I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	if-lez	v4,l10728e
+; v4 : single-length
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.lineLength I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v5,v10,org/apache/commons/codec/binary/Base64.currentLinePos I
+; v5 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	if-gt	v4,v5,l10728e
+; v4 : single-length , v5 : single-length
+.line 383
+	iget-object	v4,v10,org/apache/commons/codec/binary/Base64.lineSeparator [B
+; v4 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v5,v10,org/apache/commons/codec/binary/Base64.buffer [B
+; v5 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget	v6,v10,org/apache/commons/codec/binary/Base64.pos I
+; v6 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v7,v10,org/apache/commons/codec/binary/Base64.lineSeparator [B
+; v7 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	array-length	v7,v7
+; v7 : single-length , v7 : single-length
+	invoke-static	{v4,v8,v5,v6,v7},java/lang/System/arraycopy	; arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+; v4 : [B , v8 : single-length , v5 : [B , v6 : single-length , v7 : single-length
+.line 384
+	iget	v4,v10,org/apache/commons/codec/binary/Base64.pos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+	iget-object	v5,v10,org/apache/commons/codec/binary/Base64.lineSeparator [B
+; v5 : [B , v10 : Lorg/apache/commons/codec/binary/Base64;
+	array-length	v5,v5
+; v5 : single-length , v5 : single-length
+	add-int/2addr	v4,v5
+; v4 : single-length , v5 : single-length
+	iput	v4,v10,org/apache/commons/codec/binary/Base64.pos I
+; v4 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+.line 385
+	iput	v8,v10,org/apache/commons/codec/binary/Base64.currentLinePos I
+; v8 : single-length , v10 : Lorg/apache/commons/codec/binary/Base64;
+l10728e:
+.line 368
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	move	v2,v12
+; v2 : single-length , v12 : single-length
+l107294:
+	goto/16	l107162
+l107298:
+	move	v12,v2
+; v12 : single-length , v2 : single-length
+l10729a:
+	goto/16	l106fbe
+.line 340
+l10729e:	data-array
+		0x00, 0x00
+	end data-array
+.end method
+
+.method protected isInAlphabet(B)Z
+.limit registers 4
+; this: v2 (Lorg/apache/commons/codec/binary/Base64;)
+; parameter[0] : v3 (B)
+.line 755
+	if-ltz	v3,l1072e0
+; v3 : single-length
+	iget-object	v0,v2,org/apache/commons/codec/binary/Base64.decodeTable [B
+; v0 : [B , v2 : Lorg/apache/commons/codec/binary/Base64;
+	array-length	v0,v0
+; v0 : single-length , v0 : single-length
+	if-ge	v3,v0,l1072e0
+; v3 : single-length , v0 : single-length
+	iget-object	v0,v2,org/apache/commons/codec/binary/Base64.decodeTable [B
+; v0 : [B , v2 : Lorg/apache/commons/codec/binary/Base64;
+	aget-byte	v0,v0,v3
+; v0 : single-length , v0 : single-length , v3 : single-length
+	const/4	v1,15
+; v1 : single-length
+	if-eq	v0,v1,l1072e0
+; v0 : single-length , v1 : single-length
+	const/4	v0,1
+; v0 : single-length
+l1072de:
+	return	v0
+; v0 : single-length
+l1072e0:
+	const/4	v0,0
+; v0 : single-length
+	goto	l1072de
+.end method
+
+.method public isUrlSafe()Z
+.limit registers 3
+; this: v2 (Lorg/apache/commons/codec/binary/Base64;)
+.line 305
+	iget-object	v0,v2,org/apache/commons/codec/binary/Base64.encodeTable [B
+; v0 : [B , v2 : Lorg/apache/commons/codec/binary/Base64;
+	sget-object	v1,org/apache/commons/codec/binary/Base64.URL_SAFE_ENCODE_TABLE [B
+; v1 : [B
+	if-ne	v0,v1,l107304
+; v0 : [B , v1 : [B
+	const/4	v0,1
+; v0 : single-length
+l107302:
+	return	v0
+; v0 : single-length
+l107304:
+	const/4	v0,0
+; v0 : single-length
+	goto	l107302
+.end method
+
+

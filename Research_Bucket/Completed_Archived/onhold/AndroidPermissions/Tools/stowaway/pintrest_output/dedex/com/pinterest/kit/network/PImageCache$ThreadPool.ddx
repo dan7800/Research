@@ -1,0 +1,124 @@
+.class com/pinterest/kit/network/PImageCache$ThreadPool
+.super java/lang/Object
+.source PImageCache.java
+
+.inner class ThreadPool inner com/pinterest/kit/network/PImageCache$ThreadPool outer com/pinterest/kit/network/PImageCache
+.field final this$0 Lcom/pinterest/kit/network/PImageCache;
+.field threads [Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+
+.method public <init>(Lcom/pinterest/kit/network/PImageCache;I)V
+.limit registers 7
+; this: v4 (Lcom/pinterest/kit/network/PImageCache$ThreadPool;)
+; parameter[0] : v5 (Lcom/pinterest/kit/network/PImageCache;)
+; parameter[1] : v6 (I)
+.catch java/lang/Exception from lf7ea6 to lf7ed6 using lf7ed2
+.line 108
+	iput-object	v5,v4,com/pinterest/kit/network/PImageCache$ThreadPool.this$0 Lcom/pinterest/kit/network/PImageCache;
+; v5 : Lcom/pinterest/kit/network/PImageCache; , v4 : Lcom/pinterest/kit/network/PImageCache$ThreadPool;
+	invoke-direct	{v4},java/lang/Object/<init>	; <init>()V
+; v4 : Lcom/pinterest/kit/network/PImageCache$ThreadPool;
+.line 109
+	new-array	v1,v6,[Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+; v1 : [Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v6 : single-length
+	iput-object	v1,v4,com/pinterest/kit/network/PImageCache$ThreadPool.threads [Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+; v1 : [Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v4 : Lcom/pinterest/kit/network/PImageCache$ThreadPool;
+.line 110
+	iget-object	v2,v4,com/pinterest/kit/network/PImageCache$ThreadPool.threads [Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+; v2 : [Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v4 : Lcom/pinterest/kit/network/PImageCache$ThreadPool;
+	monitor-enter	v2
+; v2 : [Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+.line 111
+	const/4	v0,0
+; v0 : single-length
+lf7ea2:
+	if-ge	v0,v6,lf7ece
+; v0 : single-length , v6 : single-length
+lf7ea6:
+.line 112
+	iget-object	v1,v4,com/pinterest/kit/network/PImageCache$ThreadPool.threads [Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+; v1 : [Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v4 : Lcom/pinterest/kit/network/PImageCache$ThreadPool;
+	new-instance	v3,com/pinterest/kit/network/PImageCache$PhotosLoader
+; v3 : Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+	invoke-direct	{v3,v5},com/pinterest/kit/network/PImageCache$PhotosLoader/<init>	; <init>(Lcom/pinterest/kit/network/PImageCache;)V
+; v3 : Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v5 : Lcom/pinterest/kit/network/PImageCache;
+	aput-object	v3,v1,v0
+; v3 : Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v1 : [Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v0 : single-length
+.line 113
+	iget-object	v1,v4,com/pinterest/kit/network/PImageCache$ThreadPool.threads [Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+; v1 : [Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v4 : Lcom/pinterest/kit/network/PImageCache$ThreadPool;
+	aget-object	v1,v1,v0
+; v1 : Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v1 : Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v0 : single-length
+	const/4	v3,4
+; v3 : single-length
+	invoke-virtual	{v1,v3},com/pinterest/kit/network/PImageCache$PhotosLoader/setPriority	; setPriority(I)V
+; v1 : Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v3 : single-length
+.line 111
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	lf7ea2
+lf7ece:
+.line 115
+	monitor-exit	v2
+; v2 : [Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+.line 116
+	return-void	
+lf7ed2:
+.line 115
+	move-exception	v1
+; v1 : java/lang/Exception
+	monitor-exit	v2
+; v2 : [Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+lf7ed6:
+	throw	v1
+; v1 : java/lang/Exception
+.end method
+
+.method public start()V
+.limit registers 7
+; this: v6 (Lcom/pinterest/kit/network/PImageCache$ThreadPool;)
+.catch java/lang/ArrayIndexOutOfBoundsException from lf7ef4 to lf7f1a using lf7f20
+.var 0 is arr$ [Lcom/pinterest/kit/network/PImageCache$PhotosLoader; from lf7ef8 to lf7f20
+.var 1 is i$ I from lf7efc to lf7f20
+.var 2 is len$ I from lf7efa to lf7f20
+.var 3 is thread Lcom/pinterest/kit/network/PImageCache$PhotosLoader; from lf7f04 to lf7f20
+lf7ef4:
+.line 121
+	iget-object	v0,v6,com/pinterest/kit/network/PImageCache$ThreadPool.threads [Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+; v0 : [Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v6 : Lcom/pinterest/kit/network/PImageCache$ThreadPool;
+lf7ef8:
+	array-length	v2,v0
+; v2 : single-length , v0 : [Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+lf7efa:
+	const/4	v1,0
+; v1 : single-length
+lf7efc:
+	if-ge	v1,v2,lf7f22
+; v1 : single-length , v2 : single-length
+	aget-object	v3,v0,v1
+; v3 : Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v0 : [Lcom/pinterest/kit/network/PImageCache$PhotosLoader; , v1 : single-length
+.line 122
+	invoke-virtual	{v3},com/pinterest/kit/network/PImageCache$PhotosLoader/getState	; getState()Ljava/lang/Thread$State;
+; v3 : Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+	move-result-object	v4
+; v4 : Ljava/lang/Thread$State;
+	sget-object	v5,java/lang/Thread$State.NEW Ljava/lang/Thread$State;
+; v5 : Ljava/lang/Thread$State;
+	if-ne	v4,v5,lf7f1a
+; v4 : Ljava/lang/Thread$State; , v5 : Ljava/lang/Thread$State;
+	invoke-virtual	{v3},com/pinterest/kit/network/PImageCache$PhotosLoader/start	; start()V
+; v3 : Lcom/pinterest/kit/network/PImageCache$PhotosLoader;
+lf7f1a:
+.line 121
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	lf7efc
+lf7f20:
+.line 123
+	move-exception	v4
+; v4 : java/lang/ArrayIndexOutOfBoundsException
+lf7f22:
+.line 124
+	return-void	
+.end method
+
+

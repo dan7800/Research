@@ -1,0 +1,1220 @@
+.class public com/actionbarsherlock/internal/widget/ScrollingTabContainerView
+.super com/actionbarsherlock/internal/nineoldandroids/widget/NineHorizontalScrollView
+.source ScrollingTabContainerView.java
+.implements com/actionbarsherlock/internal/widget/IcsAdapterView$OnItemSelectedListener
+
+.inner class VisibilityAnimListener inner com/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener outer com/actionbarsherlock/internal/widget/ScrollingTabContainerView
+.inner class TabClickListener inner com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener outer com/actionbarsherlock/internal/widget/ScrollingTabContainerView
+.inner class TabAdapter inner com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter outer com/actionbarsherlock/internal/widget/ScrollingTabContainerView
+.inner class TabView inner com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView outer com/actionbarsherlock/internal/widget/ScrollingTabContainerView
+.field private static final FADE_DURATION I = 200	; 0xc8
+.field private static final sAlphaInterpolator Landroid/view/animation/Interpolator;
+.field private mAllowCollapse Z
+.field private mContentHeight I
+.field private mInflater Landroid/view/LayoutInflater;
+.field mMaxTabWidth I
+.field private mSelectedTabIndex I
+.field private mTabClickListener Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener;
+.field private mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+.field mTabSelector Ljava/lang/Runnable;
+.field private mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.field protected final mVisAnimListener Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener;
+.field protected mVisibilityAnim Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;
+
+.method static <clinit>()V
+.limit registers 1
+.line 64
+	new-instance	v0,android/view/animation/DecelerateInterpolator
+; v0 : Landroid/view/animation/DecelerateInterpolator;
+	invoke-direct	{v0},android/view/animation/DecelerateInterpolator/<init>	; <init>()V
+; v0 : Landroid/view/animation/DecelerateInterpolator;
+	sput-object	v0,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.sAlphaInterpolator Landroid/view/animation/Interpolator;
+; v0 : Landroid/view/animation/Interpolator;
+	return-void	
+.end method
+
+.method public <init>(Landroid/content/Context;)V
+.limit registers 8
+; this: v6 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v7 (Landroid/content/Context;)
+	const/4	v5,0
+; v5 : single-length
+.line 69
+	invoke-direct	{v6,v7},com/actionbarsherlock/internal/nineoldandroids/widget/NineHorizontalScrollView/<init>	; <init>(Landroid/content/Context;)V
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v7 : Landroid/content/Context;
+.line 62
+	new-instance	v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener;
+	invoke-direct	{v1,v6},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener/<init>	; <init>(Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)V
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener; , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	iput-object	v1,v6,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mVisAnimListener Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener;
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener; , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+.line 70
+	invoke-virtual	{v6,v5},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/setHorizontalScrollBarEnabled	; setHorizontalScrollBarEnabled(Z)V
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v5 : single-length
+.line 72
+	invoke-virtual	{v6},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/getContext	; getContext()Landroid/content/Context;
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	move-result-object	v1
+; v1 : Landroid/content/Context;
+	const/4	v2,0
+; v2 : single-length
+	sget-object	v3,com/actionbarsherlock/R$styleable.SherlockActionBar [I
+; v3 : [I
+	sget	v4,com/actionbarsherlock/R$attr.actionBarStyle I
+; v4 : single-length
+	invoke-virtual	{v1,v2,v3,v4,v5},android/content/Context/obtainStyledAttributes	; obtainStyledAttributes(Landroid/util/AttributeSet;[III)Landroid/content/res/TypedArray;
+; v1 : Landroid/content/Context; , v2 : single-length , v3 : [I , v4 : single-length , v5 : single-length
+	move-result-object	v0
+; v0 : Landroid/content/res/TypedArray;
+.line 74
+	const/4	v1,4
+; v1 : single-length
+	invoke-virtual	{v0,v1,v5},android/content/res/TypedArray/getLayoutDimension	; getLayoutDimension(II)I
+; v0 : Landroid/content/res/TypedArray; , v1 : single-length , v5 : single-length
+	move-result	v1
+; v1 : single-length
+	invoke-virtual	{v6,v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/setContentHeight	; setContentHeight(I)V
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v1 : single-length
+.line 75
+	invoke-virtual	{v0},android/content/res/TypedArray/recycle	; recycle()V
+; v0 : Landroid/content/res/TypedArray;
+.line 77
+	invoke-static	{v7},android/view/LayoutInflater/from	; from(Landroid/content/Context;)Landroid/view/LayoutInflater;
+; v7 : Landroid/content/Context;
+	move-result-object	v1
+; v1 : Landroid/view/LayoutInflater;
+	iput-object	v1,v6,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mInflater Landroid/view/LayoutInflater;
+; v1 : Landroid/view/LayoutInflater; , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+.line 79
+	invoke-direct	{v6},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/createTabLayout	; createTabLayout()Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	move-result-object	v1
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+	iput-object	v1,v6,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+.line 80
+	iget-object	v1,v6,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	new-instance	v2,android/view/ViewGroup$LayoutParams
+; v2 : Landroid/view/ViewGroup$LayoutParams;
+	const/4	v3,14
+; v3 : single-length
+	const/4	v4,15
+; v4 : single-length
+	invoke-direct	{v2,v3,v4},android/view/ViewGroup$LayoutParams/<init>	; <init>(II)V
+; v2 : Landroid/view/ViewGroup$LayoutParams; , v3 : single-length , v4 : single-length
+	invoke-virtual	{v6,v1,v2},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/addView	; addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v1 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v2 : Landroid/view/ViewGroup$LayoutParams;
+.line 82
+	return-void	
+.end method
+
+.method static access$200(Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+.limit registers 2
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+.line 45
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+.end method
+
+.method static access$300(Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;Lcom/actionbarsherlock/app/ActionBar$Tab;Z)Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+.limit registers 4
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[1] : v2 (Lcom/actionbarsherlock/app/ActionBar$Tab;)
+; parameter[2] : v3 (Z)
+.line 45
+	invoke-direct	{v1,v2,v3},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/createTabView	; createTabView(Lcom/actionbarsherlock/app/ActionBar$Tab;Z)Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v2 : Lcom/actionbarsherlock/app/ActionBar$Tab; , v3 : single-length
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+.end method
+
+.method private createSpinner()Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.limit registers 5
+; this: v4 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+.line 197
+	new-instance	v0,com/actionbarsherlock/internal/widget/IcsSpinner
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	invoke-virtual	{v4},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/getContext	; getContext()Landroid/content/Context;
+; v4 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	move-result-object	v1
+; v1 : Landroid/content/Context;
+	const/4	v2,0
+; v2 : single-length
+	sget	v3,com/actionbarsherlock/R$attr.actionDropDownStyle I
+; v3 : single-length
+	invoke-direct	{v0,v1,v2,v3},com/actionbarsherlock/internal/widget/IcsSpinner/<init>	; <init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Landroid/content/Context; , v2 : single-length , v3 : single-length
+.line 199
+	new-instance	v1,android/widget/LinearLayout$LayoutParams
+; v1 : Landroid/widget/LinearLayout$LayoutParams;
+	const/4	v2,14
+; v2 : single-length
+	const/4	v3,15
+; v3 : single-length
+	invoke-direct	{v1,v2,v3},android/widget/LinearLayout$LayoutParams/<init>	; <init>(II)V
+; v1 : Landroid/widget/LinearLayout$LayoutParams; , v2 : single-length , v3 : single-length
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/IcsSpinner/setLayoutParams	; setLayoutParams(Landroid/view/ViewGroup$LayoutParams;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Landroid/widget/LinearLayout$LayoutParams;
+.line 201
+	invoke-virtual	{v0,v4},com/actionbarsherlock/internal/widget/IcsSpinner/setOnItemSelectedListener	; setOnItemSelectedListener(Lcom/actionbarsherlock/internal/widget/IcsAdapterView$OnItemSelectedListener;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v4 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+.line 202
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.end method
+
+.method private createTabLayout()Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+.limit registers 5
+; this: v4 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+.line 189
+	invoke-virtual	{v4},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/getContext	; getContext()Landroid/content/Context;
+; v4 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	move-result-object	v1
+; v1 : Landroid/content/Context;
+	invoke-static	{v1},android/view/LayoutInflater/from	; from(Landroid/content/Context;)Landroid/view/LayoutInflater;
+; v1 : Landroid/content/Context;
+	move-result-object	v1
+; v1 : Landroid/view/LayoutInflater;
+	sget	v2,com/actionbarsherlock/R$layout.abs__action_bar_tab_bar_view I
+; v2 : single-length
+	const/4	v3,0
+; v3 : single-length
+	invoke-virtual	{v1,v2,v3},android/view/LayoutInflater/inflate	; inflate(ILandroid/view/ViewGroup;)Landroid/view/View;
+; v1 : Landroid/view/LayoutInflater; , v2 : single-length , v3 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+	check-cast	v0,com/actionbarsherlock/internal/widget/IcsLinearLayout
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+.line 191
+	new-instance	v1,android/widget/LinearLayout$LayoutParams
+; v1 : Landroid/widget/LinearLayout$LayoutParams;
+	const/4	v2,14
+; v2 : single-length
+	const/4	v3,15
+; v3 : single-length
+	invoke-direct	{v1,v2,v3},android/widget/LinearLayout$LayoutParams/<init>	; <init>(II)V
+; v1 : Landroid/widget/LinearLayout$LayoutParams; , v2 : single-length , v3 : single-length
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/IcsLinearLayout/setLayoutParams	; setLayoutParams(Landroid/view/ViewGroup$LayoutParams;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v1 : Landroid/widget/LinearLayout$LayoutParams;
+.line 193
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+.end method
+
+.method private createTabView(Lcom/actionbarsherlock/app/ActionBar$Tab;Z)Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+.limit registers 7
+; this: v4 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v5 (Lcom/actionbarsherlock/app/ActionBar$Tab;)
+; parameter[1] : v6 (Z)
+	const/4	v3,0
+; v3 : single-length
+.line 275
+	iget-object	v1,v4,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mInflater Landroid/view/LayoutInflater;
+; v1 : Landroid/view/LayoutInflater; , v4 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	sget	v2,com/actionbarsherlock/R$layout.abs__action_bar_tab I
+; v2 : single-length
+	invoke-virtual	{v1,v2,v3},android/view/LayoutInflater/inflate	; inflate(ILandroid/view/ViewGroup;)Landroid/view/View;
+; v1 : Landroid/view/LayoutInflater; , v2 : single-length , v3 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+	check-cast	v0,com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+.line 276
+	invoke-virtual	{v0,v4,v5,v6},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView/init	; init(Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;Lcom/actionbarsherlock/app/ActionBar$Tab;Z)V
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView; , v4 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v5 : Lcom/actionbarsherlock/app/ActionBar$Tab; , v6 : single-length
+.line 278
+	if-eqz	v6,la5502
+; v6 : single-length
+.line 279
+	invoke-virtual	{v0,v3},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView/setBackgroundDrawable	; setBackgroundDrawable(Landroid/graphics/drawable/Drawable;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView; , v3 : single-length
+.line 280
+	new-instance	v1,android/widget/AbsListView$LayoutParams
+; v1 : Landroid/widget/AbsListView$LayoutParams;
+	const/4	v2,15
+; v2 : single-length
+	iget	v3,v4,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mContentHeight I
+; v3 : single-length , v4 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-direct	{v1,v2,v3},android/widget/AbsListView$LayoutParams/<init>	; <init>(II)V
+; v1 : Landroid/widget/AbsListView$LayoutParams; , v2 : single-length , v3 : single-length
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView/setLayoutParams	; setLayoutParams(Landroid/view/ViewGroup$LayoutParams;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView; , v1 : Landroid/widget/AbsListView$LayoutParams;
+la5500:
+.line 290
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+la5502:
+.line 283
+	const/4	v1,1
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView/setFocusable	; setFocusable(Z)V
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView; , v1 : single-length
+.line 285
+	iget-object	v1,v4,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabClickListener Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener;
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener; , v4 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-nez	v1,la5520
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener;
+.line 286
+	new-instance	v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener;
+	invoke-direct	{v1,v4,v3},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener/<init>	; <init>(Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$1;)V
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener; , v4 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v3 : single-length
+	iput-object	v1,v4,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabClickListener Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener;
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener; , v4 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+la5520:
+.line 288
+	iget-object	v1,v4,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabClickListener Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener;
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener; , v4 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView/setOnClickListener	; setOnClickListener(Landroid/view/View$OnClickListener;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabClickListener;
+	goto	la5500
+.end method
+
+.method private isCollapsed()Z
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+.line 134
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v0,la5558
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/IcsSpinner/getParent	; getParent()Landroid/view/ViewParent;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v0
+; v0 : Landroid/view/ViewParent;
+	if-ne	v0,v1,la5558
+; v0 : Landroid/view/ViewParent; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	const/4	v0,1
+; v0 : single-length
+la5556:
+	return	v0
+; v0 : single-length
+la5558:
+	const/4	v0,0
+; v0 : single-length
+	goto	la5556
+.end method
+
+.method private performCollapse()V
+.limit registers 6
+; this: v5 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+	const/4	v4,0
+; v4 : single-length
+.line 142
+	invoke-direct	{v5},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/isCollapsed	; isCollapsed()Z
+; v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,la557c
+; v0 : single-length
+la557a:
+.line 158
+	return-void	
+la557c:
+.line 144
+	iget-object	v0,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-nez	v0,la5590
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 145
+	invoke-direct	{v5},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/createSpinner	; createSpinner()Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	iput-object	v0,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+la5590:
+.line 147
+	iget-object	v0,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v5,v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/removeView	; removeView(Landroid/view/View;)V
+; v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+.line 148
+	iget-object	v0,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	new-instance	v1,android/view/ViewGroup$LayoutParams
+; v1 : Landroid/view/ViewGroup$LayoutParams;
+	const/4	v2,14
+; v2 : single-length
+	const/4	v3,15
+; v3 : single-length
+	invoke-direct	{v1,v2,v3},android/view/ViewGroup$LayoutParams/<init>	; <init>(II)V
+; v1 : Landroid/view/ViewGroup$LayoutParams; , v2 : single-length , v3 : single-length
+	invoke-virtual	{v5,v0,v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/addView	; addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+; v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Landroid/view/ViewGroup$LayoutParams;
+.line 150
+	iget-object	v0,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/IcsSpinner/getAdapter	; getAdapter()Landroid/widget/SpinnerAdapter;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v0
+; v0 : Landroid/widget/SpinnerAdapter;
+	if-nez	v0,la55d6
+; v0 : Landroid/widget/SpinnerAdapter;
+.line 151
+	iget-object	v0,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	new-instance	v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter;
+	invoke-direct	{v1,v5,v4},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter/<init>	; <init>(Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$1;)V
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v4 : single-length
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/IcsSpinner/setAdapter	; setAdapter(Landroid/widget/SpinnerAdapter;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter;
+la55d6:
+.line 153
+	iget-object	v0,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSelector Ljava/lang/Runnable;
+; v0 : Ljava/lang/Runnable; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v0,la55ec
+; v0 : Ljava/lang/Runnable;
+.line 154
+	iget-object	v0,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSelector Ljava/lang/Runnable;
+; v0 : Ljava/lang/Runnable; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v5,v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/removeCallbacks	; removeCallbacks(Ljava/lang/Runnable;)Z
+; v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v0 : Ljava/lang/Runnable;
+.line 155
+	iput-object	v4,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSelector Ljava/lang/Runnable;
+; v4 : single-length , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+la55ec:
+.line 157
+	iget-object	v0,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	iget	v1,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mSelectedTabIndex I
+; v1 : single-length , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/IcsSpinner/setSelection	; setSelection(I)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : single-length
+	goto	la557a
+.end method
+
+.method private performExpand()Z
+.limit registers 6
+; this: v5 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+	const/4	v4,0
+; v4 : single-length
+.line 161
+	invoke-direct	{v5},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/isCollapsed	; isCollapsed()Z
+; v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,la561c
+; v0 : single-length
+la561a:
+.line 167
+	return	v4
+; v4 : single-length
+la561c:
+.line 163
+	iget-object	v0,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v5,v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/removeView	; removeView(Landroid/view/View;)V
+; v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 164
+	iget-object	v0,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	new-instance	v1,android/view/ViewGroup$LayoutParams
+; v1 : Landroid/view/ViewGroup$LayoutParams;
+	const/4	v2,14
+; v2 : single-length
+	const/4	v3,15
+; v3 : single-length
+	invoke-direct	{v1,v2,v3},android/view/ViewGroup$LayoutParams/<init>	; <init>(II)V
+; v1 : Landroid/view/ViewGroup$LayoutParams; , v2 : single-length , v3 : single-length
+	invoke-virtual	{v5,v0,v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/addView	; addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+; v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v1 : Landroid/view/ViewGroup$LayoutParams;
+.line 166
+	iget-object	v0,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/IcsSpinner/getSelectedItemPosition	; getSelectedItemPosition()I
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result	v0
+; v0 : single-length
+	invoke-virtual	{v5,v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/setTabSelected	; setTabSelected(I)V
+; v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v0 : single-length
+	goto	la561a
+.end method
+
+.method public addTab(Lcom/actionbarsherlock/app/ActionBar$Tab;IZ)V
+.limit registers 10
+; this: v6 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v7 (Lcom/actionbarsherlock/app/ActionBar$Tab;)
+; parameter[1] : v8 (I)
+; parameter[2] : v9 (Z)
+	const/4	v5,0
+; v5 : single-length
+.line 309
+	invoke-direct	{v6,v7,v5},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/createTabView	; createTabView(Lcom/actionbarsherlock/app/ActionBar$Tab;Z)Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v7 : Lcom/actionbarsherlock/app/ActionBar$Tab; , v5 : single-length
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+.line 310
+	iget-object	v1,v6,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	new-instance	v2,android/widget/LinearLayout$LayoutParams
+; v2 : Landroid/widget/LinearLayout$LayoutParams;
+	const/4	v3,15
+; v3 : single-length
+	const/high16	v4,16256
+; v4 : single-length
+	invoke-direct	{v2,v5,v3,v4},android/widget/LinearLayout$LayoutParams/<init>	; <init>(IIF)V
+; v2 : Landroid/widget/LinearLayout$LayoutParams; , v5 : single-length , v3 : single-length , v4 : single-length
+	invoke-virtual	{v1,v0,v8,v2},com/actionbarsherlock/internal/widget/IcsLinearLayout/addView	; addView(Landroid/view/View;ILandroid/view/ViewGroup$LayoutParams;)V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView; , v8 : single-length , v2 : Landroid/widget/LinearLayout$LayoutParams;
+.line 312
+	iget-object	v1,v6,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v1,la56a6
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 313
+	iget-object	v1,v6,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v1},com/actionbarsherlock/internal/widget/IcsSpinner/getAdapter	; getAdapter()Landroid/widget/SpinnerAdapter;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v1
+; v1 : Landroid/widget/SpinnerAdapter;
+	check-cast	v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter;
+	invoke-virtual	{v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter/notifyDataSetChanged	; notifyDataSetChanged()V
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter;
+la56a6:
+.line 315
+	if-eqz	v9,la56b2
+; v9 : single-length
+.line 316
+	const/4	v1,1
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView/setSelected	; setSelected(Z)V
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView; , v1 : single-length
+la56b2:
+.line 318
+	iget-boolean	v1,v6,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mAllowCollapse Z
+; v1 : single-length , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v1,la56c0
+; v1 : single-length
+.line 319
+	invoke-virtual	{v6},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/requestLayout	; requestLayout()V
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+la56c0:
+.line 321
+	return-void	
+.end method
+
+.method public addTab(Lcom/actionbarsherlock/app/ActionBar$Tab;Z)V
+.limit registers 9
+; this: v6 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v7 (Lcom/actionbarsherlock/app/ActionBar$Tab;)
+; parameter[1] : v8 (Z)
+	const/4	v5,0
+; v5 : single-length
+.line 294
+	invoke-direct	{v6,v7,v5},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/createTabView	; createTabView(Lcom/actionbarsherlock/app/ActionBar$Tab;Z)Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v7 : Lcom/actionbarsherlock/app/ActionBar$Tab; , v5 : single-length
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+.line 295
+	iget-object	v1,v6,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	new-instance	v2,android/widget/LinearLayout$LayoutParams
+; v2 : Landroid/widget/LinearLayout$LayoutParams;
+	const/4	v3,15
+; v3 : single-length
+	const/high16	v4,16256
+; v4 : single-length
+	invoke-direct	{v2,v5,v3,v4},android/widget/LinearLayout$LayoutParams/<init>	; <init>(IIF)V
+; v2 : Landroid/widget/LinearLayout$LayoutParams; , v5 : single-length , v3 : single-length , v4 : single-length
+	invoke-virtual	{v1,v0,v2},com/actionbarsherlock/internal/widget/IcsLinearLayout/addView	; addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView; , v2 : Landroid/widget/LinearLayout$LayoutParams;
+.line 297
+	iget-object	v1,v6,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v1,la5716
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 298
+	iget-object	v1,v6,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v1},com/actionbarsherlock/internal/widget/IcsSpinner/getAdapter	; getAdapter()Landroid/widget/SpinnerAdapter;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v1
+; v1 : Landroid/widget/SpinnerAdapter;
+	check-cast	v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter;
+	invoke-virtual	{v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter/notifyDataSetChanged	; notifyDataSetChanged()V
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter;
+la5716:
+.line 300
+	if-eqz	v8,la5722
+; v8 : single-length
+.line 301
+	const/4	v1,1
+; v1 : single-length
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView/setSelected	; setSelected(Z)V
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView; , v1 : single-length
+la5722:
+.line 303
+	iget-boolean	v1,v6,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mAllowCollapse Z
+; v1 : single-length , v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v1,la5730
+; v1 : single-length
+.line 304
+	invoke-virtual	{v6},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/requestLayout	; requestLayout()V
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+la5730:
+.line 306
+	return-void	
+.end method
+
+.method public animateToTab(I)V
+.limit registers 4
+; this: v2 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v3 (I)
+.line 242
+	iget-object	v1,v2,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v2 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v1,v3},com/actionbarsherlock/internal/widget/IcsLinearLayout/getChildAt	; getChildAt(I)Landroid/view/View;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v3 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+.line 243
+	iget-object	v1,v2,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSelector Ljava/lang/Runnable;
+; v1 : Ljava/lang/Runnable; , v2 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v1,la5762
+; v1 : Ljava/lang/Runnable;
+.line 244
+	iget-object	v1,v2,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSelector Ljava/lang/Runnable;
+; v1 : Ljava/lang/Runnable; , v2 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v2,v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/removeCallbacks	; removeCallbacks(Ljava/lang/Runnable;)Z
+; v2 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v1 : Ljava/lang/Runnable;
+la5762:
+.line 246
+	new-instance	v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView$1
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$1;
+	invoke-direct	{v1,v2,v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$1/<init>	; <init>(Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;Landroid/view/View;)V
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$1; , v2 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v0 : Landroid/view/View;
+	iput-object	v1,v2,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSelector Ljava/lang/Runnable;
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$1; , v2 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+.line 253
+	iget-object	v1,v2,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSelector Ljava/lang/Runnable;
+; v1 : Ljava/lang/Runnable; , v2 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v2,v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/post	; post(Ljava/lang/Runnable;)Z
+; v2 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v1 : Ljava/lang/Runnable;
+.line 254
+	return-void	
+.end method
+
+.method public animateToVisibility(I)V
+.limit registers 9
+; this: v7 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v8 (I)
+.var 0 is anim Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator; from la57d6 to la5800
+	const-wide/16	v5,200
+; v5 : double-length
+	const/4	v2,1
+; v2 : single-length
+	const/4	v4,0
+; v4 : single-length
+	const/4	v3,0
+; v3 : single-length
+.line 218
+	iget-object	v1,v7,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mVisibilityAnim Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator; , v7 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v1,la57a8
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;
+.line 219
+	iget-object	v1,v7,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mVisibilityAnim Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator; , v7 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v1},com/actionbarsherlock/internal/nineoldandroids/animation/Animator/cancel	; cancel()V
+; v1 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator;
+la57a8:
+.line 221
+	if-nez	v8,la5800
+; v8 : single-length
+.line 222
+	invoke-virtual	{v7},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/getVisibility	; getVisibility()I
+; v7 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,la57be
+; v1 : single-length
+.line 223
+	invoke-virtual	{v7,v3},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/setAlpha	; setAlpha(F)V
+; v7 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v3 : single-length
+la57be:
+.line 225
+	const-string	v1,"alpha"
+; v1 : Ljava/lang/String;
+	new-array	v2,v2,[F
+; v2 : [F , v2 : [F
+	const/high16	v3,16256
+; v3 : single-length
+	aput	v3,v2,v4
+; v3 : single-length , v2 : [F , v4 : single-length
+	invoke-static	{v7,v1,v2},com/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator/ofFloat	; ofFloat(Ljava/lang/Object;Ljava/lang/String;[F)Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator;
+; v7 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v1 : Ljava/lang/String; , v2 : [F
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator;
+.line 226
+	invoke-virtual	{v0,v5,v6},com/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator/setDuration	; setDuration(J)Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator;
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator; , v5 : double-length
+.line 227
+	sget-object	v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.sAlphaInterpolator Landroid/view/animation/Interpolator;
+; v1 : Landroid/view/animation/Interpolator;
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator/setInterpolator	; setInterpolator(Landroid/view/animation/Interpolator;)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator; , v1 : Landroid/view/animation/Interpolator;
+.line 229
+	iget-object	v1,v7,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mVisAnimListener Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener;
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener; , v7 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v1,v8},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener/withFinalVisibility	; withFinalVisibility(I)Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener;
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener; , v8 : single-length
+	move-result-object	v1
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener;
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator/addListener	; addListener(Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener;)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener;
+.line 230
+	invoke-virtual	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator/start	; start()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator;
+la57fe:
+.line 239
+	return-void	
+la5800:
+.line 232
+	const-string	v1,"alpha"
+; v1 : Ljava/lang/String;
+	new-array	v2,v2,[F
+; v2 : [F , v2 : [F
+	aput	v3,v2,v4
+; v3 : single-length , v2 : [F , v4 : single-length
+	invoke-static	{v7,v1,v2},com/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator/ofFloat	; ofFloat(Ljava/lang/Object;Ljava/lang/String;[F)Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator;
+; v7 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v1 : Ljava/lang/String; , v2 : [F
+	move-result-object	v0
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator;
+.line 233
+	invoke-virtual	{v0,v5,v6},com/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator/setDuration	; setDuration(J)Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator;
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator; , v5 : double-length
+.line 234
+	sget-object	v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.sAlphaInterpolator Landroid/view/animation/Interpolator;
+; v1 : Landroid/view/animation/Interpolator;
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator/setInterpolator	; setInterpolator(Landroid/view/animation/Interpolator;)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator; , v1 : Landroid/view/animation/Interpolator;
+.line 236
+	iget-object	v1,v7,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mVisAnimListener Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener;
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener; , v7 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v1,v8},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener/withFinalVisibility	; withFinalVisibility(I)Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener;
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener; , v8 : single-length
+	move-result-object	v1
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener;
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator/addListener	; addListener(Lcom/actionbarsherlock/internal/nineoldandroids/animation/Animator$AnimatorListener;)V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$VisibilityAnimListener;
+.line 237
+	invoke-virtual	{v0},com/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator/start	; start()V
+; v0 : Lcom/actionbarsherlock/internal/nineoldandroids/animation/ObjectAnimator;
+	goto	la57fe
+.end method
+
+.method public onAttachedToWindow()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+.line 258
+	invoke-super	{v1},com/actionbarsherlock/internal/nineoldandroids/widget/NineHorizontalScrollView/onAttachedToWindow	; onAttachedToWindow()V
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+.line 259
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSelector Ljava/lang/Runnable;
+; v0 : Ljava/lang/Runnable; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v0,la5868
+; v0 : Ljava/lang/Runnable;
+.line 261
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSelector Ljava/lang/Runnable;
+; v0 : Ljava/lang/Runnable; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/post	; post(Ljava/lang/Runnable;)Z
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v0 : Ljava/lang/Runnable;
+la5868:
+.line 263
+	return-void	
+.end method
+
+.method protected onConfigurationChanged(Landroid/content/res/Configuration;)V
+.limit registers 8
+; this: v6 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v7 (Landroid/content/res/Configuration;)
+	const/4	v5,0
+; v5 : single-length
+.line 207
+	invoke-super	{v6,v7},com/actionbarsherlock/internal/nineoldandroids/widget/NineHorizontalScrollView/onConfigurationChanged	; onConfigurationChanged(Landroid/content/res/Configuration;)V
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v7 : Landroid/content/res/Configuration;
+.line 211
+	invoke-virtual	{v6},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/getContext	; getContext()Landroid/content/Context;
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	move-result-object	v1
+; v1 : Landroid/content/Context;
+	const/4	v2,0
+; v2 : single-length
+	sget-object	v3,com/actionbarsherlock/R$styleable.SherlockActionBar [I
+; v3 : [I
+	sget	v4,com/actionbarsherlock/R$attr.actionBarStyle I
+; v4 : single-length
+	invoke-virtual	{v1,v2,v3,v4,v5},android/content/Context/obtainStyledAttributes	; obtainStyledAttributes(Landroid/util/AttributeSet;[III)Landroid/content/res/TypedArray;
+; v1 : Landroid/content/Context; , v2 : single-length , v3 : [I , v4 : single-length , v5 : single-length
+	move-result-object	v0
+; v0 : Landroid/content/res/TypedArray;
+.line 213
+	const/4	v1,4
+; v1 : single-length
+	invoke-virtual	{v0,v1,v5},android/content/res/TypedArray/getLayoutDimension	; getLayoutDimension(II)I
+; v0 : Landroid/content/res/TypedArray; , v1 : single-length , v5 : single-length
+	move-result	v1
+; v1 : single-length
+	invoke-virtual	{v6,v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/setContentHeight	; setContentHeight(I)V
+; v6 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v1 : single-length
+.line 214
+	invoke-virtual	{v0},android/content/res/TypedArray/recycle	; recycle()V
+; v0 : Landroid/content/res/TypedArray;
+.line 215
+	return-void	
+.end method
+
+.method public onDetachedFromWindow()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+.line 267
+	invoke-super	{v1},com/actionbarsherlock/internal/nineoldandroids/widget/NineHorizontalScrollView/onDetachedFromWindow	; onDetachedFromWindow()V
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+.line 268
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSelector Ljava/lang/Runnable;
+; v0 : Ljava/lang/Runnable; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v0,la58e0
+; v0 : Ljava/lang/Runnable;
+.line 269
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSelector Ljava/lang/Runnable;
+; v0 : Ljava/lang/Runnable; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/removeCallbacks	; removeCallbacks(Ljava/lang/Runnable;)Z
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v0 : Ljava/lang/Runnable;
+la58e0:
+.line 271
+	return-void	
+.end method
+
+.method public onItemSelected(Lcom/actionbarsherlock/internal/widget/IcsAdapterView;Landroid/view/View;IJ)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lcom/actionbarsherlock/internal/widget/IcsAdapterView" , "<*>;" , "Landroid/view/View;" , "IJ)V" }
+.end annotation
+.limit registers 8
+; this: v2 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v3 (Lcom/actionbarsherlock/internal/widget/IcsAdapterView;)
+; parameter[1] : v4 (Landroid/view/View;)
+; parameter[2] : v5 (I)
+; parameter[3] : v6 (J)
+.line 355
+	move-object	v0,v4
+; v0 : Landroid/view/View; , v4 : Landroid/view/View;
+	check-cast	v0,com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+.line 356
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView/getTab	; getTab()Lcom/actionbarsherlock/app/ActionBar$Tab;
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+	move-result-object	v1
+; v1 : Lcom/actionbarsherlock/app/ActionBar$Tab;
+	invoke-virtual	{v1},com/actionbarsherlock/app/ActionBar$Tab/select	; select()V
+; v1 : Lcom/actionbarsherlock/app/ActionBar$Tab;
+.line 357
+	return-void	
+.end method
+
+.method public onMeasure(II)V
+.limit registers 14
+; this: v11 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v12 (I)
+; parameter[1] : v13 (I)
+.var 0 is canCollapse Z from la598c to la59e2
+.var 1 is childCount I from la5944 to la59e2
+.var 2 is lockedExpanded Z from la5932 to la59e2
+.var 3 is newWidth I from la59ce to la59e2
+.var 4 is oldWidth I from la59c0 to la59e2
+	const/high16	v10,16384
+; v10 : single-length
+	const/4	v6,1
+; v6 : single-length
+	const/4	v7,0
+; v7 : single-length
+.line 86
+	invoke-static	{v12},android/view/View$MeasureSpec/getMode	; getMode(I)I
+; v12 : single-length
+	move-result	v5
+; v5 : single-length
+.line 87
+	if-ne	v5,v10,la59e2
+; v5 : single-length , v10 : single-length
+	move	v2,v6
+; v2 : single-length , v6 : single-length
+la5932:
+.line 88
+	invoke-virtual	{v11,v2},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/setFillViewport	; setFillViewport(Z)V
+; v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v2 : single-length
+.line 90
+	iget-object	v8,v11,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v8},com/actionbarsherlock/internal/widget/IcsLinearLayout/getChildCount	; getChildCount()I
+; v8 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+	move-result	v1
+; v1 : single-length
+.line 91
+	if-le	v1,v6,la59f8
+; v1 : single-length , v6 : single-length
+	if-eq	v5,v10,la5954
+; v5 : single-length , v10 : single-length
+	const/high16	v8,32768
+; v8 : single-length
+	if-ne	v5,v8,la59f8
+; v5 : single-length , v8 : single-length
+la5954:
+.line 93
+	const/4	v8,2
+; v8 : single-length
+	if-le	v1,v8,la59e6
+; v1 : single-length , v8 : single-length
+.line 94
+	invoke-static	{v12},android/view/View$MeasureSpec/getSize	; getSize(I)I
+; v12 : single-length
+	move-result	v8
+; v8 : single-length
+	int-to-float	v8,v8
+; v8 : single-length , v8 : single-length
+	const	v9,1053609165	; 0x3ecccccd
+; v9 : single-length
+	mul-float/2addr	v8,v9
+; v8 : single-length , v9 : single-length
+	float-to-int	v8,v8
+; v8 : single-length , v8 : single-length
+	iput	v8,v11,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mMaxTabWidth I
+; v8 : single-length , v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+la5972:
+.line 102
+	iget	v8,v11,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mContentHeight I
+; v8 : single-length , v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-static	{v8,v10},android/view/View$MeasureSpec/makeMeasureSpec	; makeMeasureSpec(II)I
+; v8 : single-length , v10 : single-length
+	move-result	v13
+; v13 : single-length
+.line 104
+	if-nez	v2,la5a00
+; v2 : single-length
+	iget-boolean	v8,v11,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mAllowCollapse Z
+; v8 : single-length , v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v8,la5a00
+; v8 : single-length
+	move	v0,v6
+; v0 : single-length , v6 : single-length
+la598c:
+.line 106
+	if-eqz	v0,la5a0c
+; v0 : single-length
+.line 108
+	iget-object	v6,v11,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v6,v7,v13},com/actionbarsherlock/internal/widget/IcsLinearLayout/measure	; measure(II)V
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v7 : single-length , v13 : single-length
+.line 109
+	iget-object	v6,v11,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v6},com/actionbarsherlock/internal/widget/IcsLinearLayout/getMeasuredWidth	; getMeasuredWidth()I
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+	move-result	v6
+; v6 : single-length
+	invoke-static	{v12},android/view/View$MeasureSpec/getSize	; getSize(I)I
+; v12 : single-length
+	move-result	v7
+; v7 : single-length
+	if-le	v6,v7,la5a04
+; v6 : single-length , v7 : single-length
+.line 110
+	invoke-direct	{v11},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/performCollapse	; performCollapse()V
+; v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+la59b8:
+.line 118
+	invoke-virtual	{v11},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/getMeasuredWidth	; getMeasuredWidth()I
+; v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	move-result	v4
+; v4 : single-length
+.line 119
+	invoke-super	{v11,v12,v13},com/actionbarsherlock/internal/nineoldandroids/widget/NineHorizontalScrollView/onMeasure	; onMeasure(II)V
+; v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v12 : single-length , v13 : single-length
+.line 120
+	invoke-virtual	{v11},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/getMeasuredWidth	; getMeasuredWidth()I
+; v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	move-result	v3
+; v3 : single-length
+.line 122
+	if-eqz	v2,la59e0
+; v2 : single-length
+	if-eq	v4,v3,la59e0
+; v4 : single-length , v3 : single-length
+.line 124
+	iget	v6,v11,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mSelectedTabIndex I
+; v6 : single-length , v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v11,v6},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/setTabSelected	; setTabSelected(I)V
+; v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v6 : single-length
+la59e0:
+.line 126
+	return-void	
+la59e2:
+	move	v2,v7
+; v2 : single-length , v7 : single-length
+.line 87
+	goto	la5932
+la59e6:
+.line 96
+	invoke-static	{v12},android/view/View$MeasureSpec/getSize	; getSize(I)I
+; v12 : single-length
+	move-result	v8
+; v8 : single-length
+	div-int/lit8	v8,v8,2
+; v8 : single-length , v8 : single-length
+	iput	v8,v11,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mMaxTabWidth I
+; v8 : single-length , v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	goto	la5972
+la59f8:
+.line 99
+	const/4	v8,15
+; v8 : single-length
+	iput	v8,v11,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mMaxTabWidth I
+; v8 : single-length , v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	goto	la5972
+la5a00:
+	move	v0,v7
+; v0 : single-length , v7 : single-length
+.line 104
+	goto	la598c
+la5a04:
+.line 112
+	invoke-direct	{v11},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/performExpand	; performExpand()Z
+; v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	goto	la59b8
+la5a0c:
+.line 115
+	invoke-direct	{v11},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/performExpand	; performExpand()Z
+; v11 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	goto	la59b8
+.end method
+
+.method public onNothingSelected(Lcom/actionbarsherlock/internal/widget/IcsAdapterView;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lcom/actionbarsherlock/internal/widget/IcsAdapterView" , "<*>;)V" }
+.end annotation
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v1 (Lcom/actionbarsherlock/internal/widget/IcsAdapterView;)
+.line 361
+	return-void	
+.end method
+
+.method public removeAllTabs()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+.line 344
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/IcsLinearLayout/removeAllViews	; removeAllViews()V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+.line 345
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v0,la5a60
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 346
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/IcsSpinner/getAdapter	; getAdapter()Landroid/widget/SpinnerAdapter;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v0
+; v0 : Landroid/widget/SpinnerAdapter;
+	check-cast	v0,com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter/notifyDataSetChanged	; notifyDataSetChanged()V
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter;
+la5a60:
+.line 348
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mAllowCollapse Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v0,la5a6e
+; v0 : single-length
+.line 349
+	invoke-virtual	{v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/requestLayout	; requestLayout()V
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+la5a6e:
+.line 351
+	return-void	
+.end method
+
+.method public removeTabAt(I)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v2 (I)
+.line 334
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v0,v2},com/actionbarsherlock/internal/widget/IcsLinearLayout/removeViewAt	; removeViewAt(I)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v2 : single-length
+.line 335
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v0,la5aa8
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 336
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/IcsSpinner/getAdapter	; getAdapter()Landroid/widget/SpinnerAdapter;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v0
+; v0 : Landroid/widget/SpinnerAdapter;
+	check-cast	v0,com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter/notifyDataSetChanged	; notifyDataSetChanged()V
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter;
+la5aa8:
+.line 338
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mAllowCollapse Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v0,la5ab6
+; v0 : single-length
+.line 339
+	invoke-virtual	{v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/requestLayout	; requestLayout()V
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+la5ab6:
+.line 341
+	return-void	
+.end method
+
+.method public setAllowCollapse(Z)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v1 (Z)
+.line 138
+	iput-boolean	v1,v0,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mAllowCollapse Z
+; v1 : single-length , v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+.line 139
+	return-void	
+.end method
+
+.method public setContentHeight(I)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v1 (I)
+.line 184
+	iput	v1,v0,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mContentHeight I
+; v1 : single-length , v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+.line 185
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/requestLayout	; requestLayout()V
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+.line 186
+	return-void	
+.end method
+
+.method public setTabSelected(I)V
+.limit registers 7
+; this: v5 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v6 (I)
+.var 2 is isSelected Z from la5b24 to la5b3a
+.var 0 is child Landroid/view/View; from la5b1e to la5b3e
+.line 171
+	iput	v6,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mSelectedTabIndex I
+; v6 : single-length , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+.line 172
+	iget-object	v4,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v4},com/actionbarsherlock/internal/widget/IcsLinearLayout/getChildCount	; getChildCount()I
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+	move-result	v3
+; v3 : single-length
+.line 173
+	const/4	v1,0
+; v1 : single-length
+la5b0e:
+	if-ge	v1,v3,la5b3e
+; v1 : single-length , v3 : single-length
+.line 174
+	iget-object	v4,v5,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v4,v1},com/actionbarsherlock/internal/widget/IcsLinearLayout/getChildAt	; getChildAt(I)Landroid/view/View;
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v1 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+.line 175
+	if-ne	v1,v6,la5b3a
+; v1 : single-length , v6 : single-length
+	const/4	v2,1
+; v2 : single-length
+la5b24:
+.line 176
+	invoke-virtual	{v0,v2},android/view/View/setSelected	; setSelected(Z)V
+; v0 : Landroid/view/View; , v2 : single-length
+.line 177
+	if-eqz	v2,la5b34
+; v2 : single-length
+.line 178
+	invoke-virtual	{v5,v6},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/animateToTab	; animateToTab(I)V
+; v5 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView; , v6 : single-length
+la5b34:
+.line 173
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	la5b0e
+la5b3a:
+.line 175
+	const/4	v2,0
+; v2 : single-length
+	goto	la5b24
+la5b3e:
+.line 181
+	return-void	
+.end method
+
+.method public updateTab(I)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;)
+; parameter[0] : v2 (I)
+.line 324
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabLayout Lcom/actionbarsherlock/internal/widget/IcsLinearLayout;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v0,v2},com/actionbarsherlock/internal/widget/IcsLinearLayout/getChildAt	; getChildAt(I)Landroid/view/View;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsLinearLayout; , v2 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+	check-cast	v0,com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView/update	; update()V
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabView;
+.line 325
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v0,la5b84
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+.line 326
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mTabSpinner Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner; , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/IcsSpinner/getAdapter	; getAdapter()Landroid/widget/SpinnerAdapter;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsSpinner;
+	move-result-object	v0
+; v0 : Landroid/widget/SpinnerAdapter;
+	check-cast	v0,com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter;
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter/notifyDataSetChanged	; notifyDataSetChanged()V
+; v0 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView$TabAdapter;
+la5b84:
+.line 328
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/widget/ScrollingTabContainerView.mAllowCollapse Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+	if-eqz	v0,la5b92
+; v0 : single-length
+.line 329
+	invoke-virtual	{v1},com/actionbarsherlock/internal/widget/ScrollingTabContainerView/requestLayout	; requestLayout()V
+; v1 : Lcom/actionbarsherlock/internal/widget/ScrollingTabContainerView;
+la5b92:
+.line 331
+	return-void	
+.end method
+
+

@@ -1,0 +1,243 @@
+.class com/facebook/android/Facebook$1
+.super java/lang/Object
+.source Facebook.java
+.implements com/facebook/android/Facebook$DialogListener
+
+.enclosing method com/startDialogAuth(Landroid/app/Activity;[Ljava/lang/String;)V
+.field final this$0 Lcom/facebook/android/Facebook;
+
+.method <init>(Lcom/facebook/android/Facebook;)V
+.limit registers 2
+; this: v0 (Lcom/facebook/android/Facebook$1;)
+; parameter[0] : v1 (Lcom/facebook/android/Facebook;)
+.line 343
+	iput-object	v1,v0,com/facebook/android/Facebook$1.this$0 Lcom/facebook/android/Facebook;
+; v1 : Lcom/facebook/android/Facebook; , v0 : Lcom/facebook/android/Facebook$1;
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lcom/facebook/android/Facebook$1;
+	return-void	
+.end method
+
+.method public onCancel()V
+.limit registers 3
+; this: v2 (Lcom/facebook/android/Facebook$1;)
+.line 372
+	const-string	v0,"Facebook-authorize"
+; v0 : Ljava/lang/String;
+	const-string	v1,"Login canceled"
+; v1 : Ljava/lang/String;
+	invoke-static	{v0,v1},com/facebook/android/Util/logd	; logd(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 373
+	iget-object	v0,v2,com/facebook/android/Facebook$1.this$0 Lcom/facebook/android/Facebook;
+; v0 : Lcom/facebook/android/Facebook; , v2 : Lcom/facebook/android/Facebook$1;
+	invoke-static	{v0},com/facebook/android/Facebook/access$000	; access$000(Lcom/facebook/android/Facebook;)Lcom/facebook/android/Facebook$DialogListener;
+; v0 : Lcom/facebook/android/Facebook;
+	move-result-object	v0
+; v0 : Lcom/facebook/android/Facebook$DialogListener;
+	invoke-interface	{v0},com/facebook/android/Facebook$DialogListener/onCancel	; onCancel()V
+; v0 : Lcom/facebook/android/Facebook$DialogListener;
+.line 374
+	return-void	
+.end method
+
+.method public onComplete(Landroid/os/Bundle;)V
+.limit registers 6
+; this: v4 (Lcom/facebook/android/Facebook$1;)
+; parameter[0] : v5 (Landroid/os/Bundle;)
+.line 347
+	invoke-static	{},android/webkit/CookieSyncManager/getInstance	; getInstance()Landroid/webkit/CookieSyncManager;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Landroid/webkit/CookieSyncManager;
+	invoke-virtual	{v0},android/webkit/CookieSyncManager/sync	; sync()V
+; v0 : Landroid/webkit/CookieSyncManager;
+.line 348
+	iget-object	v0,v4,com/facebook/android/Facebook$1.this$0 Lcom/facebook/android/Facebook;
+; v0 : Lcom/facebook/android/Facebook; , v4 : Lcom/facebook/android/Facebook$1;
+	const-string	v1,"access_token"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v5,v1},android/os/Bundle/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v5 : Landroid/os/Bundle; , v1 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},com/facebook/android/Facebook/setAccessToken	; setAccessToken(Ljava/lang/String;)V
+; v0 : Lcom/facebook/android/Facebook; , v1 : Ljava/lang/String;
+.line 349
+	iget-object	v0,v4,com/facebook/android/Facebook$1.this$0 Lcom/facebook/android/Facebook;
+; v0 : Lcom/facebook/android/Facebook; , v4 : Lcom/facebook/android/Facebook$1;
+	const-string	v1,"expires_in"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v5,v1},android/os/Bundle/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v5 : Landroid/os/Bundle; , v1 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},com/facebook/android/Facebook/setAccessExpiresIn	; setAccessExpiresIn(Ljava/lang/String;)V
+; v0 : Lcom/facebook/android/Facebook; , v1 : Ljava/lang/String;
+.line 350
+	iget-object	v0,v4,com/facebook/android/Facebook$1.this$0 Lcom/facebook/android/Facebook;
+; v0 : Lcom/facebook/android/Facebook; , v4 : Lcom/facebook/android/Facebook$1;
+	invoke-virtual	{v0},com/facebook/android/Facebook/isSessionValid	; isSessionValid()Z
+; v0 : Lcom/facebook/android/Facebook;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,ladb16
+; v0 : single-length
+.line 351
+	const-string	v0,"Facebook-authorize"
+; v0 : Ljava/lang/String;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"Login Success! access_token="
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	iget-object	v2,v4,com/facebook/android/Facebook$1.this$0 Lcom/facebook/android/Facebook;
+; v2 : Lcom/facebook/android/Facebook; , v4 : Lcom/facebook/android/Facebook$1;
+	invoke-virtual	{v2},com/facebook/android/Facebook/getAccessToken	; getAccessToken()Ljava/lang/String;
+; v2 : Lcom/facebook/android/Facebook;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2," expires="
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	iget-object	v2,v4,com/facebook/android/Facebook$1.this$0 Lcom/facebook/android/Facebook;
+; v2 : Lcom/facebook/android/Facebook; , v4 : Lcom/facebook/android/Facebook$1;
+	invoke-virtual	{v2},com/facebook/android/Facebook/getAccessExpires	; getAccessExpires()J
+; v2 : Lcom/facebook/android/Facebook;
+	move-result-wide	v2
+; v2 : double-length
+	invoke-virtual	{v1,v2,v3},java/lang/StringBuilder/append	; append(J)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : double-length
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-static	{v0,v1},com/facebook/android/Util/logd	; logd(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 354
+	iget-object	v0,v4,com/facebook/android/Facebook$1.this$0 Lcom/facebook/android/Facebook;
+; v0 : Lcom/facebook/android/Facebook; , v4 : Lcom/facebook/android/Facebook$1;
+	invoke-static	{v0},com/facebook/android/Facebook/access$000	; access$000(Lcom/facebook/android/Facebook;)Lcom/facebook/android/Facebook$DialogListener;
+; v0 : Lcom/facebook/android/Facebook;
+	move-result-object	v0
+; v0 : Lcom/facebook/android/Facebook$DialogListener;
+	invoke-interface	{v0,v5},com/facebook/android/Facebook$DialogListener/onComplete	; onComplete(Landroid/os/Bundle;)V
+; v0 : Lcom/facebook/android/Facebook$DialogListener; , v5 : Landroid/os/Bundle;
+ladb14:
+.line 359
+	return-void	
+ladb16:
+.line 356
+	iget-object	v0,v4,com/facebook/android/Facebook$1.this$0 Lcom/facebook/android/Facebook;
+; v0 : Lcom/facebook/android/Facebook; , v4 : Lcom/facebook/android/Facebook$1;
+	invoke-static	{v0},com/facebook/android/Facebook/access$000	; access$000(Lcom/facebook/android/Facebook;)Lcom/facebook/android/Facebook$DialogListener;
+; v0 : Lcom/facebook/android/Facebook;
+	move-result-object	v0
+; v0 : Lcom/facebook/android/Facebook$DialogListener;
+	new-instance	v1,com/facebook/android/FacebookError
+; v1 : Lcom/facebook/android/FacebookError;
+	const-string	v2,"Failed to receive access token."
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2},com/facebook/android/FacebookError/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Lcom/facebook/android/FacebookError; , v2 : Ljava/lang/String;
+	invoke-interface	{v0,v1},com/facebook/android/Facebook$DialogListener/onFacebookError	; onFacebookError(Lcom/facebook/android/FacebookError;)V
+; v0 : Lcom/facebook/android/Facebook$DialogListener; , v1 : Lcom/facebook/android/FacebookError;
+	goto	ladb14
+.end method
+
+.method public onError(Lcom/facebook/android/DialogError;)V
+.limit registers 5
+; this: v3 (Lcom/facebook/android/Facebook$1;)
+; parameter[0] : v4 (Lcom/facebook/android/DialogError;)
+.line 362
+	const-string	v0,"Facebook-authorize"
+; v0 : Ljava/lang/String;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"Login failed: "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1,v4},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v4 : Lcom/facebook/android/DialogError;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-static	{v0,v1},com/facebook/android/Util/logd	; logd(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 363
+	iget-object	v0,v3,com/facebook/android/Facebook$1.this$0 Lcom/facebook/android/Facebook;
+; v0 : Lcom/facebook/android/Facebook; , v3 : Lcom/facebook/android/Facebook$1;
+	invoke-static	{v0},com/facebook/android/Facebook/access$000	; access$000(Lcom/facebook/android/Facebook;)Lcom/facebook/android/Facebook$DialogListener;
+; v0 : Lcom/facebook/android/Facebook;
+	move-result-object	v0
+; v0 : Lcom/facebook/android/Facebook$DialogListener;
+	invoke-interface	{v0,v4},com/facebook/android/Facebook$DialogListener/onError	; onError(Lcom/facebook/android/DialogError;)V
+; v0 : Lcom/facebook/android/Facebook$DialogListener; , v4 : Lcom/facebook/android/DialogError;
+.line 364
+	return-void	
+.end method
+
+.method public onFacebookError(Lcom/facebook/android/FacebookError;)V
+.limit registers 5
+; this: v3 (Lcom/facebook/android/Facebook$1;)
+; parameter[0] : v4 (Lcom/facebook/android/FacebookError;)
+.line 367
+	const-string	v0,"Facebook-authorize"
+; v0 : Ljava/lang/String;
+	new-instance	v1,java/lang/StringBuilder
+; v1 : Ljava/lang/StringBuilder;
+	invoke-direct	{v1},java/lang/StringBuilder/<init>	; <init>()V
+; v1 : Ljava/lang/StringBuilder;
+	const-string	v2,"Login failed: "
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v2 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1,v4},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v1 : Ljava/lang/StringBuilder; , v4 : Lcom/facebook/android/FacebookError;
+	move-result-object	v1
+; v1 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v1},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/lang/StringBuilder;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-static	{v0,v1},com/facebook/android/Util/logd	; logd(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 368
+	iget-object	v0,v3,com/facebook/android/Facebook$1.this$0 Lcom/facebook/android/Facebook;
+; v0 : Lcom/facebook/android/Facebook; , v3 : Lcom/facebook/android/Facebook$1;
+	invoke-static	{v0},com/facebook/android/Facebook/access$000	; access$000(Lcom/facebook/android/Facebook;)Lcom/facebook/android/Facebook$DialogListener;
+; v0 : Lcom/facebook/android/Facebook;
+	move-result-object	v0
+; v0 : Lcom/facebook/android/Facebook$DialogListener;
+	invoke-interface	{v0,v4},com/facebook/android/Facebook$DialogListener/onFacebookError	; onFacebookError(Lcom/facebook/android/FacebookError;)V
+; v0 : Lcom/facebook/android/Facebook$DialogListener; , v4 : Lcom/facebook/android/FacebookError;
+.line 369
+	return-void	
+.end method
+
+

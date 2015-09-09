@@ -1,0 +1,157 @@
+.class public com/pinterest/activity/explore/fragment/ExploreFragment
+.super com/pinterest/fragment/PinGridFragment
+.source ExploreFragment.java
+
+.field private _category Ljava/lang/String;
+.field private _categoryTitle Ljava/lang/String;
+.field private _icon Lcom/pinterest/ui/imageview/PImageView;
+.field private _iconUrl Ljava/lang/String;
+.field private _titleTv Landroid/widget/TextView;
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/activity/explore/fragment/ExploreFragment;)
+.line 16
+	invoke-direct	{v0},com/pinterest/fragment/PinGridFragment/<init>	; <init>()V
+; v0 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+	return-void	
+.end method
+
+.method protected loadData()V
+.limit registers 3
+; this: v2 (Lcom/pinterest/activity/explore/fragment/ExploreFragment;)
+.line 49
+	iget-object	v0,v2,com/pinterest/activity/explore/fragment/ExploreFragment._category Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+	const-string	v1,"popular"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,lda1f0
+; v0 : single-length
+.line 50
+	iget-object	v0,v2,com/pinterest/activity/explore/fragment/ExploreFragment.onGridLoad Lcom/pinterest/api/PAPIHttpResponseHandler;
+; v0 : Lcom/pinterest/api/PAPIHttpResponseHandler; , v2 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+	invoke-static	{v0},com/pinterest/api/PAPI/loadPopular	; loadPopular(Lcom/loopj/android/http/JsonHttpResponseHandler;)V
+; v0 : Lcom/pinterest/api/PAPIHttpResponseHandler;
+lda1ee:
+.line 53
+	return-void	
+lda1f0:
+.line 52
+	iget-object	v0,v2,com/pinterest/activity/explore/fragment/ExploreFragment._category Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+	iget-object	v1,v2,com/pinterest/activity/explore/fragment/ExploreFragment.onGridLoad Lcom/pinterest/api/PAPIHttpResponseHandler;
+; v1 : Lcom/pinterest/api/PAPIHttpResponseHandler; , v2 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+	invoke-static	{v0,v1},com/pinterest/api/PAPI/loadCategory	; loadCategory(Ljava/lang/String;Lcom/loopj/android/http/JsonHttpResponseHandler;)V
+; v0 : Ljava/lang/String; , v1 : Lcom/pinterest/api/PAPIHttpResponseHandler;
+	goto	lda1ee
+.end method
+
+.method public onCreate(Landroid/os/Bundle;)V
+.limit registers 5
+; this: v3 (Lcom/pinterest/activity/explore/fragment/ExploreFragment;)
+; parameter[0] : v4 (Landroid/os/Bundle;)
+.var 0 is extra Landroid/os/Bundle; from lda248 to lda278
+.line 27
+	invoke-virtual	{v3},com/pinterest/activity/explore/fragment/ExploreFragment/getActivity	; getActivity()Landroid/support/v4/app/FragmentActivity;
+; v3 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+	move-result-object	v1
+; v1 : Landroid/support/v4/app/FragmentActivity;
+	invoke-virtual	{v1},android/support/v4/app/FragmentActivity/getIntent	; getIntent()Landroid/content/Intent;
+; v1 : Landroid/support/v4/app/FragmentActivity;
+	move-result-object	v1
+; v1 : Landroid/content/Intent;
+	const-string	v2,"com.pinterest.EXTRA_CATEGORY"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v1,v2},android/content/Intent/hasExtra	; hasExtra(Ljava/lang/String;)Z
+; v1 : Landroid/content/Intent; , v2 : Ljava/lang/String;
+	move-result	v1
+; v1 : single-length
+	if-eqz	v1,lda278
+; v1 : single-length
+.line 29
+	invoke-virtual	{v3},com/pinterest/activity/explore/fragment/ExploreFragment/getActivity	; getActivity()Landroid/support/v4/app/FragmentActivity;
+; v3 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+	move-result-object	v1
+; v1 : Landroid/support/v4/app/FragmentActivity;
+	invoke-virtual	{v1},android/support/v4/app/FragmentActivity/getIntent	; getIntent()Landroid/content/Intent;
+; v1 : Landroid/support/v4/app/FragmentActivity;
+	move-result-object	v1
+; v1 : Landroid/content/Intent;
+	invoke-virtual	{v1},android/content/Intent/getExtras	; getExtras()Landroid/os/Bundle;
+; v1 : Landroid/content/Intent;
+	move-result-object	v0
+; v0 : Landroid/os/Bundle;
+.line 30
+	const-string	v1,"com.pinterest.EXTRA_CATEGORY"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},android/os/Bundle/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v0 : Landroid/os/Bundle; , v1 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	iput-object	v1,v3,com/pinterest/activity/explore/fragment/ExploreFragment._category Ljava/lang/String;
+; v1 : Ljava/lang/String; , v3 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+.line 31
+	const-string	v1,"com.pinterest.EXTRA_CATEGORY_TITLE"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},android/os/Bundle/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v0 : Landroid/os/Bundle; , v1 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	iput-object	v1,v3,com/pinterest/activity/explore/fragment/ExploreFragment._categoryTitle Ljava/lang/String;
+; v1 : Ljava/lang/String; , v3 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+.line 32
+	const-string	v1,"com.pinterest.EXTRA_CATEGORY_ICON"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},android/os/Bundle/getString	; getString(Ljava/lang/String;)Ljava/lang/String;
+; v0 : Landroid/os/Bundle; , v1 : Ljava/lang/String;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	iput-object	v1,v3,com/pinterest/activity/explore/fragment/ExploreFragment._iconUrl Ljava/lang/String;
+; v1 : Ljava/lang/String; , v3 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+lda278:
+.line 34
+	invoke-super	{v3,v4},com/pinterest/fragment/PinGridFragment/onCreate	; onCreate(Landroid/os/Bundle;)V
+; v3 : Lcom/pinterest/activity/explore/fragment/ExploreFragment; , v4 : Landroid/os/Bundle;
+.line 35
+	return-void	
+.end method
+
+.method public onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;
+.limit registers 6
+; this: v2 (Lcom/pinterest/activity/explore/fragment/ExploreFragment;)
+; parameter[0] : v3 (Landroid/view/LayoutInflater;)
+; parameter[1] : v4 (Landroid/view/ViewGroup;)
+; parameter[2] : v5 (Landroid/os/Bundle;)
+.line 40
+	const	v1,2130903109	; 0x7f030045
+; v1 : single-length
+	iput	v1,v2,com/pinterest/activity/explore/fragment/ExploreFragment.layoutId I
+; v1 : single-length , v2 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+.line 41
+	invoke-super	{v2,v3,v4,v5},com/pinterest/fragment/PinGridFragment/onCreateView	; onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;
+; v2 : Lcom/pinterest/activity/explore/fragment/ExploreFragment; , v3 : Landroid/view/LayoutInflater; , v4 : Landroid/view/ViewGroup; , v5 : Landroid/os/Bundle;
+	move-result-object	v0
+; v0 : Landroid/view/View;
+.line 42
+	return-object	v0
+; v0 : Landroid/view/View;
+.end method
+
+.method public onStart()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/activity/explore/fragment/ExploreFragment;)
+.line 57
+	invoke-super	{v0},com/pinterest/fragment/PinGridFragment/onStart	; onStart()V
+; v0 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+.line 58
+	invoke-static	{v0},com/pinterest/base/Analytics/showFragment	; showFragment(Landroid/support/v4/app/Fragment;)V
+; v0 : Lcom/pinterest/activity/explore/fragment/ExploreFragment;
+.line 59
+	return-void	
+.end method
+
+

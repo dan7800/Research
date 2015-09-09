@@ -1,0 +1,97 @@
+.class final com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$CatchUpTask
+.super java/lang/Object
+.source ConcurrentLinkedHashMap.java
+.implements java/lang/Runnable
+
+.inner class CatchUpTask inner com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$CatchUpTask outer com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap
+.field final mapRef Ljava/lang/ref/WeakReference;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/lang/ref/WeakReference" , "<" , "Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap" , "<**>;>;" }
+  .end annotation
+.end field
+
+.method <init>(Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap" , "<**>;)V" }
+.end annotation
+.limit registers 3
+; this: v1 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$CatchUpTask;)
+; parameter[0] : v2 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;)
+.line 1531
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$CatchUpTask;
+.line 1532
+	new-instance	v0,java/lang/ref/WeakReference
+; v0 : Ljava/lang/ref/WeakReference;
+	invoke-direct	{v0,v2},java/lang/ref/WeakReference/<init>	; <init>(Ljava/lang/Object;)V
+; v0 : Ljava/lang/ref/WeakReference; , v2 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+	iput-object	v0,v1,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$CatchUpTask.mapRef Ljava/lang/ref/WeakReference;
+; v0 : Ljava/lang/ref/WeakReference; , v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$CatchUpTask;
+.line 1533
+	return-void	
+.end method
+
+.method public run()V
+.limit registers 5
+; this: v4 (Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$CatchUpTask;)
+.line 1536
+	iget-object	v3,v4,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$CatchUpTask.mapRef Ljava/lang/ref/WeakReference;
+; v3 : Ljava/lang/ref/WeakReference; , v4 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap$CatchUpTask;
+	invoke-virtual	{v3},java/lang/ref/WeakReference/get	; get()Ljava/lang/Object;
+; v3 : Ljava/lang/ref/WeakReference;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap
+; v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+.line 1537
+	if-nez	v1,lc3c44
+; v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+.line 1538
+	new-instance	v3,java/util/concurrent/CancellationException
+; v3 : Ljava/util/concurrent/CancellationException;
+	invoke-direct	{v3},java/util/concurrent/CancellationException/<init>	; <init>()V
+; v3 : Ljava/util/concurrent/CancellationException;
+	throw	v3
+; v3 : Ljava/util/concurrent/CancellationException;
+lc3c44:
+.line 1540
+	const/4	v2,0
+; v2 : single-length
+.line 1541
+	const/4	v0,0
+; v0 : single-length
+lc3c48:
+	iget-object	v3,v1,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap.buffers [Ljava/util/Queue;
+; v3 : [Ljava/util/Queue; , v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+	array-length	v3,v3
+; v3 : single-length , v3 : single-length
+	if-ge	v0,v3,lc3c66
+; v0 : single-length , v3 : single-length
+.line 1542
+	iget-object	v3,v1,com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap.bufferLengths Ljava/util/concurrent/atomic/AtomicIntegerArray;
+; v3 : Ljava/util/concurrent/atomic/AtomicIntegerArray; , v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap;
+	invoke-virtual	{v3,v0},java/util/concurrent/atomic/AtomicIntegerArray/get	; get(I)I
+; v3 : Ljava/util/concurrent/atomic/AtomicIntegerArray; , v0 : single-length
+	move-result	v3
+; v3 : single-length
+	add-int/2addr	v2,v3
+; v2 : single-length , v3 : single-length
+.line 1541
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	lc3c48
+lc3c66:
+.line 1544
+	if-eqz	v2,lc3c74
+; v2 : single-length
+.line 1545
+	add-int/lit8	v3,v2,16
+; v3 : single-length , v2 : single-length
+	invoke-virtual	{v1,v3},com/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap/tryToDrainBuffers	; tryToDrainBuffers(I)V
+; v1 : Lcom/googlecode/concurrentlinkedhashmap/ConcurrentLinkedHashMap; , v3 : single-length
+lc3c74:
+.line 1547
+	return-void	
+.end method
+
+

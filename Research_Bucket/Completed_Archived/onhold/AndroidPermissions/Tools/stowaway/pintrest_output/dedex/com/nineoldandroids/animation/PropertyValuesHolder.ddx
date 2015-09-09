@@ -1,0 +1,1828 @@
+.class public com/nineoldandroids/animation/PropertyValuesHolder
+.super java/lang/Object
+.source PropertyValuesHolder.java
+.implements java/lang/Cloneable
+
+.inner class 1 inner com/nineoldandroids/animation/PropertyValuesHolder$1 outer com/nineoldandroids/animation/PropertyValuesHolder
+.inner class FloatPropertyValuesHolder inner com/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder outer com/nineoldandroids/animation/PropertyValuesHolder
+.inner class IntPropertyValuesHolder inner com/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder outer com/nineoldandroids/animation/PropertyValuesHolder
+.field private static DOUBLE_VARIANTS [Ljava/lang/Class;
+.field private static FLOAT_VARIANTS [Ljava/lang/Class;
+.field private static INTEGER_VARIANTS [Ljava/lang/Class;
+.field private static final sFloatEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+.field private static final sGetterPropertyMap Ljava/util/HashMap;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/HashMap" , "<" , "Ljava/lang/Class;" , "Ljava/util/HashMap" , "<" , "Ljava/lang/String;" , "Ljava/lang/reflect/Method;" , ">;>;" }
+  .end annotation
+.end field
+.field private static final sIntEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+.field private static final sSetterPropertyMap Ljava/util/HashMap;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/HashMap" , "<" , "Ljava/lang/Class;" , "Ljava/util/HashMap" , "<" , "Ljava/lang/String;" , "Ljava/lang/reflect/Method;" , ">;>;" }
+  .end annotation
+.end field
+.field private mAnimatedValue Ljava/lang/Object;
+.field private mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+.field private mGetter Ljava/lang/reflect/Method;
+.field mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+.field protected mProperty Lcom/nineoldandroids/util/Property;
+.field final mPropertyMapLock Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+.field mPropertyName Ljava/lang/String;
+.field mSetter Ljava/lang/reflect/Method;
+.field final mTmpValueArray [Ljava/lang/Object;
+.field mValueType Ljava/lang/Class;
+
+.method static <clinit>()V
+.limit registers 8
+	const/4	v7,4
+; v7 : single-length
+	const/4	v6,3
+; v6 : single-length
+	const/4	v5,2
+; v5 : single-length
+	const/4	v4,1
+; v4 : single-length
+	const/4	v3,0
+; v3 : single-length
+.line 80
+	new-instance	v0,com/nineoldandroids/animation/IntEvaluator
+; v0 : Lcom/nineoldandroids/animation/IntEvaluator;
+	invoke-direct	{v0},com/nineoldandroids/animation/IntEvaluator/<init>	; <init>()V
+; v0 : Lcom/nineoldandroids/animation/IntEvaluator;
+	sput-object	v0,com/nineoldandroids/animation/PropertyValuesHolder.sIntEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v0 : Lcom/nineoldandroids/animation/TypeEvaluator;
+.line 81
+	new-instance	v0,com/nineoldandroids/animation/FloatEvaluator
+; v0 : Lcom/nineoldandroids/animation/FloatEvaluator;
+	invoke-direct	{v0},com/nineoldandroids/animation/FloatEvaluator/<init>	; <init>()V
+; v0 : Lcom/nineoldandroids/animation/FloatEvaluator;
+	sput-object	v0,com/nineoldandroids/animation/PropertyValuesHolder.sFloatEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v0 : Lcom/nineoldandroids/animation/TypeEvaluator;
+.line 90
+	const/4	v0,6
+; v0 : single-length
+	new-array	v0,v0,[Ljava/lang/Class;
+; v0 : [Ljava/lang/Class; , v0 : [Ljava/lang/Class;
+	sget-object	v1,java/lang/Float.TYPE Ljava/lang/Class;
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v3
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v3 : single-length
+	const-class	v1,java/lang/Float
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v4
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v4 : single-length
+	sget-object	v1,java/lang/Double.TYPE Ljava/lang/Class;
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v5
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v5 : single-length
+	sget-object	v1,java/lang/Integer.TYPE Ljava/lang/Class;
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v6
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v6 : single-length
+	const-class	v1,java/lang/Double
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v7
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v7 : single-length
+	const/4	v1,5
+; v1 : single-length
+	const-class	v2,java/lang/Integer
+; v2 : Ljava/lang/Class;
+	aput-object	v2,v0,v1
+; v2 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v1 : single-length
+	sput-object	v0,com/nineoldandroids/animation/PropertyValuesHolder.FLOAT_VARIANTS [Ljava/lang/Class;
+; v0 : [Ljava/lang/Class;
+.line 92
+	const/4	v0,6
+; v0 : single-length
+	new-array	v0,v0,[Ljava/lang/Class;
+; v0 : [Ljava/lang/Class; , v0 : [Ljava/lang/Class;
+	sget-object	v1,java/lang/Integer.TYPE Ljava/lang/Class;
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v3
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v3 : single-length
+	const-class	v1,java/lang/Integer
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v4
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v4 : single-length
+	sget-object	v1,java/lang/Float.TYPE Ljava/lang/Class;
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v5
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v5 : single-length
+	sget-object	v1,java/lang/Double.TYPE Ljava/lang/Class;
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v6
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v6 : single-length
+	const-class	v1,java/lang/Float
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v7
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v7 : single-length
+	const/4	v1,5
+; v1 : single-length
+	const-class	v2,java/lang/Double
+; v2 : Ljava/lang/Class;
+	aput-object	v2,v0,v1
+; v2 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v1 : single-length
+	sput-object	v0,com/nineoldandroids/animation/PropertyValuesHolder.INTEGER_VARIANTS [Ljava/lang/Class;
+; v0 : [Ljava/lang/Class;
+.line 94
+	const/4	v0,6
+; v0 : single-length
+	new-array	v0,v0,[Ljava/lang/Class;
+; v0 : [Ljava/lang/Class; , v0 : [Ljava/lang/Class;
+	sget-object	v1,java/lang/Double.TYPE Ljava/lang/Class;
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v3
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v3 : single-length
+	const-class	v1,java/lang/Double
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v4
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v4 : single-length
+	sget-object	v1,java/lang/Float.TYPE Ljava/lang/Class;
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v5
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v5 : single-length
+	sget-object	v1,java/lang/Integer.TYPE Ljava/lang/Class;
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v6
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v6 : single-length
+	const-class	v1,java/lang/Float
+; v1 : Ljava/lang/Class;
+	aput-object	v1,v0,v7
+; v1 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v7 : single-length
+	const/4	v1,5
+; v1 : single-length
+	const-class	v2,java/lang/Integer
+; v2 : Ljava/lang/Class;
+	aput-object	v2,v0,v1
+; v2 : Ljava/lang/Class; , v0 : [Ljava/lang/Class; , v1 : single-length
+	sput-object	v0,com/nineoldandroids/animation/PropertyValuesHolder.DOUBLE_VARIANTS [Ljava/lang/Class;
+; v0 : [Ljava/lang/Class;
+.line 100
+	new-instance	v0,java/util/HashMap
+; v0 : Ljava/util/HashMap;
+	invoke-direct	{v0},java/util/HashMap/<init>	; <init>()V
+; v0 : Ljava/util/HashMap;
+	sput-object	v0,com/nineoldandroids/animation/PropertyValuesHolder.sSetterPropertyMap Ljava/util/HashMap;
+; v0 : Ljava/util/HashMap;
+.line 102
+	new-instance	v0,java/util/HashMap
+; v0 : Ljava/util/HashMap;
+	invoke-direct	{v0},java/util/HashMap/<init>	; <init>()V
+; v0 : Ljava/util/HashMap;
+	sput-object	v0,com/nineoldandroids/animation/PropertyValuesHolder.sGetterPropertyMap Ljava/util/HashMap;
+; v0 : Ljava/util/HashMap;
+	return-void	
+.end method
+
+.method private <init>(Lcom/nineoldandroids/util/Property;)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v2 (Lcom/nineoldandroids/util/Property;)
+	const/4	v0,0
+; v0 : single-length
+.line 139
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 56
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mSetter Ljava/lang/reflect/Method;
+; v0 : single-length , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 65
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mGetter Ljava/lang/reflect/Method;
+; v0 : single-length , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 76
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v0 : single-length , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 107
+	new-instance	v0,java/util/concurrent/locks/ReentrantReadWriteLock
+; v0 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-direct	{v0},java/util/concurrent/locks/ReentrantReadWriteLock/<init>	; <init>()V
+; v0 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyMapLock Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v0 : Ljava/util/concurrent/locks/ReentrantReadWriteLock; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 110
+	const/4	v0,1
+; v0 : single-length
+	new-array	v0,v0,[Ljava/lang/Object;
+; v0 : [Ljava/lang/Object; , v0 : [Ljava/lang/Object;
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mTmpValueArray [Ljava/lang/Object;
+; v0 : [Ljava/lang/Object; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 140
+	iput-object	v2,v1,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v2 : Lcom/nineoldandroids/util/Property; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 141
+	if-eqz	v2,lce680
+; v2 : Lcom/nineoldandroids/util/Property;
+.line 142
+	invoke-virtual	{v2},com/nineoldandroids/util/Property/getName	; getName()Ljava/lang/String;
+; v2 : Lcom/nineoldandroids/util/Property;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyName Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+lce680:
+.line 144
+	return-void	
+.end method
+
+.method <init>(Lcom/nineoldandroids/util/Property;Lcom/nineoldandroids/animation/PropertyValuesHolder$1;)V
+.limit registers 3
+; this: v0 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v1 (Lcom/nineoldandroids/util/Property;)
+; parameter[1] : v2 (Lcom/nineoldandroids/animation/PropertyValuesHolder$1;)
+.line 36
+	invoke-direct	{v0,v1},com/nineoldandroids/animation/PropertyValuesHolder/<init>	; <init>(Lcom/nineoldandroids/util/Property;)V
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v1 : Lcom/nineoldandroids/util/Property;
+	return-void	
+.end method
+
+.method private <init>(Ljava/lang/String;)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v2 (Ljava/lang/String;)
+	const/4	v0,0
+; v0 : single-length
+.line 131
+	invoke-direct	{v1},java/lang/Object/<init>	; <init>()V
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 56
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mSetter Ljava/lang/reflect/Method;
+; v0 : single-length , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 65
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mGetter Ljava/lang/reflect/Method;
+; v0 : single-length , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 76
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v0 : single-length , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 107
+	new-instance	v0,java/util/concurrent/locks/ReentrantReadWriteLock
+; v0 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	invoke-direct	{v0},java/util/concurrent/locks/ReentrantReadWriteLock/<init>	; <init>()V
+; v0 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyMapLock Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v0 : Ljava/util/concurrent/locks/ReentrantReadWriteLock; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 110
+	const/4	v0,1
+; v0 : single-length
+	new-array	v0,v0,[Ljava/lang/Object;
+; v0 : [Ljava/lang/Object; , v0 : [Ljava/lang/Object;
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mTmpValueArray [Ljava/lang/Object;
+; v0 : [Ljava/lang/Object; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 132
+	iput-object	v2,v1,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyName Ljava/lang/String;
+; v2 : Ljava/lang/String; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 133
+	return-void	
+.end method
+
+.method <init>(Ljava/lang/String;Lcom/nineoldandroids/animation/PropertyValuesHolder$1;)V
+.limit registers 3
+; this: v0 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (Lcom/nineoldandroids/animation/PropertyValuesHolder$1;)
+.line 36
+	invoke-direct	{v0,v1},com/nineoldandroids/animation/PropertyValuesHolder/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v1 : Ljava/lang/String;
+	return-void	
+.end method
+
+.method static getMethodName(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+.limit registers 5
+; parameter[0] : v3 (Ljava/lang/String;)
+; parameter[1] : v4 (Ljava/lang/String;)
+.line 744
+	if-eqz	v4,lce718
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v4},java/lang/String/length	; length()I
+; v4 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-nez	v2,lce71a
+; v2 : single-length
+lce718:
+.line 750
+	return-object	v3
+; v3 : Ljava/lang/String;
+lce71a:
+.line 748
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v4,v2},java/lang/String/charAt	; charAt(I)C
+; v4 : Ljava/lang/String; , v2 : single-length
+	move-result	v2
+; v2 : single-length
+	invoke-static	{v2},java/lang/Character/toUpperCase	; toUpperCase(C)C
+; v2 : single-length
+	move-result	v0
+; v0 : single-length
+.line 749
+	const/4	v2,1
+; v2 : single-length
+	invoke-virtual	{v4,v2},java/lang/String/substring	; substring(I)Ljava/lang/String;
+; v4 : Ljava/lang/String; , v2 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 750
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v0},java/lang/StringBuilder/append	; append(C)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v0 : single-length
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	goto	lce718
+.end method
+
+.method private getPropertyFunction(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/reflect/Method;
+.limit registers 19
+; this: v15 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v16 (Ljava/lang/Class;)
+; parameter[1] : v17 (Ljava/lang/String;)
+; parameter[2] : v18 (Ljava/lang/Class;)
+.catch java/lang/NoSuchMethodException from lce88e to lce8a6 using lce8ac
+.catch java/lang/NoSuchMethodException from lce832 to lce842 using lce88c
+.catch java/lang/NoSuchMethodException from lce79e to lce7b2 using lce7b4
+.catch java/lang/NoSuchMethodException from lce78c to lce796 using lce79c
+.var 8 is returnVal Ljava/lang/reflect/Method; from lce776 to lce79a
+.var 9 is returnVal Ljava/lang/reflect/Method; from lce79a to lce79c
+.var 3 is e Ljava/lang/NoSuchMethodException; from lce79e to lce800
+.var 4 is e2 Ljava/lang/NoSuchMethodException; from lce7b6 to lce800
+.var 8 is returnVal Ljava/lang/reflect/Method; from lce79c to lce844
+.var 2 is arr$ [Ljava/lang/Class; from lce820 to lce846
+.var 5 is i$ I from lce824 to lce846
+.var 6 is len$ I from lce822 to lce846
+.var 9 is returnVal Ljava/lang/reflect/Method; from lce844 to lce846
+.var 10 is typeVariant Ljava/lang/Class; from lce82c to lce846
+.var 11 is typeVariants [Ljava/lang/Class; from lce81e to lce846
+.var 11 is typeVariants [Ljava/lang/Class; from lce85e to lce860
+.var 11 is typeVariants [Ljava/lang/Class; from lce878 to lce87a
+.var 8 is returnVal Ljava/lang/reflect/Method; from lce846 to lce8a8
+.var 9 is returnVal Ljava/lang/reflect/Method; from lce8a8 to lce8ac
+.var 3 is e Ljava/lang/NoSuchMethodException; from lce88e to lce8b4
+.var 10 is typeVariant Ljava/lang/Class; from lce88c to lce8b4
+.line 381
+	const/4	v8,0
+; v8 : single-length
+.line 382
+	iget-object	v12,v15,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyName Ljava/lang/String;
+; v12 : Ljava/lang/String; , v15 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	move-object/from16	v0,v17
+; v0 : Ljava/lang/String; , v17 : Ljava/lang/String;
+	invoke-static	{v0,v12},com/nineoldandroids/animation/PropertyValuesHolder/getMethodName	; getMethodName(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v12 : Ljava/lang/String;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+.line 383
+	const/4	v1,0
+; v1 : single-length
+.line 384
+	if-nez	v18,lce800
+; v18 : Ljava/lang/Class;
+lce78c:
+.line 386
+	move-object/from16	v0,v16
+; v0 : Ljava/lang/Class; , v16 : Ljava/lang/Class;
+	invoke-virtual	{v0,v7,v1},java/lang/Class/getMethod	; getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+; v0 : Ljava/lang/Class; , v7 : Ljava/lang/String; , v1 : single-length
+lce796:
+	move-result-object	v8
+; v8 : Ljava/lang/reflect/Method;
+lce798:
+	move-object	v9,v8
+; v9 : Ljava/lang/reflect/Method; , v8 : single-length
+lce79a:
+.line 440
+	return-object	v9
+; v9 : Ljava/lang/reflect/Method;
+lce79c:
+.line 387
+	move-exception	v3
+; v3 : java/lang/NoSuchMethodException
+lce79e:
+.line 392
+	move-object/from16	v0,v16
+; v0 : Ljava/lang/Class; , v16 : Ljava/lang/Class;
+	invoke-virtual	{v0,v7,v1},java/lang/Class/getDeclaredMethod	; getDeclaredMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+; v0 : Ljava/lang/Class; , v7 : Ljava/lang/String; , v1 : single-length
+	move-result-object	v8
+; v8 : Ljava/lang/reflect/Method;
+.line 393
+	const/4	v12,1
+; v12 : single-length
+	invoke-virtual	{v8,v12},java/lang/reflect/Method/setAccessible	; setAccessible(Z)V
+; v8 : Ljava/lang/reflect/Method; , v12 : single-length
+lce7b2:
+	goto	lce798
+lce7b4:
+.line 394
+	move-exception	v4
+; v4 : java/lang/NoSuchMethodException
+.line 395
+	const-string	v12,"PropertyValuesHolder"
+; v12 : Ljava/lang/String;
+	new-instance	v13,java/lang/StringBuilder
+; v13 : Ljava/lang/StringBuilder;
+	invoke-direct	{v13},java/lang/StringBuilder/<init>	; <init>()V
+; v13 : Ljava/lang/StringBuilder;
+	const-string	v14,"Couldn't find no-arg method for property "
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	iget-object	v14,v15,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyName Ljava/lang/String;
+; v14 : Ljava/lang/String; , v15 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	const-string	v14,": "
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13,v3},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v3 : java/lang/NoSuchMethodException
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v13 : Ljava/lang/StringBuilder;
+	move-result-object	v13
+; v13 : Ljava/lang/String;
+	invoke-static	{v12,v13},android/util/Log/e	; e(Ljava/lang/String;Ljava/lang/String;)I
+; v12 : Ljava/lang/String; , v13 : Ljava/lang/String;
+	goto	lce798
+lce800:
+.line 400
+	const/4	v12,1
+; v12 : single-length
+	new-array	v1,v12,[Ljava/lang/Class;
+; v1 : [Ljava/lang/Class; , v12 : single-length
+.line 402
+	iget-object	v12,v15,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v12 : Ljava/lang/Class; , v15 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	const-class	v13,java/lang/Float
+; v13 : Ljava/lang/Class;
+	invoke-virtual	{v12,v13},java/lang/Object/equals	; equals(Ljava/lang/Object;)Z
+; v12 : Ljava/lang/Class; , v13 : Ljava/lang/Class;
+	move-result	v12
+; v12 : single-length
+	if-eqz	v12,lce846
+; v12 : single-length
+.line 403
+	sget-object	v11,com/nineoldandroids/animation/PropertyValuesHolder.FLOAT_VARIANTS [Ljava/lang/Class;
+; v11 : [Ljava/lang/Class;
+lce81e:
+.line 412
+	move-object	v2,v11
+; v2 : [Ljava/lang/Class; , v11 : [Ljava/lang/Class;
+lce820:
+	array-length	v6,v2
+; v6 : single-length , v2 : [Ljava/lang/Class;
+lce822:
+	const/4	v5,0
+; v5 : single-length
+lce824:
+	if-ge	v5,v6,lce8b4
+; v5 : single-length , v6 : single-length
+	aget-object	v10,v2,v5
+; v10 : Ljava/lang/Class; , v2 : [Ljava/lang/Class; , v5 : single-length
+.line 413
+	const/4	v12,0
+; v12 : single-length
+	aput-object	v10,v1,v12
+; v10 : Ljava/lang/Class; , v1 : [Ljava/lang/Class; , v12 : single-length
+lce832:
+.line 415
+	move-object/from16	v0,v16
+; v0 : Ljava/lang/Class; , v16 : Ljava/lang/Class;
+	invoke-virtual	{v0,v7,v1},java/lang/Class/getMethod	; getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+; v0 : Ljava/lang/Class; , v7 : Ljava/lang/String; , v1 : [Ljava/lang/Class;
+	move-result-object	v8
+; v8 : Ljava/lang/reflect/Method;
+.line 417
+	iput-object	v10,v15,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v10 : Ljava/lang/Class; , v15 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+lce842:
+	move-object	v9,v8
+; v9 : Ljava/lang/reflect/Method; , v8 : Ljava/lang/reflect/Method;
+.line 418
+	goto	lce79a
+lce846:
+.line 404
+	iget-object	v12,v15,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v12 : Ljava/lang/Class; , v15 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	const-class	v13,java/lang/Integer
+; v13 : Ljava/lang/Class;
+	invoke-virtual	{v12,v13},java/lang/Object/equals	; equals(Ljava/lang/Object;)Z
+; v12 : Ljava/lang/Class; , v13 : Ljava/lang/Class;
+	move-result	v12
+; v12 : single-length
+	if-eqz	v12,lce860
+; v12 : single-length
+.line 405
+	sget-object	v11,com/nineoldandroids/animation/PropertyValuesHolder.INTEGER_VARIANTS [Ljava/lang/Class;
+; v11 : [Ljava/lang/Class;
+lce85e:
+	goto	lce81e
+lce860:
+.line 406
+	iget-object	v12,v15,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v12 : Ljava/lang/Class; , v15 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	const-class	v13,java/lang/Double
+; v13 : Ljava/lang/Class;
+	invoke-virtual	{v12,v13},java/lang/Object/equals	; equals(Ljava/lang/Object;)Z
+; v12 : Ljava/lang/Class; , v13 : Ljava/lang/Class;
+	move-result	v12
+; v12 : single-length
+	if-eqz	v12,lce87a
+; v12 : single-length
+.line 407
+	sget-object	v11,com/nineoldandroids/animation/PropertyValuesHolder.DOUBLE_VARIANTS [Ljava/lang/Class;
+; v11 : [Ljava/lang/Class;
+lce878:
+	goto	lce81e
+lce87a:
+.line 409
+	const/4	v12,1
+; v12 : single-length
+	new-array	v11,v12,[Ljava/lang/Class;
+; v11 : [Ljava/lang/Class; , v12 : single-length
+.line 410
+	const/4	v12,0
+; v12 : single-length
+	iget-object	v13,v15,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v13 : Ljava/lang/Class; , v15 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	aput-object	v13,v11,v12
+; v13 : Ljava/lang/Class; , v11 : [Ljava/lang/Class; , v12 : single-length
+	goto	lce81e
+lce88c:
+.line 419
+	move-exception	v3
+; v3 : java/lang/NoSuchMethodException
+lce88e:
+.line 424
+	move-object/from16	v0,v16
+; v0 : Ljava/lang/Class; , v16 : Ljava/lang/Class;
+	invoke-virtual	{v0,v7,v1},java/lang/Class/getDeclaredMethod	; getDeclaredMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+; v0 : Ljava/lang/Class; , v7 : Ljava/lang/String; , v1 : [Ljava/lang/Class;
+	move-result-object	v8
+; v8 : Ljava/lang/reflect/Method;
+.line 425
+	const/4	v12,1
+; v12 : single-length
+	invoke-virtual	{v8,v12},java/lang/reflect/Method/setAccessible	; setAccessible(Z)V
+; v8 : Ljava/lang/reflect/Method; , v12 : single-length
+.line 427
+	iput-object	v10,v15,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v10 : Ljava/lang/Class; , v15 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+lce8a6:
+	move-object	v9,v8
+; v9 : Ljava/lang/reflect/Method; , v8 : Ljava/lang/reflect/Method;
+.line 428
+	goto/16	lce79a
+lce8ac:
+.line 429
+	move-exception	v12
+; v12 : java/lang/NoSuchMethodException
+.line 412
+	add-int/lit8	v5,v5,1
+; v5 : single-length , v5 : single-length
+	goto	lce824
+lce8b4:
+.line 435
+	const-string	v12,"PropertyValuesHolder"
+; v12 : Ljava/lang/String;
+	new-instance	v13,java/lang/StringBuilder
+; v13 : Ljava/lang/StringBuilder;
+	invoke-direct	{v13},java/lang/StringBuilder/<init>	; <init>()V
+; v13 : Ljava/lang/StringBuilder;
+	const-string	v14,"Couldn't find setter/getter for property "
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	iget-object	v14,v15,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyName Ljava/lang/String;
+; v14 : Ljava/lang/String; , v15 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	const-string	v14," with value type "
+; v14 : Ljava/lang/String;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/String;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	iget-object	v14,v15,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v14 : Ljava/lang/Class; , v15 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v13,v14},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v13 : Ljava/lang/StringBuilder; , v14 : Ljava/lang/Class;
+	move-result-object	v13
+; v13 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v13},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v13 : Ljava/lang/StringBuilder;
+	move-result-object	v13
+; v13 : Ljava/lang/String;
+	invoke-static	{v12,v13},android/util/Log/e	; e(Ljava/lang/String;Ljava/lang/String;)I
+; v12 : Ljava/lang/String; , v13 : Ljava/lang/String;
+	goto/16	lce798
+.end method
+
+.method public static ofFloat(Lcom/nineoldandroids/util/Property;[F)Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lcom/nineoldandroids/util/Property" , "<*" , "Ljava/lang/Float;" , ">;[F)" , "Lcom/nineoldandroids/animation/PropertyValuesHolder;" }
+.end annotation
+.limit registers 3
+; parameter[0] : v1 (Lcom/nineoldandroids/util/Property;)
+; parameter[1] : v2 ([F)
+.line 187
+	new-instance	v0,com/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder;
+	invoke-direct	{v0,v1,v2},com/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder/<init>	; <init>(Lcom/nineoldandroids/util/Property;[F)V
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder; , v1 : Lcom/nineoldandroids/util/Property; , v2 : [F
+	return-object	v0
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder;
+.end method
+
+.method public static ofFloat(Ljava/lang/String;[F)Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lcom/nineoldandroids/util/Property" , "<*" , "Ljava/lang/Float;" , ">;[F)" , "Lcom/nineoldandroids/animation/PropertyValuesHolder;" }
+.end annotation
+.limit registers 3
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 ([F)
+.line 176
+	new-instance	v0,com/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder;
+	invoke-direct	{v0,v1,v2},com/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder/<init>	; <init>(Ljava/lang/String;[F)V
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder; , v1 : Ljava/lang/String; , v2 : [F
+	return-object	v0
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder;
+.end method
+
+.method public static ofInt(Lcom/nineoldandroids/util/Property;[I)Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lcom/nineoldandroids/util/Property" , "<*" , "Ljava/lang/Integer;" , ">;[I)" , "Lcom/nineoldandroids/animation/PropertyValuesHolder;" }
+.end annotation
+.limit registers 3
+; parameter[0] : v1 (Lcom/nineoldandroids/util/Property;)
+; parameter[1] : v2 ([I)
+.line 165
+	new-instance	v0,com/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder;
+	invoke-direct	{v0,v1,v2},com/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder/<init>	; <init>(Lcom/nineoldandroids/util/Property;[I)V
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder; , v1 : Lcom/nineoldandroids/util/Property; , v2 : [I
+	return-object	v0
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder;
+.end method
+
+.method public static ofInt(Ljava/lang/String;[I)Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Lcom/nineoldandroids/util/Property" , "<*" , "Ljava/lang/Integer;" , ">;[I)" , "Lcom/nineoldandroids/animation/PropertyValuesHolder;" }
+.end annotation
+.limit registers 3
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 ([I)
+.line 154
+	new-instance	v0,com/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder;
+	invoke-direct	{v0,v1,v2},com/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder/<init>	; <init>(Ljava/lang/String;[I)V
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder; , v1 : Ljava/lang/String; , v2 : [I
+	return-object	v0
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder;
+.end method
+
+.method public static ofKeyframe(Lcom/nineoldandroids/util/Property;[Lcom/nineoldandroids/animation/Keyframe;)Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.limit registers 5
+; parameter[0] : v3 (Lcom/nineoldandroids/util/Property;)
+; parameter[1] : v4 ([Lcom/nineoldandroids/animation/Keyframe;)
+.var 0 is keyframeSet Lcom/nineoldandroids/animation/KeyframeSet; from lce9c0 to lce9d0
+.var 0 is keyframeSet Lcom/nineoldandroids/animation/KeyframeSet; from lce9d8 to lce9e8
+.line 281
+	invoke-static	{v4},com/nineoldandroids/animation/KeyframeSet/ofKeyframe	; ofKeyframe([Lcom/nineoldandroids/animation/Keyframe;)Lcom/nineoldandroids/animation/KeyframeSet;
+; v4 : [Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v0
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet;
+.line 282
+	instance-of	v2,v0,com/nineoldandroids/animation/IntKeyframeSet
+; v2 : single-length , v0 : Lcom/nineoldandroids/animation/KeyframeSet;
+	if-eqz	v2,lce9d8
+; v2 : single-length
+.line 283
+	new-instance	v1,com/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder;
+	check-cast	v0,com/nineoldandroids/animation/IntKeyframeSet
+; v0 : Lcom/nineoldandroids/animation/IntKeyframeSet;
+lce9d0:
+	invoke-direct	{v1,v3,v0},com/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder/<init>	; <init>(Lcom/nineoldandroids/util/Property;Lcom/nineoldandroids/animation/IntKeyframeSet;)V
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder; , v3 : Lcom/nineoldandroids/util/Property; , v0 : Lcom/nineoldandroids/animation/IntKeyframeSet;
+lce9d6:
+.line 291
+	return-object	v1
+; v1 : Ljava/lang/Object;
+lce9d8:
+.line 284
+	instance-of	v2,v0,com/nineoldandroids/animation/FloatKeyframeSet
+; v2 : single-length , v0 : Lcom/nineoldandroids/animation/KeyframeSet;
+	if-eqz	v2,lce9f0
+; v2 : single-length
+.line 285
+	new-instance	v1,com/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder;
+	check-cast	v0,com/nineoldandroids/animation/FloatKeyframeSet
+; v0 : Lcom/nineoldandroids/animation/FloatKeyframeSet;
+lce9e8:
+	invoke-direct	{v1,v3,v0},com/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder/<init>	; <init>(Lcom/nineoldandroids/util/Property;Lcom/nineoldandroids/animation/FloatKeyframeSet;)V
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder; , v3 : Lcom/nineoldandroids/util/Property; , v0 : Lcom/nineoldandroids/animation/FloatKeyframeSet;
+	goto	lce9d6
+lce9f0:
+.line 288
+	new-instance	v1,com/nineoldandroids/animation/PropertyValuesHolder
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-direct	{v1,v3},com/nineoldandroids/animation/PropertyValuesHolder/<init>	; <init>(Lcom/nineoldandroids/util/Property;)V
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v3 : Lcom/nineoldandroids/util/Property;
+.line 289
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 290
+	const/4	v2,0
+; v2 : single-length
+	aget-object	v2,v4,v2
+; v2 : Lcom/nineoldandroids/animation/Keyframe; , v4 : [Lcom/nineoldandroids/animation/Keyframe; , v2 : Lcom/nineoldandroids/animation/Keyframe;
+	invoke-virtual	{v2},com/nineoldandroids/animation/Keyframe/getType	; getType()Ljava/lang/Class;
+; v2 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v2
+; v2 : Ljava/lang/Class;
+	iput-object	v2,v1,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v2 : Ljava/lang/Class; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	goto	lce9d6
+.end method
+
+.method public static ofKeyframe(Ljava/lang/String;[Lcom/nineoldandroids/animation/Keyframe;)Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.limit registers 5
+; parameter[0] : v3 (Ljava/lang/String;)
+; parameter[1] : v4 ([Lcom/nineoldandroids/animation/Keyframe;)
+.var 0 is keyframeSet Lcom/nineoldandroids/animation/KeyframeSet; from lcea2c to lcea3c
+.var 0 is keyframeSet Lcom/nineoldandroids/animation/KeyframeSet; from lcea44 to lcea54
+.line 250
+	invoke-static	{v4},com/nineoldandroids/animation/KeyframeSet/ofKeyframe	; ofKeyframe([Lcom/nineoldandroids/animation/Keyframe;)Lcom/nineoldandroids/animation/KeyframeSet;
+; v4 : [Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v0
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet;
+.line 251
+	instance-of	v2,v0,com/nineoldandroids/animation/IntKeyframeSet
+; v2 : single-length , v0 : Lcom/nineoldandroids/animation/KeyframeSet;
+	if-eqz	v2,lcea44
+; v2 : single-length
+.line 252
+	new-instance	v1,com/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder;
+	check-cast	v0,com/nineoldandroids/animation/IntKeyframeSet
+; v0 : Lcom/nineoldandroids/animation/IntKeyframeSet;
+lcea3c:
+	invoke-direct	{v1,v3,v0},com/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder/<init>	; <init>(Ljava/lang/String;Lcom/nineoldandroids/animation/IntKeyframeSet;)V
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder$IntPropertyValuesHolder; , v3 : Ljava/lang/String; , v0 : Lcom/nineoldandroids/animation/IntKeyframeSet;
+lcea42:
+.line 260
+	return-object	v1
+; v1 : Ljava/lang/Object;
+lcea44:
+.line 253
+	instance-of	v2,v0,com/nineoldandroids/animation/FloatKeyframeSet
+; v2 : single-length , v0 : Lcom/nineoldandroids/animation/KeyframeSet;
+	if-eqz	v2,lcea5c
+; v2 : single-length
+.line 254
+	new-instance	v1,com/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder;
+	check-cast	v0,com/nineoldandroids/animation/FloatKeyframeSet
+; v0 : Lcom/nineoldandroids/animation/FloatKeyframeSet;
+lcea54:
+	invoke-direct	{v1,v3,v0},com/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder/<init>	; <init>(Ljava/lang/String;Lcom/nineoldandroids/animation/FloatKeyframeSet;)V
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder$FloatPropertyValuesHolder; , v3 : Ljava/lang/String; , v0 : Lcom/nineoldandroids/animation/FloatKeyframeSet;
+	goto	lcea42
+lcea5c:
+.line 257
+	new-instance	v1,com/nineoldandroids/animation/PropertyValuesHolder
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-direct	{v1,v3},com/nineoldandroids/animation/PropertyValuesHolder/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v3 : Ljava/lang/String;
+.line 258
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 259
+	const/4	v2,0
+; v2 : single-length
+	aget-object	v2,v4,v2
+; v2 : Lcom/nineoldandroids/animation/Keyframe; , v4 : [Lcom/nineoldandroids/animation/Keyframe; , v2 : Lcom/nineoldandroids/animation/Keyframe;
+	invoke-virtual	{v2},com/nineoldandroids/animation/Keyframe/getType	; getType()Ljava/lang/Class;
+; v2 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v2
+; v2 : Ljava/lang/Class;
+	iput-object	v2,v1,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v2 : Ljava/lang/Class; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	goto	lcea42
+.end method
+
+.method public static ofObject(Lcom/nineoldandroids/util/Property;Lcom/nineoldandroids/animation/TypeEvaluator;[Ljava/lang/Object;)Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Lcom/nineoldandroids/util/Property;" , "Lcom/nineoldandroids/animation/TypeEvaluator" , "<TV;>;[TV;)" , "Lcom/nineoldandroids/animation/PropertyValuesHolder;" }
+.end annotation
+.limit registers 4
+; parameter[0] : v1 (Lcom/nineoldandroids/util/Property;)
+; parameter[1] : v2 (Lcom/nineoldandroids/animation/TypeEvaluator;)
+; parameter[2] : v3 ([Ljava/lang/Object;)
+.line 224
+	new-instance	v0,com/nineoldandroids/animation/PropertyValuesHolder
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-direct	{v0,v1},com/nineoldandroids/animation/PropertyValuesHolder/<init>	; <init>(Lcom/nineoldandroids/util/Property;)V
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v1 : Lcom/nineoldandroids/util/Property;
+.line 225
+	invoke-virtual	{v0,v3},com/nineoldandroids/animation/PropertyValuesHolder/setObjectValues	; setObjectValues([Ljava/lang/Object;)V
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v3 : [Ljava/lang/Object;
+.line 226
+	invoke-virtual	{v0,v2},com/nineoldandroids/animation/PropertyValuesHolder/setEvaluator	; setEvaluator(Lcom/nineoldandroids/animation/TypeEvaluator;)V
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v2 : Lcom/nineoldandroids/animation/TypeEvaluator;
+.line 227
+	return-object	v0
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.end method
+
+.method public static ofObject(Ljava/lang/String;Lcom/nineoldandroids/animation/TypeEvaluator;[Ljava/lang/Object;)Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "<V:" , "Ljava/lang/Object;" , ">(" , "Lcom/nineoldandroids/util/Property;" , "Lcom/nineoldandroids/animation/TypeEvaluator" , "<TV;>;[TV;)" , "Lcom/nineoldandroids/animation/PropertyValuesHolder;" }
+.end annotation
+.limit registers 4
+; parameter[0] : v1 (Ljava/lang/String;)
+; parameter[1] : v2 (Lcom/nineoldandroids/animation/TypeEvaluator;)
+; parameter[2] : v3 ([Ljava/lang/Object;)
+.line 204
+	new-instance	v0,com/nineoldandroids/animation/PropertyValuesHolder
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-direct	{v0,v1},com/nineoldandroids/animation/PropertyValuesHolder/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v1 : Ljava/lang/String;
+.line 205
+	invoke-virtual	{v0,v3},com/nineoldandroids/animation/PropertyValuesHolder/setObjectValues	; setObjectValues([Ljava/lang/Object;)V
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v3 : [Ljava/lang/Object;
+.line 206
+	invoke-virtual	{v0,v2},com/nineoldandroids/animation/PropertyValuesHolder/setEvaluator	; setEvaluator(Lcom/nineoldandroids/animation/TypeEvaluator;)V
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v2 : Lcom/nineoldandroids/animation/TypeEvaluator;
+.line 207
+	return-object	v0
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.end method
+
+.method private setupGetter(Ljava/lang/Class;)V
+.limit registers 5
+; this: v3 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v4 (Ljava/lang/Class;)
+.line 493
+	sget-object	v0,com/nineoldandroids/animation/PropertyValuesHolder.sGetterPropertyMap Ljava/util/HashMap;
+; v0 : Ljava/util/HashMap;
+	const-string	v1,"get"
+; v1 : Ljava/lang/String;
+	const/4	v2,0
+; v2 : single-length
+	invoke-direct	{v3,v4,v0,v1,v2},com/nineoldandroids/animation/PropertyValuesHolder/setupSetterOrGetter	; setupSetterOrGetter(Ljava/lang/Class;Ljava/util/HashMap;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/reflect/Method;
+; v3 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v4 : Ljava/lang/Class; , v0 : Ljava/util/HashMap; , v1 : Ljava/lang/String; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/reflect/Method;
+	iput-object	v0,v3,com/nineoldandroids/animation/PropertyValuesHolder.mGetter Ljava/lang/reflect/Method;
+; v0 : Ljava/lang/reflect/Method; , v3 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 494
+	return-void	
+.end method
+
+.method private setupSetterOrGetter(Ljava/lang/Class;Ljava/util/HashMap;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/reflect/Method;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/lang/Class;" , "Ljava/util/HashMap" , "<" , "Ljava/lang/Class;" , "Ljava/util/HashMap" , "<" , "Ljava/lang/String;" , "Ljava/lang/reflect/Method;" , ">;>;" , "Ljava/lang/String;" , "Ljava/lang/Class;" , ")" , "Ljava/lang/reflect/Method;" }
+.end annotation
+.limit registers 10
+; this: v5 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v6 (Ljava/lang/Class;)
+; parameter[1] : v7 (Ljava/util/HashMap;)
+; parameter[2] : v8 (Ljava/lang/String;)
+; parameter[3] : v9 (Ljava/lang/Class;)
+.catch java/lang/Exception from lceb0a to lceb6a using lceb7e
+.var 1 is propertyMap Ljava/util/HashMap; from lceb28 to lceb54
+.var 1 is propertyMap Ljava/util/HashMap; from lceb5a to lceb7e
+.line 457
+	const/4	v2,0
+; v2 : single-length
+lceb0a:
+.line 462
+	iget-object	v3,v5,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyMapLock Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock; , v5 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v3},java/util/concurrent/locks/ReentrantReadWriteLock/writeLock	; writeLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$WriteLock;
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v3
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$WriteLock;
+	invoke-virtual	{v3},java/util/concurrent/locks/ReentrantReadWriteLock$WriteLock/lock	; lock()V
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$WriteLock;
+.line 463
+	invoke-virtual	{v7,v6},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v7 : Ljava/util/HashMap; , v6 : Ljava/lang/Class;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,java/util/HashMap
+; v1 : Ljava/util/HashMap;
+.line 464
+	if-eqz	v1,lceb40
+; v1 : Ljava/util/HashMap;
+.line 465
+	iget-object	v3,v5,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyName Ljava/lang/String;
+; v3 : Ljava/lang/String; , v5 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v1,v3},java/util/HashMap/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/HashMap; , v3 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	move-object	v0,v3
+; v0 : Ljava/lang/Object; , v3 : Ljava/lang/Object;
+	check-cast	v0,java/lang/reflect/Method
+; v0 : Ljava/lang/reflect/Method;
+	move-object	v2,v0
+; v2 : Ljava/lang/reflect/Method; , v0 : Ljava/lang/reflect/Method;
+lceb40:
+.line 467
+	if-nez	v2,lceb6a
+; v2 : single-length
+.line 468
+	invoke-direct	{v5,v6,v8,v9},com/nineoldandroids/animation/PropertyValuesHolder/getPropertyFunction	; getPropertyFunction(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/reflect/Method;
+; v5 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v6 : Ljava/lang/Class; , v8 : Ljava/lang/String; , v9 : Ljava/lang/Class;
+	move-result-object	v2
+; v2 : Ljava/lang/reflect/Method;
+.line 469
+	if-nez	v1,lceb60
+; v1 : Ljava/util/HashMap;
+.line 470
+	new-instance	v1,java/util/HashMap
+; v1 : Ljava/util/HashMap;
+lceb54:
+	invoke-direct	{v1},java/util/HashMap/<init>	; <init>()V
+; v1 : Ljava/util/HashMap;
+.line 471
+	invoke-virtual	{v7,v6,v1},java/util/HashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v7 : Ljava/util/HashMap; , v6 : Ljava/lang/Class; , v1 : Ljava/util/HashMap;
+lceb60:
+.line 473
+	iget-object	v3,v5,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyName Ljava/lang/String;
+; v3 : Ljava/lang/String; , v5 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v1,v3,v2},java/util/HashMap/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/util/HashMap; , v3 : Ljava/lang/String; , v2 : Ljava/lang/reflect/Method;
+lceb6a:
+.line 476
+	iget-object	v3,v5,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyMapLock Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock; , v5 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v3},java/util/concurrent/locks/ReentrantReadWriteLock/writeLock	; writeLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$WriteLock;
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v3
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$WriteLock;
+	invoke-virtual	{v3},java/util/concurrent/locks/ReentrantReadWriteLock$WriteLock/unlock	; unlock()V
+; v3 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$WriteLock;
+.line 478
+	return-object	v2
+; v2 : Ljava/lang/reflect/Method;
+lceb7e:
+.line 476
+	move-exception	v3
+; v3 : java/lang/Exception
+	iget-object	v4,v5,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyMapLock Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock; , v5 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v4},java/util/concurrent/locks/ReentrantReadWriteLock/writeLock	; writeLock()Ljava/util/concurrent/locks/ReentrantReadWriteLock$WriteLock;
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock;
+	move-result-object	v4
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$WriteLock;
+	invoke-virtual	{v4},java/util/concurrent/locks/ReentrantReadWriteLock$WriteLock/unlock	; unlock()V
+; v4 : Ljava/util/concurrent/locks/ReentrantReadWriteLock$WriteLock;
+	throw	v3
+; v3 : java/lang/Exception
+.end method
+
+.method private setupValue(Ljava/lang/Object;Lcom/nineoldandroids/animation/Keyframe;)V
+.limit registers 7
+; this: v4 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v5 (Ljava/lang/Object;)
+; parameter[1] : v6 (Lcom/nineoldandroids/animation/Keyframe;)
+.catch java/lang/reflect/InvocationTargetException from lcebca to lcebf8 using lcebfa
+.catch java/lang/IllegalAccessException from lcebca to lcebf8 using lcec10
+.var 1 is targetClass Ljava/lang/Class; from lcebda to lcebe0
+.var 0 is e Ljava/lang/reflect/InvocationTargetException; from lcebfc to lcec10
+.line 551
+	iget-object	v2,v4,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v2 : Lcom/nineoldandroids/util/Property; , v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	if-eqz	v2,lcebca
+; v2 : Lcom/nineoldandroids/util/Property;
+.line 552
+	iget-object	v2,v4,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v2 : Lcom/nineoldandroids/util/Property; , v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v2,v5},com/nineoldandroids/util/Property/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v2 : Lcom/nineoldandroids/util/Property; , v5 : Ljava/lang/Object;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	invoke-virtual	{v6,v2},com/nineoldandroids/animation/Keyframe/setValue	; setValue(Ljava/lang/Object;)V
+; v6 : Lcom/nineoldandroids/animation/Keyframe; , v2 : Ljava/lang/Object;
+lcebca:
+.line 555
+	iget-object	v2,v4,com/nineoldandroids/animation/PropertyValuesHolder.mGetter Ljava/lang/reflect/Method;
+; v2 : Ljava/lang/reflect/Method; , v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	if-nez	v2,lcebe0
+; v2 : Ljava/lang/reflect/Method;
+.line 556
+	invoke-virtual	{v5},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v5 : Ljava/lang/Object;
+	move-result-object	v1
+; v1 : Ljava/lang/Class;
+.line 557
+	invoke-direct	{v4,v1},com/nineoldandroids/animation/PropertyValuesHolder/setupGetter	; setupGetter(Ljava/lang/Class;)V
+; v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v1 : Ljava/lang/Class;
+lcebe0:
+.line 559
+	iget-object	v2,v4,com/nineoldandroids/animation/PropertyValuesHolder.mGetter Ljava/lang/reflect/Method;
+; v2 : Ljava/lang/reflect/Method; , v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	const/4	v3,0
+; v3 : single-length
+	new-array	v3,v3,[Ljava/lang/Object;
+; v3 : [Ljava/lang/Object; , v3 : [Ljava/lang/Object;
+	invoke-virtual	{v2,v5,v3},java/lang/reflect/Method/invoke	; invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+; v2 : Ljava/lang/reflect/Method; , v5 : Ljava/lang/Object; , v3 : [Ljava/lang/Object;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	invoke-virtual	{v6,v2},com/nineoldandroids/animation/Keyframe/setValue	; setValue(Ljava/lang/Object;)V
+; v6 : Lcom/nineoldandroids/animation/Keyframe; , v2 : Ljava/lang/Object;
+lcebf8:
+.line 565
+	return-void	
+lcebfa:
+.line 560
+	move-exception	v0
+; v0 : java/lang/reflect/InvocationTargetException
+.line 561
+	const-string	v2,"PropertyValuesHolder"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0},java/lang/reflect/InvocationTargetException/toString	; toString()Ljava/lang/String;
+; v0 : java/lang/reflect/InvocationTargetException
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-static	{v2,v3},android/util/Log/e	; e(Ljava/lang/String;Ljava/lang/String;)I
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	goto	lcebf8
+lcec10:
+.line 562
+	move-exception	v0
+; v0 : java/lang/IllegalAccessException
+.line 563
+	const-string	v2,"PropertyValuesHolder"
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0},java/lang/IllegalAccessException/toString	; toString()Ljava/lang/String;
+; v0 : java/lang/IllegalAccessException
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-static	{v2,v3},android/util/Log/e	; e(Ljava/lang/String;Ljava/lang/String;)I
+; v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+	goto	lcebf8
+.end method
+
+.method calculateValue(F)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v2 (F)
+.line 670
+	iget-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v0,v2},com/nineoldandroids/animation/KeyframeSet/getValue	; getValue(F)Ljava/lang/Object;
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v2 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mAnimatedValue Ljava/lang/Object;
+; v0 : Ljava/lang/Object; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 671
+	return-void	
+.end method
+
+.method public clone()Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.throws Ljava/lang/CloneNotSupportedException;
+.limit registers 4
+; this: v3 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+.catch java/lang/CloneNotSupportedException from lcec6c to lceca0 using lceca2
+.var 1 is newPVH Lcom/nineoldandroids/animation/PropertyValuesHolder; from lcec78 to lceca0
+lcec6c:
+.line 594
+	invoke-super	{v3},java/lang/Object/clone	; clone()Ljava/lang/Object;
+; v3 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,com/nineoldandroids/animation/PropertyValuesHolder
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 595
+	iget-object	v2,v3,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyName Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	iput-object	v2,v1,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyName Ljava/lang/String;
+; v2 : Ljava/lang/String; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 596
+	iget-object	v2,v3,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v2 : Lcom/nineoldandroids/util/Property; , v3 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	iput-object	v2,v1,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v2 : Lcom/nineoldandroids/util/Property; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 597
+	iget-object	v2,v3,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v2 : Lcom/nineoldandroids/animation/KeyframeSet; , v3 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v2},com/nineoldandroids/animation/KeyframeSet/clone	; clone()Lcom/nineoldandroids/animation/KeyframeSet;
+; v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+	move-result-object	v2
+; v2 : Lcom/nineoldandroids/animation/KeyframeSet;
+	iput-object	v2,v1,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v2 : Lcom/nineoldandroids/animation/KeyframeSet; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 598
+	iget-object	v2,v3,com/nineoldandroids/animation/PropertyValuesHolder.mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v2 : Lcom/nineoldandroids/animation/TypeEvaluator; , v3 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	iput-object	v2,v1,com/nineoldandroids/animation/PropertyValuesHolder.mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v2 : Lcom/nineoldandroids/animation/TypeEvaluator; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+lceca0:
+.line 602
+	return-object	v1
+; v1 : single-length
+lceca2:
+.line 600
+	move-exception	v0
+; v0 : java/lang/CloneNotSupportedException
+.line 602
+	const/4	v1,0
+; v1 : single-length
+	goto	lceca0
+.end method
+
+.method public clone()Ljava/lang/Object;
+.throws Ljava/lang/CloneNotSupportedException;
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+.line 36
+	invoke-virtual	{v1},com/nineoldandroids/animation/PropertyValuesHolder/clone	; clone()Lcom/nineoldandroids/animation/PropertyValuesHolder;
+; v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	move-result-object	v0
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	return-object	v0
+; v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.end method
+
+.method getAnimatedValue()Ljava/lang/Object;
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+.line 722
+	iget-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mAnimatedValue Ljava/lang/Object;
+; v0 : Ljava/lang/Object; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	return-object	v0
+; v0 : Ljava/lang/Object;
+.end method
+
+.method public getPropertyName()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+.line 713
+	iget-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyName Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method init()V
+.limit registers 3
+; this: v2 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+.line 634
+	iget-object	v0,v2,com/nineoldandroids/animation/PropertyValuesHolder.mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v0 : Lcom/nineoldandroids/animation/TypeEvaluator; , v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	if-nez	v0,lced30
+; v0 : Lcom/nineoldandroids/animation/TypeEvaluator;
+.line 637
+	iget-object	v0,v2,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v0 : Ljava/lang/Class; , v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	const-class	v1,java/lang/Integer
+; v1 : Ljava/lang/Class;
+	if-ne	v0,v1,lced48
+; v0 : Ljava/lang/Class; , v1 : Ljava/lang/Class;
+	sget-object	v0,com/nineoldandroids/animation/PropertyValuesHolder.sIntEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v0 : Lcom/nineoldandroids/animation/TypeEvaluator;
+lced2c:
+	iput-object	v0,v2,com/nineoldandroids/animation/PropertyValuesHolder.mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v0 : Lcom/nineoldandroids/animation/TypeEvaluator; , v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+lced30:
+.line 641
+	iget-object	v0,v2,com/nineoldandroids/animation/PropertyValuesHolder.mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v0 : Lcom/nineoldandroids/animation/TypeEvaluator; , v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	if-eqz	v0,lced46
+; v0 : Lcom/nineoldandroids/animation/TypeEvaluator;
+.line 644
+	iget-object	v0,v2,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	iget-object	v1,v2,com/nineoldandroids/animation/PropertyValuesHolder.mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v1 : Lcom/nineoldandroids/animation/TypeEvaluator; , v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v0,v1},com/nineoldandroids/animation/KeyframeSet/setEvaluator	; setEvaluator(Lcom/nineoldandroids/animation/TypeEvaluator;)V
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v1 : Lcom/nineoldandroids/animation/TypeEvaluator;
+lced46:
+.line 646
+	return-void	
+lced48:
+.line 637
+	iget-object	v0,v2,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v0 : Ljava/lang/Class; , v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	const-class	v1,java/lang/Float
+; v1 : Ljava/lang/Class;
+	if-ne	v0,v1,lced5a
+; v0 : Ljava/lang/Class; , v1 : Ljava/lang/Class;
+	sget-object	v0,com/nineoldandroids/animation/PropertyValuesHolder.sFloatEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v0 : Lcom/nineoldandroids/animation/TypeEvaluator;
+	goto	lced2c
+lced5a:
+	const/4	v0,0
+; v0 : single-length
+	goto	lced2c
+.end method
+
+.method setAnimatedValue(Ljava/lang/Object;)V
+.limit registers 6
+; this: v4 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v5 (Ljava/lang/Object;)
+.catch java/lang/reflect/InvocationTargetException from lced92 to lcedb2 using lcedb4
+.catch java/lang/IllegalAccessException from lced92 to lcedb2 using lcedca
+.var 0 is e Ljava/lang/reflect/InvocationTargetException; from lcedb6 to lcedca
+.line 614
+	iget-object	v1,v4,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v1 : Lcom/nineoldandroids/util/Property; , v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	if-eqz	v1,lced8a
+; v1 : Lcom/nineoldandroids/util/Property;
+.line 615
+	iget-object	v1,v4,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v1 : Lcom/nineoldandroids/util/Property; , v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v4},com/nineoldandroids/animation/PropertyValuesHolder/getAnimatedValue	; getAnimatedValue()Ljava/lang/Object;
+; v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	invoke-virtual	{v1,v5,v2},com/nineoldandroids/util/Property/set	; set(Ljava/lang/Object;Ljava/lang/Object;)V
+; v1 : Lcom/nineoldandroids/util/Property; , v5 : Ljava/lang/Object; , v2 : Ljava/lang/Object;
+lced8a:
+.line 617
+	iget-object	v1,v4,com/nineoldandroids/animation/PropertyValuesHolder.mSetter Ljava/lang/reflect/Method;
+; v1 : Ljava/lang/reflect/Method; , v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	if-eqz	v1,lcedb2
+; v1 : Ljava/lang/reflect/Method;
+lced92:
+.line 619
+	iget-object	v1,v4,com/nineoldandroids/animation/PropertyValuesHolder.mTmpValueArray [Ljava/lang/Object;
+; v1 : [Ljava/lang/Object; , v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v4},com/nineoldandroids/animation/PropertyValuesHolder/getAnimatedValue	; getAnimatedValue()Ljava/lang/Object;
+; v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	aput-object	v3,v1,v2
+; v3 : Ljava/lang/Object; , v1 : [Ljava/lang/Object; , v2 : single-length
+.line 620
+	iget-object	v1,v4,com/nineoldandroids/animation/PropertyValuesHolder.mSetter Ljava/lang/reflect/Method;
+; v1 : Ljava/lang/reflect/Method; , v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	iget-object	v2,v4,com/nineoldandroids/animation/PropertyValuesHolder.mTmpValueArray [Ljava/lang/Object;
+; v2 : [Ljava/lang/Object; , v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v1,v5,v2},java/lang/reflect/Method/invoke	; invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+; v1 : Ljava/lang/reflect/Method; , v5 : Ljava/lang/Object; , v2 : [Ljava/lang/Object;
+lcedb2:
+.line 627
+	return-void	
+lcedb4:
+.line 621
+	move-exception	v0
+; v0 : java/lang/reflect/InvocationTargetException
+.line 622
+	const-string	v1,"PropertyValuesHolder"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0},java/lang/reflect/InvocationTargetException/toString	; toString()Ljava/lang/String;
+; v0 : java/lang/reflect/InvocationTargetException
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-static	{v1,v2},android/util/Log/e	; e(Ljava/lang/String;Ljava/lang/String;)I
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	goto	lcedb2
+lcedca:
+.line 623
+	move-exception	v0
+; v0 : java/lang/IllegalAccessException
+.line 624
+	const-string	v1,"PropertyValuesHolder"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0},java/lang/IllegalAccessException/toString	; toString()Ljava/lang/String;
+; v0 : java/lang/IllegalAccessException
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-static	{v1,v2},android/util/Log/e	; e(Ljava/lang/String;Ljava/lang/String;)I
+; v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	goto	lcedb2
+.end method
+
+.method public setEvaluator(Lcom/nineoldandroids/animation/TypeEvaluator;)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v2 (Lcom/nineoldandroids/animation/TypeEvaluator;)
+.line 659
+	iput-object	v2,v1,com/nineoldandroids/animation/PropertyValuesHolder.mEvaluator Lcom/nineoldandroids/animation/TypeEvaluator;
+; v2 : Lcom/nineoldandroids/animation/TypeEvaluator; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 660
+	iget-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v0,v2},com/nineoldandroids/animation/KeyframeSet/setEvaluator	; setEvaluator(Lcom/nineoldandroids/animation/TypeEvaluator;)V
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v2 : Lcom/nineoldandroids/animation/TypeEvaluator;
+.line 661
+	return-void	
+.end method
+
+.method public setFloatValues([F)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v2 ([F)
+.line 327
+	sget-object	v0,java/lang/Float.TYPE Ljava/lang/Class;
+; v0 : Ljava/lang/Class;
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v0 : Ljava/lang/Class; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 328
+	invoke-static	{v2},com/nineoldandroids/animation/KeyframeSet/ofFloat	; ofFloat([F)Lcom/nineoldandroids/animation/KeyframeSet;
+; v2 : [F
+	move-result-object	v0
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet;
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 329
+	return-void	
+.end method
+
+.method public setIntValues([I)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v2 ([I)
+.line 309
+	sget-object	v0,java/lang/Integer.TYPE Ljava/lang/Class;
+; v0 : Ljava/lang/Class;
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v0 : Ljava/lang/Class; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 310
+	invoke-static	{v2},com/nineoldandroids/animation/KeyframeSet/ofInt	; ofInt([I)Lcom/nineoldandroids/animation/KeyframeSet;
+; v2 : [I
+	move-result-object	v0
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet;
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 311
+	return-void	
+.end method
+
+.method public setKeyframes([Lcom/nineoldandroids/animation/Keyframe;)V
+.limit registers 6
+; this: v4 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v5 ([Lcom/nineoldandroids/animation/Keyframe;)
+.line 337
+	array-length	v2,v5
+; v2 : single-length , v5 : [Lcom/nineoldandroids/animation/Keyframe;
+.line 338
+	const/4	v3,2
+; v3 : single-length
+	invoke-static	{v2,v3},java/lang/Math/max	; max(II)I
+; v2 : single-length , v3 : single-length
+	move-result	v3
+; v3 : single-length
+	new-array	v1,v3,[Lcom/nineoldandroids/animation/Keyframe;
+; v1 : [Lcom/nineoldandroids/animation/Keyframe; , v3 : single-length
+.line 339
+	const/4	v3,0
+; v3 : single-length
+	aget-object	v3,v5,v3
+; v3 : Lcom/nineoldandroids/animation/Keyframe; , v5 : [Lcom/nineoldandroids/animation/Keyframe; , v3 : Lcom/nineoldandroids/animation/Keyframe;
+	invoke-virtual	{v3},com/nineoldandroids/animation/Keyframe/getType	; getType()Ljava/lang/Class;
+; v3 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result-object	v3
+; v3 : Ljava/lang/Class;
+	iput-object	v3,v4,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v3 : Ljava/lang/Class; , v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 340
+	const/4	v0,0
+; v0 : single-length
+lcee94:
+	if-ge	v0,v2,lceea6
+; v0 : single-length , v2 : single-length
+.line 341
+	aget-object	v3,v5,v0
+; v3 : Lcom/nineoldandroids/animation/Keyframe; , v5 : [Lcom/nineoldandroids/animation/Keyframe; , v0 : single-length
+	aput-object	v3,v1,v0
+; v3 : Lcom/nineoldandroids/animation/Keyframe; , v1 : [Lcom/nineoldandroids/animation/Keyframe; , v0 : single-length
+.line 340
+	add-int/lit8	v0,v0,1
+; v0 : single-length , v0 : single-length
+	goto	lcee94
+lceea6:
+.line 343
+	new-instance	v3,com/nineoldandroids/animation/KeyframeSet
+; v3 : Lcom/nineoldandroids/animation/KeyframeSet;
+	invoke-direct	{v3,v1},com/nineoldandroids/animation/KeyframeSet/<init>	; <init>([Lcom/nineoldandroids/animation/Keyframe;)V
+; v3 : Lcom/nineoldandroids/animation/KeyframeSet; , v1 : [Lcom/nineoldandroids/animation/Keyframe;
+	iput-object	v3,v4,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v3 : Lcom/nineoldandroids/animation/KeyframeSet; , v4 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 344
+	return-void	
+.end method
+
+.method public setObjectValues([Ljava/lang/Object;)V
+.limit registers 3
+; this: v1 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v2 ([Ljava/lang/Object;)
+.line 360
+	const/4	v0,0
+; v0 : single-length
+	aget-object	v0,v2,v0
+; v0 : Ljava/lang/Object; , v2 : [Ljava/lang/Object; , v0 : Ljava/lang/Object;
+	invoke-virtual	{v0},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v0 : Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/Class;
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v0 : Ljava/lang/Class; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 361
+	invoke-static	{v2},com/nineoldandroids/animation/KeyframeSet/ofObject	; ofObject([Ljava/lang/Object;)Lcom/nineoldandroids/animation/KeyframeSet;
+; v2 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet;
+	iput-object	v0,v1,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v1 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 362
+	return-void	
+.end method
+
+.method public setProperty(Lcom/nineoldandroids/util/Property;)V
+.limit registers 2
+; this: v0 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v1 (Lcom/nineoldandroids/util/Property;)
+.line 701
+	iput-object	v1,v0,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v1 : Lcom/nineoldandroids/util/Property; , v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 702
+	return-void	
+.end method
+
+.method public setPropertyName(Ljava/lang/String;)V
+.limit registers 2
+; this: v0 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 689
+	iput-object	v1,v0,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyName Ljava/lang/String;
+; v1 : Ljava/lang/String; , v0 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 690
+	return-void	
+.end method
+
+.method setupEndValue(Ljava/lang/Object;)V
+.limit registers 4
+; this: v2 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v3 (Ljava/lang/Object;)
+.line 588
+	iget-object	v0,v2,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	iget-object	v0,v0,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v0 : Ljava/util/ArrayList;
+	iget-object	v1,v2,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v1 : Lcom/nineoldandroids/animation/KeyframeSet; , v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	iget-object	v1,v1,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v1 : Ljava/util/ArrayList; , v1 : Ljava/util/ArrayList;
+	invoke-virtual	{v1},java/util/ArrayList/size	; size()I
+; v1 : Ljava/util/ArrayList;
+	move-result	v1
+; v1 : single-length
+	add-int/lit8	v1,v1,255
+; v1 : single-length , v1 : single-length
+	invoke-virtual	{v0,v1},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v0 : Ljava/util/ArrayList; , v1 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/nineoldandroids/animation/Keyframe
+; v0 : Lcom/nineoldandroids/animation/Keyframe;
+	invoke-direct	{v2,v3,v0},com/nineoldandroids/animation/PropertyValuesHolder/setupValue	; setupValue(Ljava/lang/Object;Lcom/nineoldandroids/animation/Keyframe;)V
+; v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v3 : Ljava/lang/Object; , v0 : Lcom/nineoldandroids/animation/Keyframe;
+.line 589
+	return-void	
+.end method
+
+.method setupSetter(Ljava/lang/Class;)V
+.limit registers 5
+; this: v3 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v4 (Ljava/lang/Class;)
+.line 486
+	sget-object	v0,com/nineoldandroids/animation/PropertyValuesHolder.sSetterPropertyMap Ljava/util/HashMap;
+; v0 : Ljava/util/HashMap;
+	const-string	v1,"set"
+; v1 : Ljava/lang/String;
+	iget-object	v2,v3,com/nineoldandroids/animation/PropertyValuesHolder.mValueType Ljava/lang/Class;
+; v2 : Ljava/lang/Class; , v3 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-direct	{v3,v4,v0,v1,v2},com/nineoldandroids/animation/PropertyValuesHolder/setupSetterOrGetter	; setupSetterOrGetter(Ljava/lang/Class;Ljava/util/HashMap;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/reflect/Method;
+; v3 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v4 : Ljava/lang/Class; , v0 : Ljava/util/HashMap; , v1 : Ljava/lang/String; , v2 : Ljava/lang/Class;
+	move-result-object	v0
+; v0 : Ljava/lang/reflect/Method;
+	iput-object	v0,v3,com/nineoldandroids/animation/PropertyValuesHolder.mSetter Ljava/lang/reflect/Method;
+; v0 : Ljava/lang/reflect/Method; , v3 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+.line 487
+	return-void	
+.end method
+
+.method setupSetterAndGetter(Ljava/lang/Object;)V
+.limit registers 10
+; this: v8 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v9 (Ljava/lang/Object;)
+.catch java/lang/reflect/InvocationTargetException from lcf0ac to lcf0c4 using lcf0c6
+.catch java/lang/IllegalAccessException from lcf0ac to lcf0c4 using lcf0dc
+.catch java/lang/ClassCastException from lcef9c to lcefee using lceff0
+.var 1 is i$ Ljava/util/Iterator; from lcefb8 to lceff0
+.var 2 is kf Lcom/nineoldandroids/animation/Keyframe; from lcefd0 to lceff0
+.var 4 is testValue Ljava/lang/Object; from lcefa8 to lceff0
+.var 0 is e Ljava/lang/ClassCastException; from lceff2 to lcf054
+.var 0 is e Ljava/lang/reflect/InvocationTargetException; from lcf0c8 to lcf0dc
+.var 0 is e Ljava/lang/IllegalAccessException; from lcf0de to lcf0f2
+.var 2 is kf Lcom/nineoldandroids/animation/Keyframe; from lcf092 to lcf0f2
+.var 3 is targetClass Ljava/lang/Class; from lcf05c to lcf0f2
+.line 507
+	iget-object	v5,v8,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v5 : Lcom/nineoldandroids/util/Property; , v8 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	if-eqz	v5,lcf054
+; v5 : Lcom/nineoldandroids/util/Property;
+lcef9c:
+.line 510
+	iget-object	v5,v8,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v5 : Lcom/nineoldandroids/util/Property; , v8 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v5,v9},com/nineoldandroids/util/Property/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v5 : Lcom/nineoldandroids/util/Property; , v9 : Ljava/lang/Object;
+	move-result-object	v4
+; v4 : Ljava/lang/Object;
+.line 511
+	iget-object	v5,v8,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v5 : Lcom/nineoldandroids/animation/KeyframeSet; , v8 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	iget-object	v5,v5,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v5 : Ljava/util/ArrayList; , v5 : Ljava/util/ArrayList;
+	invoke-virtual	{v5},java/util/ArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v5 : Ljava/util/ArrayList;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+lcefb8:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,lcf0f2
+; v5 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,com/nineoldandroids/animation/Keyframe
+; v2 : Lcom/nineoldandroids/animation/Keyframe;
+.line 512
+	invoke-virtual	{v2},com/nineoldandroids/animation/Keyframe/hasValue	; hasValue()Z
+; v2 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result	v5
+; v5 : single-length
+	if-nez	v5,lcefb8
+; v5 : single-length
+.line 513
+	iget-object	v5,v8,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v5 : Lcom/nineoldandroids/util/Property; , v8 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v5,v9},com/nineoldandroids/util/Property/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v5 : Lcom/nineoldandroids/util/Property; , v9 : Ljava/lang/Object;
+	move-result-object	v5
+; v5 : Ljava/lang/Object;
+	invoke-virtual	{v2,v5},com/nineoldandroids/animation/Keyframe/setValue	; setValue(Ljava/lang/Object;)V
+; v2 : Lcom/nineoldandroids/animation/Keyframe; , v5 : Ljava/lang/Object;
+lcefee:
+	goto	lcefb8
+lceff0:
+.line 517
+	move-exception	v0
+; v0 : java/lang/ClassCastException
+.line 518
+	const-string	v5,"PropertyValuesHolder"
+; v5 : Ljava/lang/String;
+	new-instance	v6,java/lang/StringBuilder
+; v6 : Ljava/lang/StringBuilder;
+	invoke-direct	{v6},java/lang/StringBuilder/<init>	; <init>()V
+; v6 : Ljava/lang/StringBuilder;
+	const-string	v7,"No such property ("
+; v7 : Ljava/lang/String;
+	invoke-virtual	{v6,v7},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v6 : Ljava/lang/StringBuilder; , v7 : Ljava/lang/String;
+	move-result-object	v6
+; v6 : Ljava/lang/StringBuilder;
+	iget-object	v7,v8,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v7 : Lcom/nineoldandroids/util/Property; , v8 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v7},com/nineoldandroids/util/Property/getName	; getName()Ljava/lang/String;
+; v7 : Lcom/nineoldandroids/util/Property;
+	move-result-object	v7
+; v7 : Ljava/lang/String;
+	invoke-virtual	{v6,v7},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v6 : Ljava/lang/StringBuilder; , v7 : Ljava/lang/String;
+	move-result-object	v6
+; v6 : Ljava/lang/StringBuilder;
+	const-string	v7,") on target object "
+; v7 : Ljava/lang/String;
+	invoke-virtual	{v6,v7},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v6 : Ljava/lang/StringBuilder; , v7 : Ljava/lang/String;
+	move-result-object	v6
+; v6 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v6,v9},java/lang/StringBuilder/append	; append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+; v6 : Ljava/lang/StringBuilder; , v9 : Ljava/lang/Object;
+	move-result-object	v6
+; v6 : Ljava/lang/StringBuilder;
+	const-string	v7,". Trying reflection instead"
+; v7 : Ljava/lang/String;
+	invoke-virtual	{v6,v7},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v6 : Ljava/lang/StringBuilder; , v7 : Ljava/lang/String;
+	move-result-object	v6
+; v6 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v6},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v6 : Ljava/lang/StringBuilder;
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-static	{v5,v6},android/util/Log/e	; e(Ljava/lang/String;Ljava/lang/String;)I
+; v5 : Ljava/lang/String; , v6 : Ljava/lang/String;
+.line 520
+	const/4	v5,0
+; v5 : single-length
+	iput-object	v5,v8,com/nineoldandroids/animation/PropertyValuesHolder.mProperty Lcom/nineoldandroids/util/Property;
+; v5 : single-length , v8 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+lcf054:
+.line 523
+	invoke-virtual	{v9},java/lang/Object/getClass	; getClass()Ljava/lang/Class;
+; v9 : Ljava/lang/Object;
+	move-result-object	v3
+; v3 : Ljava/lang/Class;
+.line 524
+	iget-object	v5,v8,com/nineoldandroids/animation/PropertyValuesHolder.mSetter Ljava/lang/reflect/Method;
+; v5 : Ljava/lang/reflect/Method; , v8 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	if-nez	v5,lcf06a
+; v5 : Ljava/lang/reflect/Method;
+.line 525
+	invoke-virtual	{v8,v3},com/nineoldandroids/animation/PropertyValuesHolder/setupSetter	; setupSetter(Ljava/lang/Class;)V
+; v8 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v3 : Ljava/lang/Class;
+lcf06a:
+.line 527
+	iget-object	v5,v8,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v5 : Lcom/nineoldandroids/animation/KeyframeSet; , v8 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	iget-object	v5,v5,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v5 : Ljava/util/ArrayList; , v5 : Ljava/util/ArrayList;
+	invoke-virtual	{v5},java/util/ArrayList/iterator	; iterator()Ljava/util/Iterator;
+; v5 : Ljava/util/ArrayList;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+lcf07a:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v5
+; v5 : single-length
+	if-eqz	v5,lcf0f2
+; v5 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,com/nineoldandroids/animation/Keyframe
+; v2 : Lcom/nineoldandroids/animation/Keyframe;
+.line 528
+	invoke-virtual	{v2},com/nineoldandroids/animation/Keyframe/hasValue	; hasValue()Z
+; v2 : Lcom/nineoldandroids/animation/Keyframe;
+	move-result	v5
+; v5 : single-length
+	if-nez	v5,lcf07a
+; v5 : single-length
+.line 529
+	iget-object	v5,v8,com/nineoldandroids/animation/PropertyValuesHolder.mGetter Ljava/lang/reflect/Method;
+; v5 : Ljava/lang/reflect/Method; , v8 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	if-nez	v5,lcf0ac
+; v5 : Ljava/lang/reflect/Method;
+.line 530
+	invoke-direct	{v8,v3},com/nineoldandroids/animation/PropertyValuesHolder/setupGetter	; setupGetter(Ljava/lang/Class;)V
+; v8 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v3 : Ljava/lang/Class;
+lcf0ac:
+.line 533
+	iget-object	v5,v8,com/nineoldandroids/animation/PropertyValuesHolder.mGetter Ljava/lang/reflect/Method;
+; v5 : Ljava/lang/reflect/Method; , v8 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	const/4	v6,0
+; v6 : single-length
+	new-array	v6,v6,[Ljava/lang/Object;
+; v6 : [Ljava/lang/Object; , v6 : [Ljava/lang/Object;
+	invoke-virtual	{v5,v9,v6},java/lang/reflect/Method/invoke	; invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+; v5 : Ljava/lang/reflect/Method; , v9 : Ljava/lang/Object; , v6 : [Ljava/lang/Object;
+	move-result-object	v5
+; v5 : Ljava/lang/Object;
+	invoke-virtual	{v2,v5},com/nineoldandroids/animation/Keyframe/setValue	; setValue(Ljava/lang/Object;)V
+; v2 : Lcom/nineoldandroids/animation/Keyframe; , v5 : Ljava/lang/Object;
+lcf0c4:
+	goto	lcf07a
+lcf0c6:
+.line 534
+	move-exception	v0
+; v0 : java/lang/reflect/InvocationTargetException
+.line 535
+	const-string	v5,"PropertyValuesHolder"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v0},java/lang/reflect/InvocationTargetException/toString	; toString()Ljava/lang/String;
+; v0 : java/lang/reflect/InvocationTargetException
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-static	{v5,v6},android/util/Log/e	; e(Ljava/lang/String;Ljava/lang/String;)I
+; v5 : Ljava/lang/String; , v6 : Ljava/lang/String;
+	goto	lcf07a
+lcf0dc:
+.line 536
+	move-exception	v0
+; v0 : java/lang/IllegalAccessException
+.line 537
+	const-string	v5,"PropertyValuesHolder"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v0},java/lang/IllegalAccessException/toString	; toString()Ljava/lang/String;
+; v0 : java/lang/IllegalAccessException
+	move-result-object	v6
+; v6 : Ljava/lang/String;
+	invoke-static	{v5,v6},android/util/Log/e	; e(Ljava/lang/String;Ljava/lang/String;)I
+; v5 : Ljava/lang/String; , v6 : Ljava/lang/String;
+	goto	lcf07a
+lcf0f2:
+.line 541
+	return-void	
+.end method
+
+.method setupStartValue(Ljava/lang/Object;)V
+.limit registers 4
+; this: v2 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+; parameter[0] : v3 (Ljava/lang/Object;)
+.line 576
+	iget-object	v0,v2,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v0 : Lcom/nineoldandroids/animation/KeyframeSet; , v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	iget-object	v0,v0,com/nineoldandroids/animation/KeyframeSet.mKeyframes Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v0 : Ljava/util/ArrayList;
+	const/4	v1,0
+; v1 : single-length
+	invoke-virtual	{v0,v1},java/util/ArrayList/get	; get(I)Ljava/lang/Object;
+; v0 : Ljava/util/ArrayList; , v1 : single-length
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,com/nineoldandroids/animation/Keyframe
+; v0 : Lcom/nineoldandroids/animation/Keyframe;
+	invoke-direct	{v2,v3,v0},com/nineoldandroids/animation/PropertyValuesHolder/setupValue	; setupValue(Ljava/lang/Object;Lcom/nineoldandroids/animation/Keyframe;)V
+; v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder; , v3 : Ljava/lang/Object; , v0 : Lcom/nineoldandroids/animation/Keyframe;
+.line 577
+	return-void	
+.end method
+
+.method public toString()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lcom/nineoldandroids/animation/PropertyValuesHolder;)
+.line 727
+	new-instance	v0,java/lang/StringBuilder
+; v0 : Ljava/lang/StringBuilder;
+	invoke-direct	{v0},java/lang/StringBuilder/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuilder;
+	iget-object	v1,v2,com/nineoldandroids/animation/PropertyValuesHolder.mPropertyName Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,": "
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	iget-object	v1,v2,com/nineoldandroids/animation/PropertyValuesHolder.mKeyframeSet Lcom/nineoldandroids/animation/KeyframeSet;
+; v1 : Lcom/nineoldandroids/animation/KeyframeSet; , v2 : Lcom/nineoldandroids/animation/PropertyValuesHolder;
+	invoke-virtual	{v1},com/nineoldandroids/animation/KeyframeSet/toString	; toString()Ljava/lang/String;
+; v1 : Lcom/nineoldandroids/animation/KeyframeSet;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+

@@ -1,0 +1,1253 @@
+.class public abstract com/actionbarsherlock/internal/widget/IcsAbsSpinner
+.super com/actionbarsherlock/internal/widget/IcsAdapterView
+.source IcsAbsSpinner.java
+
+.inner class 1 inner com/actionbarsherlock/internal/widget/IcsAbsSpinner$1 outer com/actionbarsherlock/internal/widget/IcsAbsSpinner
+.inner class RecycleBin inner com/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin outer com/actionbarsherlock/internal/widget/IcsAbsSpinner
+.inner class SavedState inner com/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState outer com/actionbarsherlock/internal/widget/IcsAbsSpinner
+.annotation systemVisibility Ldalvik/annotation/Signature;
+  value [Ljava/lang/String; = { "Lcom/actionbarsherlock/internal/widget/IcsAdapterView" , "<" , "Landroid/widget/SpinnerAdapter;" , ">;" }
+.end annotation
+
+.field private static final IS_HONEYCOMB Z
+.field mAdapter Landroid/widget/SpinnerAdapter;
+.field mBlockLayoutRequests Z
+.field private mDataSetObserver Landroid/database/DataSetObserver;
+.field mHeightMeasureSpec I
+.field final mRecycler Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin;
+.field mSelectionBottomPadding I
+.field mSelectionLeftPadding I
+.field mSelectionRightPadding I
+.field mSelectionTopPadding I
+.field final mSpinnerPadding Landroid/graphics/Rect;
+.field private mTouchFrame Landroid/graphics/Rect;
+.field mWidthMeasureSpec I
+
+.method static <clinit>()V
+.limit registers 2
+.line 38
+	sget	v0,android/os/Build$VERSION.SDK_INT I
+; v0 : single-length
+	const/16	v1,11
+; v1 : single-length
+	if-lt	v0,v1,la1254
+; v0 : single-length , v1 : single-length
+	const/4	v0,1
+; v0 : single-length
+la124e:
+	sput-boolean	v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.IS_HONEYCOMB Z
+; v0 : Z
+	return-void	
+la1254:
+	const/4	v0,0
+; v0 : single-length
+	goto	la124e
+.end method
+
+.method public <init>(Landroid/content/Context;)V
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v2 (Landroid/content/Context;)
+	const/4	v0,0
+; v0 : single-length
+.line 59
+	invoke-direct	{v1,v2},com/actionbarsherlock/internal/widget/IcsAdapterView/<init>	; <init>(Landroid/content/Context;)V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v2 : Landroid/content/Context;
+.line 46
+	iput	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionLeftPadding I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 47
+	iput	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionTopPadding I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 48
+	iput	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionRightPadding I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 49
+	iput	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionBottomPadding I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 50
+	new-instance	v0,android/graphics/Rect
+; v0 : Landroid/graphics/Rect;
+	invoke-direct	{v0},android/graphics/Rect/<init>	; <init>()V
+; v0 : Landroid/graphics/Rect;
+	iput-object	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v0 : Landroid/graphics/Rect; , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 52
+	new-instance	v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin;
+	invoke-direct	{v0,v1},com/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin/<init>	; <init>(Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iput-object	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mRecycler Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 60
+	invoke-direct	{v1},com/actionbarsherlock/internal/widget/IcsAbsSpinner/initAbsSpinner	; initAbsSpinner()V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 61
+	return-void	
+.end method
+
+.method public <init>(Landroid/content/Context;Landroid/util/AttributeSet;)V
+.limit registers 4
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v2 (Landroid/content/Context;)
+; parameter[1] : v3 (Landroid/util/AttributeSet;)
+.line 64
+	const/4	v0,0
+; v0 : single-length
+	invoke-direct	{v1,v2,v3,v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner/<init>	; <init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v2 : Landroid/content/Context; , v3 : Landroid/util/AttributeSet; , v0 : single-length
+.line 65
+	return-void	
+.end method
+
+.method public <init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V
+.limit registers 5
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v2 (Landroid/content/Context;)
+; parameter[1] : v3 (Landroid/util/AttributeSet;)
+; parameter[2] : v4 (I)
+	const/4	v0,0
+; v0 : single-length
+.line 68
+	invoke-direct	{v1,v2,v3,v4},com/actionbarsherlock/internal/widget/IcsAdapterView/<init>	; <init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v2 : Landroid/content/Context; , v3 : Landroid/util/AttributeSet; , v4 : single-length
+.line 46
+	iput	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionLeftPadding I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 47
+	iput	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionTopPadding I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 48
+	iput	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionRightPadding I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 49
+	iput	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionBottomPadding I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 50
+	new-instance	v0,android/graphics/Rect
+; v0 : Landroid/graphics/Rect;
+	invoke-direct	{v0},android/graphics/Rect/<init>	; <init>()V
+; v0 : Landroid/graphics/Rect;
+	iput-object	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v0 : Landroid/graphics/Rect; , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 52
+	new-instance	v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin;
+	invoke-direct	{v0,v1},com/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin/<init>	; <init>(Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iput-object	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mRecycler Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 69
+	invoke-direct	{v1},com/actionbarsherlock/internal/widget/IcsAbsSpinner/initAbsSpinner	; initAbsSpinner()V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 86
+	return-void	
+.end method
+
+.method static access$100(Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;Landroid/view/View;Z)V
+.limit registers 3
+; parameter[0] : v0 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[1] : v1 (Landroid/view/View;)
+; parameter[2] : v2 (Z)
+.line 37
+	invoke-virtual	{v0,v1,v2},com/actionbarsherlock/internal/widget/IcsAbsSpinner/removeDetachedView	; removeDetachedView(Landroid/view/View;Z)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v1 : Landroid/view/View; , v2 : single-length
+	return-void	
+.end method
+
+.method private initAbsSpinner()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+.line 92
+	const/4	v0,1
+; v0 : single-length
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setFocusable	; setFocusable(Z)V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v0 : single-length
+.line 93
+	const/4	v0,0
+; v0 : single-length
+	invoke-virtual	{v1,v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setWillNotDraw	; setWillNotDraw(Z)V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v0 : single-length
+.line 94
+	return-void	
+.end method
+
+.method protected generateDefaultLayoutParams()Landroid/view/ViewGroup$LayoutParams;
+.limit registers 4
+; this: v3 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+.line 257
+	new-instance	v0,android/view/ViewGroup$LayoutParams
+; v0 : Landroid/view/ViewGroup$LayoutParams;
+	const/4	v1,15
+; v1 : single-length
+	const/4	v2,14
+; v2 : single-length
+	invoke-direct	{v0,v1,v2},android/view/ViewGroup$LayoutParams/<init>	; <init>(II)V
+; v0 : Landroid/view/ViewGroup$LayoutParams; , v1 : single-length , v2 : single-length
+	return-object	v0
+; v0 : Landroid/view/ViewGroup$LayoutParams;
+.end method
+
+.method public getAdapter()Landroid/widget/Adapter;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+.line 37
+	invoke-virtual	{v1},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getAdapter	; getAdapter()Landroid/widget/SpinnerAdapter;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result-object	v0
+; v0 : Landroid/widget/SpinnerAdapter;
+	return-object	v0
+; v0 : Landroid/widget/SpinnerAdapter;
+.end method
+
+.method public getAdapter()Landroid/widget/SpinnerAdapter;
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+.line 336
+	iget-object	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v0 : Landroid/widget/SpinnerAdapter; , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	return-object	v0
+; v0 : Landroid/widget/SpinnerAdapter;
+.end method
+
+.method getChildHeight(Landroid/view/View;)I
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v2 (Landroid/view/View;)
+.line 248
+	invoke-virtual	{v2},android/view/View/getMeasuredHeight	; getMeasuredHeight()I
+; v2 : Landroid/view/View;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method getChildWidth(Landroid/view/View;)I
+.limit registers 3
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v2 (Landroid/view/View;)
+.line 252
+	invoke-virtual	{v2},android/view/View/getMeasuredWidth	; getMeasuredWidth()I
+; v2 : Landroid/view/View;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getCount()I
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+.line 341
+	iget	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mItemCount I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	return	v0
+; v0 : single-length
+.end method
+
+.method public getSelectedView()Landroid/view/View;
+.limit registers 3
+; this: v2 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+.line 314
+	iget	v0,v2,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mItemCount I
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	if-lez	v0,la1420
+; v0 : single-length
+	iget	v0,v2,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectedPosition I
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	if-ltz	v0,la1420
+; v0 : single-length
+.line 315
+	iget	v0,v2,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectedPosition I
+; v0 : single-length , v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget	v1,v2,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mFirstPosition I
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	sub-int/2addr	v0,v1
+; v0 : single-length , v1 : single-length
+	invoke-virtual	{v2,v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getChildAt	; getChildAt(I)Landroid/view/View;
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v0 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+la141e:
+.line 317
+	return-object	v0
+; v0 : single-length
+la1420:
+	const/4	v0,0
+; v0 : single-length
+	goto	la141e
+.end method
+
+.method abstract layout(IZ)V
+.end method
+
+.method protected onMeasure(II)V
+.limit registers 20
+; this: v17 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v18 (I)
+; parameter[1] : v19 (I)
+.var 5 is mPaddingLeft I from la1444 to la1478
+.var 7 is mPaddingTop I from la144c to la1498
+.var 6 is mPaddingRight I from la1454 to la14b8
+.var 4 is mPaddingBottom I from la145c to la14d8
+.var 12 is view Landroid/view/View; from la1530 to la1630
+.var 3 is heightSize I from la16be to la16f0
+.var 8 is needsMeasuring Z from la14f4 to la16f0
+.var 9 is preferredHeight I from la14f0 to la16f0
+.var 10 is preferredWidth I from la14f2 to la16f0
+.var 11 is selectedPosition I from la14fc to la16f0
+.var 14 is widthSize I from la16cc to la16f0
+.var 5 is mPaddingLeft I from la16f0 to la16fc
+.var 7 is mPaddingTop I from la16f0 to la1708
+.var 6 is mPaddingRight I from la16f0 to la1714
+.var 4 is mPaddingBottom I from la16f0 to la1720
+.line 168
+	invoke-static/range	{v18},android/view/View$MeasureSpec/getMode;	getMode(I)I
+; v18 : single-length
+	move-result	v13
+; v13 : single-length
+.line 172
+	invoke-virtual/range	{v17},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getPaddingLeft;	getPaddingLeft()I
+; v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result	v5
+; v5 : single-length
+.line 173
+	invoke-virtual/range	{v17},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getPaddingTop;	getPaddingTop()I
+; v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result	v7
+; v7 : single-length
+.line 174
+	invoke-virtual/range	{v17},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getPaddingRight;	getPaddingRight()I
+; v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result	v6
+; v6 : single-length
+.line 175
+	invoke-virtual/range	{v17},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getPaddingBottom;	getPaddingBottom()I
+; v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result	v4
+; v4 : single-length
+.line 177
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v15 : Landroid/graphics/Rect; , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget	v0,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionLeftPadding I
+; v0 : single-length , v0 : single-length
+	move/from16	v16,v0
+; v16 : single-length , v0 : single-length
+	move/from16	v0,v16
+; v0 : single-length , v16 : single-length
+	if-le	v5,v0,la16f0
+; v5 : single-length , v0 : single-length
+la1478:
+	iput	v5,v15,android/graphics/Rect.left I
+; v5 : single-length , v15 : Landroid/graphics/Rect;
+.line 179
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v15 : Landroid/graphics/Rect; , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget	v0,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionTopPadding I
+; v0 : single-length , v0 : single-length
+	move/from16	v16,v0
+; v16 : single-length , v0 : single-length
+	move/from16	v0,v16
+; v0 : single-length , v16 : single-length
+	if-le	v7,v0,la16fc
+; v7 : single-length , v0 : single-length
+la1498:
+	iput	v7,v15,android/graphics/Rect.top I
+; v7 : single-length , v15 : Landroid/graphics/Rect;
+.line 181
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v15 : Landroid/graphics/Rect; , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget	v0,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionRightPadding I
+; v0 : single-length , v0 : single-length
+	move/from16	v16,v0
+; v16 : single-length , v0 : single-length
+	move/from16	v0,v16
+; v0 : single-length , v16 : single-length
+	if-le	v6,v0,la1708
+; v6 : single-length , v0 : single-length
+la14b8:
+	iput	v6,v15,android/graphics/Rect.right I
+; v6 : single-length , v15 : Landroid/graphics/Rect;
+.line 183
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v15 : Landroid/graphics/Rect; , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget	v0,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionBottomPadding I
+; v0 : single-length , v0 : single-length
+	move/from16	v16,v0
+; v16 : single-length , v0 : single-length
+	move/from16	v0,v16
+; v0 : single-length , v16 : single-length
+	if-le	v4,v0,la1714
+; v4 : single-length , v0 : single-length
+la14d8:
+	iput	v4,v15,android/graphics/Rect.bottom I
+; v4 : single-length , v15 : Landroid/graphics/Rect;
+.line 186
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-boolean	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mDataChanged Z
+; v15 : single-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	if-eqz	v15,la14ee
+; v15 : single-length
+.line 187
+	invoke-virtual/range	{v17},com/actionbarsherlock/internal/widget/IcsAbsSpinner/handleDataChanged;	handleDataChanged()V
+; v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+la14ee:
+.line 190
+	const/4	v9,0
+; v9 : single-length
+.line 191
+	const/4	v10,0
+; v10 : single-length
+.line 192
+	const/4	v8,1
+; v8 : single-length
+.line 194
+	invoke-virtual/range	{v17},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getSelectedItemPosition;	getSelectedItemPosition()I
+; v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result	v11
+; v11 : single-length
+.line 195
+	if-ltz	v11,la1630
+; v11 : single-length
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v15 : Landroid/widget/SpinnerAdapter; , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	if-eqz	v15,la1630
+; v15 : Landroid/widget/SpinnerAdapter;
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v15 : Landroid/widget/SpinnerAdapter; , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	invoke-interface	{v15},android/widget/SpinnerAdapter/getCount	; getCount()I
+; v15 : Landroid/widget/SpinnerAdapter;
+	move-result	v15
+; v15 : single-length
+	if-ge	v11,v15,la1630
+; v11 : single-length , v15 : single-length
+.line 197
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mRecycler Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin;
+; v15 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	invoke-virtual	{v15,v11},com/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin/get	; get(I)Landroid/view/View;
+; v15 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v11 : single-length
+	move-result-object	v12
+; v12 : Landroid/view/View;
+.line 198
+	if-nez	v12,la1550
+; v12 : Landroid/view/View;
+.line 200
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v15 : Landroid/widget/SpinnerAdapter; , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	const/16	v16,0
+; v16 : single-length
+	move-object/from16	v0,v16
+; v0 : single-length , v16 : single-length
+	move-object/from16	v1,v17
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	invoke-interface	{v15,v11,v0,v1},android/widget/SpinnerAdapter/getView	; getView(ILandroid/view/View;Landroid/view/ViewGroup;)Landroid/view/View;
+; v15 : Landroid/widget/SpinnerAdapter; , v11 : single-length , v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result-object	v12
+; v12 : Landroid/view/View;
+la1550:
+.line 203
+	if-eqz	v12,la1562
+; v12 : Landroid/view/View;
+.line 205
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mRecycler Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin;
+; v15 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	invoke-virtual	{v15,v11,v12},com/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin/put	; put(ILandroid/view/View;)V
+; v15 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v11 : single-length , v12 : Landroid/view/View;
+la1562:
+.line 208
+	if-eqz	v12,la1630
+; v12 : Landroid/view/View;
+.line 209
+	invoke-virtual	{v12},android/view/View/getLayoutParams	; getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
+; v12 : Landroid/view/View;
+	move-result-object	v15
+; v15 : Landroid/view/ViewGroup$LayoutParams;
+	if-nez	v15,la1594
+; v15 : Landroid/view/ViewGroup$LayoutParams;
+.line 210
+	const/4	v15,1
+; v15 : single-length
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iput-boolean	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mBlockLayoutRequests Z
+; v15 : single-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 211
+	invoke-virtual/range	{v17},com/actionbarsherlock/internal/widget/IcsAbsSpinner/generateDefaultLayoutParams;	generateDefaultLayoutParams()Landroid/view/ViewGroup$LayoutParams;
+; v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result-object	v15
+; v15 : Landroid/view/ViewGroup$LayoutParams;
+	invoke-virtual	{v12,v15},android/view/View/setLayoutParams	; setLayoutParams(Landroid/view/ViewGroup$LayoutParams;)V
+; v12 : Landroid/view/View; , v15 : Landroid/view/ViewGroup$LayoutParams;
+.line 212
+	const/4	v15,0
+; v15 : single-length
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iput-boolean	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mBlockLayoutRequests Z
+; v15 : single-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+la1594:
+.line 214
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move/from16	v1,v18
+; v1 : single-length , v18 : single-length
+	move/from16	v2,v19
+; v2 : single-length , v19 : single-length
+	invoke-virtual	{v0,v12,v1,v2},com/actionbarsherlock/internal/widget/IcsAbsSpinner/measureChild	; measureChild(Landroid/view/View;II)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v12 : Landroid/view/View; , v1 : single-length , v2 : single-length
+.line 216
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	invoke-virtual	{v0,v12},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getChildHeight	; getChildHeight(Landroid/view/View;)I
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v12 : Landroid/view/View;
+	move-result	v15
+; v15 : single-length
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v0,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v0 : Landroid/graphics/Rect; , v0 : Landroid/graphics/Rect;
+	move-object/from16	v16,v0
+; v16 : Landroid/graphics/Rect; , v0 : Landroid/graphics/Rect;
+	move-object/from16	v0,v16
+; v0 : Landroid/graphics/Rect; , v16 : Landroid/graphics/Rect;
+	iget	v0,v0,android/graphics/Rect.top I
+; v0 : single-length , v0 : single-length
+	move/from16	v16,v0
+; v16 : single-length , v0 : single-length
+	add-int	v15,v15,v16
+; v15 : single-length , v15 : single-length , v16 : single-length
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v0,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v0 : Landroid/graphics/Rect; , v0 : Landroid/graphics/Rect;
+	move-object/from16	v16,v0
+; v16 : Landroid/graphics/Rect; , v0 : Landroid/graphics/Rect;
+	move-object/from16	v0,v16
+; v0 : Landroid/graphics/Rect; , v16 : Landroid/graphics/Rect;
+	iget	v0,v0,android/graphics/Rect.bottom I
+; v0 : single-length , v0 : single-length
+	move/from16	v16,v0
+; v16 : single-length , v0 : single-length
+	add-int	v9,v15,v16
+; v9 : single-length , v15 : single-length , v16 : single-length
+.line 217
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	invoke-virtual	{v0,v12},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getChildWidth	; getChildWidth(Landroid/view/View;)I
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v12 : Landroid/view/View;
+	move-result	v15
+; v15 : single-length
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v0,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v0 : Landroid/graphics/Rect; , v0 : Landroid/graphics/Rect;
+	move-object/from16	v16,v0
+; v16 : Landroid/graphics/Rect; , v0 : Landroid/graphics/Rect;
+	move-object/from16	v0,v16
+; v0 : Landroid/graphics/Rect; , v16 : Landroid/graphics/Rect;
+	iget	v0,v0,android/graphics/Rect.left I
+; v0 : single-length , v0 : single-length
+	move/from16	v16,v0
+; v16 : single-length , v0 : single-length
+	add-int	v15,v15,v16
+; v15 : single-length , v15 : single-length , v16 : single-length
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v0,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v0 : Landroid/graphics/Rect; , v0 : Landroid/graphics/Rect;
+	move-object/from16	v16,v0
+; v16 : Landroid/graphics/Rect; , v0 : Landroid/graphics/Rect;
+	move-object/from16	v0,v16
+; v0 : Landroid/graphics/Rect; , v16 : Landroid/graphics/Rect;
+	iget	v0,v0,android/graphics/Rect.right I
+; v0 : single-length , v0 : single-length
+	move/from16	v16,v0
+; v16 : single-length , v0 : single-length
+	add-int	v10,v15,v16
+; v10 : single-length , v15 : single-length , v16 : single-length
+.line 219
+	const/4	v8,0
+; v8 : single-length
+la1630:
+.line 223
+	if-eqz	v8,la1688
+; v8 : single-length
+.line 225
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v15 : Landroid/graphics/Rect; , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget	v15,v15,android/graphics/Rect.top I
+; v15 : single-length , v15 : single-length
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v0,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v0 : Landroid/graphics/Rect; , v0 : Landroid/graphics/Rect;
+	move-object/from16	v16,v0
+; v16 : Landroid/graphics/Rect; , v0 : Landroid/graphics/Rect;
+	move-object/from16	v0,v16
+; v0 : Landroid/graphics/Rect; , v16 : Landroid/graphics/Rect;
+	iget	v0,v0,android/graphics/Rect.bottom I
+; v0 : single-length , v0 : single-length
+	move/from16	v16,v0
+; v16 : single-length , v0 : single-length
+	add-int	v9,v15,v16
+; v9 : single-length , v15 : single-length , v16 : single-length
+.line 226
+	if-nez	v13,la1688
+; v13 : single-length
+.line 227
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v15,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v15 : Landroid/graphics/Rect; , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget	v15,v15,android/graphics/Rect.left I
+; v15 : single-length , v15 : single-length
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v0,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSpinnerPadding Landroid/graphics/Rect;
+; v0 : Landroid/graphics/Rect; , v0 : Landroid/graphics/Rect;
+	move-object/from16	v16,v0
+; v16 : Landroid/graphics/Rect; , v0 : Landroid/graphics/Rect;
+	move-object/from16	v0,v16
+; v0 : Landroid/graphics/Rect; , v16 : Landroid/graphics/Rect;
+	iget	v0,v0,android/graphics/Rect.right I
+; v0 : single-length , v0 : single-length
+	move/from16	v16,v0
+; v16 : single-length , v0 : single-length
+	add-int	v10,v15,v16
+; v10 : single-length , v15 : single-length , v16 : single-length
+la1688:
+.line 231
+	invoke-virtual/range	{v17},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getSuggestedMinimumHeight;	getSuggestedMinimumHeight()I
+; v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result	v15
+; v15 : single-length
+	invoke-static	{v9,v15},java/lang/Math/max	; max(II)I
+; v9 : single-length , v15 : single-length
+	move-result	v9
+; v9 : single-length
+.line 232
+	invoke-virtual/range	{v17},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getSuggestedMinimumWidth;	getSuggestedMinimumWidth()I
+; v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result	v15
+; v15 : single-length
+	invoke-static	{v10,v15},java/lang/Math/max	; max(II)I
+; v10 : single-length , v15 : single-length
+	move-result	v10
+; v10 : single-length
+.line 234
+	sget-boolean	v15,com/actionbarsherlock/internal/widget/IcsAbsSpinner.IS_HONEYCOMB Z
+; v15 : single-length
+	if-eqz	v15,la1720
+; v15 : single-length
+.line 235
+	const/4	v15,0
+; v15 : single-length
+	move/from16	v0,v19
+; v0 : single-length , v19 : single-length
+	invoke-static	{v9,v0,v15},com/actionbarsherlock/internal/widget/IcsAbsSpinner/resolveSizeAndState	; resolveSizeAndState(III)I
+; v9 : single-length , v0 : single-length , v15 : single-length
+	move-result	v3
+; v3 : single-length
+.line 236
+	const/4	v15,0
+; v15 : single-length
+	move/from16	v0,v18
+; v0 : single-length , v18 : single-length
+	invoke-static	{v10,v0,v15},com/actionbarsherlock/internal/widget/IcsAbsSpinner/resolveSizeAndState	; resolveSizeAndState(III)I
+; v10 : single-length , v0 : single-length , v15 : single-length
+	move-result	v14
+; v14 : single-length
+la16cc:
+.line 242
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	invoke-virtual	{v0,v14,v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setMeasuredDimension	; setMeasuredDimension(II)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v14 : single-length , v3 : single-length
+.line 243
+	move/from16	v0,v19
+; v0 : single-length , v19 : single-length
+	move-object/from16	v1,v17
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iput	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mHeightMeasureSpec I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 244
+	move/from16	v0,v18
+; v0 : single-length , v18 : single-length
+	move-object/from16	v1,v17
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iput	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mWidthMeasureSpec I
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 245
+	return-void	
+la16f0:
+.line 177
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget	v5,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionLeftPadding I
+; v5 : single-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	goto/16	la1478
+la16fc:
+.line 179
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget	v7,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionTopPadding I
+; v7 : single-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	goto/16	la1498
+la1708:
+.line 181
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget	v6,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionRightPadding I
+; v6 : single-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	goto/16	la14b8
+la1714:
+.line 183
+	move-object/from16	v0,v17
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v17 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget	v4,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectionBottomPadding I
+; v4 : single-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	goto/16	la14d8
+la1720:
+.line 238
+	move/from16	v0,v19
+; v0 : single-length , v19 : single-length
+	invoke-static	{v9,v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner/resolveSize	; resolveSize(II)I
+; v9 : single-length , v0 : single-length
+	move-result	v3
+; v3 : single-length
+.line 239
+	move/from16	v0,v18
+; v0 : single-length , v18 : single-length
+	invoke-static	{v10,v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner/resolveSize	; resolveSize(II)I
+; v10 : single-length , v0 : single-length
+	move-result	v14
+; v14 : single-length
+	goto	la16cc
+.end method
+
+.method public onRestoreInstanceState(Landroid/os/Parcelable;)V
+.limit registers 8
+; this: v6 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v7 (Landroid/os/Parcelable;)
+	const/4	v5,1
+; v5 : single-length
+.line 434
+	move-object	v0,v7
+; v0 : Landroid/os/Parcelable; , v7 : Landroid/os/Parcelable;
+	check-cast	v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState;
+.line 436
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState/getSuperState	; getSuperState()Landroid/os/Parcelable;
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState;
+	move-result-object	v1
+; v1 : Landroid/os/Parcelable;
+	invoke-super	{v6,v1},com/actionbarsherlock/internal/widget/IcsAdapterView/onRestoreInstanceState	; onRestoreInstanceState(Landroid/os/Parcelable;)V
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v1 : Landroid/os/Parcelable;
+.line 438
+	iget-wide	v1,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState.selectedId J
+; v1 : double-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState;
+	const-wide/16	v3,0
+; v3 : double-length
+	cmp-long	v1,v1,v3
+; v1 : single-length , v1 : single-length , v3 : double-length
+	if-ltz	v1,la1796
+; v1 : single-length
+.line 439
+	iput-boolean	v5,v6,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mDataChanged Z
+; v5 : single-length , v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 440
+	iput-boolean	v5,v6,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mNeedSync Z
+; v5 : single-length , v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 441
+	iget-wide	v1,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState.selectedId J
+; v1 : double-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState;
+	iput-wide	v1,v6,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSyncRowId J
+; v1 : double-length , v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 442
+	iget	v1,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState.position I
+; v1 : single-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState;
+	iput	v1,v6,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSyncPosition I
+; v1 : single-length , v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 443
+	const/4	v1,0
+; v1 : single-length
+	iput	v1,v6,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSyncMode I
+; v1 : single-length , v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 444
+	invoke-virtual	{v6},com/actionbarsherlock/internal/widget/IcsAbsSpinner/requestLayout	; requestLayout()V
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+la1796:
+.line 446
+	return-void	
+.end method
+
+.method public onSaveInstanceState()Landroid/os/Parcelable;
+.limit registers 7
+; this: v6 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+.line 421
+	invoke-super	{v6},com/actionbarsherlock/internal/widget/IcsAdapterView/onSaveInstanceState	; onSaveInstanceState()Landroid/os/Parcelable;
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result-object	v1
+; v1 : Landroid/os/Parcelable;
+.line 422
+	new-instance	v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState;
+	invoke-direct	{v0,v1},com/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState/<init>	; <init>(Landroid/os/Parcelable;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState; , v1 : Landroid/os/Parcelable;
+.line 423
+	invoke-virtual	{v6},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getSelectedItemId	; getSelectedItemId()J
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result-wide	v2
+; v2 : double-length
+	iput-wide	v2,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState.selectedId J
+; v2 : double-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState;
+.line 424
+	iget-wide	v2,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState.selectedId J
+; v2 : double-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState;
+	const-wide/16	v4,0
+; v4 : double-length
+	cmp-long	v2,v2,v4
+; v2 : single-length , v2 : single-length , v4 : double-length
+	if-ltz	v2,la17e4
+; v2 : single-length
+.line 425
+	invoke-virtual	{v6},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getSelectedItemPosition	; getSelectedItemPosition()I
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result	v2
+; v2 : single-length
+	iput	v2,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState.position I
+; v2 : single-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState;
+la17e2:
+.line 429
+	return-object	v0
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState;
+la17e4:
+.line 427
+	const/4	v2,15
+; v2 : single-length
+	iput	v2,v0,com/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState.position I
+; v2 : single-length , v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$SavedState;
+	goto	la17e2
+.end method
+
+.method public pointToPosition(II)I
+.limit registers 8
+; this: v5 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v6 (I)
+; parameter[1] : v7 (I)
+.var 0 is child Landroid/view/View; from la182e to la1852
+.var 0 is child Landroid/view/View; from la1854 to la185a
+.line 353
+	iget-object	v2,v5,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mTouchFrame Landroid/graphics/Rect;
+; v2 : Landroid/graphics/Rect; , v5 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 354
+	if-nez	v2,la1816
+; v2 : Landroid/graphics/Rect;
+.line 355
+	new-instance	v4,android/graphics/Rect
+; v4 : Landroid/graphics/Rect;
+	invoke-direct	{v4},android/graphics/Rect/<init>	; <init>()V
+; v4 : Landroid/graphics/Rect;
+	iput-object	v4,v5,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mTouchFrame Landroid/graphics/Rect;
+; v4 : Landroid/graphics/Rect; , v5 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 356
+	iget-object	v2,v5,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mTouchFrame Landroid/graphics/Rect;
+; v2 : Landroid/graphics/Rect; , v5 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+la1816:
+.line 359
+	invoke-virtual	{v5},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getChildCount	; getChildCount()I
+; v5 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result	v1
+; v1 : single-length
+.line 360
+	add-int/lit8	v3,v1,255
+; v3 : single-length , v1 : single-length
+la1822:
+	if-ltz	v3,la185a
+; v3 : single-length
+.line 361
+	invoke-virtual	{v5,v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getChildAt	; getChildAt(I)Landroid/view/View;
+; v5 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v3 : single-length
+	move-result-object	v0
+; v0 : Landroid/view/View;
+.line 362
+	invoke-virtual	{v0},android/view/View/getVisibility	; getVisibility()I
+; v0 : Landroid/view/View;
+	move-result	v4
+; v4 : single-length
+	if-nez	v4,la1854
+; v4 : single-length
+.line 363
+	invoke-virtual	{v0,v2},android/view/View/getHitRect	; getHitRect(Landroid/graphics/Rect;)V
+; v0 : Landroid/view/View; , v2 : Landroid/graphics/Rect;
+.line 364
+	invoke-virtual	{v2,v6,v7},android/graphics/Rect/contains	; contains(II)Z
+; v2 : Landroid/graphics/Rect; , v6 : single-length , v7 : single-length
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,la1854
+; v4 : single-length
+.line 365
+	iget	v4,v5,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mFirstPosition I
+; v4 : single-length , v5 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	add-int/2addr	v4,v3
+; v4 : single-length , v3 : single-length
+la1852:
+.line 369
+	return	v4
+; v4 : single-length
+la1854:
+.line 360
+	add-int/lit8	v3,v3,255
+; v3 : single-length , v3 : single-length
+	goto	la1822
+la185a:
+.line 369
+	const/4	v4,15
+; v4 : single-length
+	goto	la1852
+.end method
+
+.method recycleAllViews()V
+.limit registers 7
+; this: v6 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+.var 2 is index I from la1892 to la189e
+.var 5 is v Landroid/view/View; from la188e to la189e
+.line 263
+	invoke-virtual	{v6},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getChildCount	; getChildCount()I
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result	v0
+; v0 : single-length
+.line 264
+	iget-object	v4,v6,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mRecycler Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin;
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 265
+	iget	v3,v6,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mFirstPosition I
+; v3 : single-length , v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 268
+	const/4	v1,0
+; v1 : single-length
+la1882:
+	if-ge	v1,v0,la189e
+; v1 : single-length , v0 : single-length
+.line 269
+	invoke-virtual	{v6,v1},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getChildAt	; getChildAt(I)Landroid/view/View;
+; v6 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v1 : single-length
+	move-result-object	v5
+; v5 : Landroid/view/View;
+.line 270
+	add-int	v2,v3,v1
+; v2 : single-length , v3 : single-length , v1 : single-length
+.line 271
+	invoke-virtual	{v4,v2,v5},com/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin/put	; put(ILandroid/view/View;)V
+; v4 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner$RecycleBin; , v2 : single-length , v5 : Landroid/view/View;
+.line 268
+	add-int/lit8	v1,v1,1
+; v1 : single-length , v1 : single-length
+	goto	la1882
+la189e:
+.line 273
+	return-void	
+.end method
+
+.method public requestLayout()V
+.limit registers 2
+; this: v1 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+.line 329
+	iget-boolean	v0,v1,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mBlockLayoutRequests Z
+; v0 : single-length , v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	if-nez	v0,la18be
+; v0 : single-length
+.line 330
+	invoke-super	{v1},com/actionbarsherlock/internal/widget/IcsAdapterView/requestLayout	; requestLayout()V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+la18be:
+.line 332
+	return-void	
+.end method
+
+.method resetList()V
+.limit registers 4
+; this: v3 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+	const/4	v0,0
+; v0 : single-length
+	const/4	v2,15
+; v2 : single-length
+.line 146
+	iput-boolean	v0,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mDataChanged Z
+; v0 : single-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 147
+	iput-boolean	v0,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mNeedSync Z
+; v0 : single-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 149
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/removeAllViewsInLayout	; removeAllViewsInLayout()V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 150
+	iput	v2,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mOldSelectedPosition I
+; v2 : single-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 151
+	const-wide/high16	v0,32768
+; v0 : double-length
+	iput-wide	v0,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mOldSelectedRowId J
+; v0 : double-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 153
+	invoke-virtual	{v3,v2},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setSelectedPositionInt	; setSelectedPositionInt(I)V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v2 : single-length
+.line 154
+	invoke-virtual	{v3,v2},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setNextSelectedPositionInt	; setNextSelectedPositionInt(I)V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v2 : single-length
+.line 155
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/invalidate	; invalidate()V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 156
+	return-void	
+.end method
+
+.method public setAdapter(Landroid/widget/Adapter;)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v1 (Landroid/widget/Adapter;)
+.line 37
+	check-cast	v1,android/widget/SpinnerAdapter
+; v1 : Landroid/widget/SpinnerAdapter;
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setAdapter	; setAdapter(Landroid/widget/SpinnerAdapter;)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v1 : Landroid/widget/SpinnerAdapter;
+	return-void	
+.end method
+
+.method public setAdapter(Landroid/widget/SpinnerAdapter;)V
+.limit registers 5
+; this: v3 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v4 (Landroid/widget/SpinnerAdapter;)
+.var 0 is position I from la19aa to la19c4
+	const/4	v0,15
+; v0 : single-length
+.line 104
+	iget-object	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v1 : Landroid/widget/SpinnerAdapter; , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	if-eqz	v1,la194e
+; v1 : Landroid/widget/SpinnerAdapter;
+.line 105
+	iget-object	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v1 : Landroid/widget/SpinnerAdapter; , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v2,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mDataSetObserver Landroid/database/DataSetObserver;
+; v2 : Landroid/database/DataSetObserver; , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	invoke-interface	{v1,v2},android/widget/SpinnerAdapter/unregisterDataSetObserver	; unregisterDataSetObserver(Landroid/database/DataSetObserver;)V
+; v1 : Landroid/widget/SpinnerAdapter; , v2 : Landroid/database/DataSetObserver;
+.line 106
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/resetList	; resetList()V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+la194e:
+.line 109
+	iput-object	v4,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v4 : Landroid/widget/SpinnerAdapter; , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 111
+	iput	v0,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mOldSelectedPosition I
+; v0 : single-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 112
+	const-wide/high16	v1,32768
+; v1 : double-length
+	iput-wide	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mOldSelectedRowId J
+; v1 : double-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 114
+	iget-object	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v1 : Landroid/widget/SpinnerAdapter; , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	if-eqz	v1,la19cc
+; v1 : Landroid/widget/SpinnerAdapter;
+.line 115
+	iget	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mItemCount I
+; v1 : single-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iput	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mOldItemCount I
+; v1 : single-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 116
+	iget-object	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v1 : Landroid/widget/SpinnerAdapter; , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	invoke-interface	{v1},android/widget/SpinnerAdapter/getCount	; getCount()I
+; v1 : Landroid/widget/SpinnerAdapter;
+	move-result	v1
+; v1 : single-length
+	iput	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mItemCount I
+; v1 : single-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 117
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/checkFocus	; checkFocus()V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 119
+	new-instance	v1,com/actionbarsherlock/internal/widget/IcsAdapterView$AdapterDataSetObserver
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAdapterView$AdapterDataSetObserver;
+	invoke-direct	{v1,v3},com/actionbarsherlock/internal/widget/IcsAdapterView$AdapterDataSetObserver/<init>	; <init>(Lcom/actionbarsherlock/internal/widget/IcsAdapterView;)V
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAdapterView$AdapterDataSetObserver; , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iput-object	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mDataSetObserver Landroid/database/DataSetObserver;
+; v1 : Lcom/actionbarsherlock/internal/widget/IcsAdapterView$AdapterDataSetObserver; , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 120
+	iget-object	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mAdapter Landroid/widget/SpinnerAdapter;
+; v1 : Landroid/widget/SpinnerAdapter; , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	iget-object	v2,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mDataSetObserver Landroid/database/DataSetObserver;
+; v2 : Landroid/database/DataSetObserver; , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	invoke-interface	{v1,v2},android/widget/SpinnerAdapter/registerDataSetObserver	; registerDataSetObserver(Landroid/database/DataSetObserver;)V
+; v1 : Landroid/widget/SpinnerAdapter; , v2 : Landroid/database/DataSetObserver;
+.line 122
+	iget	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mItemCount I
+; v1 : single-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	if-lez	v1,la19aa
+; v1 : single-length
+	const/4	v0,0
+; v0 : single-length
+la19aa:
+.line 124
+	invoke-virtual	{v3,v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setSelectedPositionInt	; setSelectedPositionInt(I)V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v0 : single-length
+.line 125
+	invoke-virtual	{v3,v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setNextSelectedPositionInt	; setNextSelectedPositionInt(I)V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v0 : single-length
+.line 127
+	iget	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mItemCount I
+; v1 : single-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	if-nez	v1,la19c4
+; v1 : single-length
+.line 129
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/checkSelectionChanged	; checkSelectionChanged()V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+la19c4:
+.line 139
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/requestLayout	; requestLayout()V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 140
+	return-void	
+la19cc:
+.line 133
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/checkFocus	; checkFocus()V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 134
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/resetList	; resetList()V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 136
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/checkSelectionChanged	; checkSelectionChanged()V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	goto	la19c4
+.end method
+
+.method public setSelection(I)V
+.limit registers 2
+; this: v0 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v1 (I)
+.line 287
+	invoke-virtual	{v0,v1},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setNextSelectedPositionInt	; setNextSelectedPositionInt(I)V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v1 : single-length
+.line 288
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner/requestLayout	; requestLayout()V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 289
+	invoke-virtual	{v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner/invalidate	; invalidate()V
+; v0 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 290
+	return-void	
+.end method
+
+.method public setSelection(IZ)V
+.limit registers 6
+; this: v3 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v4 (I)
+; parameter[1] : v5 (Z)
+.var 0 is shouldAnimate Z from la1a38 to la1a40
+.line 280
+	if-eqz	v5,la1a40
+; v5 : single-length
+	iget	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mFirstPosition I
+; v1 : single-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	if-gt	v1,v4,la1a40
+; v1 : single-length , v4 : single-length
+	iget	v1,v3,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mFirstPosition I
+; v1 : single-length , v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	invoke-virtual	{v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/getChildCount	; getChildCount()I
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	move-result	v2
+; v2 : single-length
+	add-int/2addr	v1,v2
+; v1 : single-length , v2 : single-length
+	add-int/lit8	v1,v1,255
+; v1 : single-length , v1 : single-length
+	if-gt	v4,v1,la1a40
+; v4 : single-length , v1 : single-length
+	const/4	v0,1
+; v0 : single-length
+la1a38:
+.line 282
+	invoke-virtual	{v3,v4,v0},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setSelectionInt	; setSelectionInt(IZ)V
+; v3 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v4 : single-length , v0 : single-length
+.line 283
+	return-void	
+la1a40:
+.line 280
+	const/4	v0,0
+; v0 : single-length
+	goto	la1a38
+.end method
+
+.method setSelectionInt(IZ)V
+.limit registers 5
+; this: v2 (Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;)
+; parameter[0] : v3 (I)
+; parameter[1] : v4 (Z)
+.var 0 is delta I from la1a6a to la1a7c
+.line 301
+	iget	v1,v2,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mOldSelectedPosition I
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	if-eq	v3,v1,la1a7c
+; v3 : single-length , v1 : single-length
+.line 302
+	const/4	v1,1
+; v1 : single-length
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mBlockLayoutRequests Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+.line 303
+	iget	v1,v2,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mSelectedPosition I
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+	sub-int	v0,v3,v1
+; v0 : single-length , v3 : single-length , v1 : single-length
+.line 304
+	invoke-virtual	{v2,v3},com/actionbarsherlock/internal/widget/IcsAbsSpinner/setNextSelectedPositionInt	; setNextSelectedPositionInt(I)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v3 : single-length
+.line 305
+	invoke-virtual	{v2,v0,v4},com/actionbarsherlock/internal/widget/IcsAbsSpinner/layout	; layout(IZ)V
+; v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner; , v0 : single-length , v4 : single-length
+.line 306
+	const/4	v1,0
+; v1 : single-length
+	iput-boolean	v1,v2,com/actionbarsherlock/internal/widget/IcsAbsSpinner.mBlockLayoutRequests Z
+; v1 : single-length , v2 : Lcom/actionbarsherlock/internal/widget/IcsAbsSpinner;
+la1a7c:
+.line 308
+	return-void	
+.end method
+
+

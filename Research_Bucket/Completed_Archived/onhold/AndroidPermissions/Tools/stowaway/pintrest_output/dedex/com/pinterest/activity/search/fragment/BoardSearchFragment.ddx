@@ -1,0 +1,171 @@
+.class public com/pinterest/activity/search/fragment/BoardSearchFragment
+.super com/pinterest/fragment/BoardGridFragment
+.source BoardSearchFragment.java
+.implements com/pinterest/activity/search/fragment/SearchInterface
+
+.field private _lastQuery Ljava/lang/String;
+
+.method public <init>()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/activity/search/fragment/BoardSearchFragment;)
+.line 24
+	invoke-direct	{v0},com/pinterest/fragment/BoardGridFragment/<init>	; <init>()V
+; v0 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment;
+	return-void	
+.end method
+
+.method public doSearch(Ljava/lang/String;)V
+.limit registers 4
+; this: v2 (Lcom/pinterest/activity/search/fragment/BoardSearchFragment;)
+; parameter[0] : v3 (Ljava/lang/String;)
+.line 55
+	iget-object	v0,v2,com/pinterest/activity/search/fragment/BoardSearchFragment._lastQuery Ljava/lang/String;
+; v0 : Ljava/lang/String; , v2 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment;
+	invoke-virtual	{v3,v0},java/lang/String/equalsIgnoreCase	; equalsIgnoreCase(Ljava/lang/String;)Z
+; v3 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,le1720
+; v0 : single-length
+.line 57
+	new-instance	v0,com/pinterest/api/models/BoardFeed
+; v0 : Lcom/pinterest/api/models/BoardFeed;
+	invoke-direct	{v0},com/pinterest/api/models/BoardFeed/<init>	; <init>()V
+; v0 : Lcom/pinterest/api/models/BoardFeed;
+	invoke-virtual	{v2,v0},com/pinterest/activity/search/fragment/BoardSearchFragment/reset	; reset(Lcom/pinterest/api/models/Feed;)V
+; v2 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment; , v0 : Lcom/pinterest/api/models/BoardFeed;
+.line 58
+	const/4	v0,1
+; v0 : single-length
+	iput-boolean	v0,v2,com/pinterest/activity/search/fragment/BoardSearchFragment._refreshed Z
+; v0 : single-length , v2 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment;
+.line 59
+	const-string	v0,"boards"
+; v0 : Ljava/lang/String;
+	iget-object	v1,v2,com/pinterest/activity/search/fragment/BoardSearchFragment.onGridLoad Lcom/pinterest/api/PAPIHttpResponseHandler;
+; v1 : Lcom/pinterest/api/PAPIHttpResponseHandler; , v2 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment;
+	invoke-static	{v0,v3,v1},com/pinterest/api/PAPI/search	; search(Ljava/lang/String;Ljava/lang/String;Lcom/loopj/android/http/JsonHttpResponseHandler;)V
+; v0 : Ljava/lang/String; , v3 : Ljava/lang/String; , v1 : Lcom/pinterest/api/PAPIHttpResponseHandler;
+le1720:
+.line 61
+	iput-object	v3,v2,com/pinterest/activity/search/fragment/BoardSearchFragment._lastQuery Ljava/lang/String;
+; v3 : Ljava/lang/String; , v2 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment;
+.line 62
+	return-void	
+.end method
+
+.method protected getEmptyDynamicText()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lcom/pinterest/activity/search/fragment/BoardSearchFragment;)
+.line 85
+	iget-object	v0,v1,com/pinterest/activity/search/fragment/BoardSearchFragment._lastQuery Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method protected getEmptyIcon()I
+.limit registers 2
+; this: v1 (Lcom/pinterest/activity/search/fragment/BoardSearchFragment;)
+.line 79
+	const	v0,2130837643	; 0x7f02008b
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method protected getEmptyMessage()I
+.limit registers 2
+; this: v1 (Lcom/pinterest/activity/search/fragment/BoardSearchFragment;)
+.line 73
+	const	v0,2131427531	; 0x7f0b00cb
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method protected getEmptyTitle()I
+.limit registers 2
+; this: v1 (Lcom/pinterest/activity/search/fragment/BoardSearchFragment;)
+.line 67
+	const	v0,2131427530	; 0x7f0b00ca
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public loadData()V
+.limit registers 1
+; this: v0 (Lcom/pinterest/activity/search/fragment/BoardSearchFragment;)
+.line 50
+	return-void	
+.end method
+
+.method public onCreate(Landroid/os/Bundle;)V
+.limit registers 3
+; this: v1 (Lcom/pinterest/activity/search/fragment/BoardSearchFragment;)
+; parameter[0] : v2 (Landroid/os/Bundle;)
+.line 31
+	const	v0,2130903120	; 0x7f030050
+; v0 : single-length
+	iput	v0,v1,com/pinterest/activity/search/fragment/BoardSearchFragment.layoutId I
+; v0 : single-length , v1 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment;
+.line 32
+	invoke-super	{v1,v2},com/pinterest/fragment/BoardGridFragment/onCreate	; onCreate(Landroid/os/Bundle;)V
+; v1 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment; , v2 : Landroid/os/Bundle;
+.line 33
+	return-void	
+.end method
+
+.method public onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;
+.limit registers 7
+; this: v3 (Lcom/pinterest/activity/search/fragment/BoardSearchFragment;)
+; parameter[0] : v4 (Landroid/view/LayoutInflater;)
+; parameter[1] : v5 (Landroid/view/ViewGroup;)
+; parameter[2] : v6 (Landroid/os/Bundle;)
+.line 38
+	invoke-super	{v3,v4,v5,v6},com/pinterest/fragment/BoardGridFragment/onCreateView	; onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;
+; v3 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment; , v4 : Landroid/view/LayoutInflater; , v5 : Landroid/view/ViewGroup; , v6 : Landroid/os/Bundle;
+	move-result-object	v0
+; v0 : Landroid/view/View;
+.line 39
+	iget-object	v1,v3,com/pinterest/activity/search/fragment/BoardSearchFragment._adapterView Lcom/pinterest/ui/grid/PinterestAdapterView;
+; v1 : Lcom/pinterest/ui/grid/PinterestAdapterView; , v3 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment;
+	const/4	v2,1
+; v2 : single-length
+	invoke-virtual	{v1,v2},com/pinterest/ui/grid/PinterestAdapterView/setEmptyViewEnabled	; setEmptyViewEnabled(Z)V
+; v1 : Lcom/pinterest/ui/grid/PinterestAdapterView; , v2 : single-length
+.line 40
+	iget-object	v1,v3,com/pinterest/activity/search/fragment/BoardSearchFragment._adapterView Lcom/pinterest/ui/grid/PinterestAdapterView;
+; v1 : Lcom/pinterest/ui/grid/PinterestAdapterView; , v3 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment;
+	const	v2,2130837643	; 0x7f02008b
+; v2 : single-length
+	invoke-virtual	{v1,v2},com/pinterest/ui/grid/PinterestAdapterView/setEmptyViewIcon	; setEmptyViewIcon(I)V
+; v1 : Lcom/pinterest/ui/grid/PinterestAdapterView; , v2 : single-length
+.line 41
+	iget-object	v1,v3,com/pinterest/activity/search/fragment/BoardSearchFragment._adapterView Lcom/pinterest/ui/grid/PinterestAdapterView;
+; v1 : Lcom/pinterest/ui/grid/PinterestAdapterView; , v3 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment;
+	const	v2,2131427539	; 0x7f0b00d3
+; v2 : single-length
+	invoke-virtual	{v1,v2},com/pinterest/ui/grid/PinterestAdapterView/setEmptyViewTitle	; setEmptyViewTitle(I)V
+; v1 : Lcom/pinterest/ui/grid/PinterestAdapterView; , v2 : single-length
+.line 42
+	iget-object	v1,v3,com/pinterest/activity/search/fragment/BoardSearchFragment._adapterView Lcom/pinterest/ui/grid/PinterestAdapterView;
+; v1 : Lcom/pinterest/ui/grid/PinterestAdapterView; , v3 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment;
+	const	v2,2131427540	; 0x7f0b00d4
+; v2 : single-length
+	invoke-virtual	{v1,v2},com/pinterest/ui/grid/PinterestAdapterView/setEmptyViewMessage	; setEmptyViewMessage(I)V
+; v1 : Lcom/pinterest/ui/grid/PinterestAdapterView; , v2 : single-length
+.line 43
+	iget-object	v1,v3,com/pinterest/activity/search/fragment/BoardSearchFragment._adapterView Lcom/pinterest/ui/grid/PinterestAdapterView;
+; v1 : Lcom/pinterest/ui/grid/PinterestAdapterView; , v3 : Lcom/pinterest/activity/search/fragment/BoardSearchFragment;
+	const/4	v2,2
+; v2 : single-length
+	invoke-virtual	{v1,v2},com/pinterest/ui/grid/PinterestAdapterView/setEmptyViewState	; setEmptyViewState(I)V
+; v1 : Lcom/pinterest/ui/grid/PinterestAdapterView; , v2 : single-length
+.line 44
+	return-object	v0
+; v0 : Landroid/view/View;
+.end method
+
+

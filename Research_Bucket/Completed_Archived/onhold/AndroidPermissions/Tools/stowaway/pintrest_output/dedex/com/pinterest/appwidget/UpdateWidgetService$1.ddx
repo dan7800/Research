@@ -1,0 +1,557 @@
+.class com/pinterest/appwidget/UpdateWidgetService$1
+.super java/lang/Object
+.source UpdateWidgetService.java
+.implements java/lang/Runnable
+
+.inner class 1 inner com/pinterest/appwidget/UpdateWidgetService$1 outer com/pinterest/appwidget/UpdateWidgetService
+.field final this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+
+.method <init>(Lcom/pinterest/appwidget/UpdateWidgetService;)V
+.limit registers 2
+; this: v0 (Lcom/pinterest/appwidget/UpdateWidgetService$1;)
+; parameter[0] : v1 (Lcom/pinterest/appwidget/UpdateWidgetService;)
+.line 84
+	iput-object	v1,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v1 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	return-void	
+.end method
+
+.method private execute()Z
+.limit registers 22
+; this: v21 (Lcom/pinterest/appwidget/UpdateWidgetService$1;)
+.var 4 is arr$ [I from lf387a to lf3aa2
+.var 5 is bmp Landroid/graphics/Bitmap; from lf394e to lf3aa2
+.var 6 is i$ I from lf387e to lf3aa2
+.var 7 is id I from lf3886 to lf3aa2
+.var 8 is intent Landroid/content/Intent; from lf3976 to lf3aa2
+.var 9 is len$ I from lf387c to lf3aa2
+.var 12 is packageName Ljava/lang/String; from lf38e2 to lf3aa2
+.var 13 is pendingIntent Landroid/app/PendingIntent; from lf3a64 to lf3aa2
+.var 14 is pi Landroid/app/PendingIntent; from lf39cc to lf3aa2
+.var 15 is pin Lcom/pinterest/api/models/Pin; from lf38c6 to lf3aa2
+.var 16 is rv Landroid/widget/RemoteViews; from lf38fa to lf3aa2
+.line 99
+	new-instance	v17,java/lang/StringBuilder
+; v17 : Ljava/lang/StringBuilder;
+	invoke-direct/range	{v17},java/lang/StringBuilder/<init>;	<init>()V
+; v17 : Ljava/lang/StringBuilder;
+	const-string	v18,"AppWidget worker run: "
+; v18 : Ljava/lang/String;
+	invoke-virtual/range	{v17..v18},java/lang/StringBuilder/append;	append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v17 : Ljava/lang/StringBuilder; , v18 : Ljava/lang/String;
+	move-result-object	v17
+; v17 : Ljava/lang/StringBuilder;
+	invoke-static	{},java/lang/System/currentTimeMillis	; currentTimeMillis()J
+; 
+	nop	
+	move-result-wide	v18
+; v18 : double-length
+	invoke-virtual/range	{v17..v19},java/lang/StringBuilder/append;	append(J)Ljava/lang/StringBuilder;
+; v17 : Ljava/lang/StringBuilder; , v18 : double-length
+	move-result-object	v17
+; v17 : Ljava/lang/StringBuilder;
+	invoke-virtual/range	{v17},java/lang/StringBuilder/toString;	toString()Ljava/lang/String;
+; v17 : Ljava/lang/StringBuilder;
+	move-result-object	v17
+; v17 : Ljava/lang/String;
+	invoke-static/range	{v17},com/pinterest/kit/log/PLog/warn;	warn(Ljava/lang/String;)V
+; v17 : Ljava/lang/String;
+.line 100
+	invoke-static	{},com/pinterest/base/Application/getPreferences	; getPreferences()Landroid/content/SharedPreferences;
+; 
+	nop	
+	move-result-object	v17
+; v17 : Landroid/content/SharedPreferences;
+	const-string	v18,"PREF_ACCESSTOKEN"
+; v18 : Ljava/lang/String;
+	invoke-interface/range	{v17..v18},android/content/SharedPreferences/contains;	contains(Ljava/lang/String;)Z
+; v17 : Landroid/content/SharedPreferences; , v18 : Ljava/lang/String;
+	move-result	v17
+; v17 : single-length
+	if-eqz	v17,lf37ea
+; v17 : single-length
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v17,v0
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-static/range	{v17},com/pinterest/appwidget/UpdateWidgetService/access$200;	access$200(Lcom/pinterest/appwidget/UpdateWidgetService;)[I
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-result-object	v17
+; v17 : [I
+	move-object/from16	v0,v17
+; v0 : [I , v17 : [I
+	array-length	v0,v0
+; v0 : single-length , v0 : single-length
+	move/from16	v17,v0
+; v17 : single-length , v0 : single-length
+	if-nez	v17,lf37fa
+; v17 : single-length
+lf37ea:
+.line 102
+	const-string	v17,"AppWidget worker not logged in. exiting. "
+; v17 : Ljava/lang/String;
+	invoke-static/range	{v17},com/pinterest/kit/log/PLog/warn;	warn(Ljava/lang/String;)V
+; v17 : Ljava/lang/String;
+.line 103
+	const/16	v17,0
+; v17 : single-length
+lf37f8:
+.line 151
+	return	v17
+; v17 : single-length
+lf37fa:
+.line 105
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v17,v0
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-static/range	{v17},com/pinterest/appwidget/UpdateWidgetService/access$300;	access$300(Lcom/pinterest/appwidget/UpdateWidgetService;)Z
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-result	v17
+; v17 : single-length
+	if-eqz	v17,lf382a
+; v17 : single-length
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v17,v0
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-static/range	{v17},com/pinterest/appwidget/UpdateWidgetService/access$400;	access$400(Lcom/pinterest/appwidget/UpdateWidgetService;)I
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-result	v17
+; v17 : single-length
+	if-gtz	v17,lf3830
+; v17 : single-length
+lf382a:
+.line 106
+	const/16	v17,0
+; v17 : single-length
+	goto	lf37f8
+lf3830:
+.line 109
+	const-string	v17,"com.pinterest.update.next"
+; v17 : Ljava/lang/String;
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v18,v0
+; v18 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-static/range	{v18},com/pinterest/appwidget/UpdateWidgetService/access$500;	access$500(Lcom/pinterest/appwidget/UpdateWidgetService;)Ljava/lang/String;
+; v18 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-result-object	v18
+; v18 : Ljava/lang/String;
+	invoke-virtual/range	{v17..v18},java/lang/String/equals;	equals(Ljava/lang/Object;)Z
+; v17 : Ljava/lang/String; , v18 : Ljava/lang/String;
+	move-result	v17
+; v17 : single-length
+	if-eqz	v17,lf3aa2
+; v17 : single-length
+.line 110
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v17,v0
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-static/range	{v17},com/pinterest/appwidget/UpdateWidgetService/access$600;	access$600(Lcom/pinterest/appwidget/UpdateWidgetService;)V
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService;
+lf3866:
+.line 115
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v17,v0
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-static/range	{v17},com/pinterest/appwidget/UpdateWidgetService/access$200;	access$200(Lcom/pinterest/appwidget/UpdateWidgetService;)[I
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-result-object	v4
+; v4 : [I
+lf387a:
+	array-length	v9,v4
+; v9 : single-length , v4 : [I
+lf387c:
+	const/4	v6,0
+; v6 : single-length
+lf387e:
+	if-ge	v6,v9,lf3ab8
+; v6 : single-length , v9 : single-length
+	aget	v7,v4,v6
+; v7 : single-length , v4 : [I , v6 : single-length
+.line 116
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v17,v0
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-static/range	{v17},com/pinterest/appwidget/UpdateWidgetService/access$900;	access$900(Lcom/pinterest/appwidget/UpdateWidgetService;)Lcom/pinterest/api/models/Feed;
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-result-object	v17
+; v17 : Lcom/pinterest/api/models/Feed;
+	move-object/from16	v0,v17
+; v0 : Lcom/pinterest/api/models/Feed; , v17 : Lcom/pinterest/api/models/Feed;
+	iget-object	v0,v0,com/pinterest/api/models/Feed.items Ljava/util/ArrayList;
+; v0 : Ljava/util/ArrayList; , v0 : Ljava/util/ArrayList;
+	move-object/from16	v17,v0
+; v17 : Ljava/util/ArrayList; , v0 : Ljava/util/ArrayList;
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v18,v0
+; v18 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-static/range	{v18},com/pinterest/appwidget/UpdateWidgetService/access$800;	access$800(Lcom/pinterest/appwidget/UpdateWidgetService;)I
+; v18 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-result	v18
+; v18 : single-length
+	invoke-virtual/range	{v17..v18},java/util/ArrayList/get;	get(I)Ljava/lang/Object;
+; v17 : Ljava/util/ArrayList; , v18 : single-length
+	move-result-object	v15
+; v15 : Ljava/lang/Object;
+	check-cast	v15,com/pinterest/api/models/Pin
+; v15 : Lcom/pinterest/api/models/Pin;
+.line 118
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v17,v0
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-virtual/range	{v17},com/pinterest/appwidget/UpdateWidgetService/getApplicationContext;	getApplicationContext()Landroid/content/Context;
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-result-object	v17
+; v17 : Landroid/content/Context;
+	invoke-virtual/range	{v17},android/content/Context/getPackageName;	getPackageName()Ljava/lang/String;
+; v17 : Landroid/content/Context;
+	move-result-object	v12
+; v12 : Ljava/lang/String;
+.line 120
+	new-instance	v16,android/widget/RemoteViews
+; v16 : Landroid/widget/RemoteViews;
+	const	v17,2130903169	; 0x7f030081
+; v17 : single-length
+	move-object/from16	v0,v16
+; v0 : Landroid/widget/RemoteViews; , v16 : Landroid/widget/RemoteViews;
+	move/from16	v1,v17
+; v1 : single-length , v17 : single-length
+	invoke-direct	{v0,v12,v1},android/widget/RemoteViews/<init>	; <init>(Ljava/lang/String;I)V
+; v0 : Landroid/widget/RemoteViews; , v12 : Ljava/lang/String; , v1 : single-length
+.line 121
+	const	v17,2131099754	; 0x7f06006a
+; v17 : single-length
+	invoke-virtual/range	{v16..v17},android/widget/RemoteViews/removeAllViews;	removeAllViews(I)V
+; v16 : Landroid/widget/RemoteViews; , v17 : single-length
+.line 122
+	const	v17,2131099754	; 0x7f06006a
+; v17 : single-length
+	new-instance	v18,android/widget/RemoteViews
+; v18 : Landroid/widget/RemoteViews;
+	const	v19,2130903166	; 0x7f03007e
+; v19 : single-length
+	move-object/from16	v0,v18
+; v0 : Landroid/widget/RemoteViews; , v18 : Landroid/widget/RemoteViews;
+	move/from16	v1,v19
+; v1 : single-length , v19 : single-length
+	invoke-direct	{v0,v12,v1},android/widget/RemoteViews/<init>	; <init>(Ljava/lang/String;I)V
+; v0 : Landroid/widget/RemoteViews; , v12 : Ljava/lang/String; , v1 : single-length
+	invoke-virtual/range	{v16..v18},android/widget/RemoteViews/addView;	addView(ILandroid/widget/RemoteViews;)V
+; v16 : Landroid/widget/RemoteViews; , v17 : single-length , v18 : Landroid/widget/RemoteViews;
+.line 124
+	invoke-static	{},com/pinterest/kit/network/PImageCache/instance	; instance()Lcom/pinterest/kit/network/PImageCache;
+; 
+	nop	
+	move-result-object	v17
+; v17 : Lcom/pinterest/kit/network/PImageCache;
+	invoke-virtual	{v15},com/pinterest/api/models/Pin/getImages	; getImages()Lcom/pinterest/api/models/Images;
+; v15 : Lcom/pinterest/api/models/Pin;
+	move-result-object	v18
+; v18 : Lcom/pinterest/api/models/Images;
+	move-object/from16	v0,v18
+; v0 : Lcom/pinterest/api/models/Images; , v18 : Lcom/pinterest/api/models/Images;
+	iget-object	v0,v0,com/pinterest/api/models/Images.board Ljava/lang/String;
+; v0 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	move-object/from16	v18,v0
+; v18 : Ljava/lang/String; , v0 : Ljava/lang/String;
+	invoke-virtual/range	{v17..v18},com/pinterest/kit/network/PImageCache/getBitmap;	getBitmap(Ljava/lang/String;)Landroid/graphics/Bitmap;
+; v17 : Lcom/pinterest/kit/network/PImageCache; , v18 : Ljava/lang/String;
+	move-result-object	v5
+; v5 : Landroid/graphics/Bitmap;
+.line 125
+	const	v17,2131099912	; 0x7f060108
+; v17 : single-length
+	move-object/from16	v0,v16
+; v0 : Landroid/widget/RemoteViews; , v16 : Landroid/widget/RemoteViews;
+	move/from16	v1,v17
+; v1 : single-length , v17 : single-length
+	invoke-virtual	{v0,v1,v5},android/widget/RemoteViews/setImageViewBitmap	; setImageViewBitmap(ILandroid/graphics/Bitmap;)V
+; v0 : Landroid/widget/RemoteViews; , v1 : single-length , v5 : Landroid/graphics/Bitmap;
+.line 128
+	invoke-static	{},com/pinterest/base/Application/context	; context()Lcom/pinterest/kit/application/PApplication;
+; 
+	nop	
+	move-result-object	v17
+; v17 : Lcom/pinterest/kit/application/PApplication;
+	const-string	v18,"widget"
+; v18 : Ljava/lang/String;
+	invoke-static/range	{v17..v18},com/pinterest/activity/ActivityHelper/getPinIntent;	getPinIntent(Landroid/content/Context;Ljava/lang/String;)Landroid/content/Intent;
+; v17 : Lcom/pinterest/kit/application/PApplication; , v18 : Ljava/lang/String;
+	move-result-object	v8
+; v8 : Landroid/content/Intent;
+.line 129
+	const-string	v17,"com.pinterest.EXTRA_ID"
+; v17 : Ljava/lang/String;
+	invoke-virtual	{v15},com/pinterest/api/models/Pin/getId	; getId()Ljava/lang/String;
+; v15 : Lcom/pinterest/api/models/Pin;
+	move-result-object	v18
+; v18 : Ljava/lang/String;
+	move-object/from16	v0,v17
+; v0 : Ljava/lang/String; , v17 : Ljava/lang/String;
+	move-object/from16	v1,v18
+; v1 : Ljava/lang/String; , v18 : Ljava/lang/String;
+	invoke-virtual	{v8,v0,v1},android/content/Intent/putExtra	; putExtra(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+; v8 : Landroid/content/Intent; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+	move-result-object	v17
+; v17 : Landroid/content/Intent;
+	const/high16	v18,1024
+; v18 : single-length
+	invoke-virtual/range	{v17..v18},android/content/Intent/setFlags;	setFlags(I)Landroid/content/Intent;
+; v17 : Landroid/content/Intent; , v18 : single-length
+.line 131
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v17,v0
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-virtual/range	{v17},com/pinterest/appwidget/UpdateWidgetService/getApplicationContext;	getApplicationContext()Landroid/content/Context;
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-result-object	v17
+; v17 : Landroid/content/Context;
+	const/16	v18,0
+; v18 : single-length
+	const/high16	v19,2048
+; v19 : single-length
+	move-object/from16	v0,v17
+; v0 : Landroid/content/Context; , v17 : Landroid/content/Context;
+	move/from16	v1,v18
+; v1 : single-length , v18 : single-length
+	move/from16	v2,v19
+; v2 : single-length , v19 : single-length
+	invoke-static	{v0,v1,v8,v2},android/app/PendingIntent/getActivity	; getActivity(Landroid/content/Context;ILandroid/content/Intent;I)Landroid/app/PendingIntent;
+; v0 : Landroid/content/Context; , v1 : single-length , v8 : Landroid/content/Intent; , v2 : single-length
+	move-result-object	v14
+; v14 : Landroid/app/PendingIntent;
+.line 133
+	const	v17,2131099912	; 0x7f060108
+; v17 : single-length
+	move-object/from16	v0,v16
+; v0 : Landroid/widget/RemoteViews; , v16 : Landroid/widget/RemoteViews;
+	move/from16	v1,v17
+; v1 : single-length , v17 : single-length
+	invoke-virtual	{v0,v1,v14},android/widget/RemoteViews/setOnClickPendingIntent	; setOnClickPendingIntent(ILandroid/app/PendingIntent;)V
+; v0 : Landroid/widget/RemoteViews; , v1 : single-length , v14 : Landroid/app/PendingIntent;
+.line 135
+	const	v17,2131099911	; 0x7f060107
+; v17 : single-length
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v18,v0
+; v18 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-virtual/range	{v18},com/pinterest/appwidget/UpdateWidgetService/getApplicationContext;	getApplicationContext()Landroid/content/Context;
+; v18 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-result-object	v18
+; v18 : Landroid/content/Context;
+	invoke-static/range	{v18},com/pinterest/appwidget/PWidgetProvider/getPhotoIntent;	getPhotoIntent(Landroid/content/Context;)Landroid/app/PendingIntent;
+; v18 : Landroid/content/Context;
+	move-result-object	v18
+; v18 : Landroid/app/PendingIntent;
+	invoke-virtual/range	{v16..v18},android/widget/RemoteViews/setOnClickPendingIntent;	setOnClickPendingIntent(ILandroid/app/PendingIntent;)V
+; v16 : Landroid/widget/RemoteViews; , v17 : single-length , v18 : Landroid/app/PendingIntent;
+.line 138
+	const	v17,2131099909	; 0x7f060105
+; v17 : single-length
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v18,v0
+; v18 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	const/16	v19,0
+; v19 : single-length
+	invoke-static/range	{v18..v19},com/pinterest/appwidget/UpdateWidgetService/access$1000;	access$1000(Lcom/pinterest/appwidget/UpdateWidgetService;Z)Landroid/app/PendingIntent;
+; v18 : Lcom/pinterest/appwidget/UpdateWidgetService; , v19 : single-length
+	move-result-object	v18
+; v18 : Landroid/app/PendingIntent;
+	invoke-virtual/range	{v16..v18},android/widget/RemoteViews/setOnClickPendingIntent;	setOnClickPendingIntent(ILandroid/app/PendingIntent;)V
+; v16 : Landroid/widget/RemoteViews; , v17 : single-length , v18 : Landroid/app/PendingIntent;
+.line 139
+	const	v17,2131099910	; 0x7f060106
+; v17 : single-length
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v18,v0
+; v18 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	const/16	v19,1
+; v19 : single-length
+	invoke-static/range	{v18..v19},com/pinterest/appwidget/UpdateWidgetService/access$1000;	access$1000(Lcom/pinterest/appwidget/UpdateWidgetService;Z)Landroid/app/PendingIntent;
+; v18 : Lcom/pinterest/appwidget/UpdateWidgetService; , v19 : single-length
+	move-result-object	v18
+; v18 : Landroid/app/PendingIntent;
+	invoke-virtual/range	{v16..v18},android/widget/RemoteViews/setOnClickPendingIntent;	setOnClickPendingIntent(ILandroid/app/PendingIntent;)V
+; v16 : Landroid/widget/RemoteViews; , v17 : single-length , v18 : Landroid/app/PendingIntent;
+.line 141
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v17,v0
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-static/range	{v17},com/pinterest/appwidget/PWidgetProvider/getHomeIntent;	getHomeIntent(Landroid/content/Context;)Landroid/app/PendingIntent;
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-result-object	v13
+; v13 : Landroid/app/PendingIntent;
+.line 143
+	const	v17,2131099908	; 0x7f060104
+; v17 : single-length
+	move-object/from16	v0,v16
+; v0 : Landroid/widget/RemoteViews; , v16 : Landroid/widget/RemoteViews;
+	move/from16	v1,v17
+; v1 : single-length , v17 : single-length
+	invoke-virtual	{v0,v1,v13},android/widget/RemoteViews/setOnClickPendingIntent	; setOnClickPendingIntent(ILandroid/app/PendingIntent;)V
+; v0 : Landroid/widget/RemoteViews; , v1 : single-length , v13 : Landroid/app/PendingIntent;
+.line 144
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v17,v0
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-static/range	{v17},com/pinterest/appwidget/UpdateWidgetService/access$1100;	access$1100(Lcom/pinterest/appwidget/UpdateWidgetService;)Landroid/appwidget/AppWidgetManager;
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-result-object	v17
+; v17 : Landroid/appwidget/AppWidgetManager;
+	move-object/from16	v0,v17
+; v0 : Landroid/appwidget/AppWidgetManager; , v17 : Landroid/appwidget/AppWidgetManager;
+	move-object/from16	v1,v16
+; v1 : Landroid/widget/RemoteViews; , v16 : Landroid/widget/RemoteViews;
+	invoke-virtual	{v0,v7,v1},android/appwidget/AppWidgetManager/updateAppWidget	; updateAppWidget(ILandroid/widget/RemoteViews;)V
+; v0 : Landroid/appwidget/AppWidgetManager; , v7 : single-length , v1 : Landroid/widget/RemoteViews;
+.line 115
+	add-int/lit8	v6,v6,1
+; v6 : single-length , v6 : single-length
+	goto/16	lf387e
+lf3aa2:
+.line 112
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v17,v0
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	invoke-static/range	{v17},com/pinterest/appwidget/UpdateWidgetService/access$700;	access$700(Lcom/pinterest/appwidget/UpdateWidgetService;)V
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	goto/16	lf3866
+lf3ab8:
+.line 148
+	invoke-static	{},java/lang/System/currentTimeMillis	; currentTimeMillis()J
+; 
+	nop	
+	move-result-wide	v17
+; v17 : double-length
+	const-wide/16	v19,5000
+; v19 : double-length
+	add-long	v10,v17,v19
+; v10 : double-length , v17 : double-length , v19 : double-length
+.line 149
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v17,v0
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	const-string	v18,"alarm"
+; v18 : Ljava/lang/String;
+	invoke-virtual/range	{v17..v18},com/pinterest/appwidget/UpdateWidgetService/getSystemService;	getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+; v17 : Lcom/pinterest/appwidget/UpdateWidgetService; , v18 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/Object;
+	check-cast	v3,android/app/AlarmManager
+; v3 : Landroid/app/AlarmManager;
+.line 150
+	const/16	v17,1
+; v17 : single-length
+	move-object/from16	v0,v21
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService$1; , v21 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+	iget-object	v0,v0,com/pinterest/appwidget/UpdateWidgetService$1.this$0 Lcom/pinterest/appwidget/UpdateWidgetService;
+; v0 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	move-object/from16	v18,v0
+; v18 : Lcom/pinterest/appwidget/UpdateWidgetService; , v0 : Lcom/pinterest/appwidget/UpdateWidgetService;
+	const/16	v19,1
+; v19 : single-length
+	invoke-static/range	{v18..v19},com/pinterest/appwidget/UpdateWidgetService/access$1000;	access$1000(Lcom/pinterest/appwidget/UpdateWidgetService;Z)Landroid/app/PendingIntent;
+; v18 : Lcom/pinterest/appwidget/UpdateWidgetService; , v19 : single-length
+	move-result-object	v18
+; v18 : Landroid/app/PendingIntent;
+	move/from16	v0,v17
+; v0 : single-length , v17 : single-length
+	move-object/from16	v1,v18
+; v1 : Landroid/app/PendingIntent; , v18 : Landroid/app/PendingIntent;
+	invoke-virtual	{v3,v0,v10,v11,v1},android/app/AlarmManager/set	; set(IJLandroid/app/PendingIntent;)V
+; v3 : Landroid/app/AlarmManager; , v0 : single-length , v10 : double-length , v1 : Landroid/app/PendingIntent;
+.line 151
+	const/16	v17,1
+; v17 : single-length
+	goto/16	lf37f8
+.end method
+
+.method public run()V
+.limit registers 3
+; this: v2 (Lcom/pinterest/appwidget/UpdateWidgetService$1;)
+.catch java/lang/Exception from lf3b3a to lf3b48 using lf3b44
+.line 88
+	invoke-direct	{v2},com/pinterest/appwidget/UpdateWidgetService$1/execute	; execute()Z
+; v2 : Lcom/pinterest/appwidget/UpdateWidgetService$1;
+.line 89
+	invoke-static	{},com/pinterest/appwidget/UpdateWidgetService/access$000	; access$000()Ljava/lang/Object;
+; 
+	nop	
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	monitor-enter	v1
+; v1 : Ljava/lang/Object;
+.line 90
+	const/4	v0,0
+; v0 : single-length
+lf3b3a:
+	invoke-static	{v0},com/pinterest/appwidget/UpdateWidgetService/access$102	; access$102(Z)Z
+; v0 : single-length
+.line 91
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+.line 92
+	return-void	
+lf3b44:
+.line 91
+	move-exception	v0
+; v0 : java/lang/Exception
+	monitor-exit	v1
+; v1 : Ljava/lang/Object;
+lf3b48:
+	throw	v0
+; v0 : java/lang/Exception
+.end method
+
+

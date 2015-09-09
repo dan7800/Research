@@ -1,0 +1,296 @@
+
+\documentclass{sig-alternate}
+  \pdfpagewidth=8.5truein
+  \pdfpageheight=11truein
+
+\usepackage{cite}
+\usepackage{color}
+\usepackage{courier}
+\usepackage{listings}
+\usepackage{url}
+%\usepackage{balance} % Add this back in. Probably needed during camera ready.
+%\usepackage{listings} % Not sure this does anything here
+\usepackage{tikz} % Need for all tikz material
+\usetikzlibrary{shapes,arrows, positioning} %  Need for all tikz material
+
+\usepackage{times} % Used for formatting formatting url footnotes
+\urlstyle{same} % Used for formatting formatting url footnotes
+\usepackage{caption} % Used for formatting formatting url footnotes
+\usepackage{booktabs}
+\usepackage{color}
+
+\newif\ifisnopii
+\isnopiifalse % change to false to remove personally identifiable information (pii)
+%\isnopiitrue
+
+\lstset{ %
+language=,                % choose the language of the code
+basicstyle=\small,       % the size of the fonts that are used for the code \footnotesize
+%numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it is 1 each line will be numbered
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+%frame=single,           % adds a frame around the code
+tabsize=2,          % sets default tabsize to 2 spaces
+captionpos=b,           % sets the caption-position to bottom
+breaklines=true,        % sets automatic line breaking
+breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)}          % if you want to add a comment within your code
+}
+
+\setlength{\abovecaptionskip}{4pt plus 3pt minus 2pt} % Space over captions
+\newcommand{\todo}[1]{\textcolor{cyan}{\textbf{[#1]}}}
+\newcommand{\sam}[1]{\textcolor{red}{{\it [Sam says: #1]}}}
+\newcommand{\dan}[1]{\textcolor{blue}{{\it [Dan says: #1]}}}
+
+
+\begin{document}
+%
+% --- Author Metadata here ---
+\conferenceinfo{SAC'15}{April 13-17, 2015, Salamanca, Spain.}
+\CopyrightYear{2015} % Allows default copyright year (2002) to be over-ridden - IF NEED BE.
+\crdata{X-XXXXX-XX-X/XX/XX}  % Allows default copyright data (X-XXXXX-XX-X/XX/XX) to be over-ridden.
+% --- End of Author Metadata ---
+
+\title{Comparing the Effectiveness of Concolic Analysis for Code Clone Detection }
+\numberofauthors{1} %  in this sample file, there are a *total*
+% of EIGHT authors. SIX appear on the 'first-page' (for formatting
+% reasons) and the remaining two appear in the \additionalauthors section.
+%
+\ifisnopii % turn on/off pii
+\author{
+%
+% 1st. author
+\alignauthor
+Daniel E. Krutz and Samuel A. Malachowsky\\ 	
+	\affaddr{Software Engineering Department}\\
+       \affaddr{Rochester Institute of Technology}\\
+       \affaddr{1 Lomb Memorial Drive}\\
+       \affaddr{Rochester, NY 14623} \\
+       \email{\{dxkvse, samvse\}@rit.edu}
+} % Must not be a space above this
+\else % turn on/off pii
+\author{
+\alignauthor
+XXX X XXX\\
+       \affaddr{xxxxx}\\
+       \affaddr{xxxx, xx, xxx}\\
+       \email{xxxxx@xxx.xxx}
+}
+\fi % end turn on/off pii
+
+
+
+\maketitle
+\begin{abstract}
+
+Code clones are multiple code fragments that produce similar results when provided the same input. Prior work has shown that clones can be harmful because they potentially elevate maintenance costs, increase the number of bugs (due to inconsistent changes to cloned code), and decrease programmer comprehensibility (due to the increased size of the code base). This paper will outline a comparison process between a clone detection technique based on concolic analysis and leading clone detection tools. %The objective is of the study is to thoroughly evaluate concolic analysis in its ability to detect code clones.
+
+\end{abstract}
+
+\category{D.2.3}{Software Engineering}Coding Tools and Techniques;
+
+%\terms{xxx, xxx, xxx}
+\keywords{Clone Detection, Concolic Analysis, Software Engineering}
+
+% Add in categories and keywords
+\section{Introduction}
+Code clones occur in software for a variety of reasons including knowingly duplicating functionality, an unwillingness to refactor/retest the modified portion of the application, and simple laziness on the part of the developer. Clones continue to be extremely widespread in software development; it is estimated that clones comprise between 5-23\% of all source code~\cite{738528,Schulze:2010:CCF:1868294.1868310}. They are generally considered to be problematic since they are likely to increase the maintenance costs and may lead to inconsistent bug fixes as the codebase increases in size, leading to continued system faults~\cite{Deissenboeck:2010:CCD:1810295.1810449}.
+
+There are four types of code clones which are generally recognized by the research community. Type-1 clones are the simplest and represent identical code except for variations in whitespace, comments, and layout. Type-2 clones are syntactically similar except for variations in identifiers and types. Type-3 clones are segments which differ due to altered or removed statements. Type-4 clones, the most difficult to detect, are code segments which considerably differ syntactically, but produce identical results when executed~\cite{Gold:2010:ICC:1808901.1808916}. An example type-2 clone from Roy~\emph{et al.}\cite{Roy:2009:CEC:1530898.1531101} is shown in Table~\ref{table:royclones}.
+
+\noindent
+\begin{table}
+\centering
+\begin{tabular}{c | c}
+\bfseries Code Segment \#1  & \bfseries Code Segment \#2 \\ \hline \hline
+\begin{lstlisting}
+void sumProd(int n) {
+	double sum=0.0;
+	double prod =1.0;
+	int i;
+	for (i=1; i<=n; i++){
+		sum=sum + i;
+		prod = prod * i;
+		foo2(sum, prod);
+	}
+}
+\end{lstlisting}
+&
+\begin{lstlisting}
+void sumProd2(int n) {
+	int sum=0; //C1
+	int prod =1;
+	int i;
+	for (i=1; i<=n; i++){
+		sum=sum + i;
+		prod = prod * i;
+		foo2(sum, prod);
+	}
+}
+\end{lstlisting}
+
+\end{tabular}
+\caption{Example Type-2 clones from Roy}
+\label{table:royclones}
+\end{table}
+
+
+Detecting clones can be extremely difficult since the syntax of two clones may widely vary, and there are numerous techniques and tools available with varying levels of success for each of the clone types (1-4). Basic techniquess include text, tree, and symbolic based methods, and leading tools include Simian\footnote{\url{http://www.harukizaemon.com/simian/}}, Nicad\footnote{\url{http://www.cs.usask.ca/~croy/}}, CloneDR\footnote{http://www.semdesigns.com/products/clone/}, MeCC\footnote{http://ropas.snu.ac.kr/mecc/}, and Simcad\footnote{\url{http://homepage.usask.ca/~mdu535/tools.html}}.
+
+% Say a previous work since we cannot identify ourselves.
+A previous work created a clone detection tool based on concolic analysis~\cite{6671332}. We propose a process for further verifying this technique and conducting a large scale analysis on the capabilities of concolic analysis for discovering code clones.
+% This work is unique because....
+
+
+\section{Concolic Analysis}
+% Show a brief snippet
+
+Concolic analysis combines concrete and symbolic values in order to traverse all possible paths (up to a given length) of an application. It has traditionally been used in software testing to find faults in an application~\cite{Kim:2012:IAC:2337223.2337373}, but it also forms the basis of a powerful clone detection tool because it only considers the functionality of the source code - not its syntactic properties. This means that comments, naming conventions, and other non-syntactic parts of the sourcecode which are problematic for many existing clone detection techniques do not affect concolic analysis and its discovery of clones. Two well-known concolic analysis tools are Java Path Finder (JPF)\footnote{http://babelfish.arc.nasa.gov/trac/jpf/wiki} and jCUTE\footnote{http://osl.cs.illinois.edu/software/jcute/}.
+
+Concolic output from JPF is shown in Table~\ref{table:concolicoutputcomparision}. Constant variable types are represented generically by ``CONST'' and integer variable types are represented by a generic tag ``SYMINT''. Though not present in the example, other variable types are represented similarly; actual variable names do not appear anywhere in the output and are irrelevant to the concolic analysis technique.
+
+%When comparing the output from the type-2 clones in Table~\ref{table:royclones}, one of the primary differences would be that~\emph{sum} would be defined as a~\emph{double} variable type in the first method while it would be an ~\emph{int} for the second. This would create a small variation in the compared output.
+
+%\begin{minipage}{\linewidth}
+%\begin{lstlisting}[label=lst:concolicoutput, caption=Example Concolic Output]
+%PC#=3
+%CONST_3>a_1_SYMINT[2]&&
+%CONST_2<=a_1_SYMINT[2]&&
+%CONST_1<=a_1_SYMINT[2]
+%PC#=2
+%CONST_2>a_1_SYMINT[1]&&
+%CONST_1<=a_1_SYMINT[1]
+%PC#=1
+%CONST_1>a_1_SYMINT[2]
+
+%\end{lstlisting}
+%\label{lst:concolicoutput}
+%\end{minipage}
+
+
+
+
+
+\section{Concolic Code Clone Detection}
+
+The first step of concolic analysis for code clone detection is to generate the necessary concolic output at the method level, done using a tool such as jCUTE or JPF. After this is done for each method, the concolic output for each method is compared to all other output in a round robin fashion using the Levenshtein distance formula.
+
+Since the concolic output is being generated at the method level, concolic analysis for code clone detection is only be able to discover clones at this granularity. This is done to ensure that the number of comparisons, which need to be made between each set of concolic output, is manageable. Future work may be done to allow analysis at a more granular level. Table~\ref{table:concolicoutputcomparision} displays identical concolic output from the code clones shown in Table~\ref{table:royclones}.
+
+\noindent
+\begin{table}
+\centering
+\begin{tabular}{c | c}
+\bfseries Concolic Segment \#1  & \bfseries Concolic Segment \#2 \\ \hline \hline
+\begin{lstlisting}
+sumProd1(a);
+PC # 3 = 3
+CONST_3>a_1_SYMINT
+CONST_2<=a_1_SYMINT
+CONST_1<=a_1_SYMINT
+SPC # = 0
+
+PC # = 2
+CONST_2>a_1_SYMINT
+CONST_1<=a_1_SYMINT
+SPC # =0
+
+PC # = 1
+CONST_1>a_1_SYMINT
+SPC # = 0
+\end{lstlisting}
+&
+\begin{lstlisting}
+sumProd2(a)
+PC # 3 = 3
+CONST_3>a_1_SYMINT
+CONST_2<=a_1_SYMINT
+CONST_1<=a_1_SYMINT
+SPC # = 0
+
+PC # = 2
+CONST_2>a_1_SYMINT
+CONST_1<=a_1_SYMINT
+SPC # =0
+
+PC # = 1
+CONST_1>a_1_SYMINT
+SPC # = 0
+\end{lstlisting}
+
+\end{tabular}
+\caption{Diff of Concolic Output}
+~\label{table:concolicoutputcomparision}
+\end{table}
+
+
+
+\section{Analysis Process}
+
+Although a Concolic Code Clone Detection (CCCD) tool was proposed in previous research, it has not been compared against other concolic analysis tools to fully evaluate its effectiveness in discovering code clones. We will determine how it compares to existing tools in A) Their ability to discover all four types of code clones B) The accuracy, precision, and recall of their ability to find clones, and C) The time it takes for each tool to perform their analysis. We will present our results in the format similar to that shown in Table~\ref{Table:mostoverpermissions}. %\sam{the CCCD reference might need to be switched off for initial review}
+
+\begin{table}[thb!]
+
+\begin{center}
+%     \begin{tabular}{ p{.5in} | p{.5in} | l | l | l }
+    \begin{tabular}{ r | l | l | l | l }
+     & & \multicolumn{3}{ c }{\bfseries Compared Tools} \\ \hline
+    %\toprule
+    	 &\bfseries Concolic & \bfseries Tool &\bfseries Tool2 & \bfseries Tool3  \\ \hline
+    	\bfseries Type-1  & x/x  & x/x   & x/x & x/x \\ \hline
+	   \bfseries Type-2  & x/x  & x/x   & x/x & x/x\\ \hline
+	   \bfseries Type-3  & x/x  & x/x  & x/x & x/x\\ \hline
+	   \bfseries Type-4  & x/x  & x/x   & x/x & x/x\\ \hline
+	   %\bfseries Clones Found & x  & x & x & x \\ \hline
+	   %\bfseries Clones Missed  & x  & x & x & x \\ \hline
+	   %\bfseries False Positives  & x  & x & x & x \\ \hline
+	   %\bfseries True Negatives & x  & x & x & x \\ \hline
+	   %\bfseries Examined & x  & x & x & x \\ \hline  \hline
+	   \bfseries Accuracy  & x  & x & x & x \\ \hline
+	   \bfseries Recall  & x  & x & x & x \\  \hline
+        \bfseries Precision  & x  & x & x & x \\  \hline
+	   \bfseries Execution Time  & x  & x & x & x \\
+
+    \end{tabular}
+
+\end{center}
+\caption{Results Format}
+\vspace{-0.1in}
+%\vspace{2mm}
+\label{Table:mostoverpermissions}
+\end{table}
+
+In addition to further evaluation of concolic analysis for code clone detection, we will compare these results against leading clone detection tools including Simian, Nicad, CloneDR, MeCC, and Simcad - a list that is likely to grow in our final analysis. These tools and techniques will be evaluated using a previously created oracle by Murakami~\emph{et al.}~\cite{Murakami:2014:DCR:2597073.2597133}, which is an extension of the oracle created by Bellon~\emph{et al.}\cite{Bellon07comparisonand}.
+
+%such as those by Bailey and Burd~\cite{Burd:2002:ECD:827253.827745}, Li~\emph{et al.}~\cite{Li:2012:CCB:2337223.2337260}, and Saebjornsen~\emph{et al.}~\cite{Saebjornsen:2009:DCC:1572272.1572287}.
+
+All results will be published to our project website for researchers to analyze and use in their own research.
+
+
+
+\section{Conclusion}
+
+This paper presents the outline for a thorough analysis of the effectiveness of concolic analysis in code clone detection. We believe is necessary in order to evaluate concolic analysis for code clone detection in comparison with leading existing techniques in terms of accuracy, precision, recall, and execution time.
+
+
+
+
+\bibliographystyle{abbrv} % Check on this
+\bibliography{CA-Poster}
+
+% that's all folks
+\end{document}
+
+
+
+
+%%%% Todo
+% Fix keywords and categories
+%   Add in categories if space allows
+% Proabably not a bad idea to cut down on the number of references
+% Really drive home what makes this work different

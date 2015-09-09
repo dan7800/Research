@@ -1,0 +1,2240 @@
+<html>
+<head>
+<style type="text/css">
+body {font-family:Arial}
+table {background-color:white; border:0px solid white; width:95%; margin-left:auto; margin-right: auto}
+td {background-color:#b0c4de; padding:16px; border:4px solid white}
+pre {background-color:white; padding:4px}
+</style>
+<title>
+NiCad Clone Report
+</title>
+</head>
+<body>
+<h2>
+NiCad Clone Report
+</h2>
+System: _
+<br>
+<br>Granularity: unctions
+<br>Max difference threshold: 50%
+<br>Clone size: 3 - 2500 lines
+<br>
+<br>Total unctions: 289
+<br>Clone pairs found: 145
+<br>
+<br>LCS compares: 28382 &nbsp;&nbsp;&nbsp; CPU time: 0 min 0.0 sec
+<br>
+<br>Number of  classes: 29
+<br>
+<h3>Clone class 1, 2 fragments, nominal size 29 lines, similarity 65%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 1176 - 1224 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_copy_tail(List *oldlist, int nskip)
+{
+	List	   *newlist;
+	ListCell   *newlist_prev;
+	ListCell   *oldlist_cur;
+
+	if (nskip &lt; 0)
+		nskip = 0;				/* would it be better to elog? */
+
+	if (oldlist == NIL || nskip &gt;= oldlist-&gt;length)
+		return NIL;
+
+	newlist = new_list(oldlist-&gt;type);
+	newlist-&gt;length = oldlist-&gt;length - nskip;
+
+	/*
+	 * Skip over the unwanted elements.
+	 */
+	oldlist_cur = oldlist-&gt;head;
+	while (nskip-- &gt; 0)
+		oldlist_cur = oldlist_cur-&gt;next;
+
+	/*
+	 * Copy over the data in the first remaining cell; new_list() has already
+	 * allocated the head cell itself
+	 */
+	newlist-&gt;head-&gt;data = oldlist_cur-&gt;data;
+
+	newlist_prev = newlist-&gt;head;
+	oldlist_cur = oldlist_cur-&gt;next;
+	while (oldlist_cur)
+	{
+		ListCell   *newlist_cur;
+
+		newlist_cur = (ListCell *) palloc(sizeof(*newlist_cur));
+		newlist_cur-&gt;data = oldlist_cur-&gt;data;
+		newlist_prev-&gt;next = newlist_cur;
+
+		newlist_prev = newlist_cur;
+		oldlist_cur = oldlist_cur-&gt;next;
+	}
+
+	newlist_prev-&gt;next = NULL;
+	newlist-&gt;tail = newlist_prev;
+
+	check_list_invariants(newlist);
+	return newlist;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1133 - 1171 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_copy(List *oldlist)
+{
+	List	   *newlist;
+	ListCell   *newlist_prev;
+	ListCell   *oldlist_cur;
+
+	if (oldlist == NIL)
+		return NIL;
+
+	newlist = new_list(oldlist-&gt;type);
+	newlist-&gt;length = oldlist-&gt;length;
+
+	/*
+	 * Copy over the data in the first cell; new_list() has already allocated
+	 * the head cell itself
+	 */
+	newlist-&gt;head-&gt;data = oldlist-&gt;head-&gt;data;
+
+	newlist_prev = newlist-&gt;head;
+	oldlist_cur = oldlist-&gt;head-&gt;next;
+	while (oldlist_cur)
+	{
+		ListCell   *newlist_cur;
+
+		newlist_cur = (ListCell *) palloc(sizeof(*newlist_cur));
+		newlist_cur-&gt;data = oldlist_cur-&gt;data;
+		newlist_prev-&gt;next = newlist_cur;
+
+		newlist_prev = newlist_cur;
+		oldlist_cur = oldlist_cur-&gt;next;
+	}
+
+	newlist_prev-&gt;next = NULL;
+	newlist-&gt;tail = newlist_prev;
+
+	check_list_invariants(newlist);
+	return newlist;
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 2, 2 fragments, nominal size 25 lines, similarity 60%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 473 - 501 of examples2/postgresql//smallpostgresql/pqformat.c.ifdefed
+<pre>
+unsigned int
+pq_getmsgint(StringInfo msg, int b)
+{
+	unsigned int result;
+	unsigned char n8;
+	uint16		n16;
+	uint32		n32;
+
+	switch (b)
+	{
+		case 1:
+			pq_copymsgbytes(msg, (char *) &amp;n8, 1);
+			result = n8;
+			break;
+		case 2:
+			pq_copymsgbytes(msg, (char *) &amp;n16, 2);
+			result = ntohs(n16);
+			break;
+		case 4:
+			pq_copymsgbytes(msg, (char *) &amp;n32, 4);
+			result = ntohl(n32);
+			break;
+		default:
+			elog(ERROR, "unsupported integer size %d", b);
+			result = 0;			/* keep compiler quiet */
+			break;
+	}
+	return result;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 234 - 259 of examples2/postgresql//smallpostgresql/pqformat.c.ifdefed
+<pre>
+void
+pq_sendint(StringInfo buf, int i, int b)
+{
+	unsigned char n8;
+	uint16		n16;
+	uint32		n32;
+
+	switch (b)
+	{
+		case 1:
+			n8 = (unsigned char) i;
+			appendBinaryStringInfo(buf, (char *) &amp;n8, 1);
+			break;
+		case 2:
+			n16 = htons((uint16) i);
+			appendBinaryStringInfo(buf, (char *) &amp;n16, 2);
+			break;
+		case 4:
+			n32 = htonl((uint32) i);
+			appendBinaryStringInfo(buf, (char *) &amp;n32, 4);
+			break;
+		default:
+			elog(ERROR, "unsupported integer size %d", b);
+			break;
+	}
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 3, 5 fragments, nominal size 17 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 686 - 710 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outSetOp(StringInfo str, SetOp *node)
+{
+	int			i;
+
+	WRITE_NODE_TYPE("SETOP");
+
+	_outPlanInfo(str, (Plan *) node);
+
+	WRITE_ENUM_FIELD(cmd, SetOpCmd);
+	WRITE_ENUM_FIELD(strategy, SetOpStrategy);
+	WRITE_INT_FIELD(numCols);
+
+	appendStringInfo(str, " :dupColIdx");
+	for (i = 0; i &lt; node-&gt;numCols; i++)
+		appendStringInfo(str, " %d", node-&gt;dupColIdx[i]);
+
+	appendStringInfo(str, " :dupOperators");
+	for (i = 0; i &lt; node-&gt;numCols; i++)
+		appendStringInfo(str, " %u", node-&gt;dupOperators[i]);
+
+	WRITE_INT_FIELD(flagColIdx);
+	WRITE_INT_FIELD(firstFlag);
+	WRITE_LONG_FIELD(numGroups);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 333 - 354 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outRecursiveUnion(StringInfo str, RecursiveUnion *node)
+{
+	int			i;
+
+	WRITE_NODE_TYPE("RECURSIVEUNION");
+
+	_outPlanInfo(str, (Plan *) node);
+
+	WRITE_INT_FIELD(wtParam);
+	WRITE_INT_FIELD(numCols);
+
+	appendStringInfo(str, " :dupColIdx");
+	for (i = 0; i &lt; node-&gt;numCols; i++)
+		appendStringInfo(str, " %d", node-&gt;dupColIdx[i]);
+
+	appendStringInfo(str, " :dupOperators");
+	for (i = 0; i &lt; node-&gt;numCols; i++)
+		appendStringInfo(str, " %u", node-&gt;dupOperators[i]);
+
+	WRITE_LONG_FIELD(numGroups);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 545 - 566 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outAgg(StringInfo str, Agg *node)
+{
+	int			i;
+
+	WRITE_NODE_TYPE("AGG");
+
+	_outPlanInfo(str, (Plan *) node);
+
+	WRITE_ENUM_FIELD(aggstrategy, AggStrategy);
+	WRITE_INT_FIELD(numCols);
+
+	appendStringInfo(str, " :grpColIdx");
+	for (i = 0; i &lt; node-&gt;numCols; i++)
+		appendStringInfo(str, " %d", node-&gt;grpColIdx[i]);
+
+	appendStringInfo(str, " :grpOperators");
+	for (i = 0; i &lt; node-&gt;numCols; i++)
+		appendStringInfo(str, " %u", node-&gt;grpOperators[i]);
+
+	WRITE_LONG_FIELD(numGroups);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 601 - 619 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outGroup(StringInfo str, Group *node)
+{
+	int			i;
+
+	WRITE_NODE_TYPE("GROUP");
+
+	_outPlanInfo(str, (Plan *) node);
+
+	WRITE_INT_FIELD(numCols);
+
+	appendStringInfo(str, " :grpColIdx");
+	for (i = 0; i &lt; node-&gt;numCols; i++)
+		appendStringInfo(str, " %d", node-&gt;grpColIdx[i]);
+
+	appendStringInfo(str, " :grpOperators");
+	for (i = 0; i &lt; node-&gt;numCols; i++)
+		appendStringInfo(str, " %u", node-&gt;grpOperators[i]);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 653 - 671 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outUnique(StringInfo str, Unique *node)
+{
+	int			i;
+
+	WRITE_NODE_TYPE("UNIQUE");
+
+	_outPlanInfo(str, (Plan *) node);
+
+	WRITE_INT_FIELD(numCols);
+
+	appendStringInfo(str, " :uniqColIdx");
+	for (i = 0; i &lt; node-&gt;numCols; i++)
+		appendStringInfo(str, " %d", node-&gt;uniqColIdx[i]);
+
+	appendStringInfo(str, " :uniqOperators");
+	for (i = 0; i &lt; node-&gt;numCols; i++)
+		appendStringInfo(str, " %u", node-&gt;uniqOperators[i]);
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 4, 4 fragments, nominal size 15 lines, similarity 54%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 129 - 149 of examples2/postgresql//smallpostgresql/pqformat.c.ifdefed
+<pre>
+void
+pq_sendcountedtext(StringInfo buf, const char *str, int slen,
+				   bool countincludesself)
+{
+	int			extra = countincludesself ? 4 : 0;
+	char	   *p;
+
+	p = pg_server_to_client(str, slen);
+	if (p != str)				/* actual conversion has been done? */
+	{
+		slen = strlen(p);
+		pq_sendint(buf, slen + extra, 4);
+		appendBinaryStringInfo(buf, p, slen);
+		pfree(p);
+	}
+	else
+	{
+		pq_sendint(buf, slen + extra, 4);
+		appendBinaryStringInfo(buf, str, slen);
+	}
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 161 - 175 of examples2/postgresql//smallpostgresql/pqformat.c.ifdefed
+<pre>
+void
+pq_sendtext(StringInfo buf, const char *str, int slen)
+{
+	char	   *p;
+
+	p = pg_server_to_client(str, slen);
+	if (p != str)				/* actual conversion has been done? */
+	{
+		slen = strlen(p);
+		appendBinaryStringInfo(buf, p, slen);
+		pfree(p);
+	}
+	else
+		appendBinaryStringInfo(buf, str, slen);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 184 - 199 of examples2/postgresql//smallpostgresql/pqformat.c.ifdefed
+<pre>
+void
+pq_sendstring(StringInfo buf, const char *str)
+{
+	int			slen = strlen(str);
+	char	   *p;
+
+	p = pg_server_to_client(str, slen);
+	if (p != str)				/* actual conversion has been done? */
+	{
+		slen = strlen(p);
+		appendBinaryStringInfo(buf, p, slen + 1);
+		pfree(p);
+	}
+	else
+		appendBinaryStringInfo(buf, str, slen + 1);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 425 - 439 of examples2/postgresql//smallpostgresql/pqformat.c.ifdefed
+<pre>
+void
+pq_puttextmessage(char msgtype, const char *str)
+{
+	int			slen = strlen(str);
+	char	   *p;
+
+	p = pg_server_to_client(str, slen);
+	if (p != str)				/* actual conversion has been done? */
+	{
+		(void) pq_putmessage(msgtype, p, strlen(p) + 1);
+		pfree(p);
+		return;
+	}
+	(void) pq_putmessage(msgtype, str, slen + 1);
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 5, 9 fragments, nominal size 15 lines, similarity 57%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 799 - 820 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_intersection(List *list1, List *list2)
+{
+	List	   *result;
+	ListCell   *cell;
+
+	if (list1 == NIL || list2 == NIL)
+		return NIL;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	result = NIL;
+	foreach(cell, list1)
+	{
+		if (list_member(list2, lfirst(cell)))
+			result = lappend(result, lfirst(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 857 - 877 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_difference_ptr(List *list1, List *list2)
+{
+	ListCell   *cell;
+	List	   *result = NIL;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	if (list2 == NIL)
+		return list_copy(list1);
+
+	foreach(cell, list1)
+	{
+		if (!list_member_ptr(list2, lfirst(cell)))
+			result = lappend(result, lfirst(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 831 - 851 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_difference(List *list1, List *list2)
+{
+	ListCell   *cell;
+	List	   *result = NIL;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	if (list2 == NIL)
+		return list_copy(list1);
+
+	foreach(cell, list1)
+	{
+		if (!list_member(list2, lfirst(cell)))
+			result = lappend(result, lfirst(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 720 - 738 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_union_ptr(List *list1, List *list2)
+{
+	List	   *result;
+	ListCell   *cell;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	result = list_copy(list1);
+	foreach(cell, list2)
+	{
+		if (!list_member_ptr(result, lfirst(cell)))
+			result = lappend(result, lfirst(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 696 - 714 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_union(List *list1, List *list2)
+{
+	List	   *result;
+	ListCell   *cell;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	result = list_copy(list1);
+	foreach(cell, list2)
+	{
+		if (!list_member(result, lfirst(cell)))
+			result = lappend(result, lfirst(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 882 - 902 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_difference_int(List *list1, List *list2)
+{
+	ListCell   *cell;
+	List	   *result = NIL;
+
+	Assert(IsIntegerList(list1));
+	Assert(IsIntegerList(list2));
+
+	if (list2 == NIL)
+		return list_copy(list1);
+
+	foreach(cell, list1)
+	{
+		if (!list_member_int(list2, lfirst_int(cell)))
+			result = lappend_int(result, lfirst_int(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 907 - 927 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_difference_oid(List *list1, List *list2)
+{
+	ListCell   *cell;
+	List	   *result = NIL;
+
+	Assert(IsOidList(list1));
+	Assert(IsOidList(list2));
+
+	if (list2 == NIL)
+		return list_copy(list1);
+
+	foreach(cell, list1)
+	{
+		if (!list_member_oid(list2, lfirst_oid(cell)))
+			result = lappend_oid(result, lfirst_oid(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 743 - 761 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_union_int(List *list1, List *list2)
+{
+	List	   *result;
+	ListCell   *cell;
+
+	Assert(IsIntegerList(list1));
+	Assert(IsIntegerList(list2));
+
+	result = list_copy(list1);
+	foreach(cell, list2)
+	{
+		if (!list_member_int(result, lfirst_int(cell)))
+			result = lappend_int(result, lfirst_int(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 766 - 784 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_union_oid(List *list1, List *list2)
+{
+	List	   *result;
+	ListCell   *cell;
+
+	Assert(IsOidList(list1));
+	Assert(IsOidList(list2));
+
+	result = list_copy(list1);
+	foreach(cell, list2)
+	{
+		if (!list_member_oid(result, lfirst_oid(cell)))
+			result = lappend_oid(result, lfirst_oid(cell));
+	}
+
+	check_list_invariants(result);
+	return result;
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 6, 8 fragments, nominal size 13 lines, similarity 53%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 635 - 655 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_delete_oid(List *list, Oid datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsOidList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (lfirst_oid(cell) == datum)
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 612 - 632 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_delete_int(List *list, int datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsIntegerList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (lfirst_int(cell) == datum)
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 589 - 609 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_delete_ptr(List *list, void *datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (lfirst(cell) == datum)
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 566 - 586 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_delete(List *list, void *datum)
+{
+	ListCell   *cell;
+	ListCell   *prev;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	prev = NULL;
+	foreach(cell, list)
+	{
+		if (equal(lfirst(cell), datum))
+			return list_delete_cell(list, cell, prev);
+
+		prev = cell;
+	}
+
+	/* Didn't find a match: return the list unmodified */
+	return list;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 504 - 519 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+bool
+list_member_oid(List *list, Oid datum)
+{
+	ListCell   *cell;
+
+	Assert(IsOidList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (lfirst_oid(cell) == datum)
+			return true;
+	}
+
+	return false;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 484 - 499 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+bool
+list_member_int(List *list, int datum)
+{
+	ListCell   *cell;
+
+	Assert(IsIntegerList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (lfirst_int(cell) == datum)
+			return true;
+	}
+
+	return false;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 464 - 479 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+bool
+list_member_ptr(List *list, void *datum)
+{
+	ListCell   *cell;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (lfirst(cell) == datum)
+			return true;
+	}
+
+	return false;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 443 - 458 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+bool
+list_member(List *list, void *datum)
+{
+	ListCell   *cell;
+
+	Assert(IsPointerList(list));
+	check_list_invariants(list);
+
+	foreach(cell, list)
+	{
+		if (equal(lfirst(cell), datum))
+			return true;
+	}
+
+	return false;
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 7, 7 fragments, nominal size 11 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 729 - 743 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static ArrayCoerceExpr *
+_readArrayCoerceExpr(void)
+{
+	READ_LOCALS(ArrayCoerceExpr);
+
+	READ_NODE_FIELD(arg);
+	READ_OID_FIELD(elemfuncid);
+	READ_OID_FIELD(resulttype);
+	READ_INT_FIELD(resulttypmod);
+	READ_BOOL_FIELD(isExplicit);
+	READ_ENUM_FIELD(coerceformat, CoercionForm);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 970 - 982 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static CoerceToDomain *
+_readCoerceToDomain(void)
+{
+	READ_LOCALS(CoerceToDomain);
+
+	READ_NODE_FIELD(arg);
+	READ_OID_FIELD(resulttype);
+	READ_INT_FIELD(resulttypmod);
+	READ_ENUM_FIELD(coercionformat, CoercionForm);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 696 - 708 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static RelabelType *
+_readRelabelType(void)
+{
+	READ_LOCALS(RelabelType);
+
+	READ_NODE_FIELD(arg);
+	READ_OID_FIELD(resulttype);
+	READ_INT_FIELD(resulttypmod);
+	READ_ENUM_FIELD(relabelformat, CoercionForm);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 713 - 724 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static CoerceViaIO *
+_readCoerceViaIO(void)
+{
+	READ_LOCALS(CoerceViaIO);
+
+	READ_NODE_FIELD(arg);
+	READ_OID_FIELD(resulttype);
+	READ_ENUM_FIELD(coerceformat, CoercionForm);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 748 - 759 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static ConvertRowtypeExpr *
+_readConvertRowtypeExpr(void)
+{
+	READ_LOCALS(ConvertRowtypeExpr);
+
+	READ_NODE_FIELD(arg);
+	READ_OID_FIELD(resulttype);
+	READ_ENUM_FIELD(convertformat, CoercionForm);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 664 - 675 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static FieldSelect *
+_readFieldSelect(void)
+{
+	READ_LOCALS(FieldSelect);
+
+	READ_NODE_FIELD(arg);
+	READ_INT_FIELD(fieldnum);
+	READ_OID_FIELD(resulttype);
+	READ_INT_FIELD(resulttypmod);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 680 - 691 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static FieldStore *
+_readFieldStore(void)
+{
+	READ_LOCALS(FieldStore);
+
+	READ_NODE_FIELD(arg);
+	READ_NODE_FIELD(newvals);
+	READ_NODE_FIELD(fieldnums);
+	READ_OID_FIELD(resulttype);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 8, 4 fragments, nominal size 11 lines, similarity 54%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 1055 - 1071 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_concat_unique_oid(List *list1, List *list2)
+{
+	ListCell   *cell;
+
+	Assert(IsOidList(list1));
+	Assert(IsOidList(list2));
+
+	foreach(cell, list2)
+	{
+		if (!list_member_oid(list1, lfirst_oid(cell)))
+			list1 = lappend_oid(list1, lfirst_oid(cell));
+	}
+
+	check_list_invariants(list1);
+	return list1;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 991 - 1007 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_concat_unique(List *list1, List *list2)
+{
+	ListCell   *cell;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	foreach(cell, list2)
+	{
+		if (!list_member(list1, lfirst(cell)))
+			list1 = lappend(list1, lfirst(cell));
+	}
+
+	check_list_invariants(list1);
+	return list1;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1013 - 1029 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_concat_unique_ptr(List *list1, List *list2)
+{
+	ListCell   *cell;
+
+	Assert(IsPointerList(list1));
+	Assert(IsPointerList(list2));
+
+	foreach(cell, list2)
+	{
+		if (!list_member_ptr(list1, lfirst(cell)))
+			list1 = lappend(list1, lfirst(cell));
+	}
+
+	check_list_invariants(list1);
+	return list1;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1034 - 1050 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_concat_unique_int(List *list1, List *list2)
+{
+	ListCell   *cell;
+
+	Assert(IsIntegerList(list1));
+	Assert(IsIntegerList(list2));
+
+	foreach(cell, list2)
+	{
+		if (!list_member_int(list1, lfirst_int(cell)))
+			list1 = lappend_int(list1, lfirst_int(cell));
+	}
+
+	check_list_invariants(list1);
+	return list1;
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 9, 4 fragments, nominal size 11 lines, similarity 63%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 560 - 584 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static DistinctExpr *
+_readDistinctExpr(void)
+{
+	READ_LOCALS(DistinctExpr);
+
+	READ_OID_FIELD(opno);
+	READ_OID_FIELD(opfuncid);
+
+	/*
+	 * The opfuncid is stored in the textual format primarily for debugging
+	 * and documentation reasons.  We want to always read it as zero to force
+	 * it to be re-looked-up in the pg_operator entry.	This ensures that
+	 * stored rules don't have hidden dependencies on operators' functions.
+	 * (We don't currently support an ALTER OPERATOR command, but might
+	 * someday.)
+	 */
+	local_node-&gt;opfuncid = InvalidOid;
+
+	READ_OID_FIELD(opresulttype);
+	READ_BOOL_FIELD(opretset);
+	READ_NODE_FIELD(args);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 531 - 555 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static OpExpr *
+_readOpExpr(void)
+{
+	READ_LOCALS(OpExpr);
+
+	READ_OID_FIELD(opno);
+	READ_OID_FIELD(opfuncid);
+
+	/*
+	 * The opfuncid is stored in the textual format primarily for debugging
+	 * and documentation reasons.  We want to always read it as zero to force
+	 * it to be re-looked-up in the pg_operator entry.	This ensures that
+	 * stored rules don't have hidden dependencies on operators' functions.
+	 * (We don't currently support an ALTER OPERATOR command, but might
+	 * someday.)
+	 */
+	local_node-&gt;opfuncid = InvalidOid;
+
+	READ_OID_FIELD(opresulttype);
+	READ_BOOL_FIELD(opretset);
+	READ_NODE_FIELD(args);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 913 - 937 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static NullIfExpr *
+_readNullIfExpr(void)
+{
+	READ_LOCALS(NullIfExpr);
+
+	READ_OID_FIELD(opno);
+	READ_OID_FIELD(opfuncid);
+
+	/*
+	 * The opfuncid is stored in the textual format primarily for debugging
+	 * and documentation reasons.  We want to always read it as zero to force
+	 * it to be re-looked-up in the pg_operator entry.	This ensures that
+	 * stored rules don't have hidden dependencies on operators' functions.
+	 * (We don't currently support an ALTER OPERATOR command, but might
+	 * someday.)
+	 */
+	local_node-&gt;opfuncid = InvalidOid;
+
+	READ_OID_FIELD(opresulttype);
+	READ_BOOL_FIELD(opretset);
+	READ_NODE_FIELD(args);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 589 - 612 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static ScalarArrayOpExpr *
+_readScalarArrayOpExpr(void)
+{
+	READ_LOCALS(ScalarArrayOpExpr);
+
+	READ_OID_FIELD(opno);
+	READ_OID_FIELD(opfuncid);
+
+	/*
+	 * The opfuncid is stored in the textual format primarily for debugging
+	 * and documentation reasons.  We want to always read it as zero to force
+	 * it to be re-looked-up in the pg_operator entry.	This ensures that
+	 * stored rules don't have hidden dependencies on operators' functions.
+	 * (We don't currently support an ALTER OPERATOR command, but might
+	 * someday.)
+	 */
+	local_node-&gt;opfuncid = InvalidOid;
+
+	READ_BOOL_FIELD(useOr);
+	READ_NODE_FIELD(args);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 10, 6 fragments, nominal size 10 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 127 - 140 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+lappend(List *list, void *datum)
+{
+	Assert(IsPointerList(list));
+
+	if (list == NIL)
+		list = new_list(T_List);
+	else
+		new_tail_cell(list);
+
+	lfirst(list-&gt;tail) = datum;
+	check_list_invariants(list);
+	return list;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 163 - 176 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+lappend_oid(List *list, Oid datum)
+{
+	Assert(IsOidList(list));
+
+	if (list == NIL)
+		list = new_list(T_OidList);
+	else
+		new_tail_cell(list);
+
+	lfirst_oid(list-&gt;tail) = datum;
+	check_list_invariants(list);
+	return list;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 258 - 271 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+lcons(void *datum, List *list)
+{
+	Assert(IsPointerList(list));
+
+	if (list == NIL)
+		list = new_list(T_List);
+	else
+		new_head_cell(list);
+
+	lfirst(list-&gt;head) = datum;
+	check_list_invariants(list);
+	return list;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 145 - 158 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+lappend_int(List *list, int datum)
+{
+	Assert(IsIntegerList(list));
+
+	if (list == NIL)
+		list = new_list(T_IntList);
+	else
+		new_tail_cell(list);
+
+	lfirst_int(list-&gt;tail) = datum;
+	check_list_invariants(list);
+	return list;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 294 - 307 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+lcons_oid(Oid datum, List *list)
+{
+	Assert(IsOidList(list));
+
+	if (list == NIL)
+		list = new_list(T_OidList);
+	else
+		new_head_cell(list);
+
+	lfirst_oid(list-&gt;head) = datum;
+	check_list_invariants(list);
+	return list;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 276 - 289 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+lcons_int(int datum, List *list)
+{
+	Assert(IsIntegerList(list));
+
+	if (list == NIL)
+		list = new_list(T_IntList);
+	else
+		new_head_cell(list);
+
+	lfirst_int(list-&gt;head) = datum;
+	check_list_invariants(list);
+	return list;
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 11, 2 fragments, nominal size 10 lines, similarity 60%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 1961 - 1973 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outWindowClause(StringInfo str, WindowClause *node)
+{
+	WRITE_NODE_TYPE("WINDOWCLAUSE");
+
+	WRITE_STRING_FIELD(name);
+	WRITE_STRING_FIELD(refname);
+	WRITE_NODE_FIELD(partitionClause);
+	WRITE_NODE_FIELD(orderClause);
+	WRITE_INT_FIELD(frameOptions);
+	WRITE_UINT_FIELD(winref);
+	WRITE_BOOL_FIELD(copiedOrder);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 2253 - 2264 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outWindowDef(StringInfo str, WindowDef *node)
+{
+	WRITE_NODE_TYPE("WINDOWDEF");
+
+	WRITE_STRING_FIELD(name);
+	WRITE_STRING_FIELD(refname);
+	WRITE_NODE_FIELD(partitionClause);
+	WRITE_NODE_FIELD(orderClause);
+	WRITE_INT_FIELD(frameOptions);
+	WRITE_LOCATION_FIELD(location);
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 12, 6 fragments, nominal size 10 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 1030 - 1042 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outArrayCoerceExpr(StringInfo str, ArrayCoerceExpr *node)
+{
+	WRITE_NODE_TYPE("ARRAYCOERCEEXPR");
+
+	WRITE_NODE_FIELD(arg);
+	WRITE_OID_FIELD(elemfuncid);
+	WRITE_OID_FIELD(resulttype);
+	WRITE_INT_FIELD(resulttypmod);
+	WRITE_BOOL_FIELD(isExplicit);
+	WRITE_ENUM_FIELD(coerceformat, CoercionForm);
+	WRITE_LOCATION_FIELD(location);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1190 - 1200 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outCoerceToDomain(StringInfo str, CoerceToDomain *node)
+{
+	WRITE_NODE_TYPE("COERCETODOMAIN");
+
+	WRITE_NODE_FIELD(arg);
+	WRITE_OID_FIELD(resulttype);
+	WRITE_INT_FIELD(resulttypmod);
+	WRITE_ENUM_FIELD(coercionformat, CoercionForm);
+	WRITE_LOCATION_FIELD(location);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1007 - 1017 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outRelabelType(StringInfo str, RelabelType *node)
+{
+	WRITE_NODE_TYPE("RELABELTYPE");
+
+	WRITE_NODE_FIELD(arg);
+	WRITE_OID_FIELD(resulttype);
+	WRITE_INT_FIELD(resulttypmod);
+	WRITE_ENUM_FIELD(relabelformat, CoercionForm);
+	WRITE_LOCATION_FIELD(location);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1019 - 1028 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outCoerceViaIO(StringInfo str, CoerceViaIO *node)
+{
+	WRITE_NODE_TYPE("COERCEVIAIO");
+
+	WRITE_NODE_FIELD(arg);
+	WRITE_OID_FIELD(resulttype);
+	WRITE_ENUM_FIELD(coerceformat, CoercionForm);
+	WRITE_LOCATION_FIELD(location);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1044 - 1053 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outConvertRowtypeExpr(StringInfo str, ConvertRowtypeExpr *node)
+{
+	WRITE_NODE_TYPE("CONVERTROWTYPEEXPR");
+
+	WRITE_NODE_FIELD(arg);
+	WRITE_OID_FIELD(resulttype);
+	WRITE_ENUM_FIELD(convertformat, CoercionForm);
+	WRITE_LOCATION_FIELD(location);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 985 - 994 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outFieldSelect(StringInfo str, FieldSelect *node)
+{
+	WRITE_NODE_TYPE("FIELDSELECT");
+
+	WRITE_NODE_FIELD(arg);
+	WRITE_INT_FIELD(fieldnum);
+	WRITE_OID_FIELD(resulttype);
+	WRITE_INT_FIELD(resulttypmod);
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 13, 4 fragments, nominal size 9 lines, similarity 55%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 892 - 903 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outDistinctExpr(StringInfo str, DistinctExpr *node)
+{
+	WRITE_NODE_TYPE("DISTINCTEXPR");
+
+	WRITE_OID_FIELD(opno);
+	WRITE_OID_FIELD(opfuncid);
+	WRITE_OID_FIELD(opresulttype);
+	WRITE_BOOL_FIELD(opretset);
+	WRITE_NODE_FIELD(args);
+	WRITE_LOCATION_FIELD(location);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 879 - 890 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outOpExpr(StringInfo str, OpExpr *node)
+{
+	WRITE_NODE_TYPE("OPEXPR");
+
+	WRITE_OID_FIELD(opno);
+	WRITE_OID_FIELD(opfuncid);
+	WRITE_OID_FIELD(opresulttype);
+	WRITE_BOOL_FIELD(opretset);
+	WRITE_NODE_FIELD(args);
+	WRITE_LOCATION_FIELD(location);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1159 - 1170 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outNullIfExpr(StringInfo str, NullIfExpr *node)
+{
+	WRITE_NODE_TYPE("NULLIFEXPR");
+
+	WRITE_OID_FIELD(opno);
+	WRITE_OID_FIELD(opfuncid);
+	WRITE_OID_FIELD(opresulttype);
+	WRITE_BOOL_FIELD(opretset);
+	WRITE_NODE_FIELD(args);
+	WRITE_LOCATION_FIELD(location);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 905 - 915 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outScalarArrayOpExpr(StringInfo str, ScalarArrayOpExpr *node)
+{
+	WRITE_NODE_TYPE("SCALARARRAYOPEXPR");
+
+	WRITE_OID_FIELD(opno);
+	WRITE_OID_FIELD(opfuncid);
+	WRITE_BOOL_FIELD(useOr);
+	WRITE_NODE_FIELD(args);
+	WRITE_LOCATION_FIELD(location);
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 14, 4 fragments, nominal size 9 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 301 - 314 of examples2/postgresql//smallpostgresql/pqformat.c.ifdefed
+<pre>
+void
+pq_sendfloat4(StringInfo buf, float4 f)
+{
+	union
+	{
+		float4		f;
+		uint32		i;
+	}			swap;
+
+	swap.f = f;
+	swap.i = htonl(swap.i);
+
+	appendBinaryStringInfo(buf, (char *) &amp;swap.i, 4);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 545 - 556 of examples2/postgresql//smallpostgresql/pqformat.c.ifdefed
+<pre>
+float4
+pq_getmsgfloat4(StringInfo msg)
+{
+	union
+	{
+		float4		f;
+		uint32		i;
+	}			swap;
+
+	swap.i = pq_getmsgint(msg, 4);
+	return swap.f;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 564 - 594 of examples2/postgresql//smallpostgresql/pqformat.c.ifdefed
+<pre>
+float8
+pq_getmsgfloat8(StringInfo msg)
+{
+//#ifdef INT64_IS_BUSTED
+//	union
+//	{
+//		float8		f;
+//		uint32		h[2];
+//	}			swap;
+//
+//#ifdef WORDS_BIGENDIAN
+//	/* machine seems to be big-endian, receive h[0] first */
+//	swap.h[0] = pq_getmsgint(msg, 4);
+//	swap.h[1] = pq_getmsgint(msg, 4);
+//#else
+//	/* machine seems to be little-endian, receive h[1] first */
+//	swap.h[1] = pq_getmsgint(msg, 4);
+//	swap.h[0] = pq_getmsgint(msg, 4);
+//#endif
+//	return swap.f;
+//#else							/* INT64 works */
+	union
+	{
+		float8		f;
+		int64		i;
+	}			swap;
+
+	swap.i = pq_getmsgint64(msg);
+	return swap.f;
+//#endif
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 327 - 360 of examples2/postgresql//smallpostgresql/pqformat.c.ifdefed
+<pre>
+void
+pq_sendfloat8(StringInfo buf, float8 f)
+{
+//#ifdef INT64_IS_BUSTED
+//	union
+//	{
+//		float8		f;
+//		uint32		h[2];
+//	}			swap;
+//
+//	swap.f = f;
+//	swap.h[0] = htonl(swap.h[0]);
+//	swap.h[1] = htonl(swap.h[1]);
+//
+//#ifdef WORDS_BIGENDIAN
+//	/* machine seems to be big-endian, send h[0] first */
+//	appendBinaryStringInfo(buf, (char *) &amp;swap.h[0], 4);
+//	appendBinaryStringInfo(buf, (char *) &amp;swap.h[1], 4);
+//#else
+//	/* machine seems to be little-endian, send h[1] first */
+//	appendBinaryStringInfo(buf, (char *) &amp;swap.h[1], 4);
+//	appendBinaryStringInfo(buf, (char *) &amp;swap.h[0], 4);
+//#endif
+//#else							/* INT64 works */
+	union
+	{
+		float8		f;
+		int64		i;
+	}			swap;
+
+	swap.f = f;
+	pq_sendint64(buf, swap.i);
+//#endif
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 15, 2 fragments, nominal size 8 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 603 - 615 of examples2/postgresql//smallpostgresql/pqformat.c.ifdefed
+<pre>
+const char *
+pq_getmsgbytes(StringInfo msg, int datalen)
+{
+	const char *result;
+
+	if (datalen &lt; 0 || datalen &gt; (msg-&gt;len - msg-&gt;cursor))
+		ereport(ERROR,
+				(errcode(ERRCODE_PROTOCOL_VIOLATION),
+				 errmsg("insufficient data left in message")));
+	result = &amp;msg-&gt;data[msg-&gt;cursor];
+	msg-&gt;cursor += datalen;
+	return result;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 623 - 632 of examples2/postgresql//smallpostgresql/pqformat.c.ifdefed
+<pre>
+void
+pq_copymsgbytes(StringInfo msg, char *buf, int datalen)
+{
+	if (datalen &lt; 0 || datalen &gt; (msg-&gt;len - msg-&gt;cursor))
+		ereport(ERROR,
+				(errcode(ERRCODE_PROTOCOL_VIOLATION),
+				 errmsg("insufficient data left in message")));
+	memcpy(buf, &amp;msg-&gt;data[msg-&gt;cursor], datalen);
+	msg-&gt;cursor += datalen;
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 16, 3 fragments, nominal size 8 lines, similarity 62%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 234 - 245 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+ListCell *
+lappend_cell_oid(List *list, ListCell *prev, Oid datum)
+{
+	ListCell   *new_cell;
+
+	Assert(IsOidList(list));
+
+	new_cell = add_new_cell(list, prev);
+	lfirst_oid(new_cell) = datum;
+	check_list_invariants(list);
+	return new_cell;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 221 - 232 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+ListCell *
+lappend_cell_int(List *list, ListCell *prev, int datum)
+{
+	ListCell   *new_cell;
+
+	Assert(IsIntegerList(list));
+
+	new_cell = add_new_cell(list, prev);
+	lfirst_int(new_cell) = datum;
+	check_list_invariants(list);
+	return new_cell;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 208 - 219 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+ListCell *
+lappend_cell(List *list, ListCell *prev, void *datum)
+{
+	ListCell   *new_cell;
+
+	Assert(IsPointerList(list));
+
+	new_cell = add_new_cell(list, prev);
+	lfirst(new_cell) = datum;
+	check_list_invariants(list);
+	return new_cell;
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 17, 2 fragments, nominal size 8 lines, similarity 62%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 392 - 403 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outIndexScan(StringInfo str, IndexScan *node)
+{
+	WRITE_NODE_TYPE("INDEXSCAN");
+
+	_outScanInfo(str, (Scan *) node);
+
+	WRITE_OID_FIELD(indexid);
+	WRITE_NODE_FIELD(indexqual);
+	WRITE_NODE_FIELD(indexqualorig);
+	WRITE_ENUM_FIELD(indexorderdir, ScanDirection);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 405 - 415 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outBitmapIndexScan(StringInfo str, BitmapIndexScan *node)
+{
+	WRITE_NODE_TYPE("BITMAPINDEXSCAN");
+
+	_outScanInfo(str, (Scan *) node);
+
+	WRITE_OID_FIELD(indexid);
+	WRITE_NODE_FIELD(indexqual);
+	WRITE_NODE_FIELD(indexqualorig);
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 18, 2 fragments, nominal size 8 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 876 - 887 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static MinMaxExpr *
+_readMinMaxExpr(void)
+{
+	READ_LOCALS(MinMaxExpr);
+
+	READ_OID_FIELD(minmaxtype);
+	READ_ENUM_FIELD(op, MinMaxOp);
+	READ_NODE_FIELD(args);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 861 - 871 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static CoalesceExpr *
+_readCoalesceExpr(void)
+{
+	READ_LOCALS(CoalesceExpr);
+
+	READ_OID_FIELD(coalescetype);
+	READ_NODE_FIELD(args);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 19, 3 fragments, nominal size 7 lines, similarity 57%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 1002 - 1012 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static SetToDefault *
+_readSetToDefault(void)
+{
+	READ_LOCALS(SetToDefault);
+
+	READ_OID_FIELD(typeId);
+	READ_INT_FIELD(typeMod);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 987 - 997 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static CoerceToDomainValue *
+_readCoerceToDomainValue(void)
+{
+	READ_LOCALS(CoerceToDomainValue);
+
+	READ_OID_FIELD(typeId);
+	READ_INT_FIELD(typeMod);
+	READ_LOCATION_FIELD(location);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 796 - 805 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static CaseTestExpr *
+_readCaseTestExpr(void)
+{
+	READ_LOCALS(CaseTestExpr);
+
+	READ_OID_FIELD(typeId);
+	READ_INT_FIELD(typeMod);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 20, 4 fragments, nominal size 6 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 935 - 942 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_append_unique(List *list, void *datum)
+{
+	if (list_member(list, datum))
+		return list;
+	else
+		return lappend(list, datum);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 948 - 955 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_append_unique_ptr(List *list, void *datum)
+{
+	if (list_member_ptr(list, datum))
+		return list;
+	else
+		return lappend(list, datum);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 960 - 967 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_append_unique_int(List *list, int datum)
+{
+	if (list_member_int(list, datum))
+		return list;
+	else
+		return lappend_int(list, datum);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 972 - 979 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+List *
+list_append_unique_oid(List *list, Oid datum)
+{
+	if (list_member_oid(list, datum))
+		return list;
+	else
+		return lappend_oid(list, datum);
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 21, 4 fragments, nominal size 6 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 22 - 30 of examples2/postgresql//smallpostgresql/value.c.ifdefed
+<pre>
+Value *
+makeInteger(long i)
+{
+	Value	   *v = makeNode(Value);
+
+	v-&gt;type = T_Integer;
+	v-&gt;val.ival = i;
+	return v;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 37 - 45 of examples2/postgresql//smallpostgresql/value.c.ifdefed
+<pre>
+Value *
+makeFloat(char *numericStr)
+{
+	Value	   *v = makeNode(Value);
+
+	v-&gt;type = T_Float;
+	v-&gt;val.str = numericStr;
+	return v;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 52 - 60 of examples2/postgresql//smallpostgresql/value.c.ifdefed
+<pre>
+Value *
+makeString(char *str)
+{
+	Value	   *v = makeNode(Value);
+
+	v-&gt;type = T_String;
+	v-&gt;val.str = str;
+	return v;
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 67 - 75 of examples2/postgresql//smallpostgresql/value.c.ifdefed
+<pre>
+Value *
+makeBitString(char *str)
+{
+	Value	   *v = makeNode(Value);
+
+	v-&gt;type = T_BitString;
+	v-&gt;val.str = str;
+	return v;
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 22, 3 fragments, nominal size 6 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 1202 - 1210 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outCoerceToDomainValue(StringInfo str, CoerceToDomainValue *node)
+{
+	WRITE_NODE_TYPE("COERCETODOMAINVALUE");
+
+	WRITE_OID_FIELD(typeId);
+	WRITE_INT_FIELD(typeMod);
+	WRITE_LOCATION_FIELD(location);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1212 - 1220 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outSetToDefault(StringInfo str, SetToDefault *node)
+{
+	WRITE_NODE_TYPE("SETTODEFAULT");
+
+	WRITE_OID_FIELD(typeId);
+	WRITE_INT_FIELD(typeMod);
+	WRITE_LOCATION_FIELD(location);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1077 - 1084 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outCaseTestExpr(StringInfo str, CaseTestExpr *node)
+{
+	WRITE_NODE_TYPE("CASETESTEXPR");
+
+	WRITE_OID_FIELD(typeId);
+	WRITE_INT_FIELD(typeMod);
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 23, 2 fragments, nominal size 6 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 956 - 965 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static BooleanTest *
+_readBooleanTest(void)
+{
+	READ_LOCALS(BooleanTest);
+
+	READ_NODE_FIELD(arg);
+	READ_ENUM_FIELD(booltesttype, BoolTestType);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 942 - 951 of examples2/postgresql//smallpostgresql/readfuncs.c.ifdefed
+<pre>
+static NullTest *
+_readNullTest(void)
+{
+	READ_LOCALS(NullTest);
+
+	READ_NODE_FIELD(arg);
+	READ_ENUM_FIELD(nulltesttype, NullTestType);
+
+	READ_DONE();
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 24, 2 fragments, nominal size 6 lines, similarity 66%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 1360 - 1369 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outBitmapOrPath(StringInfo str, BitmapOrPath *node)
+{
+	WRITE_NODE_TYPE("BITMAPORPATH");
+
+	_outPathInfo(str, (Path *) node);
+
+	WRITE_NODE_FIELD(bitmapquals);
+	WRITE_FLOAT_FIELD(bitmapselectivity, "%.4f");
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1349 - 1358 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outBitmapAndPath(StringInfo str, BitmapAndPath *node)
+{
+	WRITE_NODE_TYPE("BITMAPANDPATH");
+
+	_outPathInfo(str, (Path *) node);
+
+	WRITE_NODE_FIELD(bitmapquals);
+	WRITE_FLOAT_FIELD(bitmapselectivity, "%.4f");
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 25, 2 fragments, nominal size 5 lines, similarity 60%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 356 - 364 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outBitmapAnd(StringInfo str, BitmapAnd *node)
+{
+	WRITE_NODE_TYPE("BITMAPAND");
+
+	_outPlanInfo(str, (Plan *) node);
+
+	WRITE_NODE_FIELD(bitmapplans);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 366 - 374 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outBitmapOr(StringInfo str, BitmapOr *node)
+{
+	WRITE_NODE_TYPE("BITMAPOR");
+
+	_outPlanInfo(str, (Plan *) node);
+
+	WRITE_NODE_FIELD(bitmapplans);
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 26, 2 fragments, nominal size 4 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 409 - 414 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+void *
+list_nth(List *list, int n)
+{
+	Assert(IsPointerList(list));
+	return lfirst(list_nth_cell(list, n));
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 1120 - 1128 of examples2/postgresql//smallpostgresql/list.c.ifdefed
+<pre>
+void
+list_free_deep(List *list)
+{
+	/*
+	 * A "deep" free operation only makes sense on a list of pointers.
+	 */
+	Assert(IsPointerList(list));
+	list_free_private(list, true);
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 27, 3 fragments, nominal size 4 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 304 - 310 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outPlan(StringInfo str, Plan *node)
+{
+	WRITE_NODE_TYPE("PLAN");
+
+	_outPlanInfo(str, (Plan *) node);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 283 - 289 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outScanInfo(StringInfo str, Scan *node)
+{
+	_outPlanInfo(str, (Plan *) node);
+
+	WRITE_UINT_FIELD(scanrelid);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 621 - 627 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outMaterial(StringInfo str, Material *node)
+{
+	WRITE_NODE_TYPE("MATERIAL");
+
+	_outPlanInfo(str, (Plan *) node);
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 28, 2 fragments, nominal size 4 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 376 - 382 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outScan(StringInfo str, Scan *node)
+{
+	WRITE_NODE_TYPE("SCAN");
+
+	_outScanInfo(str, (Scan *) node);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 384 - 390 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outSeqScan(StringInfo str, SeqScan *node)
+{
+	WRITE_NODE_TYPE("SEQSCAN");
+
+	_outScanInfo(str, (Scan *) node);
+}
+</pre>
+</td></tr>
+</table>
+<h3>Clone class 29, 2 fragments, nominal size 4 lines, similarity 50%
+</h3>
+<table cellpadding=12 border=2 frame="box" width="90%">
+<tr><td>
+Lines 492 - 498 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outJoin(StringInfo str, Join *node)
+{
+	WRITE_NODE_TYPE("JOIN");
+
+	_outJoinPlanInfo(str, (Join *) node);
+}
+</pre>
+</td></tr>
+<tr><td>
+Lines 500 - 506 of examples2/postgresql//smallpostgresql/outfuncs.c.ifdefed
+<pre>
+static void
+_outNestLoop(StringInfo str, NestLoop *node)
+{
+	WRITE_NODE_TYPE("NESTLOOP");
+
+	_outJoinPlanInfo(str, (Join *) node);
+}
+</pre>
+</td></tr>
+</table>
+</body>
+</html>

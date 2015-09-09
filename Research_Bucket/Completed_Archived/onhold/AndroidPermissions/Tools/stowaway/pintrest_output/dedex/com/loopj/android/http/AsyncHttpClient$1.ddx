@@ -1,0 +1,93 @@
+.class com/loopj/android/http/AsyncHttpClient$1
+.super java/lang/Object
+.source AsyncHttpClient.java
+.implements org/apache/http/HttpRequestInterceptor
+
+.enclosing method com/<init>()V
+.field final this$0 Lcom/loopj/android/http/AsyncHttpClient;
+
+.method <init>(Lcom/loopj/android/http/AsyncHttpClient;)V
+.limit registers 2
+; this: v0 (Lcom/loopj/android/http/AsyncHttpClient$1;)
+; parameter[0] : v1 (Lcom/loopj/android/http/AsyncHttpClient;)
+.line 135
+	iput-object	v1,v0,com/loopj/android/http/AsyncHttpClient$1.this$0 Lcom/loopj/android/http/AsyncHttpClient;
+; v1 : Lcom/loopj/android/http/AsyncHttpClient; , v0 : Lcom/loopj/android/http/AsyncHttpClient$1;
+	invoke-direct	{v0},java/lang/Object/<init>	; <init>()V
+; v0 : Lcom/loopj/android/http/AsyncHttpClient$1;
+	return-void	
+.end method
+
+.method public process(Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)V
+.limit registers 7
+; this: v4 (Lcom/loopj/android/http/AsyncHttpClient$1;)
+; parameter[0] : v5 (Lorg/apache/http/HttpRequest;)
+; parameter[1] : v6 (Lorg/apache/http/protocol/HttpContext;)
+.var 0 is header Ljava/lang/String; from lc6a0a to lc6a2a
+.line 137
+	const-string	v2,"Accept-Encoding"
+; v2 : Ljava/lang/String;
+	invoke-interface	{v5,v2},org/apache/http/HttpRequest/containsHeader	; containsHeader(Ljava/lang/String;)Z
+; v5 : Lorg/apache/http/HttpRequest; , v2 : Ljava/lang/String;
+	move-result	v2
+; v2 : single-length
+	if-nez	v2,lc69d6
+; v2 : single-length
+.line 138
+	const-string	v2,"Accept-Encoding"
+; v2 : Ljava/lang/String;
+	const-string	v3,"gzip"
+; v3 : Ljava/lang/String;
+	invoke-interface	{v5,v2,v3},org/apache/http/HttpRequest/addHeader	; addHeader(Ljava/lang/String;Ljava/lang/String;)V
+; v5 : Lorg/apache/http/HttpRequest; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+lc69d6:
+.line 140
+	iget-object	v2,v4,com/loopj/android/http/AsyncHttpClient$1.this$0 Lcom/loopj/android/http/AsyncHttpClient;
+; v2 : Lcom/loopj/android/http/AsyncHttpClient; , v4 : Lcom/loopj/android/http/AsyncHttpClient$1;
+	invoke-static	{v2},com/loopj/android/http/AsyncHttpClient/access$000	; access$000(Lcom/loopj/android/http/AsyncHttpClient;)Ljava/util/Map;
+; v2 : Lcom/loopj/android/http/AsyncHttpClient;
+	move-result-object	v2
+; v2 : Ljava/util/Map;
+	invoke-interface	{v2},java/util/Map/keySet	; keySet()Ljava/util/Set;
+; v2 : Ljava/util/Map;
+	move-result-object	v2
+; v2 : Ljava/util/Set;
+	invoke-interface	{v2},java/util/Set/iterator	; iterator()Ljava/util/Iterator;
+; v2 : Ljava/util/Set;
+	move-result-object	v1
+; v1 : Ljava/util/Iterator;
+lc69f2:
+	invoke-interface	{v1},java/util/Iterator/hasNext	; hasNext()Z
+; v1 : Ljava/util/Iterator;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,lc6a2a
+; v2 : single-length
+	invoke-interface	{v1},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v1 : Ljava/util/Iterator;
+	move-result-object	v0
+; v0 : Ljava/lang/Object;
+	check-cast	v0,java/lang/String
+; v0 : Ljava/lang/String;
+.line 141
+	iget-object	v2,v4,com/loopj/android/http/AsyncHttpClient$1.this$0 Lcom/loopj/android/http/AsyncHttpClient;
+; v2 : Lcom/loopj/android/http/AsyncHttpClient; , v4 : Lcom/loopj/android/http/AsyncHttpClient$1;
+	invoke-static	{v2},com/loopj/android/http/AsyncHttpClient/access$000	; access$000(Lcom/loopj/android/http/AsyncHttpClient;)Ljava/util/Map;
+; v2 : Lcom/loopj/android/http/AsyncHttpClient;
+	move-result-object	v2
+; v2 : Ljava/util/Map;
+	invoke-interface	{v2,v0},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v2 : Ljava/util/Map; , v0 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/lang/String
+; v2 : Ljava/lang/String;
+	invoke-interface	{v5,v0,v2},org/apache/http/HttpRequest/addHeader	; addHeader(Ljava/lang/String;Ljava/lang/String;)V
+; v5 : Lorg/apache/http/HttpRequest; , v0 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	goto	lc69f2
+lc6a2a:
+.line 143
+	return-void	
+.end method
+
+

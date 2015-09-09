@@ -1,0 +1,122 @@
+.class org/apache/commons/io/comparator/ReverseComparator
+.super org/apache/commons/io/comparator/AbstractFileComparator
+.source ReverseComparator.java
+.implements java/io/Serializable
+
+.field private final delegate Ljava/util/Comparator;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/Comparator" , "<" , "Ljava/io/File;" , ">;" }
+  .end annotation
+.end field
+
+.method public <init>(Ljava/util/Comparator;)V
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "(" , "Ljava/util/Comparator" , "<" , "Ljava/io/File;" , ">;)V" }
+.end annotation
+.limit registers 4
+; this: v2 (Lorg/apache/commons/io/comparator/ReverseComparator;)
+; parameter[0] : v3 (Ljava/util/Comparator;)
+.line 39
+	invoke-direct	{v2},org/apache/commons/io/comparator/AbstractFileComparator/<init>	; <init>()V
+; v2 : Lorg/apache/commons/io/comparator/ReverseComparator;
+.line 40
+	if-nez	v3,l117c4e
+; v3 : Ljava/util/Comparator;
+.line 41
+	new-instance	v0,java/lang/IllegalArgumentException
+; v0 : Ljava/lang/IllegalArgumentException;
+	const-string	v1,"Delegate comparator is missing"
+; v1 : Ljava/lang/String;
+	invoke-direct	{v0,v1},java/lang/IllegalArgumentException/<init>	; <init>(Ljava/lang/String;)V
+; v0 : Ljava/lang/IllegalArgumentException; , v1 : Ljava/lang/String;
+	throw	v0
+; v0 : Ljava/lang/IllegalArgumentException;
+l117c4e:
+.line 43
+	iput-object	v3,v2,org/apache/commons/io/comparator/ReverseComparator.delegate Ljava/util/Comparator;
+; v3 : Ljava/util/Comparator; , v2 : Lorg/apache/commons/io/comparator/ReverseComparator;
+.line 44
+	return-void	
+.end method
+
+.method public compare(Ljava/io/File;Ljava/io/File;)I
+.limit registers 4
+; this: v1 (Lorg/apache/commons/io/comparator/ReverseComparator;)
+; parameter[0] : v2 (Ljava/io/File;)
+; parameter[1] : v3 (Ljava/io/File;)
+.line 55
+	iget-object	v0,v1,org/apache/commons/io/comparator/ReverseComparator.delegate Ljava/util/Comparator;
+; v0 : Ljava/util/Comparator; , v1 : Lorg/apache/commons/io/comparator/ReverseComparator;
+	invoke-interface	{v0,v3,v2},java/util/Comparator/compare	; compare(Ljava/lang/Object;Ljava/lang/Object;)I
+; v0 : Ljava/util/Comparator; , v3 : Ljava/io/File; , v2 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public compare(Ljava/lang/Object;Ljava/lang/Object;)I
+.limit registers 4
+; this: v1 (Lorg/apache/commons/io/comparator/ReverseComparator;)
+; parameter[0] : v2 (Ljava/lang/Object;)
+; parameter[1] : v3 (Ljava/lang/Object;)
+.line 30
+	check-cast	v2,java/io/File
+; v2 : Ljava/io/File;
+	check-cast	v3,java/io/File
+; v3 : Ljava/io/File;
+	invoke-virtual	{v1,v2,v3},org/apache/commons/io/comparator/ReverseComparator/compare	; compare(Ljava/io/File;Ljava/io/File;)I
+; v1 : Lorg/apache/commons/io/comparator/ReverseComparator; , v2 : Ljava/io/File; , v3 : Ljava/io/File;
+	move-result	v0
+; v0 : single-length
+	return	v0
+; v0 : single-length
+.end method
+
+.method public toString()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lorg/apache/commons/io/comparator/ReverseComparator;)
+.line 65
+	new-instance	v0,java/lang/StringBuilder
+; v0 : Ljava/lang/StringBuilder;
+	invoke-direct	{v0},java/lang/StringBuilder/<init>	; <init>()V
+; v0 : Ljava/lang/StringBuilder;
+	invoke-super	{v2},org/apache/commons/io/comparator/AbstractFileComparator/toString	; toString()Ljava/lang/String;
+; v2 : Lorg/apache/commons/io/comparator/ReverseComparator;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,"["
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	iget-object	v1,v2,org/apache/commons/io/comparator/ReverseComparator.delegate Ljava/util/Comparator;
+; v1 : Ljava/util/Comparator; , v2 : Lorg/apache/commons/io/comparator/ReverseComparator;
+	invoke-virtual	{v1},java/lang/Object/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/util/Comparator;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	const-string	v1,"]"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v0 : Ljava/lang/StringBuilder; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v0},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v0 : Ljava/lang/StringBuilder;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+

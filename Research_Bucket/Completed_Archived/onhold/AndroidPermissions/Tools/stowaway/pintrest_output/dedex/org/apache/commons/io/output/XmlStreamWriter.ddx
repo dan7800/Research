@@ -1,0 +1,419 @@
+.class public org/apache/commons/io/output/XmlStreamWriter
+.super java/io/Writer
+.source XmlStreamWriter.java
+
+.field private static final BUFFER_SIZE I = 4096	; 0x1000
+.field static final ENCODING_PATTERN Ljava/util/regex/Pattern;
+.field private final defaultEncoding Ljava/lang/String;
+.field private encoding Ljava/lang/String;
+.field private final out Ljava/io/OutputStream;
+.field private writer Ljava/io/Writer;
+.field private xmlPrologWriter Ljava/io/StringWriter;
+
+.method static <clinit>()V
+.limit registers 1
+.line 220
+	sget-object	v0,org/apache/commons/io/input/XmlStreamReader.ENCODING_PATTERN Ljava/util/regex/Pattern;
+; v0 : Ljava/util/regex/Pattern;
+	sput-object	v0,org/apache/commons/io/output/XmlStreamWriter.ENCODING_PATTERN Ljava/util/regex/Pattern;
+; v0 : Ljava/util/regex/Pattern;
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/File;)V
+.throws Ljava/io/FileNotFoundException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/output/XmlStreamWriter;)
+; parameter[0] : v2 (Ljava/io/File;)
+.line 85
+	const/4	v0,0
+; v0 : single-length
+	invoke-direct	{v1,v2,v0},org/apache/commons/io/output/XmlStreamWriter/<init>	; <init>(Ljava/io/File;Ljava/lang/String;)V
+; v1 : Lorg/apache/commons/io/output/XmlStreamWriter; , v2 : Ljava/io/File; , v0 : single-length
+.line 86
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/File;Ljava/lang/String;)V
+.throws Ljava/io/FileNotFoundException;
+.limit registers 4
+; this: v1 (Lorg/apache/commons/io/output/XmlStreamWriter;)
+; parameter[0] : v2 (Ljava/io/File;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.line 98
+	new-instance	v0,java/io/FileOutputStream
+; v0 : Ljava/io/FileOutputStream;
+	invoke-direct	{v0,v2},java/io/FileOutputStream/<init>	; <init>(Ljava/io/File;)V
+; v0 : Ljava/io/FileOutputStream; , v2 : Ljava/io/File;
+	invoke-direct	{v1,v0,v3},org/apache/commons/io/output/XmlStreamWriter/<init>	; <init>(Ljava/io/OutputStream;Ljava/lang/String;)V
+; v1 : Lorg/apache/commons/io/output/XmlStreamWriter; , v0 : Ljava/io/FileOutputStream; , v3 : Ljava/lang/String;
+.line 99
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/OutputStream;)V
+.throws Ljava/io/FileNotFoundException;
+.limit registers 3
+; this: v1 (Lorg/apache/commons/io/output/XmlStreamWriter;)
+; parameter[0] : v2 (Ljava/io/OutputStream;)
+.line 61
+	const/4	v0,0
+; v0 : single-length
+	invoke-direct	{v1,v2,v0},org/apache/commons/io/output/XmlStreamWriter/<init>	; <init>(Ljava/io/OutputStream;Ljava/lang/String;)V
+; v1 : Lorg/apache/commons/io/output/XmlStreamWriter; , v2 : Ljava/io/OutputStream; , v0 : single-length
+.line 62
+	return-void	
+.end method
+
+.method public <init>(Ljava/io/OutputStream;Ljava/lang/String;)V
+.throws Ljava/io/FileNotFoundException;
+.limit registers 5
+; this: v2 (Lorg/apache/commons/io/output/XmlStreamWriter;)
+; parameter[0] : v3 (Ljava/io/OutputStream;)
+; parameter[1] : v4 (Ljava/lang/String;)
+.line 71
+	invoke-direct	{v2},java/io/Writer/<init>	; <init>()V
+; v2 : Lorg/apache/commons/io/output/XmlStreamWriter;
+.line 48
+	new-instance	v0,java/io/StringWriter
+; v0 : Ljava/io/StringWriter;
+	const/16	v1,4096
+; v1 : single-length
+	invoke-direct	{v0,v1},java/io/StringWriter/<init>	; <init>(I)V
+; v0 : Ljava/io/StringWriter; , v1 : single-length
+	iput-object	v0,v2,org/apache/commons/io/output/XmlStreamWriter.xmlPrologWriter Ljava/io/StringWriter;
+; v0 : Ljava/io/StringWriter; , v2 : Lorg/apache/commons/io/output/XmlStreamWriter;
+.line 72
+	iput-object	v3,v2,org/apache/commons/io/output/XmlStreamWriter.out Ljava/io/OutputStream;
+; v3 : Ljava/io/OutputStream; , v2 : Lorg/apache/commons/io/output/XmlStreamWriter;
+.line 73
+	if-eqz	v4,l120502
+; v4 : Ljava/lang/String;
+l1204fc:
+	iput-object	v4,v2,org/apache/commons/io/output/XmlStreamWriter.defaultEncoding Ljava/lang/String;
+; v4 : Ljava/lang/String; , v2 : Lorg/apache/commons/io/output/XmlStreamWriter;
+.line 74
+	return-void	
+l120502:
+.line 73
+	const-string	v4,"UTF-8"
+; v4 : Ljava/lang/String;
+	goto	l1204fc
+.end method
+
+.method private detectEncoding([CII)V
+.throws Ljava/io/IOException;
+.limit registers 13
+; this: v9 (Lorg/apache/commons/io/output/XmlStreamWriter;)
+; parameter[0] : v10 ([C)
+; parameter[1] : v11 (I)
+; parameter[2] : v12 (I)
+.var 0 is m Ljava/util/regex/Matcher; from l12059c to l1205dc
+.var 3 is xmlPrologEnd I from l120584 to l1205dc
+.var 0 is m Ljava/util/regex/Matcher; from l12062a to l120634
+.var 3 is xmlPrologEnd I from l12062a to l12064a
+	const/16	v8,4096
+; v8 : single-length
+	const/4	v5,5
+; v5 : single-length
+	const/4	v7,1
+; v7 : single-length
+	const/4	v6,0
+; v6 : single-length
+.line 156
+	move	v1,v12
+; v1 : single-length , v12 : single-length
+.line 157
+	iget-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.xmlPrologWriter Ljava/io/StringWriter;
+; v4 : Ljava/io/StringWriter; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	invoke-virtual	{v4},java/io/StringWriter/getBuffer	; getBuffer()Ljava/lang/StringBuffer;
+; v4 : Ljava/io/StringWriter;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuffer;
+.line 158
+	invoke-virtual	{v2},java/lang/StringBuffer/length	; length()I
+; v2 : Ljava/lang/StringBuffer;
+	move-result	v4
+; v4 : single-length
+	add-int/2addr	v4,v12
+; v4 : single-length , v12 : single-length
+	if-le	v4,v8,l12054a
+; v4 : single-length , v8 : single-length
+.line 159
+	invoke-virtual	{v2},java/lang/StringBuffer/length	; length()I
+; v2 : Ljava/lang/StringBuffer;
+	move-result	v4
+; v4 : single-length
+	sub-int/lit16	v1,v4,4096
+; v1 : single-length , v4 : single-length
+l12054a:
+.line 161
+	iget-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.xmlPrologWriter Ljava/io/StringWriter;
+; v4 : Ljava/io/StringWriter; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	invoke-virtual	{v4,v10,v11,v1},java/io/StringWriter/write	; write([CII)V
+; v4 : Ljava/io/StringWriter; , v10 : [C , v11 : single-length , v1 : single-length
+.line 164
+	invoke-virtual	{v2},java/lang/StringBuffer/length	; length()I
+; v2 : Ljava/lang/StringBuffer;
+	move-result	v4
+; v4 : single-length
+	if-lt	v4,v5,l120628
+; v4 : single-length , v5 : single-length
+.line 165
+	invoke-virtual	{v2,v6,v5},java/lang/StringBuffer/substring	; substring(II)Ljava/lang/String;
+; v2 : Ljava/lang/StringBuffer; , v6 : single-length , v5 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	const-string	v5,"<?xml"
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/lang/String/equals	; equals(Ljava/lang/Object;)Z
+; v4 : Ljava/lang/String; , v5 : Ljava/lang/String;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l12064a
+; v4 : single-length
+.line 167
+	const-string	v4,"?>"
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v2,v4},java/lang/StringBuffer/indexOf	; indexOf(Ljava/lang/String;)I
+; v2 : Ljava/lang/StringBuffer; , v4 : Ljava/lang/String;
+	move-result	v3
+; v3 : single-length
+.line 168
+	if-lez	v3,l120634
+; v3 : single-length
+.line 170
+	sget-object	v4,org/apache/commons/io/output/XmlStreamWriter.ENCODING_PATTERN Ljava/util/regex/Pattern;
+; v4 : Ljava/util/regex/Pattern;
+	invoke-virtual	{v2,v6,v3},java/lang/StringBuffer/substring	; substring(II)Ljava/lang/String;
+; v2 : Ljava/lang/StringBuffer; , v6 : single-length , v3 : single-length
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/util/regex/Pattern/matcher	; matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
+; v4 : Ljava/util/regex/Pattern; , v5 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/util/regex/Matcher;
+.line 172
+	invoke-virtual	{v0},java/util/regex/Matcher/find	; find()Z
+; v0 : Ljava/util/regex/Matcher;
+	move-result	v4
+; v4 : single-length
+	if-eqz	v4,l12062a
+; v4 : single-length
+.line 173
+	invoke-virtual	{v0,v7},java/util/regex/Matcher/group	; group(I)Ljava/lang/String;
+; v0 : Ljava/util/regex/Matcher; , v7 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v4},java/lang/String/toUpperCase	; toUpperCase()Ljava/lang/String;
+; v4 : Ljava/lang/String;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	iput-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.encoding Ljava/lang/String;
+; v4 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+.line 174
+	iget-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.encoding Ljava/lang/String;
+; v4 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	iget-object	v5,v9,org/apache/commons/io/output/XmlStreamWriter.encoding Ljava/lang/String;
+; v5 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	invoke-virtual	{v5},java/lang/String/length	; length()I
+; v5 : Ljava/lang/String;
+	move-result	v5
+; v5 : single-length
+	add-int/lit8	v5,v5,255
+; v5 : single-length , v5 : single-length
+	invoke-virtual	{v4,v7,v5},java/lang/String/substring	; substring(II)Ljava/lang/String;
+; v4 : Ljava/lang/String; , v7 : single-length , v5 : single-length
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	iput-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.encoding Ljava/lang/String;
+; v4 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+l1205dc:
+.line 191
+	iget-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.encoding Ljava/lang/String;
+; v4 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	if-eqz	v4,l120628
+; v4 : Ljava/lang/String;
+.line 193
+	const/4	v4,0
+; v4 : single-length
+	iput-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.xmlPrologWriter Ljava/io/StringWriter;
+; v4 : single-length , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+.line 194
+	new-instance	v4,java/io/OutputStreamWriter
+; v4 : Ljava/io/OutputStreamWriter;
+	iget-object	v5,v9,org/apache/commons/io/output/XmlStreamWriter.out Ljava/io/OutputStream;
+; v5 : Ljava/io/OutputStream; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	iget-object	v6,v9,org/apache/commons/io/output/XmlStreamWriter.encoding Ljava/lang/String;
+; v6 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	invoke-direct	{v4,v5,v6},java/io/OutputStreamWriter/<init>	; <init>(Ljava/io/OutputStream;Ljava/lang/String;)V
+; v4 : Ljava/io/OutputStreamWriter; , v5 : Ljava/io/OutputStream; , v6 : Ljava/lang/String;
+	iput-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.writer Ljava/io/Writer;
+; v4 : Ljava/io/OutputStreamWriter; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+.line 195
+	iget-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.writer Ljava/io/Writer;
+; v4 : Ljava/io/Writer; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	invoke-virtual	{v2},java/lang/StringBuffer/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuffer;
+	move-result-object	v5
+; v5 : Ljava/lang/String;
+	invoke-virtual	{v4,v5},java/io/Writer/write	; write(Ljava/lang/String;)V
+; v4 : Ljava/io/Writer; , v5 : Ljava/lang/String;
+.line 196
+	if-le	v12,v1,l120628
+; v12 : single-length , v1 : single-length
+.line 197
+	iget-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.writer Ljava/io/Writer;
+; v4 : Ljava/io/Writer; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	add-int	v5,v11,v1
+; v5 : single-length , v11 : single-length , v1 : single-length
+	sub-int	v6,v12,v1
+; v6 : single-length , v12 : single-length , v1 : single-length
+	invoke-virtual	{v4,v10,v5,v6},java/io/Writer/write	; write([CII)V
+; v4 : Ljava/io/Writer; , v10 : [C , v5 : single-length , v6 : single-length
+l120628:
+.line 201
+	return-void	
+l12062a:
+.line 178
+	iget-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.defaultEncoding Ljava/lang/String;
+; v4 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	iput-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.encoding Ljava/lang/String;
+; v4 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	goto	l1205dc
+l120634:
+.line 181
+	invoke-virtual	{v2},java/lang/StringBuffer/length	; length()I
+; v2 : Ljava/lang/StringBuffer;
+	move-result	v4
+; v4 : single-length
+	if-lt	v4,v8,l1205dc
+; v4 : single-length , v8 : single-length
+.line 184
+	iget-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.defaultEncoding Ljava/lang/String;
+; v4 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	iput-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.encoding Ljava/lang/String;
+; v4 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	goto	l1205dc
+l12064a:
+.line 189
+	iget-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.defaultEncoding Ljava/lang/String;
+; v4 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	iput-object	v4,v9,org/apache/commons/io/output/XmlStreamWriter.encoding Ljava/lang/String;
+; v4 : Ljava/lang/String; , v9 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	goto	l1205dc
+.end method
+
+.method public close()V
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v3 (Lorg/apache/commons/io/output/XmlStreamWriter;)
+.line 126
+	iget-object	v0,v3,org/apache/commons/io/output/XmlStreamWriter.writer Ljava/io/Writer;
+; v0 : Ljava/io/Writer; , v3 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	if-nez	v0,l1206a0
+; v0 : Ljava/io/Writer;
+.line 127
+	iget-object	v0,v3,org/apache/commons/io/output/XmlStreamWriter.defaultEncoding Ljava/lang/String;
+; v0 : Ljava/lang/String; , v3 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	iput-object	v0,v3,org/apache/commons/io/output/XmlStreamWriter.encoding Ljava/lang/String;
+; v0 : Ljava/lang/String; , v3 : Lorg/apache/commons/io/output/XmlStreamWriter;
+.line 128
+	new-instance	v0,java/io/OutputStreamWriter
+; v0 : Ljava/io/OutputStreamWriter;
+	iget-object	v1,v3,org/apache/commons/io/output/XmlStreamWriter.out Ljava/io/OutputStream;
+; v1 : Ljava/io/OutputStream; , v3 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	iget-object	v2,v3,org/apache/commons/io/output/XmlStreamWriter.encoding Ljava/lang/String;
+; v2 : Ljava/lang/String; , v3 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	invoke-direct	{v0,v1,v2},java/io/OutputStreamWriter/<init>	; <init>(Ljava/io/OutputStream;Ljava/lang/String;)V
+; v0 : Ljava/io/OutputStreamWriter; , v1 : Ljava/io/OutputStream; , v2 : Ljava/lang/String;
+	iput-object	v0,v3,org/apache/commons/io/output/XmlStreamWriter.writer Ljava/io/Writer;
+; v0 : Ljava/io/OutputStreamWriter; , v3 : Lorg/apache/commons/io/output/XmlStreamWriter;
+.line 129
+	iget-object	v0,v3,org/apache/commons/io/output/XmlStreamWriter.writer Ljava/io/Writer;
+; v0 : Ljava/io/Writer; , v3 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	iget-object	v1,v3,org/apache/commons/io/output/XmlStreamWriter.xmlPrologWriter Ljava/io/StringWriter;
+; v1 : Ljava/io/StringWriter; , v3 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	invoke-virtual	{v1},java/io/StringWriter/toString	; toString()Ljava/lang/String;
+; v1 : Ljava/io/StringWriter;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/io/Writer/write	; write(Ljava/lang/String;)V
+; v0 : Ljava/io/Writer; , v1 : Ljava/lang/String;
+l1206a0:
+.line 131
+	iget-object	v0,v3,org/apache/commons/io/output/XmlStreamWriter.writer Ljava/io/Writer;
+; v0 : Ljava/io/Writer; , v3 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	invoke-virtual	{v0},java/io/Writer/close	; close()V
+; v0 : Ljava/io/Writer;
+.line 132
+	return-void	
+.end method
+
+.method public flush()V
+.throws Ljava/io/IOException;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/output/XmlStreamWriter;)
+.line 141
+	iget-object	v0,v1,org/apache/commons/io/output/XmlStreamWriter.writer Ljava/io/Writer;
+; v0 : Ljava/io/Writer; , v1 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	if-eqz	v0,l1206ce
+; v0 : Ljava/io/Writer;
+.line 142
+	iget-object	v0,v1,org/apache/commons/io/output/XmlStreamWriter.writer Ljava/io/Writer;
+; v0 : Ljava/io/Writer; , v1 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	invoke-virtual	{v0},java/io/Writer/flush	; flush()V
+; v0 : Ljava/io/Writer;
+l1206ce:
+.line 144
+	return-void	
+.end method
+
+.method public getDefaultEncoding()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/output/XmlStreamWriter;)
+.line 116
+	iget-object	v0,v1,org/apache/commons/io/output/XmlStreamWriter.defaultEncoding Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getEncoding()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/apache/commons/io/output/XmlStreamWriter;)
+.line 107
+	iget-object	v0,v1,org/apache/commons/io/output/XmlStreamWriter.encoding Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public write([CII)V
+.throws Ljava/io/IOException;
+.limit registers 5
+; this: v1 (Lorg/apache/commons/io/output/XmlStreamWriter;)
+; parameter[0] : v2 ([C)
+; parameter[1] : v3 (I)
+; parameter[2] : v4 (I)
+.line 213
+	iget-object	v0,v1,org/apache/commons/io/output/XmlStreamWriter.xmlPrologWriter Ljava/io/StringWriter;
+; v0 : Ljava/io/StringWriter; , v1 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	if-eqz	v0,l120720
+; v0 : Ljava/io/StringWriter;
+.line 214
+	invoke-direct	{v1,v2,v3,v4},org/apache/commons/io/output/XmlStreamWriter/detectEncoding	; detectEncoding([CII)V
+; v1 : Lorg/apache/commons/io/output/XmlStreamWriter; , v2 : [C , v3 : single-length , v4 : single-length
+l12071e:
+.line 218
+	return-void	
+l120720:
+.line 216
+	iget-object	v0,v1,org/apache/commons/io/output/XmlStreamWriter.writer Ljava/io/Writer;
+; v0 : Ljava/io/Writer; , v1 : Lorg/apache/commons/io/output/XmlStreamWriter;
+	invoke-virtual	{v0,v2,v3,v4},java/io/Writer/write	; write([CII)V
+; v0 : Ljava/io/Writer; , v2 : [C , v3 : single-length , v4 : single-length
+	goto	l12071e
+.end method
+
+

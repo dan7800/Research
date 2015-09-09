@@ -1,0 +1,392 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage{cite}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{color}
+\usepackage{array}
+\usepackage{subfigure}
+\usepackage{balance} % Add this back in. Probably needed during camera ready.
+\usepackage{url}
+\usepackage{times} % Used for formatting formatting url footnotes
+\urlstyle{same} % Used for formatting formatting url footnotes
+\usepackage{caption} % Used for formatting formatting url footnotes
+\usepackage{listings}
+\usepackage{soul,color} % Used for highlighting text
+%\usepackage{hyperref}
+
+
+\newcommand{\todo}[1]{\textcolor{cyan}{\textbf{[#1]}}}
+\newcommand{\andy}[1]{\textcolor{red}{{\it [Andy says: #1]}}}
+\newcommand{\dan}[1]{\textcolor{blue}{{\it [Dan says: #1]}}}
+\newcommand{\sam}[1]{\textcolor{green}{{\it [Sam says: #1]}}}
+
+\begin{document}
+
+\title{An Insider Threat Activity in a Software Security Course}
+
+\author{\IEEEauthorblockN{Daniel E. Krutz, Andrew Meneely, and Samuel A. Malachowsky}
+Rochester Institute of Technology\\
+\{dxkvse, axmvse, samvse\}@rit.edu
+
+}
+
+
+\maketitle
+\begin{abstract}
+
+% These malicious actors use their status as a project insider for project exploitation. Recent exploits include cases of intellectual and customer data theft and outright sabotage. Most insider threat crimes occur at the workplace during business hours, with the insiders are of the potential consequences, and are are usually committed for financial gain.
+
+
+Software development teams face a critical threat to the security of their systems: insiders. A malicious insider is a person who violates an authorized level of access in a software system. Unfortunately, when creating software, developers do not typically account for insider threat. Students learning software development are unaware of the impacts of malicious actors and are far too often untrained in prevention methods against them. A few of the defensive mechanisms to protect against insider threats include eliminating system access once an employee leaves an organization, enforcing principle of least privilege, code reviews, and constant monitoring for suspicious activity.
+
+At the Department of Software Engineering at the Rochester Institute of Technology, we require a course titled Engineering of Secure Software and have created an activity designed to prepare students for the problem of insider threats. At the beginning of this activity, student teams are given the task of designing a moderately sized secure software system. The goal of this insider is to manipulate the team into creating a flawed system design that would allow attackers to perform malicious activities once the system has been created. When the insider is revealed at the conclusion of the project, students discuss countermeasures regarding the malicious actions the insiders were able to plan or complete, along with methods of prevention that may have been employed by the team to detect the malicious developer.
+
+In this paper, we describe the activity along with the results of a survey. We discuss the benefits and challenges of the activity with the goal of giving other instructors the tools they need to conduct this activity at their institution. While many institutions do not offer courses in computer security, this self-contained activity may be used in any computing course to enforce the importance of protecting against insider threats.
+
+
+\end{abstract}
+
+\begin{IEEEkeywords} Software Security, Software Engineering, Computing Education\end{IEEEkeywords}
+
+
+%\todo{define the categories and fix the keywords \& terms}
+% A category with the (minimum) three required fields
+%\category{H.4}{Information Systems Applications}{Miscellaneous}
+%A category including the fourth, optional field follows...
+%\category{D.2.8}{Software Engineering}{Metrics}[complexity measures, performance measures]
+
+
+%\category{K.3.2}{Computers and Education}Computers and Information
+%Science Education- Computer science education; Curriculum
+
+%\terms{xxx, xxxx, xxxx}
+
+%% My best show at keywords
+%\keywords{xxxxx, xxxxxx, xxxx}
+
+\section{Introduction}
+
+
+
+
+Organizations devote vast amounts of time and resources protecting themselves against outside threats. These protection mechanisms include but are not limited to firewalls, data encryption, and defensive coding practices. A much more difficult threat to protect against is one which comes from within the company. An~\emph{insider threat} is a current or former employee, business partner, or contractor who has access to an organization's data, network, source code, or other sensitive information who may intentionally misuse this information and negatively affect the availability, integrity, or confidentiality of the organization's information system. Examples of insider attacks include data harvesting, abuse of privileges sabotage, and masquerading attacks. Additionally, a user could act as an insider threat and have no actual malicious intent. Inadvertent use of computing resources or data could make a system susceptible to attack, or could unintentionally release sensitive data~\cite{capp_bibtex}. Insider threats are much more difficult to identify since potential threats are often users of a system which they themselves developed (potential leaving back doors and having deep intimate knowledge of the system) while, as developers, not being considered to be potential threats to the system~\cite{Nostro:2014:ITA:2694737.2694740}. Companies often choose mitigate the risk of insider threats through the use of policies and regulations~\cite{5137280}.
+
+%Recent studies by ---------- have shown that  \todo{find stats}. Previous instances of insider threats have been\todo{complete}. \todo{add more to this about what the problem is}
+
+
+% Insider threats are almost always mitigated through regulations and policies~\cite{5137280}.
+
+
+% Build on the negative impacts of insider threats. Discuss some statistics here. Make the reader understand the negative impacts of insider threats and why it is an important concept to teach - What is the problem we are solving here?.
+
+
+% When do insider threats usually happens
+
+Far too often, software engineers are not prepared to deal with fact that their co-workers, people who they should trust as allies, are in fact potentially malicious users capable of performing a wide range of destructive actions. In educational environments, students typically either work alone, or with teams --- with instructors preaching the importance of teamwork and trust. While these concepts are important real-world examples dictate that the opportunity for a security threat must be considered.
+
+
+At the Rochester Institute of Technology, we created an upper division Engineering of Secure Software applications course to help students understand how to incorporate proper security protection practices when designing, creating, and maintaining software. Some course topics include defensive coding practices, deployment \& distribution strategies, vulnerability assessments, and threat modeling. In this course, we created an activity to help acclimate students with how to understand, protect, and recognize insider threats. Students teams are formed and students are given the task of designing a small application and planning for proper security. One student from each team is quietly pulled aside and told that they are the insider threat or~\emph{mole} for their team. Their goal is to have their team design an application containing a vulnerability which the mole would be able to later use. After the activity, the moles are revealed and a discussion takes place regarding how the moles were able to create the vulnerability, if the team recognized this vulnerability, and what could have been done to prevent this insider threat.
+% Probably a good idea to add more to the discussion topics?
+
+
+% Insiders will learn how malicious insiders work and this "thinking like an insider" will help to prepare them for this threat in future when faced in the real world
+
+
+The rest of the paper is organized as follows: Section~\ref{sec: aboutcourse} describes the course including learning objectives. Section~\ref{sec: activity} discusses how the activity was conducted. Section~\ref{sec: studentfeedback} provides student feedback about the project including quotes and post activity survey analytics. Section~\ref{sec: relatedwork} presents some related works and Section~\ref{sec: futurework} discusses possible future work and improvements to the activity. Section~\ref{sec: conclusion} provides concluding remarks about our work.
+
+
+
+\section{About the course}
+\label{sec: aboutcourse}
+
+Primarily comprised of upper division Software Engineering students, the Engineering of Secure Software
+course\footnote{\url{http://www.se.rit.edu/~swen-331/}} was created in 2012 and is focused on instructing students in the proper practices of design and creating secure software. The only prerequisite is the Introduction to Software Engineering course in which students are introduced to core concepts in software engineering such as development methodologies, team work in software development, basic testing principles, and software design.
+
+The course has a primary learning outcome of preparing students to mitigate security threats in software systems and processes. The focus is on proper methods of designing, developing, testing, and maintaining secure software. While the course is language-agnostic and focuses on principles and practices, specific tools and technologies are used to reinforce the learning objectives of the course. For instance, Microsoft's SDL Threat Modeling Tool\footnote{\url{www.microsoft.com/security/sdl/adopt/threatmodeling.aspx}} is used to instruct students on the proper methods of designing the architecture of a secure system. Specific Java-based examples are used to demonstrate SQL injection attacks, log overflow attacks, hashing and salt, and path traversal exploits. Short Vulnerability-of-the-Day activities serve to introduce students to real world examples of exploits and demonstrate the importance of software security~\ \cite{MeneelyICSESEE2013}. Students work in small teams on several course projects including the creation of a web fuzz testing tool and a case study which examines a real-world software project for vulnerabilities.
+
+While we do not expect all students taking the course to become security experts, our goal is to instill fundamental principles of secure software development in the students while demonstrating its importance in the real world. Students are graded on several criteria such as three exams, several short projects, and brief in-class activities. Class size is typically 25-35 students and is a required course in the Software Engineering major.
+
+In the course, we also discuss several ways of protecting against insider threats. While there is no easy or simple silver bullet protection mechanism against insider threats, there are some best practices which may be used to help alleviate this risk. Some of these protection practices include properly screening potential employees, implementing end point data leak protection, monitoring databases \& sensitive records, and the proper use of rights management systems~\cite{Insiderthreat_protection_url}.
+
+
+% ? Should more be added to this?
+%       Could break this down on a week by week basis
+
+\section{Insider Threat Activity}
+\label{sec: activity}
+
+% Add in introduction
+In this section we describe the sample project, the activity conducted by the students, provide example vulnerabilities which the insider threats were able to create, and finally describe goals of the post activity discussion.
+
+\subsection{Sample Project}
+
+To begin, students are told that they are being asked to design a secure software system. In our course instances, we asked them to design a student grading system, much like ones which are typically used at many institutions. We selected this example since we felt it was complex enough for students to have to actively consider numerous possible vulnerabilities and would allow for our insider threats to act maliciously, but simple enough for teams to design it in a class meeting or two. Additionally, we felt that students would be reasonably familiar with a system of this type.
+
+Some basic requirements for this system were: Students should be able to view their grades, but not alter them or view the grades of their classmates. Instructors should be able to view the grades for all students, but only modify grades for students in the specific courses they were teaching. School administrators should be able to view and alter the grades of all students, at any time. All users are required to access the system using their username and password, and if any they have forgotten their password, the system should send a reminder to the person via email and allow them update the password from that link. The application also needed to be accessible from anywhere in the world using a basic web connection. A non-functional requirement was that the application database should be backed up on a nightly basis to an off-site location. For debugging purposes, it was required that all errors and user actions should be logged for system administrators.
+
+\subsection{Activity}
+
+Once tstudents were given the basic requirements for their system, student teams of 4-6 students are formed, as this is often the size of groups in industry and has been found to be conducive to student learning in previous research~\cite{Guo:2009:GPS:1516546.1516579, Petkovic:2006:TPS:1140123.1140202}. Before the start of the activity, a subset students were emailed asking them to be insider threats. They were asked to not share this information with anyone and to act just like any other member of the team. Their goal was to have their team design a system that would leave the door open for them to act maliciously in some manner. Examples included being able to view other student's grades view at a higher level of access, or change data which they should not be able to modify.
+
+Example sections of our courses were offered in a 50 minute long format with this activity spanning two class periods. Teams were allowed the entire first class period to work on designing their system while the instructor answered any requirements specific questions the teams had. Teams were then asked to work on the activity outside of class. At the beginning of the second class meeting, teams were asked to review their security design and make any last minute updates. Teams were then informally polled to see how many felt their system was secure. This serves to gauge the confidence each team has in their design. Based on the confidence of the teams and the instructor's knowledge of each team's design, the team with the highest confidence and best design was asked to briefly present their design to the class and talk about why they felt it was secure. The class then asked questions about the design and try to discover any vulnerabilities.
+
+After this brief discussion, the insider threat student for the presenting team is asked to make themselves public and describe the vulnerability they had left in the system design. The insider threats for other teams are then asked to expose themselves and describe the vulnerability they introduced into their team's design as well.
+
+While the insider threats added vulnerabilities in a variety of ways, there were some commonalities in the methods chosen to ensure the application was exploitable. Most often, it was as simple as recommending poor security strategies to leave vulnerabilities in the system. In some instances, insiders would add a vulnerability into the team's design between class meetings which would not be caught during the review on the second class meeting. This mimics the real world situation of an insider adding malicious code into a project during off hours or without the knowledge of the rest of the team. Interestingly, insiders would often ensure that vulnerabilities existed in a system by simply doing nothing. They would notice their teammates leaving a vulnerability in the design due to a simple but honest mistake, doing nothing to fix this known issue.
+
+
+% Describe what students are tasked with creating
+%   Requirements for system.
+%   Use Microsoft Threat modeling tool (although any tool could be used here)
+
+
+
+\subsection{Examples of Introduced Vulnerabilities}
+
+% ? Mention that we talked about each of these potential vulnerabilities in class already so the students knew how to prevent them?
+
+
+In order to provide some context regarding some of the introduced vulnerabilities, we will explain some of them in further detail and provide some examples of how they were used within the activity. \\
+
+\textbf{Not Limiting Failed Login Attempts}\\
+Limiting the number of failed login attempts its an important protection mechanism against brute force attacks. Without this limitation, attackers may systematically try password combinations until they achieve the correct password. This type of attack has been successfully made against a wide range of organizations, including Apple~\cite{apple_bruteforce_url}. In one team, the insider made the argument that users should not be limited by their login attempts since this could be annoying to users and could hurt their user experience with the application. The team agreed and no limiting was done. \\
+
+
+\textbf{Publicly Saving Logs}\\
+A requirement of the system was to log all system errors and actions taken by users. Attackers could use these error logs to potentially gain information which could help them compromise the system. Some of this could include call stacks, information about how to create a log overflow, or any other sensitive information which was output to the log messages. Additionally, since the log files contained many alterations make to the system, this could expose potentially sensitive changes to malicious users such as the grades of students. In one team, the insider argued that these logs should be publicly available since it would provide easier access to developers when troubleshooting issues. On another team, they placed the generated log files outside of the trust zone of the system, which would expose these files to outside users. Their teams did not raise any objections to doing this. \\
+
+
+\textbf{Openly Transmitting Data Backups}\\
+A requirement was to backup the system database on a nightly basis to an off-site location. In a properly designed system, the database information would be encrypted before it leaves the trust zone, or sent via a secure or encrypted transmission so malicious users could not intercept the data being sent. Several insiders made sure that this database backup file was sent via insecure channels, meaning that it could have been intercepted by a malicious or unintended party. \\
+
+
+\textbf{Use of Improper Cipher Techniques}\\
+Cipher techniques (which are covered in the second half of the course) are a way of encrypting information so they may not be deciphered by anyone but the intended parties. While advanced cipher techniques such as AES and RSA continue to provide high levels of security, older techniques such as DES no longer provide an adequate level of protection and can be broken with relative ease. In several groups, the insider was able to convince their team to use DES or another outdated cipher technique. This would have left the encrypted information susceptible to attackers. \\
+
+
+\textbf{Storing Passwords in Source Code}\\
+Developers should not store passwords in the source code of an application, even if it has been compiled. This creates several potential problems including the ability of a malicious user to reverse engineer the code to discover the user name and password. Since passwords should be routinely changed, altering them in compiled code is typically more difficult and much more infrequently done. In several instances, insider threats convinced their teams to store the database login information in compiled code since they argued that the information would be secure since it was compiled (an inaccurate statement) and that the passwords did not need to be updated (also inaccurate). This left the applications not only vulnerable to reverse engineering, but in the event a developer left the company, they would know that the database login and password information was unlikely to be changed making it susceptible to their attack. Interestingly, one insider was able to convince their team to make the login information be merely ``root'' and no password since this would be simpler for development. Giving an application root access with violates several security standards, including the~\emph{principle of least privilege} and having no password at all is bad for a variety of reasons. \\
+
+
+\textbf{Providing Too Many Privileges for User or Component}\\
+A basic principle of software security is the~\emph{principle of least privilege}, or the granting of the minimum number of privileges that an application needs to properly function~\cite{saltzer1975protection}. Granting more privileges than the application needs creates security problems since individuals or software components could intentionally or unintentionally use these extra privileges for malicious reasons.  In a few instances, insider threats observed instances of too many privileges and chose not to disclose the error, allowing it to propagate into future designs. \\
+
+% How did students do it in our system
+
+
+%%% Probably too much information here so I am removing the thought
+%A malicious individual could use these extra rights to view information which they should not be able to, or write malicious software which could gain access to data which it should not allowed to do so. Inadvertent developer errors could also allow software to use these extra privo
+
+
+%since vulnerabilities in other applications, or malware, could use these extra permissions for malicious reasons. Additionally, this limits potential issues due to non-malicious developer errors
+
+%\textbf{Publicly Saving Database Backups}\\
+%Stuff
+% Storing passwords in compoliled code, not config files
+
+
+
+
+%\subsection{Sample Team}
+%\label{sec: sampleteam}
+% Provide specific example of the insider threat a team faced
+
+
+
+
+\subsection{Post Activity Discussion and Goals}
+%\label{sec: discussion}
+
+After the insiders were identified and the ensuing discussion about what malicious activities could have been performed on the software, a post-activity discussion takes place. The goal of this discussion is to foster student thinking about insiders, ways that insiders could maliciously act, and prevention methods against them. This discussion should be easy going to foster and encourage student led discussions and to encourage free thinking among the students. Due to the nature of the activity, there are a wide range of potentially beneficial discussion topics. Some of these are outlined below. \\
+
+
+\textbf{Who Can Be Insider Threats?}\\
+Before the activity, many students thought of threats as being people external to the organization, and did not consider inside actors to be threats. Students who may have considered the possibility may not have realized that these threats which could be planned for. One potential outcome is a discussion of who can be insider threats. Regardless of the role on the team, each individual or group of individuals is a potential insider threat who needs to be protected against. In our activities, students discussed the various roles of teammates who were insiders and how similar roles in real-world projects could be hazardous. \\
+
+
+\textbf{What Malicious Actions did the Insiders Take?}\\
+Insiders conducted a wide variety of malicious actions in our activity using many different methods --- many with relative ease. Students are encouraged to discuss the actions that insiders took on their systems and what some of the negative ramifications could have been. They are also encouraged to significantly explore and analyze the negative ramifications of the threats. As an example, in the situation where student records were publicly exposed, consequences which may not be immediately considered are the legal ramifications involved and potential lawsuits by students with publicly exposed grades. A related activity that could be done to augment this discussion would be to ask students to explore and report upon real-world examples of malicious actions taken by insiders. \\
+
+
+\textbf{What Damage Did the Insiders Cause?}\\
+In our activity instances, insider threats would have typically been able to inflict a significant amount of damage on the software project. Understanding the possible negative ramifications is a good way for students to realize the importance of protecting against insider threats and to plan for similar occurrences in their real-world development teams. \\
+
+
+\textbf{Did the Students Realize the Insiders Were Doing Anything Wrong?}\\
+In our discussions, students often reported that they had at least a feeling that the insiders were acting in a malicious manner, but failed to stop them. Some reasons included not wanting to create controversy, the feeling that security was not a prominent area of concern, or that their teammate~\emph{must have known what they were doing}. Points of discussion could include warning signs of vulnerabilities being placed in a system either for intentional or unintentional reasons, methods of alerting teammates about potential issues in a constructive manner and individual project ownership and empowerment. \\
+
+\textbf{How Could Thinking Like an Insider Help to Protect Against Them?}\\
+Thinking like an insider is a good way to prevent against them. If developers are always considering different ways that their system can be compromised, they will be more likely to develop their application using proper defensive measures and to detect malicious actions by real inside threats. \\
+
+\textbf{What Could Have Been Done to Prevent Insider Threats?}\\
+One of the most important discussion topics should be what could have been done to prevent these insider threats (and similar ones) from occurring in future projects. Students are encouraged to discuss ways of preventing these threats from occurring in real-world projects. Some discussed methods include code reviews, internal accountability, maintaining an open culture, increasing auditability, and analysis by outside security auditors. \\
+
+
+\section{Student Feedback}
+\label{sec: studentfeedback}
+
+
+Students have expressed a significant amount of satisfaction in this activity and it has contributed to their overall satisfaction with the course. At the conclusion of the project, students are asked to submit an anonymous survey asking them to provide feedback regarding the project. Some of the questions were based upon the Likert scale, while other asked students to provide written feedback. Several of these questions and student responses are shown in Table~\ref{table:studentfeedback}. The survey has been posed to students in the last three course offerings, all of which have used this activity component. A total of 68 students from these sections have chosen to respond.
+
+\begin{table*}[t]
+\caption{Student Responses}
+\centering
+    \begin{tabular}{ l | c | c | c | c | c     }
+
+	\bfseries  & \bfseries Strongly Agree & \bfseries Agree & \bfseries Undecided & \bfseries Disagree  & \bfseries Strongly Disagree \\ \hline \hline
+
+	 You enjoyed the activity & 19 & 37 & 10 & 2  & 0 \\ \hline
+	 You learned a lot as a result of the activity & 14 & 39 & 11 & 2  & 0 \\ \hline
+	 The activity better prepared you for insider threats  & 21 & 39 & 5 & 1 & 2 \\ \hline
+	 You feel you are more prepared to deal with an insider threat & 16 & 38 & 9 & 5  & 0 \\ \hline
+	 You would be likely to recommend the activity to a friend & 16 & 29 & 15 & 7 & 0 \\
+
+    \end{tabular}
+
+\label{table:studentfeedback}
+%\vspace{-0.3in}
+\end{table*}
+
+
+
+
+
+%\todo{Describe the feedback a bit more.}
+
+%\begin{table}[h!]
+%\caption{Student Ratings}
+%\begin{center}
+%    \begin{tabular}{ l | l | l | l    }
+%    \toprule
+
+%	\bfseries & Yes & \bfseries No & \bfseries Total \\ \hline \hline
+%	\bfseries Did you enjoy the software project? & 66 & 12 & 85\%  \\ \hline
+%	\bfseries Would you recommend this project? & 60 & 18 & 77\%  \\ \hline
+%	\bfseries Resembles a real world project? & 60 & 18 & 77\%  \\ \hline
+%	\bfseries How much did you learn? (0-5)& - & - & 4.15  \\
+ %\bottomrule
+ %   \end{tabular}
+%\end{center}
+
+%\label{table:studentfeedback}
+%%\vspace{-0.3in}
+%\end{table}
+
+These results indicate that the vast majority of students not only enjoyed the activity, but would also recommend it to a classmate as well. Additionally, most students felt that it reassembled a project which they were likely to encounter in the real world and were similar to tasks they were asked to complete while on cooperative internships.
+
+
+%Finally, students were asked to rate how much they learned from the project on a 0-5 scale, with 0 representing them learning very little and 5 representing the maximum amount of learning. The average student response was a 4.15/5 indicating that, on average, students felt the project to be very educational.
+
+
+%The end of term feedback also allowed students to write some of their thoughts regarding the course project. The following are samples of written feedback that have been received:
+
+
+%This same survey also asked students to respond to several other questions with the options of Strongly Agreeing(SA), Agree (A), Undecided (U), Disagree (D) and Strongly Disagree (SD).
+
+
+%\begin{table}[h!]
+%\caption{Student Responses}
+%\begin{center}
+ %   \begin{tabular}{ l | l | l | l | l | l     }
+
+%	\bfseries  & \bfseries SA & \bfseries A & \bfseries U & \bfseries D  & \bfseries SD \\ \hline \hline
+
+%	 Did you enjoy the activity & x & X & X & X  & X \\ \hline
+%	 Did you learn a lot & x & X & X & X  & X \\ \hline
+%	 Would you recommend it to a friend & x & X & X & X  & X \\ \hline
+%	 Prepared for Insider Threats  & x & X & X & X  & X \\
+
+%    \end{tabular}
+%\end{center}
+
+%\label{table:studentfeedback}
+%%\vspace{-0.3in}
+%\end{table}
+
+%%% Analyze these results
+%\todo{Analyze results}
+
+
+
+
+%\todo{update numbers from the Spring term}
+
+%The end of term feedback also allowed students to write some of their thoughts regarding the course project.
+
+
+The following are samples of written feedback that have been received:
+
+\begin{quotation}
+``The surprise not only teaches the lesson but leaves an impression. This is probably due to the deception aspect of the activity.''
+\end{quotation}
+
+\begin{quotation}
+``It was really interesting to see how few people were looking for an insider threat and many threats went completely unnoticed. It showed that we weren't prepared to consider our classmates as threats.''
+\end{quotation}
+
+
+
+\begin{quotation}
+``I liked how it showed me how easily insider threat can destroy a project..''
+\end{quotation}
+
+
+
+\begin{quotation}
+``Being continually consciously aware of all possible security threats, for not all risks lie within the implementation.''
+\end{quotation}
+
+\begin{quotation}
+``It might seem silly, but the first-hand experience of having someone betray the team, even on an insignificant level, leaves an impression that the same could actually happen in the real world.''
+\end{quotation}
+
+This feedback indicates that students not only enjoyed the activity, but felt that it was an effective learning mechanism as well.
+
+% Should we include this section
+\section{Related Work}
+\label{sec: relatedwork}
+
+Numerous works have examined insider threats from a general security perspective. Leyden~\cite{Leyden_URL} and Brancik~\cite{Brancik_url} both discussed the importance of protecting against insider threats and the possible negative ramifications. Nostro et al.~\cite{Nostro:2014:ITA:2694737.2694740} developed a process for insider threat detection and mitigation using a variety of existing tools and new techniques with the goal being to define the objectives of the attacker and subsequently determining appropriate countermeasures. Other works have discussed various interesting ways of detecting insider threats; Almehmadi et al~\cite{Almehmadi:2014:PIT:2659651.2659654} investigated the use of using physiological features to detect attackers and found that an abnormal deviation in a user's electrocardiogram amplitude could properly predict an attack before it occurred.
+
+This activity fully engages students in the learning process, which is important as research has shown that students learn better when they are actively engaged in the process~\cite{19897}. Various other learning techniques that use ``active'', ``collaborate'', and ``cooperative'' learning techniques have been recommended over the years~\cite{bonwell1991active, Schweitzer:2007:IVA:1227310.1227384, Bailey:2005:JTC:1047124.1047469, sutherland1996using}.
+
+To our knowledge, this activity was the first of its kind to introduce an insider threat into a software security classroom activity. However, Krutz and Vallino~\cite{6685085} used a similar activity to teach freshman seminar students about problematic teammates. In this activity, moles were added to teams and performed roles such as non-contributors, side trackers and absentee team members. A post-activity discussion focused on these problematic team members and how they can be properly addressed. Creating an activity that was not only informative but also enjoyable for the students is an important objective.
+
+
+
+% Talk about other works about insider threats in the general security perspective.
+
+
+\section{Future work}
+\label{sec: futurework}
+
+This project has been utilized in several sections of our Engineering of Secure Software course and has been very successful, but there are a few enhancements to the activity and further data which may be collected. In future iterations, we would like to further record and analyze the exploits created by the insiders. This would not only be helpful for better planning future offerings of this activity, but would likely be interesting to researchers as well. Once an insider's exploit is exposed during the class discussion, a secondary activity could be for the team to resolve that exploit like they would in a real-world environment. This could include steps taken to mitigate the exploit and measures which could be taken to ensure that a similar exploit did not occur in the future.
+
+Should instructors have more time to complete this activity, a formal code inspection by the team before revealing the insiders could be a beneficial activity, teaching the students about the code inspections themselves and helping to solidify their importance in detecting insider threats. If the team did not identify the threats, this would help to demonstrate the many challenges in detecting an insider threat.
+
+When conducting this activity, we chose to give the insiders a significant amount of freedom in deciding what kind of threats to add to the system since a large amount of variability existed between each team's design and the dynamics of the team. However, some insiders have expressed the desire for more direction on the types of threats they should be looking to create. Future instructors should take this into consideration, but also remember to provide balance: too much direction which would inhibit the creativity and ability of the insiders to create threats.
+
+\section{Conclusion}
+\label{sec: conclusion}
+
+Organizations suffer from insider threats on a constant basis --- posing risks that could impact them not only monetarily, but also through the loss of invaluable and often private data. Some of this harm is irreversible for organizations from both a data and customer trust perspective. Unfortunately, students are typically unprepared to deal with this notion and do not understand that it can occur, and how it may occur.
+
+We have described a novel and innovative activity to instruct software security students about the dangers of insider threats and some of the damaging ramifications such an actor could have on a system. Students have expressed their satisfaction with the activity from both an enjoyment and learning perspective. We encourage instructors at other institutions to use this activity in their security courses as well.
+
+
+%\end{document}  % This is where a 'short' article might terminate
+\balance
+\bibliographystyle{abbrv}
+\bibliography{InsiderThreatActivity}
+
+%\balancecolumns
+% That's all folks!
+\end{document}
+
+
+
+
+% Todo
+%	Use the term threat or mole?
+% 	Add Keywords

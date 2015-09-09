@@ -1,0 +1,824 @@
+.class org/scribe/model/Request
+.super java/lang/Object
+.source Request.java
+
+.field private static final CONTENT_LENGTH Ljava/lang/String; = "Content-Length"
+.field private static final CONTENT_TYPE Ljava/lang/String; = "Content-Type"
+.field public static final DEFAULT_CONTENT_TYPE Ljava/lang/String; = "application/x-www-form-urlencoded"
+.field private bodyParams Lorg/scribe/model/ParameterList;
+.field private bytePayload [B
+.field private charset Ljava/lang/String;
+.field private connectTimeout Ljava/lang/Long;
+.field private connection Ljava/net/HttpURLConnection;
+.field private connectionKeepAlive Z
+.field private headers Ljava/util/Map;
+  .annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "Ljava/lang/String;" , ">;" }
+  .end annotation
+.end field
+.field private payload Ljava/lang/String;
+.field private querystringParams Lorg/scribe/model/ParameterList;
+.field private readTimeout Ljava/lang/Long;
+.field private url Ljava/lang/String;
+.field private verb Lorg/scribe/model/Verb;
+
+.method public <init>(Lorg/scribe/model/Verb;Ljava/lang/String;)V
+.limit registers 5
+; this: v2 (Lorg/scribe/model/Request;)
+; parameter[0] : v3 (Lorg/scribe/model/Verb;)
+; parameter[1] : v4 (Ljava/lang/String;)
+	const/4	v1,0
+; v1 : single-length
+.line 42
+	invoke-direct	{v2},java/lang/Object/<init>	; <init>()V
+; v2 : Lorg/scribe/model/Request;
+.line 27
+	iput-object	v1,v2,org/scribe/model/Request.payload Ljava/lang/String;
+; v1 : single-length , v2 : Lorg/scribe/model/Request;
+.line 30
+	iput-object	v1,v2,org/scribe/model/Request.bytePayload [B
+; v1 : single-length , v2 : Lorg/scribe/model/Request;
+.line 31
+	const/4	v0,0
+; v0 : single-length
+	iput-boolean	v0,v2,org/scribe/model/Request.connectionKeepAlive Z
+; v0 : single-length , v2 : Lorg/scribe/model/Request;
+.line 32
+	iput-object	v1,v2,org/scribe/model/Request.connectTimeout Ljava/lang/Long;
+; v1 : single-length , v2 : Lorg/scribe/model/Request;
+.line 33
+	iput-object	v1,v2,org/scribe/model/Request.readTimeout Ljava/lang/Long;
+; v1 : single-length , v2 : Lorg/scribe/model/Request;
+.line 43
+	iput-object	v3,v2,org/scribe/model/Request.verb Lorg/scribe/model/Verb;
+; v3 : Lorg/scribe/model/Verb; , v2 : Lorg/scribe/model/Request;
+.line 44
+	iput-object	v4,v2,org/scribe/model/Request.url Ljava/lang/String;
+; v4 : Ljava/lang/String; , v2 : Lorg/scribe/model/Request;
+.line 45
+	new-instance	v0,org/scribe/model/ParameterList
+; v0 : Lorg/scribe/model/ParameterList;
+	invoke-direct	{v0},org/scribe/model/ParameterList/<init>	; <init>()V
+; v0 : Lorg/scribe/model/ParameterList;
+	iput-object	v0,v2,org/scribe/model/Request.querystringParams Lorg/scribe/model/ParameterList;
+; v0 : Lorg/scribe/model/ParameterList; , v2 : Lorg/scribe/model/Request;
+.line 46
+	new-instance	v0,org/scribe/model/ParameterList
+; v0 : Lorg/scribe/model/ParameterList;
+	invoke-direct	{v0},org/scribe/model/ParameterList/<init>	; <init>()V
+; v0 : Lorg/scribe/model/ParameterList;
+	iput-object	v0,v2,org/scribe/model/Request.bodyParams Lorg/scribe/model/ParameterList;
+; v0 : Lorg/scribe/model/ParameterList; , v2 : Lorg/scribe/model/Request;
+.line 47
+	new-instance	v0,java/util/HashMap
+; v0 : Ljava/util/HashMap;
+	invoke-direct	{v0},java/util/HashMap/<init>	; <init>()V
+; v0 : Ljava/util/HashMap;
+	iput-object	v0,v2,org/scribe/model/Request.headers Ljava/util/Map;
+; v0 : Ljava/util/HashMap; , v2 : Lorg/scribe/model/Request;
+.line 48
+	return-void	
+.end method
+
+.method private createConnection()V
+.throws Ljava/io/IOException;
+.limit registers 4
+; this: v3 (Lorg/scribe/model/Request;)
+.line 72
+	invoke-virtual	{v3},org/scribe/model/Request/getCompleteUrl	; getCompleteUrl()Ljava/lang/String;
+; v3 : Lorg/scribe/model/Request;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+.line 73
+	iget-object	v1,v3,org/scribe/model/Request.connection Ljava/net/HttpURLConnection;
+; v1 : Ljava/net/HttpURLConnection; , v3 : Lorg/scribe/model/Request;
+	if-nez	v1,l14a858
+; v1 : Ljava/net/HttpURLConnection;
+.line 75
+	const-string	v2,"http.keepAlive"
+; v2 : Ljava/lang/String;
+	iget-boolean	v1,v3,org/scribe/model/Request.connectionKeepAlive Z
+; v1 : single-length , v3 : Lorg/scribe/model/Request;
+	if-eqz	v1,l14a85a
+; v1 : single-length
+	const-string	v1,"true"
+; v1 : Ljava/lang/String;
+l14a838:
+	invoke-static	{v2,v1},java/lang/System/setProperty	; setProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v2 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 76
+	new-instance	v1,java/net/URL
+; v1 : Ljava/net/URL;
+	invoke-direct	{v1,v0},java/net/URL/<init>	; <init>(Ljava/lang/String;)V
+; v1 : Ljava/net/URL; , v0 : Ljava/lang/String;
+	invoke-virtual	{v1},java/net/URL/openConnection	; openConnection()Ljava/net/URLConnection;
+; v1 : Ljava/net/URL;
+	move-result-object	v1
+; v1 : Ljava/net/URLConnection;
+	check-cast	v1,java/net/HttpURLConnection
+; v1 : Ljava/net/HttpURLConnection;
+	iput-object	v1,v3,org/scribe/model/Request.connection Ljava/net/HttpURLConnection;
+; v1 : Ljava/net/HttpURLConnection; , v3 : Lorg/scribe/model/Request;
+l14a858:
+.line 78
+	return-void	
+l14a85a:
+.line 75
+	const-string	v1,"false"
+; v1 : Ljava/lang/String;
+	goto	l14a838
+.end method
+
+.method addBody(Ljava/net/HttpURLConnection;[B)V
+.throws Ljava/io/IOException;
+.limit registers 5
+; this: v2 (Lorg/scribe/model/Request;)
+; parameter[0] : v3 (Ljava/net/HttpURLConnection;)
+; parameter[1] : v4 ([B)
+.line 117
+	const-string	v0,"Content-Length"
+; v0 : Ljava/lang/String;
+	array-length	v1,v4
+; v1 : single-length , v4 : [B
+	invoke-static	{v1},java/lang/String/valueOf	; valueOf(I)Ljava/lang/String;
+; v1 : single-length
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v3,v0,v1},java/net/HttpURLConnection/setRequestProperty	; setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
+; v3 : Ljava/net/HttpURLConnection; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+.line 120
+	const-string	v0,"Content-Type"
+; v0 : Ljava/lang/String;
+	invoke-virtual	{v3,v0},java/net/HttpURLConnection/getRequestProperty	; getRequestProperty(Ljava/lang/String;)Ljava/lang/String;
+; v3 : Ljava/net/HttpURLConnection; , v0 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	if-nez	v0,l14a8a2
+; v0 : Ljava/lang/String;
+.line 122
+	const-string	v0,"Content-Type"
+; v0 : Ljava/lang/String;
+	const-string	v1,"application/x-www-form-urlencoded"
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v3,v0,v1},java/net/HttpURLConnection/setRequestProperty	; setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
+; v3 : Ljava/net/HttpURLConnection; , v0 : Ljava/lang/String; , v1 : Ljava/lang/String;
+l14a8a2:
+.line 124
+	const/4	v0,1
+; v0 : single-length
+	invoke-virtual	{v3,v0},java/net/HttpURLConnection/setDoOutput	; setDoOutput(Z)V
+; v3 : Ljava/net/HttpURLConnection; , v0 : single-length
+.line 125
+	invoke-virtual	{v3},java/net/HttpURLConnection/getOutputStream	; getOutputStream()Ljava/io/OutputStream;
+; v3 : Ljava/net/HttpURLConnection;
+	move-result-object	v0
+; v0 : Ljava/io/OutputStream;
+	invoke-virtual	{v0,v4},java/io/OutputStream/write	; write([B)V
+; v0 : Ljava/io/OutputStream; , v4 : [B
+.line 126
+	return-void	
+.end method
+
+.method public addBodyParameter(Ljava/lang/String;Ljava/lang/String;)V
+.limit registers 4
+; this: v1 (Lorg/scribe/model/Request;)
+; parameter[0] : v2 (Ljava/lang/String;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.line 147
+	iget-object	v0,v1,org/scribe/model/Request.bodyParams Lorg/scribe/model/ParameterList;
+; v0 : Lorg/scribe/model/ParameterList; , v1 : Lorg/scribe/model/Request;
+	invoke-virtual	{v0,v2,v3},org/scribe/model/ParameterList/add	; add(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/ParameterList; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 148
+	return-void	
+.end method
+
+.method public addHeader(Ljava/lang/String;Ljava/lang/String;)V
+.limit registers 4
+; this: v1 (Lorg/scribe/model/Request;)
+; parameter[0] : v2 (Ljava/lang/String;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.line 136
+	iget-object	v0,v1,org/scribe/model/Request.headers Ljava/util/Map;
+; v0 : Ljava/util/Map; , v1 : Lorg/scribe/model/Request;
+	invoke-interface	{v0,v2,v3},java/util/Map/put	; put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+; v0 : Ljava/util/Map; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 137
+	return-void	
+.end method
+
+.method addHeaders(Ljava/net/HttpURLConnection;)V
+.limit registers 5
+; this: v3 (Lorg/scribe/model/Request;)
+; parameter[0] : v4 (Ljava/net/HttpURLConnection;)
+.var 1 is key Ljava/lang/String; from l14a930 to l14a948
+.line 111
+	iget-object	v2,v3,org/scribe/model/Request.headers Ljava/util/Map;
+; v2 : Ljava/util/Map; , v3 : Lorg/scribe/model/Request;
+	invoke-interface	{v2},java/util/Map/keySet	; keySet()Ljava/util/Set;
+; v2 : Ljava/util/Map;
+	move-result-object	v2
+; v2 : Ljava/util/Set;
+	invoke-interface	{v2},java/util/Set/iterator	; iterator()Ljava/util/Iterator;
+; v2 : Ljava/util/Set;
+	move-result-object	v0
+; v0 : Ljava/util/Iterator;
+l14a918:
+	invoke-interface	{v0},java/util/Iterator/hasNext	; hasNext()Z
+; v0 : Ljava/util/Iterator;
+	move-result	v2
+; v2 : single-length
+	if-eqz	v2,l14a948
+; v2 : single-length
+	invoke-interface	{v0},java/util/Iterator/next	; next()Ljava/lang/Object;
+; v0 : Ljava/util/Iterator;
+	move-result-object	v1
+; v1 : Ljava/lang/Object;
+	check-cast	v1,java/lang/String
+; v1 : Ljava/lang/String;
+.line 112
+	iget-object	v2,v3,org/scribe/model/Request.headers Ljava/util/Map;
+; v2 : Ljava/util/Map; , v3 : Lorg/scribe/model/Request;
+	invoke-interface	{v2,v1},java/util/Map/get	; get(Ljava/lang/Object;)Ljava/lang/Object;
+; v2 : Ljava/util/Map; , v1 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/Object;
+	check-cast	v2,java/lang/String
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v4,v1,v2},java/net/HttpURLConnection/setRequestProperty	; setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
+; v4 : Ljava/net/HttpURLConnection; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	goto	l14a918
+l14a948:
+.line 113
+	return-void	
+.end method
+
+.method public addPayload(Ljava/lang/String;)V
+.limit registers 2
+; this: v0 (Lorg/scribe/model/Request;)
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 173
+	iput-object	v1,v0,org/scribe/model/Request.payload Ljava/lang/String;
+; v1 : Ljava/lang/String; , v0 : Lorg/scribe/model/Request;
+.line 174
+	return-void	
+.end method
+
+.method public addPayload([B)V
+.limit registers 2
+; this: v0 (Lorg/scribe/model/Request;)
+; parameter[0] : v1 ([B)
+.line 183
+	iput-object	v1,v0,org/scribe/model/Request.bytePayload [B
+; v1 : [B , v0 : Lorg/scribe/model/Request;
+.line 184
+	return-void	
+.end method
+
+.method public addQuerystringParameter(Ljava/lang/String;Ljava/lang/String;)V
+.limit registers 4
+; this: v1 (Lorg/scribe/model/Request;)
+; parameter[0] : v2 (Ljava/lang/String;)
+; parameter[1] : v3 (Ljava/lang/String;)
+.line 158
+	iget-object	v0,v1,org/scribe/model/Request.querystringParams Lorg/scribe/model/ParameterList;
+; v0 : Lorg/scribe/model/ParameterList; , v1 : Lorg/scribe/model/Request;
+	invoke-virtual	{v0,v2,v3},org/scribe/model/ParameterList/add	; add(Ljava/lang/String;Ljava/lang/String;)V
+; v0 : Lorg/scribe/model/ParameterList; , v2 : Ljava/lang/String; , v3 : Ljava/lang/String;
+.line 159
+	return-void	
+.end method
+
+.method doSend()Lorg/scribe/model/Response;
+.throws Ljava/io/IOException;
+.limit registers 3
+; this: v2 (Lorg/scribe/model/Request;)
+.line 92
+	iget-object	v0,v2,org/scribe/model/Request.connection Ljava/net/HttpURLConnection;
+; v0 : Ljava/net/HttpURLConnection; , v2 : Lorg/scribe/model/Request;
+	iget-object	v1,v2,org/scribe/model/Request.verb Lorg/scribe/model/Verb;
+; v1 : Lorg/scribe/model/Verb; , v2 : Lorg/scribe/model/Request;
+	invoke-virtual	{v1},org/scribe/model/Verb/name	; name()Ljava/lang/String;
+; v1 : Lorg/scribe/model/Verb;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v0,v1},java/net/HttpURLConnection/setRequestMethod	; setRequestMethod(Ljava/lang/String;)V
+; v0 : Ljava/net/HttpURLConnection; , v1 : Ljava/lang/String;
+.line 93
+	iget-object	v0,v2,org/scribe/model/Request.connectTimeout Ljava/lang/Long;
+; v0 : Ljava/lang/Long; , v2 : Lorg/scribe/model/Request;
+	if-eqz	v0,l14a9dc
+; v0 : Ljava/lang/Long;
+.line 95
+	iget-object	v0,v2,org/scribe/model/Request.connection Ljava/net/HttpURLConnection;
+; v0 : Ljava/net/HttpURLConnection; , v2 : Lorg/scribe/model/Request;
+	iget-object	v1,v2,org/scribe/model/Request.connectTimeout Ljava/lang/Long;
+; v1 : Ljava/lang/Long; , v2 : Lorg/scribe/model/Request;
+	invoke-virtual	{v1},java/lang/Long/intValue	; intValue()I
+; v1 : Ljava/lang/Long;
+	move-result	v1
+; v1 : single-length
+	invoke-virtual	{v0,v1},java/net/HttpURLConnection/setConnectTimeout	; setConnectTimeout(I)V
+; v0 : Ljava/net/HttpURLConnection; , v1 : single-length
+l14a9dc:
+.line 97
+	iget-object	v0,v2,org/scribe/model/Request.readTimeout Ljava/lang/Long;
+; v0 : Ljava/lang/Long; , v2 : Lorg/scribe/model/Request;
+	if-eqz	v0,l14a9fa
+; v0 : Ljava/lang/Long;
+.line 99
+	iget-object	v0,v2,org/scribe/model/Request.connection Ljava/net/HttpURLConnection;
+; v0 : Ljava/net/HttpURLConnection; , v2 : Lorg/scribe/model/Request;
+	iget-object	v1,v2,org/scribe/model/Request.readTimeout Ljava/lang/Long;
+; v1 : Ljava/lang/Long; , v2 : Lorg/scribe/model/Request;
+	invoke-virtual	{v1},java/lang/Long/intValue	; intValue()I
+; v1 : Ljava/lang/Long;
+	move-result	v1
+; v1 : single-length
+	invoke-virtual	{v0,v1},java/net/HttpURLConnection/setReadTimeout	; setReadTimeout(I)V
+; v0 : Ljava/net/HttpURLConnection; , v1 : single-length
+l14a9fa:
+.line 101
+	iget-object	v0,v2,org/scribe/model/Request.connection Ljava/net/HttpURLConnection;
+; v0 : Ljava/net/HttpURLConnection; , v2 : Lorg/scribe/model/Request;
+	invoke-virtual	{v2,v0},org/scribe/model/Request/addHeaders	; addHeaders(Ljava/net/HttpURLConnection;)V
+; v2 : Lorg/scribe/model/Request; , v0 : Ljava/net/HttpURLConnection;
+.line 102
+	iget-object	v0,v2,org/scribe/model/Request.verb Lorg/scribe/model/Verb;
+; v0 : Lorg/scribe/model/Verb; , v2 : Lorg/scribe/model/Request;
+	sget-object	v1,org/scribe/model/Verb.PUT Lorg/scribe/model/Verb;
+; v1 : Lorg/scribe/model/Verb;
+	invoke-virtual	{v0,v1},org/scribe/model/Verb/equals	; equals(Ljava/lang/Object;)Z
+; v0 : Lorg/scribe/model/Verb; , v1 : Lorg/scribe/model/Verb;
+	move-result	v0
+; v0 : single-length
+	if-nez	v0,l14aa2c
+; v0 : single-length
+	iget-object	v0,v2,org/scribe/model/Request.verb Lorg/scribe/model/Verb;
+; v0 : Lorg/scribe/model/Verb; , v2 : Lorg/scribe/model/Request;
+	sget-object	v1,org/scribe/model/Verb.POST Lorg/scribe/model/Verb;
+; v1 : Lorg/scribe/model/Verb;
+	invoke-virtual	{v0,v1},org/scribe/model/Verb/equals	; equals(Ljava/lang/Object;)Z
+; v0 : Lorg/scribe/model/Verb; , v1 : Lorg/scribe/model/Verb;
+	move-result	v0
+; v0 : single-length
+	if-eqz	v0,l14aa3e
+; v0 : single-length
+l14aa2c:
+.line 104
+	iget-object	v0,v2,org/scribe/model/Request.connection Ljava/net/HttpURLConnection;
+; v0 : Ljava/net/HttpURLConnection; , v2 : Lorg/scribe/model/Request;
+	invoke-virtual	{v2},org/scribe/model/Request/getByteBodyContents	; getByteBodyContents()[B
+; v2 : Lorg/scribe/model/Request;
+	move-result-object	v1
+; v1 : [B
+	invoke-virtual	{v2,v0,v1},org/scribe/model/Request/addBody	; addBody(Ljava/net/HttpURLConnection;[B)V
+; v2 : Lorg/scribe/model/Request; , v0 : Ljava/net/HttpURLConnection; , v1 : [B
+l14aa3e:
+.line 106
+	new-instance	v0,org/scribe/model/Response
+; v0 : Lorg/scribe/model/Response;
+	iget-object	v1,v2,org/scribe/model/Request.connection Ljava/net/HttpURLConnection;
+; v1 : Ljava/net/HttpURLConnection; , v2 : Lorg/scribe/model/Request;
+	invoke-direct	{v0,v1},org/scribe/model/Response/<init>	; <init>(Ljava/net/HttpURLConnection;)V
+; v0 : Lorg/scribe/model/Response; , v1 : Ljava/net/HttpURLConnection;
+	return-object	v0
+; v0 : Lorg/scribe/model/Response;
+.end method
+
+.method public getBodyContents()Ljava/lang/String;
+.limit registers 5
+; this: v4 (Lorg/scribe/model/Request;)
+.catch java/io/UnsupportedEncodingException from l14aa60 to l14aa7a using l14aa7c
+l14aa60:
+.line 248
+	new-instance	v1,java/lang/String
+; v1 : Ljava/lang/String;
+	invoke-virtual	{v4},org/scribe/model/Request/getByteBodyContents	; getByteBodyContents()[B
+; v4 : Lorg/scribe/model/Request;
+	move-result-object	v2
+; v2 : [B
+	invoke-virtual	{v4},org/scribe/model/Request/getCharset	; getCharset()Ljava/lang/String;
+; v4 : Lorg/scribe/model/Request;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-direct	{v1,v2,v3},java/lang/String/<init>	; <init>([BLjava/lang/String;)V
+; v1 : Ljava/lang/String; , v2 : [B , v3 : Ljava/lang/String;
+l14aa7a:
+	return-object	v1
+; v1 : Ljava/lang/String;
+l14aa7c:
+.line 250
+	move-exception	v0
+; v0 : java/io/UnsupportedEncodingException
+.line 252
+	new-instance	v1,org/scribe/exceptions/OAuthException
+; v1 : Lorg/scribe/exceptions/OAuthException;
+	new-instance	v2,java/lang/StringBuilder
+; v2 : Ljava/lang/StringBuilder;
+	invoke-direct	{v2},java/lang/StringBuilder/<init>	; <init>()V
+; v2 : Ljava/lang/StringBuilder;
+	const-string	v3,"Unsupported Charset: "
+; v3 : Ljava/lang/String;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	iget-object	v3,v4,org/scribe/model/Request.charset Ljava/lang/String;
+; v3 : Ljava/lang/String; , v4 : Lorg/scribe/model/Request;
+	invoke-virtual	{v2,v3},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v2 : Ljava/lang/StringBuilder; , v3 : Ljava/lang/String;
+	move-result-object	v2
+; v2 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v2},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v2 : Ljava/lang/StringBuilder;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-direct	{v1,v2,v0},org/scribe/exceptions/OAuthException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Exception;)V
+; v1 : Lorg/scribe/exceptions/OAuthException; , v2 : Ljava/lang/String; , v0 : java/io/UnsupportedEncodingException
+	throw	v1
+; v1 : Lorg/scribe/exceptions/OAuthException;
+.end method
+
+.method public getBodyParams()Lorg/scribe/model/ParameterList;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/Request;)
+.line 215
+	iget-object	v0,v1,org/scribe/model/Request.bodyParams Lorg/scribe/model/ParameterList;
+; v0 : Lorg/scribe/model/ParameterList; , v1 : Lorg/scribe/model/Request;
+	return-object	v0
+; v0 : Lorg/scribe/model/ParameterList;
+.end method
+
+.method getByteBodyContents()[B
+.limit registers 6
+; this: v5 (Lorg/scribe/model/Request;)
+.catch java/io/UnsupportedEncodingException from l14ab06 to l14ab14 using l14ab26
+.var 0 is body Ljava/lang/String; from l14ab06 to l14ab18
+.line 258
+	iget-object	v2,v5,org/scribe/model/Request.bytePayload [B
+; v2 : [B , v5 : Lorg/scribe/model/Request;
+	if-eqz	v2,l14aafa
+; v2 : [B
+	iget-object	v2,v5,org/scribe/model/Request.bytePayload [B
+; v2 : [B , v5 : Lorg/scribe/model/Request;
+l14aaf8:
+.line 262
+	return-object	v2
+; v2 : [B
+l14aafa:
+.line 259
+	iget-object	v2,v5,org/scribe/model/Request.payload Ljava/lang/String;
+; v2 : Ljava/lang/String; , v5 : Lorg/scribe/model/Request;
+	if-eqz	v2,l14ab18
+; v2 : Ljava/lang/String;
+	iget-object	v0,v5,org/scribe/model/Request.payload Ljava/lang/String;
+; v0 : Ljava/lang/String; , v5 : Lorg/scribe/model/Request;
+l14ab06:
+.line 262
+	invoke-virtual	{v5},org/scribe/model/Request/getCharset	; getCharset()Ljava/lang/String;
+; v5 : Lorg/scribe/model/Request;
+	move-result-object	v2
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v2},java/lang/String/getBytes	; getBytes(Ljava/lang/String;)[B
+; v0 : Ljava/lang/String; , v2 : Ljava/lang/String;
+l14ab14:
+	move-result-object	v2
+; v2 : [B
+	goto	l14aaf8
+l14ab18:
+.line 259
+	iget-object	v2,v5,org/scribe/model/Request.bodyParams Lorg/scribe/model/ParameterList;
+; v2 : Lorg/scribe/model/ParameterList; , v5 : Lorg/scribe/model/Request;
+	invoke-virtual	{v2},org/scribe/model/ParameterList/asFormUrlEncodedString	; asFormUrlEncodedString()Ljava/lang/String;
+; v2 : Lorg/scribe/model/ParameterList;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	goto	l14ab06
+l14ab26:
+.line 264
+	move-exception	v1
+; v1 : java/io/UnsupportedEncodingException
+.line 266
+	new-instance	v2,org/scribe/exceptions/OAuthException
+; v2 : Lorg/scribe/exceptions/OAuthException;
+	new-instance	v3,java/lang/StringBuilder
+; v3 : Ljava/lang/StringBuilder;
+	invoke-direct	{v3},java/lang/StringBuilder/<init>	; <init>()V
+; v3 : Ljava/lang/StringBuilder;
+	const-string	v4,"Unsupported Charset: "
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v5},org/scribe/model/Request/getCharset	; getCharset()Ljava/lang/String;
+; v5 : Lorg/scribe/model/Request;
+	move-result-object	v4
+; v4 : Ljava/lang/String;
+	invoke-virtual	{v3,v4},java/lang/StringBuilder/append	; append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+; v3 : Ljava/lang/StringBuilder; , v4 : Ljava/lang/String;
+	move-result-object	v3
+; v3 : Ljava/lang/StringBuilder;
+	invoke-virtual	{v3},java/lang/StringBuilder/toString	; toString()Ljava/lang/String;
+; v3 : Ljava/lang/StringBuilder;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	invoke-direct	{v2,v3,v1},org/scribe/exceptions/OAuthException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Exception;)V
+; v2 : Lorg/scribe/exceptions/OAuthException; , v3 : Ljava/lang/String; , v1 : java/io/UnsupportedEncodingException
+	throw	v2
+; v2 : Lorg/scribe/exceptions/OAuthException;
+.end method
+
+.method public getCharset()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/Request;)
+.line 297
+	iget-object	v0,v1,org/scribe/model/Request.charset Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/scribe/model/Request;
+	if-nez	v0,l14ab9e
+; v0 : Ljava/lang/String;
+	invoke-static	{},java/nio/charset/Charset/defaultCharset	; defaultCharset()Ljava/nio/charset/Charset;
+; 
+	nop	
+	move-result-object	v0
+; v0 : Ljava/nio/charset/Charset;
+	invoke-virtual	{v0},java/nio/charset/Charset/name	; name()Ljava/lang/String;
+; v0 : Ljava/nio/charset/Charset;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+l14ab9c:
+	return-object	v0
+; v0 : Ljava/lang/String;
+l14ab9e:
+	iget-object	v0,v1,org/scribe/model/Request.charset Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/scribe/model/Request;
+	goto	l14ab9c
+.end method
+
+.method public getCompleteUrl()Ljava/lang/String;
+.limit registers 3
+; this: v2 (Lorg/scribe/model/Request;)
+.line 87
+	iget-object	v0,v2,org/scribe/model/Request.querystringParams Lorg/scribe/model/ParameterList;
+; v0 : Lorg/scribe/model/ParameterList; , v2 : Lorg/scribe/model/Request;
+	iget-object	v1,v2,org/scribe/model/Request.url Ljava/lang/String;
+; v1 : Ljava/lang/String; , v2 : Lorg/scribe/model/Request;
+	invoke-virtual	{v0,v1},org/scribe/model/ParameterList/appendTo	; appendTo(Ljava/lang/String;)Ljava/lang/String;
+; v0 : Lorg/scribe/model/ParameterList; , v1 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getHeaders()Ljava/util/Map;
+.annotation systemVisibility Ldalvik/annotation/Signature;
+    value [Ljava/lang/String; = { "()" , "Ljava/util/Map" , "<" , "Ljava/lang/String;" , "Ljava/lang/String;" , ">;" }
+.end annotation
+.limit registers 2
+; this: v1 (Lorg/scribe/model/Request;)
+.line 287
+	iget-object	v0,v1,org/scribe/model/Request.headers Ljava/util/Map;
+; v0 : Ljava/util/Map; , v1 : Lorg/scribe/model/Request;
+	return-object	v0
+; v0 : Ljava/util/Map;
+.end method
+
+.method public getQueryStringParams()Lorg/scribe/model/ParameterList;
+.limit registers 6
+; this: v5 (Lorg/scribe/model/Request;)
+.catch java/net/MalformedURLException from l14abf0 to l14ac20 using l14ac22
+.var 1 is queryString Ljava/lang/String; from l14ac10 to l14ac22
+.var 2 is result Lorg/scribe/model/ParameterList; from l14abfa to l14ac22
+l14abf0:
+.line 196
+	new-instance	v2,org/scribe/model/ParameterList
+; v2 : Lorg/scribe/model/ParameterList;
+	invoke-direct	{v2},org/scribe/model/ParameterList/<init>	; <init>()V
+; v2 : Lorg/scribe/model/ParameterList;
+.line 197
+	new-instance	v3,java/net/URL
+; v3 : Ljava/net/URL;
+	iget-object	v4,v5,org/scribe/model/Request.url Ljava/lang/String;
+; v4 : Ljava/lang/String; , v5 : Lorg/scribe/model/Request;
+	invoke-direct	{v3,v4},java/net/URL/<init>	; <init>(Ljava/lang/String;)V
+; v3 : Ljava/net/URL; , v4 : Ljava/lang/String;
+	invoke-virtual	{v3},java/net/URL/getQuery	; getQuery()Ljava/lang/String;
+; v3 : Ljava/net/URL;
+	move-result-object	v1
+; v1 : Ljava/lang/String;
+.line 198
+	invoke-virtual	{v2,v1},org/scribe/model/ParameterList/addQuerystring	; addQuerystring(Ljava/lang/String;)V
+; v2 : Lorg/scribe/model/ParameterList; , v1 : Ljava/lang/String;
+.line 199
+	iget-object	v3,v5,org/scribe/model/Request.querystringParams Lorg/scribe/model/ParameterList;
+; v3 : Lorg/scribe/model/ParameterList; , v5 : Lorg/scribe/model/Request;
+	invoke-virtual	{v2,v3},org/scribe/model/ParameterList/addAll	; addAll(Lorg/scribe/model/ParameterList;)V
+; v2 : Lorg/scribe/model/ParameterList; , v3 : Lorg/scribe/model/ParameterList;
+l14ac20:
+.line 200
+	return-object	v2
+; v2 : Lorg/scribe/model/ParameterList;
+l14ac22:
+.line 202
+	move-exception	v0
+; v0 : java/net/MalformedURLException
+.line 204
+	new-instance	v3,org/scribe/exceptions/OAuthException
+; v3 : Lorg/scribe/exceptions/OAuthException;
+	const-string	v4,"Malformed URL"
+; v4 : Ljava/lang/String;
+	invoke-direct	{v3,v4,v0},org/scribe/exceptions/OAuthException/<init>	; <init>(Ljava/lang/String;Ljava/lang/Exception;)V
+; v3 : Lorg/scribe/exceptions/OAuthException; , v4 : Ljava/lang/String; , v0 : java/net/MalformedURLException
+	throw	v3
+; v3 : Lorg/scribe/exceptions/OAuthException;
+.end method
+
+.method public getSanitizedUrl()Ljava/lang/String;
+.limit registers 4
+; this: v3 (Lorg/scribe/model/Request;)
+.line 235
+	iget-object	v0,v3,org/scribe/model/Request.url Ljava/lang/String;
+; v0 : Ljava/lang/String; , v3 : Lorg/scribe/model/Request;
+	const-string	v1,"\?.*"
+; v1 : Ljava/lang/String;
+	const-string	v2,""
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v2},java/lang/String/replaceAll	; replaceAll(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	const-string	v1,"\:\d{4}"
+; v1 : Ljava/lang/String;
+	const-string	v2,""
+; v2 : Ljava/lang/String;
+	invoke-virtual	{v0,v1,v2},java/lang/String/replace	; replace(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Ljava/lang/String; , v2 : Ljava/lang/String;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getUrl()Ljava/lang/String;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/Request;)
+.line 225
+	iget-object	v0,v1,org/scribe/model/Request.url Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : Lorg/scribe/model/Request;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+.method public getVerb()Lorg/scribe/model/Verb;
+.limit registers 2
+; this: v1 (Lorg/scribe/model/Request;)
+.line 277
+	iget-object	v0,v1,org/scribe/model/Request.verb Lorg/scribe/model/Verb;
+; v0 : Lorg/scribe/model/Verb; , v1 : Lorg/scribe/model/Request;
+	return-object	v0
+; v0 : Lorg/scribe/model/Verb;
+.end method
+
+.method public send()Lorg/scribe/model/Response;
+.limit registers 3
+; this: v2 (Lorg/scribe/model/Request;)
+.catch java/lang/Exception from l14acbc to l14acc8 using l14accc
+l14acbc:
+.line 61
+	invoke-direct	{v2},org/scribe/model/Request/createConnection	; createConnection()V
+; v2 : Lorg/scribe/model/Request;
+.line 62
+	invoke-virtual	{v2},org/scribe/model/Request/doSend	; doSend()Lorg/scribe/model/Response;
+; v2 : Lorg/scribe/model/Request;
+l14acc8:
+	move-result-object	v1
+; v1 : Lorg/scribe/model/Response;
+	return-object	v1
+; v1 : Lorg/scribe/model/Response;
+l14accc:
+.line 64
+	move-exception	v0
+; v0 : java/lang/Exception
+.line 66
+	new-instance	v1,org/scribe/exceptions/OAuthConnectionException
+; v1 : Lorg/scribe/exceptions/OAuthConnectionException;
+	invoke-direct	{v1,v0},org/scribe/exceptions/OAuthConnectionException/<init>	; <init>(Ljava/lang/Exception;)V
+; v1 : Lorg/scribe/exceptions/OAuthConnectionException; , v0 : java/lang/Exception
+	throw	v1
+; v1 : Lorg/scribe/exceptions/OAuthConnectionException;
+.end method
+
+.method public setCharset(Ljava/lang/String;)V
+.limit registers 2
+; this: v0 (Lorg/scribe/model/Request;)
+; parameter[0] : v1 (Ljava/lang/String;)
+.line 331
+	iput-object	v1,v0,org/scribe/model/Request.charset Ljava/lang/String;
+; v1 : Ljava/lang/String; , v0 : Lorg/scribe/model/Request;
+.line 332
+	return-void	
+.end method
+
+.method public setConnectTimeout(ILjava/util/concurrent/TimeUnit;)V
+.limit registers 5
+; this: v2 (Lorg/scribe/model/Request;)
+; parameter[0] : v3 (I)
+; parameter[1] : v4 (Ljava/util/concurrent/TimeUnit;)
+.line 309
+	int-to-long	v0,v3
+; v0 : double-length , v3 : single-length
+	invoke-virtual	{v4,v0,v1},java/util/concurrent/TimeUnit/toMillis	; toMillis(J)J
+; v4 : Ljava/util/concurrent/TimeUnit; , v0 : double-length
+	move-result-wide	v0
+; v0 : double-length
+	invoke-static	{v0,v1},java/lang/Long/valueOf	; valueOf(J)Ljava/lang/Long;
+; v0 : double-length
+	move-result-object	v0
+; v0 : Ljava/lang/Long;
+	iput-object	v0,v2,org/scribe/model/Request.connectTimeout Ljava/lang/Long;
+; v0 : Ljava/lang/Long; , v2 : Lorg/scribe/model/Request;
+.line 310
+	return-void	
+.end method
+
+.method setConnection(Ljava/net/HttpURLConnection;)V
+.limit registers 2
+; this: v0 (Lorg/scribe/model/Request;)
+; parameter[0] : v1 (Ljava/net/HttpURLConnection;)
+.line 350
+	iput-object	v1,v0,org/scribe/model/Request.connection Ljava/net/HttpURLConnection;
+; v1 : Ljava/net/HttpURLConnection; , v0 : Lorg/scribe/model/Request;
+.line 351
+	return-void	
+.end method
+
+.method public setConnectionKeepAlive(Z)V
+.limit registers 2
+; this: v0 (Lorg/scribe/model/Request;)
+; parameter[0] : v1 (Z)
+.line 342
+	iput-boolean	v1,v0,org/scribe/model/Request.connectionKeepAlive Z
+; v1 : single-length , v0 : Lorg/scribe/model/Request;
+.line 343
+	return-void	
+.end method
+
+.method public setReadTimeout(ILjava/util/concurrent/TimeUnit;)V
+.limit registers 5
+; this: v2 (Lorg/scribe/model/Request;)
+; parameter[0] : v3 (I)
+; parameter[1] : v4 (Ljava/util/concurrent/TimeUnit;)
+.line 321
+	int-to-long	v0,v3
+; v0 : double-length , v3 : single-length
+	invoke-virtual	{v4,v0,v1},java/util/concurrent/TimeUnit/toMillis	; toMillis(J)J
+; v4 : Ljava/util/concurrent/TimeUnit; , v0 : double-length
+	move-result-wide	v0
+; v0 : double-length
+	invoke-static	{v0,v1},java/lang/Long/valueOf	; valueOf(J)Ljava/lang/Long;
+; v0 : double-length
+	move-result-object	v0
+; v0 : Ljava/lang/Long;
+	iput-object	v0,v2,org/scribe/model/Request.readTimeout Ljava/lang/Long;
+; v0 : Ljava/lang/Long; , v2 : Lorg/scribe/model/Request;
+.line 322
+	return-void	
+.end method
+
+.method public toString()Ljava/lang/String;
+.limit registers 5
+; this: v4 (Lorg/scribe/model/Request;)
+.line 356
+	const-string	v0,"@Request(%s %s)"
+; v0 : Ljava/lang/String;
+	const/4	v1,2
+; v1 : single-length
+	new-array	v1,v1,[Ljava/lang/Object;
+; v1 : [Ljava/lang/Object; , v1 : [Ljava/lang/Object;
+	const/4	v2,0
+; v2 : single-length
+	invoke-virtual	{v4},org/scribe/model/Request/getVerb	; getVerb()Lorg/scribe/model/Verb;
+; v4 : Lorg/scribe/model/Request;
+	move-result-object	v3
+; v3 : Lorg/scribe/model/Verb;
+	aput-object	v3,v1,v2
+; v3 : Lorg/scribe/model/Verb; , v1 : [Ljava/lang/Object; , v2 : single-length
+	const/4	v2,1
+; v2 : single-length
+	invoke-virtual	{v4},org/scribe/model/Request/getUrl	; getUrl()Ljava/lang/String;
+; v4 : Lorg/scribe/model/Request;
+	move-result-object	v3
+; v3 : Ljava/lang/String;
+	aput-object	v3,v1,v2
+; v3 : Ljava/lang/String; , v1 : [Ljava/lang/Object; , v2 : single-length
+	invoke-static	{v0,v1},java/lang/String/format	; format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+; v0 : Ljava/lang/String; , v1 : [Ljava/lang/Object;
+	move-result-object	v0
+; v0 : Ljava/lang/String;
+	return-object	v0
+; v0 : Ljava/lang/String;
+.end method
+
+
