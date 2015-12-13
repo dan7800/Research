@@ -1,0 +1,91 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Code Clones}
+
+
+%Many previous works have stated that code clones are undesirable since they often lead to more bugs and make their remediation process more difficult and expensive~\cite{Mondal:2012:ESC:2387358.2387360,Duala-Ekoko:2010:CRD:1767751.1767754,Baker:1995:FDN:832303.836911,Baxter:1998:CDU:850947.853341}. Clones may also substantially raise the maintenance costs associated with an application~\cite{Juergens:2009:CCM:1555001.1555062}, the importance of which is highlighted by the fact that the maintenance phase of a project has been found to encompass between 40\% and 90\% of the totsl cost of a software project~\cite{Shukla:2008:ESM:1342211.1342232,Ducasse:1999:LIA:519621.853389,SMR:SMR225,Ueda:2002:GMS:823457.824039,Boehm:2001:SDR:619059.621640,Erlikh:2000:LLS:612986.613032}. Ultimately, unintentionally making inconsistently applied bug fixes to cloned code across a software system increases the likeliness of further system faults~\cite{Deissenboeck_2010}.
+
+We define the four types of code clones using the definitions from Roy et al.~\cite{Roy:2009:CEC:1530898.1531101}. Type-1 clones are the simplest, representing identical code except for variations in whitespace, comments, and layout. Type-2 clones have variations in identifiers, types, whitespace, literals, layout, and comments, but are otherwise syntactically identical. Type-3 clones are fragments which are copied and have modifications such as added or removed statements, variations in literals, identifiers, whitespace, layout and comments. Type-4 clones, the most difficult to detect, are code segments that perform the same computation, but have been implemented using different syntactic variants.
+
+To assist software practitioners in detecting and managing code clones, clone detection tools have been indispensable in detecting clone-related bugs and even security vulnerabilities in software systems~\cite{Dang:2012:XTC:2420950.2421004}. Of the numerous clone detection tools, many have been able to detect the simpler clones: type-1, type-2, and type-3. To the best of our knowledge, only two techniques MeCC~\cite{Kim:2011:MMC:1985793.1985835} and CCCD~\cite{wcre2013} are able to detect the most difficult kind of clone, type-4s.
+
+
+In order to demonstrate.... we created two
+
+
+
+Concolic analysis combines concrete and symbolic values in order to traverse all possible paths (up to a given length) of an app. Traditionally it has been used for software testing~\cite{Sen:2005:CCU:1081706.1081750}, code clone detection~\cite{krutz2013cccd}, and vulnerability recognition~\cite{Chen:2014:CIB:2554850.2554875}. Since concolic analysis is not affected by syntax or comments, identically traversed paths are indications of duplicate functionality, and therefore functionally equivalent code~\cite{krutz2013cccd,krutz2013code}. These traversed paths are expressed in the form of~\emph{concolic output} which represents the execution path tree and typically displays the utilized path conditions and representative input variables.
+
+
+Two type-4 clone examples examples of heartbeat are shown in Table~\ref{table:heartbeedexample}.
+
+\noindent
+\begin{table*}
+\centering
+\begin{tabular}{c | c}
+\bfseries xxxxxxxxxxxx \#1  & \bfseries xxxxxxxxxxxx \\ \hline \hline
+\begin{lstlisting}
+boolean shouldBeRunning=true;
+int smallInterval=10;
+long lastHeartbeat=0;
+int heartbeatInterval=10;
+while (shouldBeRunning){
+  Thread.sleep(smallInterval);
+  if(System.currentTimeMillis()-lastHeartbeat>
+    heartbeatInterval){
+    sendHeartbeat();
+    lastHeartbeat= System.currentTimeMillis();
+  }
+}
+\end{lstlisting}
+&
+\begin{lstlisting}
+long lastRunTime=0;	
+long timeSpan=System.currentTimeMillis();
+long timeSinceLastRun=
+    System.currentTimeMillis()-lastRunTime;
+  if(timeSinceLastRun>10) {
+    sendHeartbeat();
+	lastRunTime = System.currentTimeMillis();
+}
+\end{lstlisting}
+
+\end{tabular}
+\caption{An Example of Type-2 clones from Roy~\label{table:heartbeedexample}}
+\end{table*}
+
+
+We then ran concolic analysis on these two code segments which produced the matching concolic output shown in Table~\ref{fig:exampleoutput}.
+
+\noindent
+\begin{table}[h] %h for here, t for top, b for bottom
+\caption{Diff of Type-4 Clone Concolic Output}
+~\label{table:concolicoutputcomparision}
+\centering
+\begin{tabular}{ p{3.8cm} | p{3.8cm} }
+\multicolumn{1}{c}{\textbf{Concolic Segment \#1}} & \multicolumn{1}{c}{\textbf{Concolic Segment \#2}} \\ \hline \hline
+\begin{lstlisting}[style=ConcolicOutput]
+### PCs: 1 1 0
+a_1_SYMINT,
+a_1_SYMINT,d1_2_SYMREAL,
+a_1_SYMINT,d1_2_SYMREAL,s1_3_SYMSTRING,
+\end{lstlisting}
+&
+\begin{lstlisting}[style=ConcolicOutput]
+### PCs: 1 1 0
+a_1_SYMINT,
+a_1_SYMINT,d1_2_SYMREAL,
+a_1_SYMINT,d1_2_SYMREAL,s1_3_SYMSTRING,
+\end{lstlisting}
+
+\end{tabular}
+\label{fig:exampleoutput}
+\end{table}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

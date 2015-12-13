@@ -1,0 +1,160 @@
+<source file="../../files/test/ParlayActivityContextInterfaceFactoryImpl.java" startline="53" endline="69">
+public ParlayActivityContextInterfaceFactoryImpl (SleeContainer serviceContainer, String name) {
+    this.serviceContainer = serviceContainer;
+    this.raEntityName = name;
+    this.jndiName = "java:slee/resources/" + name + "/parlayacif";
+    this.activityContextFactory = getActivityContextFactory ();
+    if (logger.isDebugEnabled ()) {
+        logger.debug ("ParlayActivityContextInterfaceFactoryImpl.jndiName = " + jndiName);
+    }
+}
+</source>
+<source file="../../files/test/ParlayActivityContextInterfaceFactoryImpl.java" startline="81" endline="86">
+protected ActivityContextFactory getActivityContextFactory () {
+    return serviceContainer.getActivityContextFactory ();
+}
+</source>
+<source file="../../files/test/ParlayActivityContextInterfaceFactoryImpl.java" startline="91" endline="93">
+public String getJndiName () {
+    return jndiName;
+}
+</source>
+<source file="../../files/test/ParlayActivityContextInterfaceFactoryImpl.java" startline="100" endline="119">
+public ActivityContextInterface getActivityContextInterface (TpServiceIdentifier serviceIdentifier) throws NullPointerException, UnrecognizedActivityException, FactoryException {
+    if (logger.isDebugEnabled ()) {
+        logger.debug (GET_ACTIVITY_CONTEXT_INTERFACE + serviceIdentifier + CALLED);
+    }
+    if (serviceIdentifier == null) {
+        throw new IllegalArgumentException (ACTIVITY_CONTEXT_INTERFACE_ID_IS_NULL);
+    } else {
+        ParlayServiceActivityHandle activityHandle = new ParlayServiceActivityHandle (serviceIdentifier);
+        return getActivityContextInterface (activityHandle);
+    }
+}
+</source>
+<source file="../../files/test/ParlayActivityContextInterfaceFactoryImpl.java" startline="126" endline="145">
+public ActivityContextInterface getActivityContextInterface (TpMultiPartyCallIdentifier call) throws NullPointerException, UnrecognizedActivityException, FactoryException {
+    if (logger.isDebugEnabled ()) {
+        logger.debug (GET_ACTIVITY_CONTEXT_INTERFACE + call + CALLED);
+    }
+    if (call == null) {
+        throw new IllegalArgumentException (ACTIVITY_CONTEXT_INTERFACE_ID_IS_NULL);
+    } else {
+        TpMultiPartyCallActivityHandle activityHandle = new TpMultiPartyCallActivityHandle (call);
+        return getActivityContextInterface (activityHandle);
+    }
+}
+</source>
+<source file="../../files/test/ParlayActivityContextInterfaceFactoryImpl.java" startline="152" endline="171">
+public ActivityContextInterface getActivityContextInterface (TpCallLegIdentifier callLeg) throws NullPointerException, UnrecognizedActivityException, FactoryException {
+    if (logger.isDebugEnabled ()) {
+        logger.debug (GET_ACTIVITY_CONTEXT_INTERFACE + callLeg + CALLED);
+    }
+    if (callLeg == null) {
+        throw new IllegalArgumentException (ACTIVITY_CONTEXT_INTERFACE_ID_IS_NULL);
+    } else {
+        TpCallLegActivityHandle activityHandle = new TpCallLegActivityHandle (callLeg);
+        return getActivityContextInterface (activityHandle);
+    }
+}
+</source>
+<source file="../../files/test/ParlayActivityContextInterfaceFactoryImpl.java" startline="179" endline="190">
+protected ActivityContextInterface getActivityContextInterface (ActivityHandle activityHandle) {
+    SleeActivityHandle sleeActivityHandle = new SleeActivityHandle (raEntityName, activityHandle, serviceContainer);
+    String activityContextID = activityContextFactory.getActivityContext (sleeActivityHandle).getActivityContextId ();
+    return new ActivityContextInterfaceImpl (this.serviceContainer, activityContextID);
+}
+</source>
+<source file="../../files/test/ParlayActivityContextInterfaceFactoryImpl.java" startline="195" endline="211">
+public ActivityContextInterface getActivityContextInterface (TpCallIdentifier call) throws NullPointerException, UnrecognizedActivityException, FactoryException {
+    if (logger.isDebugEnabled ()) {
+        logger.debug (GET_ACTIVITY_CONTEXT_INTERFACE + call + CALLED);
+    }
+    if (call == null) {
+        throw new IllegalArgumentException (ACTIVITY_CONTEXT_INTERFACE_ID_IS_NULL);
+    }
+    TpCallActivityHandle activityHandle = new TpCallActivityHandle (call);
+    return getActivityContextInterface (activityHandle);
+}
+</source>
+<source file="../../files/test/ParlayActivityContextInterfaceFactoryImpl.java" startline="213" endline="228">
+public ActivityContextInterface getActivityContextInterface (TpUIIdentifier ui) throws NullPointerException, UnrecognizedActivityException, FactoryException {
+    if (logger.isDebugEnabled ()) {
+        logger.debug (GET_ACTIVITY_CONTEXT_INTERFACE + ui + CALLED);
+    }
+    if (ui == null) {
+        throw new IllegalArgumentException (ACTIVITY_CONTEXT_INTERFACE_ID_IS_NULL);
+    }
+    TpUIActivityHandle activityHandle = new TpUIActivityHandle (ui);
+    return getActivityContextInterface (activityHandle);
+}
+</source>
+<source file="../../files/test/ParlayActivityContextInterfaceFactoryImpl.java" startline="230" endline="245">
+public ActivityContextInterface getActivityContextInterface (TpUICallIdentifier uiCall) throws NullPointerException, UnrecognizedActivityException, FactoryException {
+    if (logger.isDebugEnabled ()) {
+        logger.debug (GET_ACTIVITY_CONTEXT_INTERFACE + uiCall + CALLED);
+    }
+    if (uiCall == null) {
+        throw new IllegalArgumentException (ACTIVITY_CONTEXT_INTERFACE_ID_IS_NULL);
+    }
+    TpUICallActivityHandle activityHandle = new TpUICallActivityHandle (uiCall);
+    return getActivityContextInterface (activityHandle);
+}
+</source>
+<source file="../../files/test/ParlayMarshaler.java" startline="27" endline="29">
+public ParlayMarshaler () {
+    super ();
+}
+</source>
+<source file="../../files/test/ParlayMarshaler.java" startline="34" endline="46">
+public ByteBuffer marshalEvent (final Object event, final int eventID) throws IOException {
+    final ByteArrayOutputStream b = new ByteArrayOutputStream ();
+    final ObjectOutputStream out = new ObjectOutputStream (b);
+    out.writeObject (event);
+    out.flush ();
+    out.close ();
+    return ByteBuffer.wrap (b.toByteArray ());
+}
+</source>
+<source file="../../files/test/ParlayMarshaler.java" startline="51" endline="68">
+public Object unmarshalEvent (final ByteBuffer marshalledEvent, final int eventID) throws IOException {
+    Object result = null;
+    if (marshalledEvent.hasArray ()) {
+        final ByteArrayInputStream b = new ByteArrayInputStream (marshalledEvent.array ());
+        final ObjectInputStream in = new ObjectInputStream (b);
+        try {
+            result = in.readObject ();
+        } catch (ClassNotFoundException e) {
+            logger.error (FAILED_TO_UNMARSHALL_EVENT);
+            throw new IOException (FAILED_TO_UNMARSHALL_EVENT);
+        }
+    }
+    return result;
+}
+</source>
+<source file="../../files/test/ParlayMarshaler.java" startline="73" endline="85">
+public ByteBuffer marshalHandle (final ActivityHandle handle) throws IOException {
+    final ByteArrayOutputStream b = new ByteArrayOutputStream ();
+    final ObjectOutputStream out = new ObjectOutputStream (b);
+    out.writeObject (handle);
+    out.flush ();
+    out.close ();
+    return ByteBuffer.wrap (b.toByteArray ());
+}
+</source>
+<source file="../../files/test/ParlayMarshaler.java" startline="90" endline="107">
+public ActivityHandle unmarshalHandle (final ByteBuffer marshalledHandle) throws IOException {
+    Object result = null;
+    if (marshalledHandle.hasArray ()) {
+        final ByteArrayInputStream b = new ByteArrayInputStream (marshalledHandle.array ());
+        final ObjectInputStream in = new ObjectInputStream (b);
+        try {
+            result = in.readObject ();
+        } catch (ClassNotFoundException e) {
+            logger.error (FAILED_TO_UNMARSHALL_EVENT);
+            throw new IOException (FAILED_TO_UNMARSHALL_EVENT);
+        }
+    }
+    return (ActivityHandle) result;
+}
+</source>

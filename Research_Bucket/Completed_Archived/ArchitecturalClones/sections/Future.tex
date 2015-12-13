@@ -1,0 +1,89 @@
+\noindent
+\vspace{-2pt}
+\begin{table*}[ht]
+\caption{An Example HeartBeat Tactical Clone~\label{table:heartbeedexample}}
+\centering
+\begin{tabular}{c | c}
+\bfseries HeartBeat Example \#1  & \bfseries HeartBeat Example \#2  \\ \hline \hline
+\begin{lstlisting}
+boolean shouldBeRunning=true;
+int smallInterval=10;
+long lastHeartbeat=0;
+int heartbeatInterval=10;
+while (shouldBeRunning){
+  Thread.sleep(smallInterval);
+  if(System.currentTimeMillis()-lastHeartbeat>
+    heartbeatInterval){
+    sendHeartbeat();
+    lastHeartbeat= System.currentTimeMillis();
+  }
+}
+\end{lstlisting}
+&
+\begin{lstlisting}
+long lastRunTime=0; 
+long timeSpan=System.currentTimeMillis();
+long timeSinceLastRun=
+  System.currentTimeMillis()-lastRunTime;
+  if(timeSinceLastRun>10) {
+    sendHeartbeat();
+  lastRunTime = System.currentTimeMillis();
+}
+\end{lstlisting} 
+\end{tabular}
+\vspace{-2pt}
+\end{table*}
+
+
+\vspace{-10pt}
+\section{Future Work}
+\label{sec:Future}
+This paper provides crucial information about tactic implementation and code reuse. However, there is still future work to be conducted in this area.
+
+\subsection{Conceptually Equivalent Tactical Clones}
+While tactical clone types 1, 2, and 3 primarily represent syntactically equivalent tactical code snippets reused across various projects, sharing and reusing tactical code snippets that are type 4 clones would be very beneficial. Our initial investigation indicates that type-4 or semantically equivalent tactical clones can be detected using complex code similarity techniques such as symbolic and concolic analysis~\cite{wcre2013, Dan123}.
+
+Concolic analysis combines concrete and symbolic values to traverse all possible paths of an application. Since concolic analysis is not affected by syntax or comments, identically traversed paths are indications of duplicate functionality, and therefore functionally equivalent code. These traversed paths are expressed in the form of~\emph{concolic output} which represents the execution path tree and displays the utilized path conditions and representative input variables. In order to detect tactical-clones we used a concolic analysis based clone detection technique \cite{wcre2013,Dan123, Krutz:2015:EEU:2695664.2695929} on two type-4 clone examples examples of Heartbeat are shown in Table~\ref{table:heartbeedexample}.
+
+We then ran concolic analysis on these two code segments which produced the matching concolic output shown in Table~\ref{fig:exampleoutput} which indicated that original code snippets are tactical type-4 clones. In this example, variable type integers are represented by a generic tag ``SYMINT.'' Though not present in this example, other variable types are represented in a similar fashion in concolic output. Actual variable names do not appear anywhere in the output and are irrelevant to this clone detection process. This can be very beneficial for the type-4 clone detection process. We anticipate that open source repositories have a large number of tactical type-4 clones which can be used as input for a tactic search engine.
+
+In future work we plan to extend a primitive clone detection technique based on concolic analysis that is able to identify semantically equivalent code snippets. We will also augment this approach with text mining and information retrieval techniques.
+
+\subsection{Large Scale Study}
+Future work should also include a larger scale study where at least several hundred open source projects will be studied to better understand how pervasive tactical clones are. We will also conduct a quantitative study to compliment our initial qualitative study reported in this paper. For each of the identified issues, we will examine how frequently they occur across different implementations of tactics.
+
+
+\subsection{Developer Study}
+A series of experiments are required to rigorously evaluate the practical value of tactical clones in software reusability. A study may be conducted where developers can use a tactic-search engine to look for tactic implementations in terms of clones. The developer feedback regarding the usefulness, reusability and practicality of retrieved tactical code would then be collected.
+
+ 
+%% Use different clone detection tools & techniques such as Simian\footnote{\url{http://www.redhillconsulting.com.au/products/simian/}}, CloneDR\footnote{\url{http://www.semdesigns.com/products/clone/}}, MeCC\footnote{\url{http://ropas.snu.ac.kr/mecc/}}, CCCD~\cite{Krutz:2015:EEU:2695664.2695929}, and Simcad~\cite{6613857}
+
+
+
+\noindent
+\begin{table}[hb] %h for here, t for top, b for bottom
+\vspace{-16pt}
+\caption{Diff of HeartBeat Concolic Output}
+~\label{table:concolicoutputcomparision}
+\centering
+\begin{tabular}{ p{3.8cm} | p{3.8cm} }
+\multicolumn{1}{c}{\textbf{Concolic Segment \#1}} & \multicolumn{1}{c}{\textbf{Concolic Segment \#2}} \\ \hline \hline
+\begin{lstlisting}[style=ConcolicOutput]
+### PCs: 1 1 0
+a_1_SYMINT,
+a_1_SYMINT,d1_2_SYMREAL,
+a_1_SYMINT,d1_2_SYMREAL,s1_3_SYMSTRING,
+\end{lstlisting}
+&
+\begin{lstlisting}[style=ConcolicOutput]
+### PCs: 1 1 0
+a_1_SYMINT,
+a_1_SYMINT,d1_2_SYMREAL,
+a_1_SYMINT,d1_2_SYMREAL,s1_3_SYMSTRING,
+\end{lstlisting}
+
+\end{tabular}
+\label{fig:exampleoutput}
+\vspace{-10pt}
+\end{table}
