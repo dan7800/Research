@@ -1,0 +1,42 @@
+\section{Approach}
+\label{sec:Approach}
+%% Maybe find a better title for this
+
+
+
+In this section, we discuss the motivation, approach, and findings for our research question. A more detailed discussion of our results is then provided. Before we present the results to our research questions we present some basic information about the apps used in the study. We have two sets of apps in our case study - 798 apps with a rating lower than 3 stars (low rating apps) and 861 apps with a rating greater than or equal to 3 stars (high rating apps). As shown in Table~\ref{table:studyresults_GenericValues}, the lower rated apps have a statistically lower number of downloads and size (measured in number of java files). We carried out the following research question with this set of apps.
+
+\begin{table*}[t]
+  \centering
+  \caption{MWU Results for FileSize Settings}
+     \begin{tabular}{ l | l | l | l }
+		\bfseries Value & \bfseries Description & \bfseries Greater or Less & \bfseries p-value \\ \hline \hline
+
+	\bfseries UserRating & User Rating & L &  4.958e-273   \\ \hline
+	\bfseries Download Count  & Number of Downloads &L & 3.329e-56   \\ \hline
+	\bfseries JavaFiles & \# of Java Files In App & G & 0.005\\ \hline
+
+\end{tabular}
+\label{table:studyresults_GenericValues}
+
+\end{table*}
+
+{\bf RQ1: Do apps with lower ratings have more security risks?}
+
+
+%\subsection{Effect of Security of User Ratings}
+
+%\textbf{RQ: Do apps with higher ratings also have more security risks?}\\
+%\\
+
+\textbf{Motivation:} Android developers operate under a permission-based system where apps must be granted access to various areas of functionality before they may be used. When an Android app is created, developers must explicitly declare in advance which permissions the application will require~\cite{Felt:2011:APD:2046707.2046779}, such as the ability to write to the calendar, send SMS messages, or access the GPS. If an app attempts to perform an operation for which it does not have permission, a~\emph{SecurityException} is thrown. When installing the app, the user is asked to accept or reject these requested permissions. Once installed, the developer cannot remotely modify the permissions without releasing a new version of the app for installation~\cite{shaerpour2013trends}, prompting the user if new permissions are required.
+
+Unfortunately, developers often request more permissions than they actually need, as there is no built in verification system to ensure that they are only requesting the permissions their app actually uses~\cite{Felt:2011:APD:2046707.2046779}. This may be due to the lack of granularity of the permission spectrum used by Android, so the developer must often grant more permissions to their app than it actually requires. For example, an application that needs to send information to one site on the internet will need to be given full permissions to the internet, meaning that it may communicate with with all websites~\cite{jeon2011dr}.
+
+A basic principle of software security is the~\emph{principle of least privilege}. In the context of mobile apps it translates to granting the minimum number of permissions that an app needs to properly function~\cite{saltzer1975protection}. Granting more permissions than the app needs creates security problems since vulnerabilities in the app, or malware, could use these extra permissions for malicious reasons. Additionally, this principle limits potential issues due to non-malicious developer errors.
+
+\textbf{Approach:} We use the Stowaway tool to extract the number of permissions used, and the number of over-permissions and under-permissions that are present in each app. This tool is comprised of two parts - API calls made by the app are determined using a static analysis tool and the permissions needed for each API are determined using a permissions map. In this study, we use the term \emph{over-permission} to describe a permission setting that grants more than what a developer needs for the task. Likewise, an \emph{under-permission} is a setting for which the app could fail because it was not given the proper permissions. Over-permissions are considered security risks and under-permissions are considered quality risks.
+
+Androrisk determines the security risk level of an application by examining several criteria. The first set is the presence of permissions which are deemed to be more dangerous. These include the ability to access the internet, manipulate SMS messages or the ability to make a payment. The second is the presence of more dangerous sets of functionality in the app including a shared library, use of cryptographic functions, and the presence of the reflection API.
+
+We apply these two tools to the two sets of apps in our case study - 798 apps with a rating lower than 3 stars (low rating apps) and 861 apps with a rating greater than or equal to 3 stars (high rating apps). We get the distribution for each of the permission and security based metrics from each set of apps. In order to answer our research question we check if the values of permission and risk based metrics are different in high and low rating apps taken as two distinct groups. Our null hypothesis is that there is no difference in the distribution of the various metrics between the low and high-rated apps. Our alternate hypothesis is that low and high-rated apps have different distributions for each of the security related metrics. We use the one tailed Mann Whitney U (MWU) test for the hypothesis testing, since it is non-parametric and we can find out if the low-rated apps indeed have higher or lower values for each of the security metrics.

@@ -1,0 +1,687 @@
+
+
+%\documentclass[conference]{IEEEtran}
+\documentclass{sig-alternate}
+\pdfpagewidth=8.5truein
+\pdfpageheight=11truein
+
+% --- Author Metadata here ---
+\conferenceinfo{SAC'16,}{April 4-8, 2016, Pisa, Italy.}
+\CopyrightYear{2016} % Allows default copyright year (2002) to be over-ridden - IF NEED BE.
+\crdata{978-1-4503-3739-7/16/04...\$15.00.\\
+http://dx.doi.org/xx.xxxx/xxxxxxx.xxxxxxx
+}  % Allows default copyright data (X-XXXXX-XX-X/XX/XX) to be over-ridden.
+% --- End of Author Metadata ---
+
+
+
+\usepackage{cite}
+\usepackage{color}
+\usepackage{courier}
+\usepackage{listings}
+\usepackage{url}
+
+\usepackage{times} % Used for formatting formatting url footnotes
+\urlstyle{same} % Used for formatting formatting url footnotes
+\usepackage{balance} % Used to balance out the columns
+ \usepackage{caption}
+  \DeclareCaptionType{copyrightbox}
+  \usepackage{subcaption}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{patterns}
+\usepackage{color,soul} % used for highlighting
+
+
+
+
+\setlength{\abovecaptionskip}{4pt plus 3pt minus 2pt} % Space over captions
+\newcommand{\todo}[1]{\textcolor{cyan}{\textbf{[#1]}}}
+
+\newcommand{\dan}[1]{\textcolor{blue}{{\it [Dan says: #1]}}}
+\newcommand{\andy}[1]{\textcolor{brown}{{\it [Andy says: #1]}}}
+\newcommand{\mei}[1]{\textcolor{green}{{\it [Mei says: #1]}}}
+
+\newif\ifisnopii
+%\isnopiitrue % change to true/false to remove personally identifiable information (pii)
+\isnopiifalse % change to true/false to remove personally identifiable information (pii)
+
+
+\begin{document}
+
+
+%% Stick with the same title?
+%\title{Examining the Relationship between the Permission Gap and User Ratings of Mobile Apps: ~A~Case~Study}
+\title{Examining the Relationship between Security Metrics and User Ratings of Mobile Apps: ~A~Case~Study}
+
+
+\numberofauthors{1}
+\ifisnopii % turn on/off pii
+\author{
+%
+% 1st. author\
+\alignauthor
+Daniel E. Krutz, and Andrew Meneely\\ 	
+	\affaddr{Software Engineering Department}\\
+       \affaddr{Rochester Institute of Technology}\\
+       \affaddr{1 Lomb Memorial Drive}\\
+       \affaddr{Rochester, NY, USA} \\
+       \email{\{dxkvse, axmvse\}@rit.edu}
+       \alignauthor
+} % Must not be a space above this
+
+\else % turn on/off pii
+\author{
+%
+% 1st. author
+\alignauthor
+xxxxxxxxxxxxxxx\\ 	
+	\affaddr{xxxxxxxxx}\\
+       \affaddr{xxxxxxxxx}\\
+       \affaddr{xxxxxxxxx}\\
+       \affaddr{xxxxxxxxx, xx, xxx} \\
+       \email{xxxxxx@xxxxx.xxx}
+       \alignauthor
+} % Must not be a space above this
+\fi % end turn on/off pii
+
+
+\maketitle
+
+\begin{abstract}
+The success or failure of a mobile application (`app') is largely determined by user ratings. Users expect apps to continually provide new features while maintaining quality, or the ratings drop. However, apps must also be secure. But is there a historical trade-off between security and ratings? Or are app store ratings a more all-encompassing measure of product maturity? We collected and compared several security related metrics from 798 random Android apps in the Google Play store with a user rating of less than 3 against 861 apps with a user rating of 3 or greater.
+
+We found that while lower-rated apps typically request more permissions, higher rated apps have a larger permissions gap which creates security and quality issues. We also found that lower rated apps have a higher risk vulnerability score based on the results of a static analysis tool used to access risk vulnerability.
+
+\end{abstract}
+
+%%% Check on these and make sure they are accurate
+%% Categories taken from: http://www.jucs.org/ujs/jucs/links/Articles%20by%20Category/D.?mode=bc
+
+\category{D.4.6}{Operating Systems}Security and Protection;
+
+\keywords{Android, User Ratings, Security}
+
+
+
+\section{Introduction}
+%
+Over the last decade the use of smartphones has exploded. Mobile applications (`apps') are the software that run on mobile devices such as smartphones and tablets. These apps are often distributed through a centralized online store. Google Play\footnote{\url{https://play.google.com/store}} is the most popular app store for Android, with over 1.5 billion downloads every month\footnote{\url{http://developer.android.com/about/}}. Apps are a major part of mobile consumer technology and have changed the computing experience of our modern digital society, allowing users to perform a variety of tasks not previously possible in a portable environment.
+
+% onto over a billion devices~\cite{jenniferscott2014}.
+
+
+The success of a mobile app is largely determined by user ratings from a digital storefront (`app store'). Users expect apps to continually provide new features, otherwise poor app store reviews and low ratings can be expected~\cite{Khalid2014}. Developers must frequently update their app's dependencies to keep up with the rapid progress of mobile technology~\cite{Syer2013}. Most importantly, apps must be secure since they are a crucial entry point into our digital lives.
+
+At a glance, one may assume that the challenge of security and customer satisfaction are trade-offs, since if developers focus on functionality and quality to keep ratings up, they may not pay the necessary attention to security. New security-inspired features may also be perceived by users as cumbersome, leading to lower ratings. Even a vulnerability in a dependency can be detrimental to users, yet developers may not have the resources to thoroughly inspect a third-party framework for security concerns. Experts have even warned that security trade-offs with other properties such as usability and performance are considered universal~\cite{McGrawBSS}.
+
+But is this trade-off historically true in the case of mobile apps? Empirically, do mobile apps with higher ratings have more potential security risks? Or, do app store ratings represent a more all-encompassing measure of customer experience that indicates a maturity in all of the properties of an app, with security being just one aspect? These questions motivated us to empirically examine the relationship between user ratings and security. To measure potential security risks, we use automated static analysis tools specifically tailored to the Android platform. While far from a comprehensive security audit, the static analysis tools provide a broad and consistent measure of basic security flaws that might plague Android apps. To measure user rating, we extracted the user ratings of more than 1,600 Android apps from the Google Play app store.
+
+%%% Should probably briefly mention here how we did an apples to apples comparison of apps of the same genre, size etc.... - We tried to get things as similar as possible.
+
+
+
+%Automated static analysis tools can help developers alleviate some basic security challenges by providing a simple method of evaluating potential security risks. Recently, tools such as AndroGuard and\todo{(OTHERS)} have been developed to evaluate Android-specific concerns, such as over-privileged code or misuse of intents. These tools can also provide researchers with a way of evaluating potential security risks of thousands of Android apps to discover trends.
+
+\emph{The objective of this study is to investigate the the relationship between potential security risks and customer satisfaction by empirically evaluating Android apps with static analysis tools}. Specifically, our research question is: \textit{Are user ratings correlated with low potential security risks and security permissions, or do apps with higher ratings have more security risks?}
+
+
+We found that while lower rated apps requested more permissions, higher rated apps did not adhere to the principle of least privilege and have a larger permission gap. Based on the results from a static analysis risk assessment tool, lower rated apps generally have a higher risk score, although only 3 of the 9 evaluated risk assessment areas were higher in low rated apps.
+
+%We found that while lower rated applications requested more permissions, and certain security risk metrics were higher in them, most of the security risks were greater in higher rated applications. Based on our empirical evidence, we conclude that user ratings (which captures the user's perception of an app) is an all-encompassing metric that is not yet affected by higher security risks. \todo{fix this}
+
+
+
+The rest of this paper is organized as follows: Section~\ref{sec:relatedwork} discusses related works, and Section~\ref{sec:structure} provides an overview of the Android permission structure. Section~\ref{sec:studydesign} presents our study's design including the data collection process and description of static analysis tools. Section~\ref{sec:Approach} provides an overview of our selected analysis algorithm and how we used it in our project. Section~\ref{sec:evaluation} presents our study's findings, while Section~\ref{sec:limitations} discusses limitations and future work to be conducted. Our paper is concluded in Section~\ref{sec:conclusion}. 
+
+
+%? Capitalize section - Yes
+
+
+
+
+% Rename this section?
+%\subsection{Research Questions}
+
+
+\section{Related Work}
+\label{sec:relatedwork}
+
+
+%%%% Section will need updates based on the venue being submitted to, its length & just to be generally updated
+
+% Previous research with permissions
+There has been a substantial amount of previous research analyzing the effects of permissions on the user's perception of the app. Felt et al.\cite{Felt:2012:APU:2335356.2335360} performed two usability studies from users over the internet and in a laboratory setting and found that only 17\% of users paid attention to permissions when installing apps. Lin et al.\cite{Lin:2012:EPU:2370216.2370290} conducted a study analyzing user's comfort levels when apps requested permissions which the users did not understand why the apps needed them. They found that users generally felt uncomfortable and may even delete applications when they did not understand why it requested a permission they deemed unnecessary.
+
+Egelman et al.\cite{Egelman12choicearchitecture} found that approximately 25\% of users were typically willing to pay a premium in order to use the same application, but with fewer permissions, while about 80\% of users would be willing allow their apps more permissions to receive targeted advertisements if it would save them .99 cents on the purchase of the app. Stevens et al.~\cite{Stevens2013} found that certain permissions that are not popular among developers were frequently misused, possibly due to a lack of documentation. Wijesekera et al.\cite{wijesekera2015android} conducted an analysis using 36 users studying how comfortable they were with the requested permissions of various apps. They found that 80\% of participants would have preferred to prevent one permissions request upon app installations and that approximately 33\% of all app requests were invasive and would have preferred to block them.
+
+Wei et al.\cite{Wei:2012:PEA:2420950.2420956} analyzed third party and pre-installed Android apps and found that a high number of apps violated the principle of least privilege and that apps tend to add more privileges with each released version. While these works are profound, none perform a direct evaluation of security risks and user ratings as we have done on such a significant scale.
+
+%%Similar to the above papers, we examine the permissions and security risks in Android apps. However, we compare them against user ratings, which are user's perspective of an app that was obtained without us soliciting it from them.
+
+App ratings have demonstrated their importance in other areas of research as well. Harman et al.\cite{6224306} found a strong correlation between the rating and the number of app downloads. Linares-Vasquez et al.\cite{Linares-Vasquez:2013:ACF:2491411.2491428} found that the fault-proneness of the APIs used by the apps negatively impacts their user ratings. Khalid et al.\cite{Khalid_Mei_Examinging} examined 10,000 apps using FindBugs and discovered that warnings such as~\lq Bad Practice\rq, ~\lq Internationalization\rq, and~\lq Performance\rq categories are typically found in lower rated apps. Their primary discovery was that app developers could use static analysis tools, such as FindBugs, to repair issues before users complained about these problems. Even though we too use ratings as an evaluation metric, we also look at permission and security risks. Vasquez et al.\cite{linares2013api} studied over 7,000 Android apps to determine how the fault proneness of APIs contributed to an application's lack of success. They found that APIs used by highly rated apps are much less fault prone than APIs used by low-rated apps.
+
+There has also been a substantial amount of work regarding the risks of overprivileges in Android apps. Felt et al.\cite{Felt:2011:APD:2046707.2046779} discussed the dangers of overprivileged apps including unnecessary permissions warnings and exposure to various bugs and vulnerabilities. The study also examined 940 Android apps and found that about 33\% of all apps were overprivileged. %Other research has suggested possible changes to the Android permission model that would make it easier for developers to understand and properly implement, including the creation of a permission hierarchy or more granularly grouped permissions~\cite{Barrera:2010:MEA:1866307.1866317}.
+
+
+% Sellwood:2013:SAD:2516760.2516774
+%\dan{talk about how android permissions are dangerous}
+
+%% Move this section or build on it?
+\section{Android Permission Structure}
+\label{sec:structure}
+
+% ? Give a background of why we have this section?
+%In this section we present the background information on the two types of security threats gathered by the static analysis tools that we use. %and the types of security threats that we statically analyze.
+
+%We will next present background information on the selected static analysis tools, and relevant  information about the Android application structure.
+
+
+Android developers operate under a permission-based system where apps must be granted access to various areas of functionality before they may be used. When an Android app is created, developers must explicitly declare in advance which permissions the app will require~\cite{Felt:2011:APD:2046707.2046779}, such as the ability to write to the calendar, send SMS messages, or access the GPS. If an app attempts to perform an operation for which it does not have permission, a~\emph{SecurityException} is thrown. These security settings are stored in the~\emph{AndroidManifest.xml} file and include a wide range of permissions, some of which are~\texttt{READ\_CONTACTS}, \texttt{WRITE\_SETTINGS} and \texttt{INTERNET}.
+
+When installing the app, the user is asked to accept or reject these requested permissions. Once installed, the developer cannot remotely modify the permissions without releasing a new version of the app for installation~\cite{shaerpour2013trends}. Unfortunately, developers often request more permissions than they actually need, as there is no built in verification system to ensure that they are only requesting the permissions their app actually uses~\cite{Felt:2011:APD:2046707.2046779}.
+
+
+%% Leave these in if space allows, or cut down on these
+Inside of the AndroidManifest.xml file, permissions may be granted four protection levels\footnote{\url{http://developer.android.com/guide/topics/manifest/permission-element.html}}:
+
+\begin{enumerate}
+  \item~\textbf{Normal:} A lower-risk level that only grants apps access to isolated application-level features. Presents minimal risk to apps, user or system. Apps are automatically granted this type of setting at installation, without asking for the user's explicit approval. However, the user does have the option to review these permissions before installing an app.
+  \item~\textbf{Dangerous:} A higher-risk permission that provides the app with control over the device or access to private user data. Due to the risk posed by these permissions, they may not be automatically granted by the system and the user must confirm these permissions before they are used.
+  \item~\textbf{Signature:} Granted only if the app is signed with the same certificate as the app that declared the permission. The permissions are automatically granted by the system without notifying the user if the certificates match.
+  \item~\textbf{signatureOrSystem:} Granted by the system to only apps that are signed with he same certificate as the app that declared the permission or are in the Android system image. This level is typically not recommended for use except in very specific situations.
+\end{enumerate}
+
+
+%% Probably a good idea to reword this since it comes right from another paper
+The~\emph{principle of least privilege} is the concept of granting of the least amount of privileges to an app that it needs to properly function~\cite{saltzer1975protection}. Granting extra privileges creates unnecessary security vulnerabilities by allowing malware to leverage these unused permissions and by increasing the app's attack surface~\cite{Davi:2010:PEA:1949317.1949356, Bartel:2012:ASP:2351676.2351722}. Previous research has found that while Android developers often add extra privileges to make the app work properly or, due to confusion over the permission name, they add it unnecessarily believing its functionality sounds related to their app~\cite{Felt:2011:APD:2046707.2046779}.
+
+In this study, we use the term \emph{overprivilege} to describe an app which is granted more permissions than it requires. Likewise, an~\emph{underprivilege} represents a scenario where the source code of an app requires rights to a permission it has not been granted to receive, which will lead to the app crashing. Overprivileges are considered security risks and underprivileges are considered quality risks since they may lead to application crashes. The primary difference between requested permissions and overprivileges is that requested permissions are merely those that the app asks to use, and does not take into consideration if the app actually needs them or not.
+
+Android's permission structure will be changing with the new API release. `Android M' implements a new permission model where the user will no longer need to grant permissions whenever they install or upgrade the app. The app instead requests permissions as they are needed and the user is provided a dialog box to accept or reject the permission. Additionally, this new structure will allow developers to ensure that they are in fact requesting all the necessary permissions using the~\emph{checkSelfPermission()} function.~\cite{AndroidM_permissions_url1}.
+
+\section{Study Design}
+\label{sec:studydesign}
+
+
+We first collected a variety of apps from Google Play using a modified collection tool and then analyzed them using two well known Android static analysis tools. An overview of our collection and analysis process is shown in Figure~\ref{fig:analysisprocess}. We will next describe or data collection, selection and analysis process.
+
+% Define block styles
+\tikzstyle{line} = [draw, -latex']
+%\tikzstyle{cloud} = [draw, circle,fill=white!20, node distance=4.2cm,
+%    minimum height=2em]
+
+  \tikzstyle{block} = [rectangle, draw, fill=white!20,
+    text width=5em, text centered, rounded corners, node distance=2.2cm, minimum height=4em]
+
+  %\tikzstyle{GP} = [rectangle, draw, fill=blue!20,
+  %  text width=5em, text centered, rounded corners, node distance=2.2cm, minimum height=4em]
+
+\tikzstyle{GP} = [rectangle, draw, fill=blue!20,
+    text width=5em, text centered, node distance=2.2cm, minimum height=4em]
+
+    %{rectangle,draw,fill=blue!20}
+
+	\begin{figure}[h]
+	\begin{center}
+	\resizebox {\columnwidth} {!} {
+	\begin{tikzpicture}[node distance = 2cm, auto]
+    % Place nodes
+     		\node [GP] (init) {App Store };
+     		\node [block, right of=init] (dex) {App Collection};
+     		\node [block, right of=dex] (jar) {App Selection};
+     		\node [block, right of=jar] (java) {Static Analysis};
+     		\node [block, right of=java] (R) {Data Analysis};
+
+	     	\path [line] (init) -- node {}(dex);
+     		\path [line] (dex) -- node {}(jar);
+     		\path [line] (jar) -- node {}(java);
+     		\path [line] (java) -- node {}(R);
+
+	\end{tikzpicture}
+	}
+	\end{center}
+	\caption{App Collection and Analysis Process}
+	\label{fig:analysisprocess}
+	\end{figure}
+
+\subsection{Data Collection}
+
+We collected apps from the Google Play store with a custom-built collector, which uses~\emph{Scrapy}\footnote{http://scrapy.org} as a foundation. We chose to pull from Google Play since it is the most popular source of Android apps\footnote{\url{http://www.onepf.org/appstores/}} and was able to provide other app related information such as the developer, version, genre, user rating, and number of downloads. We downloaded 1,000 apps with a user rating of at least 3, and were able to download 833 apps with a user rating of less than 3. Locating apps with a user rating of less than 3 was much more difficult than finding apps with a user rating of at least 3~\cite{mojica2013large}. In order to collect each app's requested permissions, lines of code (LOC) and number of Java files, we decompiled the Android application (apk) files using dex2jar\footnote{ https://code.google.com/p/dex2jar/} and jd-cmd\footnote{https://github.com/kwart/jd-cmd}, repeating a similar reverse engineering process as demonstrated in previous works~\cite{apvrille2012android,chawla2014transfiguring, krutz2015dataset}.
+
+%%? Remove subsection ?
+\subsection{Data Selection}
+We removed all apps with less than 1,000 downloads to limit the effects that rarely used apps would have on our study. This left us with 798 apps with a rating of less than 3, and 861 apps with a user rating of at least 3.
+
+\subsection{Static analysis tools}
+\label{sec: analysis}
+%\todo{Remove the tools which produce data that we do not need}
+
+The next phase was to analyze the apps for potential security risks, and permissions issues. We used two open source static analysis tools in our study: Stowaway~\cite{Felt:2011:APD:2046707.2046779} and AndroRisk\footnote{\url{https://code.google.com/p/androguard/}}. Stowaway evaluates the app for permission gaps, while AndroRisk determines the risk vulnerability level. %The complete list of metrics (and their definitions) that we collected from Stowaway and AndroRisk are in Tables~\ref{table:studyresults_AndroRisk} and \ref{table:studyresults_Permissions} respectively.
+
+We selected Stowaway for determining the permission gap in apps since it is able to state the permissions that were causing it to be overprivileged and underprivileged, while using a static analysis based approach that did not require it to be ran on an Android device or through an emulator. Stowaway has also demonstrated its effectiveness in existing research~\cite{Stevens:2013:APU:2487085.2487093, Felt:2011:APD:2046707.2046779, Pearce:2012:APS:2414456.2414498}. Permlyzer~\cite{6698893}, a more modern permission detection tool, was not used since its authors have not made it available for download. We use Stowaway to extract the number of overprivileges and underpriviledges that are present in each app. This tool is comprised of two parts - API calls made by the app are determined using a static analysis tool and the permissions needed for each API are determined using a permissions map.
+
+AndroRisk determines the security risk level of an application by examining several criteria. The first set is the presence of permissions which are deemed to be more dangerous. These include the ability to access the internet, manipulate SMS messages or the ability to make a payment. The second is the presence of more dangerous sets of functionality in the app including a shared library, use of cryptographic functions, and the presence of the reflection API.
+
+We chose AndroRisk for several reasons. The first is that the AndroGuard library, which is it a part of, has already been used in a variety of existing research~\cite{Egele:2013:ESC:2508859.2516693, Vidas:2014:AAA:2666620.2666630, Atzeni:2014:DYA:2692983.2693001}. AndroRisk is also a freely available, open source tool which will allow others to replicate our findings. Finally, as a static analysis based vulnerability detection tool, AndroRisk was quickly able to effectively determine the risk level of a large number of downloaded apps.
+
+
+% Along with a custom built permissions extractor. \\
+
+
+%% Combine with another section?
+\subsection{Data Analysis}
+
+The data collected from the static analysis tools along with user ratings data was analyzed using standard libraries, such as the {\it stats} library in R.
+
+
+
+\section{Approach}
+\label{sec:Approach}
+
+%\todo{check to make sure this is all accurate}
+In this section, we discuss the motivation, approach, and findings for our research question. A more detailed discussion of our results is then provided. Before we present the results to our research questions we present some basic information about the apps used in the study. 
+
+We have two sets of apps in our case study - 798 apps with a rating lower than 3 stars (low rating apps) and 861 apps with a rating greater than or equal to 3 stars (high rating apps). We use the one tailed Mann Whitney U (MWU) test for the hypothesis testing since it is non-parametric and we can find out if the low-rated apps indeed have higher or lower values for each of the security metrics. The MWU test compares two population means that originate from the same population set and is used to determine if two population means are equal. A p value which is smaller than the significance level implies that the null hypothesis can be rejected. A p value which is equal to or greater signifies that the null hypothesis cannot be rejected. In our analysis, we used a significance level of .05 to determine if we have enough data to make a decision if the null hypothesis should be rejected.
+
+
+
+%%%% Correlation helpful links
+% http://www.real-statistics.com/correlation/spearmans-rank-correlation/
+% https://statistics.laerd.com/statistical-guides/spearmans-rank-order-correlation-statistical-guide.php
+
+% A p value which is equal or smaller to the significance level implies that the null hypothesis can be rejected. A p value which is greater signifies that the null hypothesis can be accepted.
+
+% In our analysis, we used a significance level of .05 to determine if the null hypothesis can be rejected or not
+
+
+% Mention the signicance level .05?
+% The formula for MWU is shown in Figure~\ref{fig:MWU_formula} where, $n_1$ = sample size one, $n_2$= sample size two, and $R_i$ = rank of the sample size.
+%
+%\begin{figure}[ht!]
+%\centering
+%\begin{equation*} % the "*" stops the auto numbering
+%U=n_1n_2+\frac{n_2(n_2+1)}{2}-\sum_{i=n_1+1}^{n_2}R_i
+%\end{equation*}
+%\caption{MWU Formula}
+%\label{fig:MWU_formula}
+%\end{figure}
+%
+%	%% http://www.statisticssolutions.com/mann-whitney-u-test/
+%	%U=Mann-Whitney U test
+%	%N1 = sample size one
+%	%N2= Sample size two
+%	%Ri = Rank of the sample size
+
+
+%% Really drive home why we did this analysis
+%? Maybe use the results of my security analysis instead?
+% Show more decompilation steps?
+
+%We first checked to see if more popular apps were larger, which would likely lead to more requested permissions, a larger permission gap, and more possible vulnerabilities. As shown in Table~\ref{table:studyresults_GenericValues}, the lower rated apps have a statistically lower number of Java files
+%
+%\todo{fix this}
+%
+%- Double check stats
+%- Use LOC
+%- Use averages?
+%- Run the same MWU analysis splitting on the size of the app (convert both to LOC)
+%
+%
+%
+%%%% 8/1/15 version
+%%As shown in Table~\ref{table:studyresults_GenericValues}, the lower rated apps have a statistically lower number of downloads and size (measured in number of java files). We carried out the following research question with this set of apps.\todo{fix all this}
+%
+%
+%\begin{table}[h]
+%\centering
+%\caption{MWU Results for FileSize Settings\todo{fix heading? Or explain better}}
+%  \begin{tabular}{ | l | c | c | c |  } \hline
+%    % \bfseries Genre  & \bfseries \% of Apps \\ \hline
+%
+% & \multicolumn{2}{ c |  }{\bfseries Greater In} &  \\ \hline
+%    \bfseries Value  &  \bfseries  Low &  \bfseries   High&  \bfseries  p-value\\ \hline \hline
+%
+%% Use \checkmark
+%      User Rating  & 	& \checkmark & 4.958e-273 \\ \hline
+%     Download Count   & 	& \checkmark & 3.329e-56 \\ \hline
+%      \# of Java Files in app  & \checkmark	&  & 0.005 \\ \hline
+%
+%  \end{tabular}
+%\label{table:studyresults_GenericValues}
+%\end{table}
+
+%We first found the median size of the analyzed apps in terms of LOC, and creating two groups comprised of apps with a lower and higher value of the median. We then ran the MWU test against these two groups. We did not find a statistically significant variation in the user rating level, over or under privileges, permission count, or AndroRisk score. % Check to make sure this is true
+
+
+
+We first checked to see if there was a correlation between the size of the app and the evaluated security areas by using the Spearman rho and Kendall tau coefficient metrics. Each of these correlation metrics evaluate the relationship strength between two values. This is an important step since we found that more popular apps were generally larger.
+
+When using the Spearman rho and Kendall correlation metrics, the correlation coefficient will vary between -1 and +1. As the value of the coefficient approaches $\pm$1, there is more of a monotonic, or perfect degree of association between the evaluated values. The relationship between the evaluated values becomes weaker as the correlation coefficient approaches 0. Based on our analysis, we did find a moderate correlation between the amount of underprivileges and AndroRisk score and the size of the app, but did not find a significant correlation between the number of overprivileges in an app, or the number of permissions an app requested. Complete results are shown in Table~\ref{table:appCorrelationMetrics}.
+
+
+\begin{table}[h]
+\centering
+\caption{Correlation Metrics for App Size}
+  \begin{tabular}{ | l | c | c | c |  } \hline
+ \bfseries Area  & \bfseries Spearman & \bfseries Kendall \\ \hline
+
+    OPriv & .29 & .22 \\ \hline
+    UPriv & .6 & .45 \\ \hline
+    Permissions & -.04 & -.03 \\ \hline
+    AndroRisk & .50 & .38 \\ \hline
+
+ \end{tabular}
+\label{table:appCorrelationMetrics}
+\end{table}
+
+
+
+
+We next addressed our research question:
+{\bf Do apps with lower ratings have more security risks?}
+
+
+%\subsection{Effect of Security of User Ratings}
+
+%\textbf{RQ: Do apps with higher ratings also have more security risks?}\\
+%\\
+
+%\textbf{Approach:}
+
+
+We apply Stowaway and AndroRisk to the two sets of apps in our case study - 798 apps with a rating lower than 3 stars (low rating apps) and 861 apps with a rating greater than or equal to 3 stars (high rating apps). We get the distribution for each of the permission and security based metrics from each set of apps. In order to answer our research question we check if the values of permission and risk based metrics are different in high and low rating apps taken as two distinct groups. Our null hypothesis is that there is no difference in the distribution of the several evaluated metrics between the low and high-rated apps. Our alternate hypothesis is that low and high-rated apps have different distributions for each of the security related metrics.
+
+
+\begin{table*}[ht] 
+\centering
+%  \caption{MWU Test Result Metrics From AndroRisk When Comparing Low \& High Rated Apps}
+
+  \caption{AndroRisk MWU Metrics For Low \& High Rated Apps}
+  \begin{tabular}{ | l | p{10cm} |  l | c | c | c |  } \hline % the 8 cm section creates the line wrap
+
+ & & \multicolumn{2}{ c |  }{\bfseries Greater In}   \\ \hline
+    \bfseries Value  &    \bfseries Description  &   \bfseries  Low &  \bfseries   High  \\ \hline \hline
+
+% Use \checkmark
+     \bfseries   Dex\_Native  & Presence of loading a shared library & &\checkmark  \\ \hline
+    \bfseries   Dex\_Dynamic   & Presence of loading dynamically a new dex file &	 & \checkmark   \\ \hline
+    \bfseries   Dex\_Crypto  & Presence of crypto functions & 	& \checkmark  \\ \hline
+    \bfseries Dex\_Reflection    & Presence of the reflection API & \checkmark &   \\ \hline
+   \bfseries Perm\_Money     & Presence of permissions which can result to a payment &	 & \checkmark    \\ \hline
+   \bfseries Perm\_Internet     & Presence of permissions which can access to internet &\checkmark	&  \\ \hline
+   \bfseries Perm\_SMS    & Presence of permissions which can manipulate sms & & \checkmark   \\ \hline
+   \bfseries Perm\_Dangerous     & A higher-risk permission that would give a requesting application access to private user data or control over the device that can negatively impact the user
+ &	\checkmark &    \\ \hline
+    \bfseries Perm\_Signature    & A permission that the system grants only if the requesting application is signed with the same certificate as the application that declared the permission &	& \checkmark \\ \hline
+     \bfseries FuzzyRisk    & Overall Risk Score of App (A smaller score is better) & \checkmark	&  \\ \hline
+
+  \end{tabular}
+\label{table:studyresults_AndroRisk}
+\end{table*}
+
+
+
+\section{Evaluation}
+\label{sec:evaluation}
+
+
+
+%%% Make sure I know that greater than and less than actually mean
+
+%%%%The security settings are stored in the~\emph{AndroidManifest.xml} file and include a wide range of permissions, some of which are~\emph{INTERNET},~\emph{READ\_CONTACTS}, and~\emph{WRITE\_SETTINGS}.
+
+%%%%%We have two sets of apps in our case study - 798 apps with a rating lower than 3 stars (low rating apps) and 861 apps with a rating greater than or equal to 3 stars (high rating apps). We get the distribution for each of the permission and security based metrics from each set of apps. In order to answer our research question we check if the values of permission and risk based metrics are different in high and low rating apps taken as two distinct groups. We use the two tailed Mann Whitney U test, since it is non-parametric for the hypothesis testing.
+
+
+
+
+%\textbf{Findings and Discussion}
+
+We present the results of comparing the distributions (hypothesis tests) of the various security risk based metrics from the two static analysis tools Stowaway and AndroRisk in Tables~\ref{table:studyresults_AndroRisk} and \ref{table:studyresults_Permissions}.
+
+
+\begin{table}[h]
+\centering
+\caption{MWU Permission Results for Low \& High-rated apps}
+  \begin{tabular}{ | l | c | c | c |  } \hline
+    % \bfseries Genre  & \bfseries \% of Apps \\ \hline
+
+ & \multicolumn{2}{ c |  }{\bfseries Greater In}   \\ \hline
+    \bfseries Value  &  \bfseries  Low &  \bfseries   High\\ \hline \hline
+
+% Use \checkmark
+        \# of Permissions in App  & \checkmark &  \\ \hline
+        \# of Overprivileges & 	 & \checkmark   \\ \hline
+         \# of Underprivileges & 	& \checkmark \\ \hline
+
+  \end{tabular}
+\label{table:studyresults_Permissions}
+\end{table}
+
+
+We performed a MWU on the number of requested permissions, and permission gap for both low and high-rated apps. In Table~\ref{table:studyresults_Permissions}, we can see that low-rated apps indeed ask for more permissions than high-rated apps. However, the overprivilege and underprivilege rates are greater in high-rated apps. These results imply that even though low-rated apps request more permissions, they actually use a higher percentage of them. High-rated apps are asking for permissions that they do not even use, and this is quite dangerous. The high-rated apps also have a larger incidence of underprivileges. This implies that there are features trying to do activities for which they do not have permission for. Such a problem not only indicates reliability issues, but also indicates that developers of the high-rated apps might be trying to get more information than they ask for. Due to the strong permissions setup in Android, such an attempt will fail and an exception will be being thrown. %However, a failure in Android could result in developers accessing information without even asking the users for permissions.
+
+
+There are several other possible reasons why higher-rated apps have a greater permission gap. Users will probably be unaware of this gap and may only very sporadically encounter possible crashes caused by underprivileged apps. When problems do arise, they may assume that these are issues with the Android OS, and not with the app itself. Users are generally unaware of what Android's permissions actually mean, and coupled with a lack of internal knowledge of the source code, may simply believe that the permission is actually required when it actually represents a security vulnerability~\cite{Li:2005:ETC:1095714.1095770}. Additionally, a large portion of users do not even pay attention to an app's permissions when installing it~\cite{Felt:2012:APU:2335356.2335360}. Studies~\cite{wijesekera2015android} have shown that users are generally wary of apps that request large numbers of privileges. This is likely a reason why apps with more permissions generally have a lower rating.
+
+
+
+From Table~\ref{table:studyresults_AndroRisk}, we can see that the overall risk score (FuzzyRisk) in low-rated apps is greater than in high-rated apps. However, when we look at the breakdown into the individual risk metrics, only three of the nine metrics are higher in low-rated apps as compared to high-rated apps: reflection API use (Dex\_Reflection), access of internet (Perm\_Internet), and access to private data\newline (Perm\_Dangerous). High-rated apps have a larger risk of manipulating SMS messages as well as loading .dex files dynamically. High-rated apps also more likely to ask for the permission to process payments - combined with the risk of loading dex files dynamically, a new executable could possibly take money out of the user's account as well. The combination of the risk of access to private data and the ability to access to internet, is largely the reason why the overall risk score is high even though only three of the nine risk metrics are higher in low-rated apps.
+
+
+
+
+
+%% Should this section be left in?
+\subsection{Coding Standards \& App Defects}
+%  "Defect_LOC is greater with p value 3.66237973317598e-19"
+
+We performed a secondary analysis evaluating the variations in coding standards mistakes, and discovered defects in the apps using CheckStyle\footnote{\url{http://checkstyle.sourceforge.net}} and JLint\footnote{\url{http://jlint.sourceforge.net}}, two popular static analysis tools. The results of our analysis are shown in Table~\ref{table:csresults}.
+
+
+\begin{table}[h]
+\centering
+\caption{MWU Analysis of Coding Standards Mistakes \& Errors}
+  \begin{tabular}{ | l | c | c | c |  } \hline
+    % \bfseries Genre  & \bfseries \% of Apps \\ \hline
+
+ & \multicolumn{2}{ c |  }{\bfseries Greater In}   \\ \hline
+    \bfseries Value  &  \bfseries  Low &  \bfseries   High\\ \hline \hline
+
+% Use \checkmark
+        Coding Standards/LOC  & \checkmark &  \\ \hline
+        JLint Errors/LOC  & \checkmark & \\ \hline
+    %    \# of Overprivileges & 	 & \checkmark & 0.0453  \\ \hline
+     %    \# of Underprivileges & 	& \checkmark & 0.001\\ \hline
+
+  \end{tabular}
+\label{table:csresults}
+\end{table}
+
+
+Adhering to coding standards is important for software developers as it has been shown to enhance team communication, reduce program errors and improve code quality~\cite{Li:2005:ETC:1095714.1095770, li2006using}. We measured the number of coding standards defects for each app using CheckStyle and  then divided the number of coding standards reported for the app by number of LOC to normalize the results by the size of the application. We then analyzed these results using the same MWU formula we used for our security analysis. We found that higher rated apps suffer from fewer coding standards defects per LOC in relation to low-rated apps.
+
+Although more work should be conducted in this area, there are several possible reasons for this. Developers that spend more time ensuring that they are adhering to coding standards will likely spend more time testing their app to ensure it is of high quality. Adhering to coding standards make it quicker and easier to release new versions, features and bug fixes~\cite{Li:2005:ETC:1095714.1095770, li2006using}, which could increase user satisfaction in the app.
+
+
+We then performed a similar analysis using JLint, a powerful bug detecting tool. We found that lower-rated apps had a higher number of JLint defects per LOC than their higher-rated counterparts. Although this analysis was conducted in a much smaller scale, our results correlate to those found by Khalid et al.\cite{Khalid_Mei_Examinging}, who used a different tool to achieve their results.
+
+While we believe that these results are interesting, we only conducted these examinations in a terse manner, so future work should be done to provide more confidence to these findings.
+
+
+
+\section{Limitations \& Future Work}
+\label{sec:limitations}
+
+While we feel our findings to be profound, they are not without their limitations. Although Google Play is the largest Android market place, it is not the only source for Android apps. Alternatives include the Amazon app store, F-Droid and a multitude of other sources. Other studies may choose to include apps from these other sources. Additionally, we chose apps at random and only selected a total of 1,659 apps, which is a small minority of the over 1.5 total Android apps available. Given that this is a random sample, however, we believe that it is representative of the Android application population.
+
+% removed Stevens:2013:APU:2487085.2487093,
+While static analysis tools have demonstrated their value in numerous previous works~\cite{Felt:2011:APD:2046707.2046779, Pearce:2012:APS:2414456.2414498}, it is unreasonable to expect that any tool will ever be flawless and that no static analysis tool is perfect and generally inherently contains limitations~\cite{chess2004static}. Although Stowaway is a powerful static analysis tool which has been used in previous research~\cite{Pearce:2012:APS:2414456.2414498,Stevens_investigatinguser,jeon2011dr}, it does suffer from drawbacks. Stowaway's own authors state that the tool only achieves 85\% code coverage~\cite{Felt:2011:APD:2046707.2046779}, so the over \& under privileges reported by this tool are imperfect. Additionally, any reported vulnerabilities by a static analysis tool should be deemed as~\emph{possible} vulnerabilities, not actual vulnerabilities.
+
+
+Identifying possible vulnerabilities or security risks is extremely difficult, and like any static analysis tool, AndroRisk is only capable of making educated observations about the risk level of an app and that more substantial risk assessments will require a far more substantial level of analysis, which will likely include a manual investigation of the app. Due to the large number of examined apps in our study, this thorough level of analysis was not practical. Even with almost certain imperfections, we believe that AndroRisk was a good selection due to its ability to quickly analyze apps and its use in existing research~\cite{krutz2015dataset}.
+
+
+%% Removed 8/27/15
+%User ratings have been substantially analyzed in previous research and popular apps will receive ratings from only 2-3\% of its users~\cite{Yan:2011:APM:1999995.2000007}. This means that only a small subset of users are responsible for the overall ratings an app receives and may not be representative of what all users believe about the app. However, mobile app developers still require high ratings in order to be successful.
+
+We have presenting interesting findings about the relationship between an Android app's user ratings and its security. However, there is still a large amount of future work which can be conducted on this topic. Our study evaluated 1,659 Android apps, which represents a very minor portion of all existing Android apps. Future work may be done to expand on our data set and analyze a more substantial number of apps. We chose to use Stowaway and AndroRisk as the major static analysis tools in our study, but new and powerful assessment tools are constantly being created and may be applied to our work.
+
+\hl{We used the Mann Whitney U, Spearman, and Kendall metrics in our research to determine variations in high and low-rated apps. Future work could be done to see if the Pearson correlation could be used to form a predictive model with our collected data.
+
+We only measured the user ratings of apps. An interesting study would be examine the comments left by users to see if they are complaining more about security or permissions in apps which have more vulnerabilities, more permissions, or more overprivileges. Work could also be done to ensure that all apps are compared against each other in groups based upon functionality, size, complexity, or other differentiating metrics. However, we are confident in our results due to the magnitude and app diversity of our study. As with previous work}~\cite{mojica2013large}, \hl{we unfortunately found that collecting low-rated apps with at least 1,000 downloads was difficult. Breaking down the results into more groups would have created smaller sample sizes, thus possibly hurting the confidence of our results.}
+
+
+%%% Lower number would have hurt our overall results
+
+
+ % Did not compare other types of analysis .. (what did they say in other evals?)...We do feel MWU was appropriate
+
+%% CheckStyle and JLint limitations - even though this analysis was very short
+
+
+%% Combine with limitations if space is an issue
+%\section{Future Work}
+%\label{sec:futurework}
+
+%%%
+% Apply to larger data set
+% Apply other security tools
+%	Mention some of the other tools that could be used
+% Analyze information from use reviews
+% Do user's mention these concerns (security) in their reviews at all? Do they care about these over and under prvileges?
+% Break down analysis of apps based on permission dangerous categories
+% Coding standards and a study just on this. Look at the types of CS defects that occur, and more precisely examine what their ramifications are.
+% Mention other types of analysis that could have been done
+%	Spearman or Kendall
+%		What benefits could they give and how could they be done
+
+
+
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\noindent \textbf{Summary}:
+The goal of our research was to determine if low-rated apps suffered from more possible security vulnerabilities than high-rated apps. We statically analyzed more than 1,600 Android apps (both high-rating and low-rating apps) for security threats primarily using two static analysis tools. We evaluated apps for over \& underprivileges using Stowaway, and AndroRisk for a more general security risk assessment.
+
+\noindent \textbf{Findings}: Low-rated apps tended to have more permissions, and a higher AndroRisk score, while high-rated apps suffered from more overprivileges and underprivileges.
+
+
+
+%\noindent \textbf{Summary}: We statically analyzed more than 1,600 Android apps (both high-rating and low-rating apps) for security threats and found that high-rated apps typically had lower security based issues but higher permission based issues as compared to low-rated apps.
+
+%\noindent \textbf{Recommendations}: Even though high-rated apps have greater risks in most cases, the use of static analysis tools is feasible for understanding security related issues. Therefore, we recommend that app developers run these static analysis tools on their apps before releasing them as they have an opportunity to correct issues before end users download, use and rate their apps.
+
+\section*{Acknowledgements}
+
+\ifisnopii % turn on/off pii
+% Meiyappan Nagappan
+\todo{put information in here}
+\else % turn on/off pii
+Author and funding acknowledgments hidden for review anonymity.
+\fi % end turn on/off pii
+
+
+
+
+% Mei
+% Student information
+
+%%% All Acknoledments will be hidden
+%%% ..All names and grant thank yous are hidden for anonymous
+
+
+%\section{test}
+
+%hi\thefootnote{footnote message}
+
+\balance
+\bibliographystyle{abbrv} % Check on this
+\bibliography{AndroidData}
+
+% that's all folks
+\end{document}
+
+
+
+
+
+
+%%%% ************ Final Submission info for SAC 2016 *****************
+
+
+
+
+
+
+%%%% *****************************
+
+
+
+%%%%%%%%%%%%%%%
+% Make a consistent term for Overprivileged - This is what porter-felt used
+% Consistently use (low-rated) - This is what Mei used
+% Make sure the tables (and how they are referenced) appear in the correct order
+
+
+
+
+%%%%%%%%%%%%%%%
+
+
+
+%%%% Todo
+
+%%%%% Feedback
+
+%   Compare apps of similar functionality and size. This will make an apples to apples comparison.
+%   Do not just ignore that AndroRisk ratings are higher for low rated apps - check on this to make sure that it is true
+%   Use something stronger than an "inferential" statistical comparison.
+%		? User ratings correlation between different types of vulnerabilities (AndroRisk)
+%   Look at using correlation analysis
+%   Use a Spearman or Kendall rank correlation ?
+%   Look at reasons WHY security metrics may correlate with user ratings
+%
+
+%%%%%%%% Things to look into ? %%%%%%%%%%%%%
+% - Do apps with more permissions per size of different ratings?
+
+% Does JLint predict user rating?
+%	Has this been done before?
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   First show the User ratings breakdown for all apps
+%   Then show it for specific genres
+%   Correlation analysis
+%
+%   Look at a few of the apps with the highest over priv rate
+%
+%
+%
+%
+%
+% %%%%% Interesting apps
+%   QQ
+%   -  34 over privs - Communication - User rating 3.4. 1639 Java files = large
+%   -  Galaxy (OWA Contacts Sync) ish - Communication 19 opriv, 42 Java files
+%
+
+
+
+% ? Combine the paper to show the lifecylcle of apps along with the user ratings I am getting?
+
+
+
+%% Questions
+%   Where will the paper be submitted next?
+
+
+
+%%%%%%%%%%%%%% Mei 2015
+%   Do some correlation analysis here
+%   SAC 2015
+%   ERA Sanear 

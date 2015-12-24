@@ -1,0 +1,36 @@
+The Android operating system is the most popular mobile platform in the world with apps being available on numerous types of devices from a variety of manufacturers~\cite{androidpopularity_url}. This flexibly has allowed the Android operating system to flourish, but results in many different hardware platforms and OS versions for app developers to support.
+
+%\subsection{Android Application Structure}
+
+The Android application stack is comprised of four primary layers. The top layer is the Android application layer, which is followed by the the three application framework layers. The Android Software Development Kit (SDK) allows developers to create Android applications using the Java programming language. Isolation between Android applications is enforced through the use of the Android sandbox~\cite{androidsecuritytips_url}, which typically prevents applications from intruding upon one another.
+
+%% Doesn't seem all that relevant
+%\emph{Intents} are a communication mechanism to exchange information between the components (\emph{Activities}) of an Android application, and are reported to the user upon installation and use. Inter Process Communication (IPC) is the composition mechanism performed using Intents which is used to invoke another application component. Attacks that exploit Intents for malicious reasons include ~\emph{permission collusion},~\emph{confused deputy}, and~\emph{intent spoofing}~\cite{Chin:2011:AIC:1999995.2000018,grace2012systematic, Marforio:2012:ACC:2420950.2420958, 6641043}.
+
+Android applications are packaged in APK files, which are compressed application files which includes the application's binaries and package metadata. Table~\ref{Table:apkcontents} shows the breakdown of a typical APK file.
+
+%% Much of this able came from : ~\cite{Lee_2013}
+
+
+\begin{table}[ht]% Try here, and then top
+\begin{center}
+\caption{APK Contents}
+\label{Table:apkcontents}
+  \begin{tabular}{| l | l | } \hline
+
+    \bfseries File & \bfseries Description \\ \hline
+    AndroidManifest.xml & Permissions \& app information \\ \hline
+    Classes.dex & Binary Execution File \\ \hline
+    /res & Directory of resource files \\ \hline
+    /lib & Directory of compiled code \\ \hline
+    /META-INF & Application Certification \\ \hline
+    resources.arsc & Compiled resource file \\ \hline
+  \end{tabular}
+  \end{center}
+\end{table}
+
+
+Android applications are available from a variety of different locations including AppksAPK\footnote{http://www.appsapk.com/}, F-Droid\footnote{https://f-droid.org/}, and the Google Play store\footnote{https://play.google.com/store}. These stores differ from the iOS app store, which forces all non-jailbroken devices to access applications through an Apple controlled store. Google Play provides verification of uploaded applications using a service called Bouncer which scans applications for malware~\cite{bouncer_url1}. In spite of these efforts, malicious apps are sometimes found on the Google Play store~\cite{Zhou:2012:DAM:2310656.2310710}. Google Play separates apps into~\emph{Genres} based on their realm of functionality, some of which are Action, Business, Entertainment, Productivity, and Tools. The~\emph{AndroidManifest.xml} file contains permissions and application information as defined by the developer.
+
+
+When installing the application, the user is asked to accept or reject these requested permissions. Unfortunately, developers often request more permissions than they actually need, as there is no built in verification system to ensure that they are only requesting the permissions their application actually uses~\cite{Felt:2011:APD:2046707.2046779}. In this study, we use the term \emph{overprivilege} to describe a permission setting that grants more than what a developer needs for the task. Likewise, an \emph{underprivilege} is a setting for which the app could fail because it was not given the proper permissions. Overprivileges are considered security risks, underprivileges are considered quality risks.

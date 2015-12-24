@@ -1,0 +1,44 @@
+rm(list = ls())
+setwd("Desktop/Research/Projects/Dan_StaticAnalysis/")
+
+G1 = read.csv("Group1a.csv", header = T)
+G2 = read.csv("Group2.csv", header = T)
+
+i = 3
+n = ncol(G1)
+name_vec = names(G1)
+
+G1[,5:7] = 1000*(G1[,5:7]/G1[,8])
+G1[,9:n] = 1000*(G1[,9:n]/G1[,8])
+G2[,5:7] = 1000*(G2[,5:7]/G2[,8])
+G2[,9:n] = 1000*(G2[,9:n]/G2[,8])
+
+while(i <= n)
+{
+  l = wilcox.test(G1[,i], G2[,i], alternative="less")
+  if(l$p.value < 0.05)
+    print(paste(name_vec[i], "is less with p value", l$p.value))
+  g = wilcox.test(G1[,i], G2[,i], alternative="greater")
+  if(g$p.value < 0.05)
+    print(paste(name_vec[i], "is greater with p value", g$p.value))
+  if(l$p.value < 0.05 | g$p.value < 0.05)
+    boxplot(G1[,i], G2[,i])
+  i = i + 1
+}
+
+
+
+
+********************************************
+[1] "UserRating is less with p value 0"
+[1] "LowerDownloads is less with p value 8.81049190812217e-65"
+[1] "FuzzyRisk is greater with p value 2.39647543940477e-14"
+[1] "JavaFiles is greater with p value 1.0414256232712e-06"
+[1] "DefectCount is greater with p value 1.68834801482077e-23"
+[1] "LOC is less with p value 3.68506335590788e-30"
+[1] "CloneFragment is less with p value 8.00623027790275e-06"
+[1] "OPrivCount is greater with p value 4.22978063737761e-08"
+[1] "UPrivCount is greater with p value 4.1628955877489e-11"
+[1] "IntentsCount is greater with p value 2.66390245914753e-30"
+[1] "PermissionCount is greater with p value 9.18194942770039e-18"
+[1] "Jlint is greater with p value 0.00361615375319076"

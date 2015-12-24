@@ -1,0 +1,40 @@
+&&&&& Used for the "Darwin Security" paper
+
+
+
+-- Find the total number of apps that have overprivs
+
+		select count(ai.RowID), OprivCount, UprivCount
+		from apkinformation ai
+		left outer join (select count (permissionID) as OPrivCount, apkID from overprivilege o group by apkID) overprivCount on overprivCount.apkID = ai.rowID
+		left outer join (select count (permissionID) as UPrivCount, apkID from underprivilege u group by apkID) underprivCount on underprivCount.apkID = ai.rowID
+		inner join toolResults tr on tr.apkID = ai.rowID
+		where oprivcount > 0
+
+
+-- Find which genres are the most likely to have overprivs
+
+
+
+
+--- Find which overprivs occur most often
+	# TOPOVERPRIVS
+	select p.Name, round((CAST(count(p.Name) as float)/t2.TotalCount) * 100,2) as PercentOccuring, count(p.Name) as pCount, t2.TotalCount
+	from apkinformation ai
+	,(select count(ai2.Name) as TotalCount from apkinformation ai2 inner join toolResults tr on tr.apkID = ai2.rowID where lowerdownloads >=10000) t2
+	inner join overprivilege o on ai.rowID = o.apkid
+	inner join permissions p on p.pid = o.permissionID
+	where ai.lowerdownloads >=10000
+	group by p.Name
+	order by pCount desc
+
+
+-- Find Total stats of apps
+
+
+-- Find the most used permissions in apps
+
+
+
+
+

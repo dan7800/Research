@@ -1,0 +1,35 @@
+select *
+from apkinformation ai
+inner join toolresults tr on tr.apkID = ai.rowID
+
+
+$$$$ Get Requested Privs
+
+select ai.Name, privName
+from apkParser_privs_join apj
+inner join apkinformation ai on ai.rowID = apj.rowID
+inner join apkParser_privs ap on ap.privID = apj.privID
+order by apj.rowID
+
+
+#### Get Overprivs
+
+select ai.Name, p.Name
+from overprivilege o
+inner join apkinformation ai on ai.rowID = o.apkid
+inner join permissions p on p.pID = o.permissionID
+where ai.rowID = xx
+order by ai.name
+
+
+
+#### Get UnderPrivs
+
+select ai.Name, p.Name
+from underprivilege u
+inner join apkinformation ai on ai.rowID = u.apkid
+inner join permissions p on p.pID = u.permissionID
+
+order by ai.name
+
+

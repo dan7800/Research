@@ -1,0 +1,76 @@
+\section{Study Design}
+\label{sec:studydesign}
+
+\todo{much of this section will need to be updated}
+
+We first collected a variety of apps from GooglePlay using a modified collection tool and then analyzed them using two well known Android static analysis tools. Our collection and analysis process is shown in Figure~\ref{fig:analysisprocess}.
+
+% Define block styles
+\tikzstyle{line} = [draw, -latex']
+%\tikzstyle{cloud} = [draw, circle,fill=white!20, node distance=4.2cm,
+%    minimum height=2em]
+
+  \tikzstyle{block} = [rectangle, draw, fill=white!20, 
+    text width=5em, text centered, rounded corners, node distance=2.2cm, minimum height=4em]
+
+  %\tikzstyle{GP} = [rectangle, draw, fill=blue!20, 
+  %  text width=5em, text centered, rounded corners, node distance=2.2cm, minimum height=4em]
+
+\tikzstyle{GP} = [rectangle, draw, fill=blue!20, 
+    text width=5em, text centered, node distance=2.2cm, minimum height=4em]
+
+
+    %{rectangle,draw,fill=blue!20}
+
+
+	\begin{figure}[h]
+	\begin{center}
+\resizebox {\columnwidth} {!} {
+\begin{tikzpicture}[node distance = 2cm, auto]
+    % Place nodes
+     \node [GP] (init) {App Store };
+     \node [block, right of=init] (dex) {App Collection};
+     \node [block, right of=dex] (jar) {App Selection};
+     \node [block, right of=jar] (java) {Static Analysis};
+     \node [block, right of=java] (R) {Data Analysis};
+
+     \path [line] (init) -- node {}(dex);
+     \path [line] (dex) -- node {}(jar);
+     \path [line] (jar) -- node {}(java);
+     \path [line] (java) -- node {}(R);
+
+\end{tikzpicture}
+}
+\end{center}
+\caption{App Collection and Analysis Process}
+\label{fig:analysisprocess}
+\end{figure}
+
+\subsection{Data Collection}
+
+% DK: I took this out since I did not feel it was releveant
+%As part of our Darwin project\footnote{\url{http:darwin.rit.edu}}, we have collected and decompiled over 40,000 apps from the GooglePlay store. 
+
+We collected apps from the GooglePlay store with a custom-built collector, which uses~\emph{Scrapy}\footnote{http://scrapy.org} as a foundation. We chose to pull from GooglePlay since it is the most popular source of Android apps\footnote{\url{http://www.onepf.org/appstores/}} and was able to provide other app related information such as the developer, version, genre, user rating, and number of downloads. We downloaded 1,000 apps with a user rating of at least 3, and were able to download 833 apps with a user rating of less than 3. Locating apps with a user rating of less than 3 was much more difficult than finding apps with a user rating of at least 3~\cite{mojica2013large}.
+
+
+\subsection{Data Selection}
+We removed all apps with less than 1,000 downloads to limit the effects that rarely used apps would have on our study. This left us with 798 apps with a rating of less than 3, and 861 apps with a user rating of at least 3.
+
+
+\subsection{Static analysis tools}
+\label{sec: analysis}
+%\todo{Remove the tools which produce data that we do not need}
+
+The next phase was to analyze the apps for potential security risks, and permissions issues. We used two open source static analysis tools in our study: Stowaway~\cite{Felt:2011:APD:2046707.2046779} and Androrisk\footnote{\url{https://code.google.com/p/androguard/}}. Stowawy evaluates the app for permission gaps, while Androrisk determines the vulnerability risk level. The complete list of metrics (and their definitions) that we collected from Stowaway and Androrisk are in Tables~\ref{table:studyresults_Permissions} and \ref{table:studyresults_AndroRisk} respectively.
+
+We selected Stowaway for determining the permission gap in apps since it is able to state the permissions that were causing it to have over-permissions and under-permissions, while using a static analysis based approach that did not require it to be ran on an Android device or through an emulator. Stowaway has also  demonstrated its effectiveness in existing research~\cite{Stevens:2013:APU:2487085.2487093, Felt:2011:APD:2046707.2046779, Pearce:2012:APS:2414456.2414498}. Permlyzer~\cite{6698893}, a more modern permission detection tool, was not used since its authors have not made it available for download.
+
+We chose Androrisk for several reasons. The first is that the AndroGuard library, which is it a part of, has already been used in a variety of existing research~\cite{Egele:2013:ESC:2508859.2516693, Vidas:2014:AAA:2666620.2666630, Atzeni:2014:DYA:2692983.2693001}. Androrisk is also a freely available, open source tool which will allow others to replicate our findings. Finally, as a static analysis based vulnerability detection tool, Androrisk was quickly able to effectively determine the risk level of a large number of downloaded apps.
+% along with a custom built permissions extractor. \\
+
+
+
+\subsection{Data Analysis}
+
+The data collected from the static analysis tools along with user ratings data was analyzed using standard libraries like the {\it stats} library in R. 

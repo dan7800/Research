@@ -1,0 +1,18 @@
+\section{Background on Static Analysis Tools}
+
+In this section we present the background information on the two types of security threats gathered by the static analysis tools that we use. %and the types of security threats that we statically analyze.
+
+\subsection{Privileges}
+Android developers operate under a permission-based system where apps must be granted access to various areas of functionality before they may be used. When an Android app is created, developers must explicitly declare in advance which permissions the application will require~\cite{Felt:2011:APD:2046707.2046779}, such as the ability to write to the calendar, send SMS messages, or access the GPS. If an app attempts to perform an operation for which it does not have permission, a~\emph{SecurityException} is thrown. 
+
+When installing the app, the user is asked to accept or reject these requested permissions. Once installed, the developer cannot remotely modify the permissions without releasing a new version of the app for installation~\cite{shaerpour2013trends}, prompting the user if new permissions are required. These security settings are stored in the~\emph{AndroidManifest.xml} file and include a wide range of permissions, some of which are~\emph{INTERNET},~\emph{READ\_CONTACTS}, and~\emph{WRITE\_SETTINGS}. Unfortunately, developers often request more permissions than they actually need, as there is no built in verification system to ensure that they are only requesting the permissions their app actually uses~\cite{Felt:2011:APD:2046707.2046779}. This may be due to the lack of granularity of the permission spectrum used by Android, the developer must often grant more permissions to their app than it actually requires. For example, an application that needs to send information to one site on the internet will need to be given full permissions to the internet, meaning that it may communicate with with all websites~\cite{jeon2011dr}.
+
+A basic principle of software security is the~\emph{principle of least privilege}, or the granting of the minimum number of privileges that an app needs to properly function~\cite{saltzer1975protection}. Granting more privileges than the app needs creates security problems since vulnerabilities in the app, or malware, could use these extra permissions for malicious reasons. Additionally, this principle limits potential issues due to non-malicious developer errors.  
+
+%In this study, we use the term \emph{overprivilege} to describe a permission setting that grants more than what a developer needs for the task. Likewise, an \emph{underprivilege} is a setting for which the app could fail because it was not given the proper permissions. Overprivileges are considered security risks, underprivileges are considered quality risks.
+
+
+%% How do vulnerability tools work
+\dan{Andy- Maybe you can help with this?}
+% ??Have as section for AndroRisk here?
+

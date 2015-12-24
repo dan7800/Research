@@ -1,0 +1,115 @@
+
+
+--- Most pervasive privs
+select privName, count(apj.privID) as PrivCount
+	from apkinformation ai
+	inner join apkParser_privs_join apj on apj.rowID = ai.rowID
+	inner join apkParser_privs ap on ap.privID = apj.privID
+	where ai.lowerdownloads >=10000
+	group by apj.privID
+	order by PrivCount desc
+
+
+
+%%% Double check to make sure that these values look correct
+--- Most pervasive over privs
+	select count(p.Name) as OverPrivCount, P.Name
+	from overprivilege o
+	inner join permissions p on p.pid = o.permissionID 
+	inner join apkinformation ai on ai.rowID=o.apkID
+	where ai.lowerdownloads >=10000
+	group by P.Name
+	order by overprivcount desc
+
+
+
+-- Genres code quality comparision
+select ai.genre, count(ai.rowID) as AppCount, round(avg(FuzzyRiskValue),2) as FuzzyRisk, round(avg(JavaFiles),2) as JavaFiles, round(avg(JlintResult),2) as JLint, round(avg(DefectCount),2) as DefectCount, round(avg(LOC),2) as LOC, round(avg(simcad_clonefragment),2) as CloneFragment, round(avg(simcad_cloneGroup),2) as CloneGroup 
+
+	, round(avg(JlintResult)/avg(LOC) * 1,5) as "Jlint/LOC"
+	, round(avg(DefectCount)/avg(LOC) * 1,5) as "Defect/LOC"
+	, round(avg(OPrivCount),1) as OPriv
+	, round(avg(UPrivCount),1) as UPriv
+	, round(avg(PrivCount),1) as PrivCount
+	, round(round(avg(PrivCount),1)/round(avg(OPrivCount),1),2) as OPrivRatio
+	, round(round(avg(PrivCount),1)/round(avg(UPrivCount),1),2) as UPrivRatio
+	from apkInformation ai
+	inner join toolResults tr on tr.apkID = ai.rowID
+	left outer join (select count (permissionID) as OPrivCount, apkID from overprivilege o group by apkID) overprivCount on overprivCount.apkID = ai.rowID
+	left outer join (select count (permissionID) as UPrivCount, apkID from underprivilege u group by apkID) underprivCount on underprivCount.apkID = ai.rowID
+	
+	--%% Keep this as inner join since apps with no permissions cannot exist
+	inner join (select count (privID) as PrivCount, rowID from apkParser_privs_join apj group by rowID) permissionCount on permissionCount.rowID = ai.rowID
+	
+	where lowerdownloads >=10000
+	and LOC > 0
+	group by genre
+	order by appcount desc
+
+
+-- More than 10k vs. less than 10k
+--- % Jlint and Defect /LOC are broken
+--	Make sure to get rid of null values
+select ai.Name,
+  FuzzyRiskValue as FuzzyRisk
+,  JavaFiles  as JavaFiles
+,  JlintResult  as JLint
+,  DefectCount  as DefectCount
+,  LOC  as LOC
+,  simcad_clonefragment  as CloneFragment
+,  simcad_cloneGroup  as CloneGroup 
+	,  (JlintResult/LOC) * 100 as "Jlint/LOC"
+	,  (DefectCount/LOC) * 100 as "Defect/LOC"
+	,  OPrivCount  as OPriv
+	,  UPrivCount  as UPriv
+	,  PrivCount  as PrivCount
+	
+	from apkInformation ai
+	inner join toolResults tr on tr.apkID = ai.rowID
+	left outer join (select count (permissionID) as OPrivCount, apkID from overprivilege o group by apkID) overprivCount on overprivCount.apkID = ai.rowID
+	left outer join (select count (permissionID) as UPrivCount, apkID from underprivilege u group by apkID) underprivCount on underprivCount.apkID = ai.rowID
+	
+	--%% Keep this as inner join since apps with no permissions cannot exist
+	inner join (select count (privID) as PrivCount, rowID from apkParser_privs_join apj group by rowID) permissionCount on permissionCount.rowID = ai.rowID
+	
+	--and datepublished like '%2015%'
+	where lowerdownloads <10000
+	and LOC > 0
+	
+
+
+
+
+
+
+-- Most occuring over and under privs by genre?
+
+
+
+-- How are apps evolving at an aggregate level (group by general years)
+
+select count(ai.rowID) as AppCount, round(avg(FuzzyRiskValue),2) as FuzzyRisk, round(avg(JavaFiles),2) as JavaFiles, round(avg(JlintResult),2) as JLint, round(avg(DefectCount),2) as DefectCount, round(avg(LOC),2) as LOC, round(avg(simcad_clonefragment),2) as CloneFragment, round(avg(simcad_cloneGroup),2) as CloneGroup 
+
+	, round(avg(JlintResult)/avg(LOC) * 100,2) as "Jlint/LOC"
+	, round(avg(DefectCount)/avg(LOC) * 100,2) as "Defect/LOC"
+	, round(avg(OPrivCount),1) as OPriv
+	, round(avg(UPrivCount),1) as UPriv
+	, round(avg(PrivCount),1) as PrivCount
+	, round(round(avg(PrivCount),1)/round(avg(OPrivCount),1),2) as OPrivRatio
+	, round(round(avg(PrivCount),1)/round(avg(UPrivCount),1),2) as UPrivRatio
+	from apkInformation ai
+	inner join toolResults tr on tr.apkID = ai.rowID
+	left outer join (select count (permissionID) as OPrivCount, apkID from overprivilege o group by apkID) overprivCount on overprivCount.apkID = ai.rowID
+	left outer join (select count (permissionID) as UPrivCount, apkID from underprivilege u group by apkID) underprivCount on underprivCount.apkID = ai.rowID
+	
+	--%% Keep this as inner join since apps with no permissions cannot exist
+	inner join (select count (privID) as PrivCount, rowID from apkParser_privs_join apj group by rowID) permissionCount on permissionCount.rowID = ai.rowID
+
+	where datepublished like '%2011%'
+	and LOC >0
+	--and lowerdownloads >=10000
+
+
+
+
+

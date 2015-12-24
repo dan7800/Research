@@ -1,0 +1,442 @@
+
+%\documentclass[conference]{IEEEtran}
+\documentclass{sig-alternate}
+
+\clubpenalty=10000
+\widowpenalty = 10000
+
+\newcommand{\todo}[1]{\textcolor{cyan}{\textbf{[#1]}}}
+\newcommand{\sam}[1]{\textcolor{red}{{\it [Sam says: #1]}}}
+\newcommand{\dan}[1]{\textcolor{blue}{{\it [Dan says: #1]}}}
+
+% --- Author Metadata here ---
+\conferenceinfo{SAC'16,}{April 4-8, 2016, Pisa, Italy.}
+\CopyrightYear{2016} % Allows default copyright year (2002) to be over-ridden - IF NEED BE.
+\crdata{978-1-4503-3739-7/16/04...\$15.00.\\
+http://dx.doi.org/xx.xxxx/xxxxxxx.xxxxxxx
+}  % Allows default copyright data (X-XXXXX-XX-X/XX/XX) to be over-ridden.
+% --- End of Author Metadata ---
+
+
+\usepackage{cite}
+\usepackage{listings}
+%\usepackage{booktabs}
+\usepackage{color}
+\usepackage{balance} % Helps to balance out text on last page
+\usepackage{url}
+\usepackage{times} % Used for formatting formatting url footnotes
+\urlstyle{same} % Used for formatting formatting url footnotes
+
+\usepackage{graphicx} % Including images
+
+
+\usepackage{tikz}
+\usetikzlibrary{shapes, 	arrows, positioning}
+\usetikzlibrary{patterns}
+
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+
+
+
+\lstset{ %
+language=,                % Make language be nothing
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+%numbers=left,                   % where to put the line-numbers; possible values are (none, left, right)
+%numberstyle=\tiny\color{gray}, % the style that is used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it is 1 each line will be numbered
+numbersep=-3pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,           % adds a frame around the code
+tabsize=2,          % sets default tabsize to 2 spaces
+captionpos=b,           % sets the caption-position to bottom
+breaklines=true,        % sets automatic line breaking
+breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)}          % if you want to add a comment within your code
+}
+
+
+\newif\ifisnopii
+%\isnopiitrue % change to true/false to remove personally identifiable information (pii)
+\isnopiifalse % change to true/false to remove personally identifiable information (pii)
+
+
+\begin{document}
+
+\title{Concolic Analysis for Android Applications}
+
+
+
+
+
+\numberofauthors{1}
+\ifisnopii % turn on/off pii
+\author{
+%
+% 1st. author\
+\alignauthor
+Daniel~E.~Krutz, Patrick McAfee, \&~Samuel~A.~Malachowsky\\ 	
+	\affaddr{Software Engineering Department}\\
+       \affaddr{Rochester Institute of Technology}\\
+       \affaddr{1 Lomb Memorial Drive}\\
+       \affaddr{Rochester, NY, USA} \\
+       \email{\{dxkvse, pjm4439, samvse\}@rit.edu}
+       \alignauthor
+} % Must not be a space above this
+
+\else % turn on/off pii
+\author{
+%
+% 1st. author
+\alignauthor
+xxxxxxxxxxxxxxx\\ 	
+	\affaddr{xxxxxxxxx}\\
+       \affaddr{xxxxxxxxx}\\
+       \affaddr{xxxxxxxxx}\\
+       \affaddr{xxxxxxxxx, xx, xxx} \\
+       \email{xxxxxx@xxxxx.xxx}
+       \alignauthor
+} % Must not be a space above this
+\fi % end turn on/off pii
+
+\maketitle
+
+\begin{abstract}
+Mobile computing has become an integral part of our everyday lives, and the Android operating system has grown to be the most popular mobile platform. Unfortunately, Android applications are not immune to bugs, security vulnerabilities, and a wide range of other issues which are a common theme in all software. Concolic analysis is a powerful software testing process which has been applied to a variety of other areas including code clone detection and security-related activities.
+
+We created a new, publicly available concolic analysis tool for analyzing Android applications: Concolic Analysis for Android (CAA), which performs concolic analysis on a raw Android application file (or source code) and provides concolic output in a useful and easy to understand format. The tool, detailed instructions, and source code are available on the project website: \ifisnopii \url{http://darwin.rit.edu/caa/} \else \url{http://hiddenToKeepAnonymous. } \fi In the following work, we present the tool, references for installation and usage, and a brief outline for future research with the tool.
+
+\end{abstract}
+% ? Add back in for IEE
+%%\IEEEpeerreviewmaketitle
+
+\section{Introduction}
+
+% Describe the problem and then really drive home the value of the tool
+% State a problem with much of the software?
+
+Android has grown to become an extremely popular mobile platform with a wide variety of applications (`apps') varying in genre, function, and quality. As with all software, Android apps routinely suffer from bugs and security vulnerabilities. Static analysis tools can be extremely beneficial in assisting with these problems and can often quickly and accurately identify issues that developers would have otherwise missed~\cite{Ware:2008:SJC:1394504.1394506, Feng:2014:ASD:2635868.2635869}. %%% Citatation removed 7/17 Feng:2014:ASD:2635868.2635869
+
+% >>> Add citation back in below after acceptance Krutz:2013:CCD:2518531
+%%	>> Then remove this citation: Feng:2014:ASD:2635868.2635869
+
+%% 8/3
+%% Took this sentence out While there are a few concolic analysis tools for Java, none are immediately compatible with Android source code producing similar output to our tool.\todo{reword?}.
+
+Concolic analysis is a powerful static analysis technique which has traditionally been used for software testing~\cite{Sen:2005:CCU:1081706.1081750}, security related activities~\cite{Chen:2014:CIB:2554850.2554875}, and code clone detection~\cite{Krutz_Sac15}. Traditional concolic tools such as JPF~\cite{visser2003model} and CATG\footnote{\url{https://github.com/ksen007/janala2}} will not work on Android applications because they lack a main method that is typically required for concolic analysis tools. We are proposing a new tool, Concolic Analysis for Android (CAA), which allows users to perform concolic analysis on Android application (APK) source files with ease and without the need for a physical Android device or emulator. The tool not only includes the benefits of concolic static analysis, but provides concolic output which may be important for future work in clone detection and other comparison techniques~\cite{Krutz_Sac15,Anand:2012:ACT:2393596.2393666}.
+
+%%% Removed 7/17/15
+%The CAA tool executes seven primary steps: (1) Unpacking the Android application, (2) Conversion of APK into a .jar file, (3) Analysis of entry points into the application, (4) Creation of a wrapper for the decompiled APK, (5) Creation of configuration files for concolic analysis tool, (6) Running JPF, and (7) Logging output from JPF.
+
+%%% Removed for space reasons 3/26
+In the following work, we describe the need for our tool, provide details about the application and its design, and include basic usage instructions. The source code of CAA, installation instructions and further results may be found on our website: \textbf{\ifisnopii \url{http://darwin.rit.edu/caa/} \else \url{http://hiddenToKeepAnonymous} \fi}.
+
+% In the following sections, we will provide an overview of CAA's architecture, usage instructions, output and results.
+%\vspace{-.5 mm}
+
+
+\section{Related Work}
+\label{sec: relatedwork}
+There are an variety of concolic tools which have been created for Java and C based applications including JPF, CREST\footnote{\url{https://code.google.com/p/crest/}}, CATG, and CUTE\cite{Sen:2005:CCU:1081706.1081750}. There are also several proposed techniques for applying concolic analysis to Android and mobile applications. Anand et al.\cite{Anand:2012:ACT:2393596.2393666} created ACTEve with a goal of alleviating the path explosion problem with concolic analysis. ACTEve is focused on event-driven applications and uses concolic analysis in order to generate feasible event-sequences for Android apps. Unfortunately this approach is often limited to short event sequences due to the resources required.
+
+Similar to our tool, JPF-Android~\cite{vanderMerwe:2014:EPS:2557833.2560576} verifies Android apps using JPF. A primary benefit of this technique is that it allows Android applications to be verified outside an emulator using JPF. While this work is profound, it differs from our tool in that it does not use concolic analysis to perform model checking and does not produce output about the functional nature of the app (as our tool does). Mirzaei et al.\cite{Mirzaei:2012:TAA:2382756.2382798} described a process of testing Android applications through symbolic execution using custom Android libraries for JPF and simulated events through program analysis. While this work is substantial, it does not discuss the use of concolic analysis and does not appear to have been publicly released as a fully functional tool.
+
+Blackshear et al.\cite{Blackshear:2015:DGA:2771284.2771288} created Droidel, a tool which summarizes the reflective behavior of Android apps using automatically generated application-specific stubs. Droidel creates a harness which can be used as a single entry point for an app, a similar problem which our tool was forced to overcome. %This creation of a single entry point for an app is a similar problem which our tool was forced to overcome.
+
+There are also many other powerful testing tools for Android apps\footnote{\url{https://developer.android.com/tools/testing/testing-tools.html}}. Dynadroid\footnote{\url{https://code.google.com/p/dynadroid/}} is a tool for creating inputs to unmodified Android apps. Google's own testing framework is available to developers as well\footnote{\url{http://developer.android.com/tools/testing/testing_android.html}}.
+
+
+
+% Droidel generates a harness that can be used as a single entrypoint for an Android app. The harness is a slightly modified version of the framework's ActivityThread.main method.
+
+\section{Concolic Analysis}
+\label{sec: concolicanalysis}
+
+%% Add back in after acceptance. , krutz2013cccd
+
+Concolic analysis uses the combination of concrete and symbolic values to analyze software and has been used for testing, identification of software clones, and the discovery of security vulnerabilities~\cite{Sen:2005:CCU:1081706.1081750, Chen:2014:CIB:2554850.2554875, Krutz_Sac15}. Concolic analysis was introduced by Sen et al.~\cite{Sen:2005:CCU:1081706.1081750} in 2005, and has an advantage over symbolic analysis since the combination of concrete and symbolic values can be used to simplify constraints and precisely reason about complex data structures. % ~\cite{4222603}.
+
+
+When an application is analyzed using concolic analysis, the execution path and symbolic constraints are stored in the~\emph{path condition}. An execution branch is then selected from this path condition which is provided to the constraint solver to be verified for legitimacy. If correct, concrete test inputs are then used to create a new achievable application path. If the new path is found to be unachievable, another path is then selected. Using this process, concolic analysis attempts to traverse as many paths of the application as possible while limiting the path explosion problem through its use of concrete values~\cite{Jaffar:2013:BCT:2491411.2491425}. Concolic analysis serves as the foundation of the CAA tool.
+
+
+
+
+%% Removed for space reasons 7/17/15
+%As an example, Listing~\ref{lst:RawCodeToHaveCAAOnIt} displays a function which is to have concolic analysis performed upon it, and Figure~\ref{fig:CAAAnalysisFlow} shows its data flow. The analysis process would first begin with an arbitrary value being assigned to \texttt{a} and \texttt{b}. For the concrete execution, \texttt{a}=\texttt{b}=1. Line \#2 would set \texttt{c} to be 2, and the~\emph{if} statement in the 3rd line will fail since $ \texttt{a} \neq 100000$. The symbolic execution will follow the same path taken by the concrete execution, but will merely treat \texttt{a} and \texttt{b} as symbolic variables. \texttt{C} will be set to the expression 2b and will make note that $ \texttt{a} \neq 100000$ since the test in line 3 failed. This is known as a path condition and will need to be true for every execution following this same path. The goal is to examine every path of the application.
+
+
+%% Removed for space reasons 7/17/15
+%\begin{lstlisting}[label=lst:RawCodeToHaveCAAOnIt, caption=Code to be examined by Concolic Analysis, language=Java, numbers=left]
+%	void f(int a, int b){
+%		int c = 2*b;
+%		if(a=100000){
+%			if(a<c){
+%				assert(0); //error
+%			}
+%		}
+%	}
+%\end{lstlisting}
+
+
+
+%% Removed for space reasons 7/17/15
+%\begin{figure}[h] %h for here, t for top, b for bottom
+
+%\begin{center}
+%% Define block styles
+%\tikzstyle{round} = [circle, draw, fill=white!20, node distance=1.0cm, text width=3em, text badly centered, align=center]
+%\tikzstyle{biground} = [circle, draw, fill=white!20, node distance=1.0cm, text width=4em, text badly centered, align=center]
+%\tikzstyle{line} = [draw, -latex']
+
+%\begin{tikzpicture}[node distance = 2.0cm, auto]
+
+%\node [round] (1st) {if};
+%\node [round, below left=1cm of 1st] (2nd) {a=0 b=0};
+%\node [round, below right=1cm of 1st] (3rd) {if};
+%\node [biground, below left=1cm of 3rd] (4th) {a=100000 b=0};
+%\node [biground, below right=1cm of 3rd] (5th) {a=100000 b=50001};
+
+%\path [line] (1st) -- node[above left] {$ a \neq 100000$} (2nd);
+%\path [line] (1st) -- node[above right] {a = 100000} (3rd);
+%\path [line] (3rd) -- node[above left] {$a \geq c$ } (4th);
+%\path [line] (3rd) -- node[above right] {a < c} (5th);
+
+%\end{tikzpicture}
+%\caption{Concolic Analysis Flow}
+%\label{fig:CAAAnalysisFlow}
+%\end{center}
+%\end{figure}
+
+
+
+
+\section{The CAA Tool}
+\label{sec: caa}
+
+CAA uses several existing tools, which are:
+
+%CAA uses several existing tools to provide a framework where concolic analysis can be run with a single process. They are as follows:
+%\vspace{-1 mm}
+
+% . CAA is designed as an automated toolchain, utilizing other disparate tools to do the more complex tasks.
+
+\begin{itemize}
+    \setlength{\itemsep}{0pt} %Cut down on spacing for the different items in the list
+    \setlength{\parskip}{0pt} %Cut down on spacing for the different items in the list
+    \setlength{\parsep}{0pt}  %Cut down on spacing for the different items in the list
+
+%1
+\item~\textbf{Apktool}\footnote{\url{https://code.google.com/p/android-apktool/}}: Decompiles APK files to standard Java .jar files.
+
+%2
+\item~\textbf{Dex2Jar}\footnote{\url{https://code.google.com/p/dex2jar/}}: A Java utility for decompiling Android applications. It extracts assets from the .jar file as well as decrypting the AndroidManifest.xml file.
+
+%3
+\item~\textbf{Robolectric}\footnote{\url{http://robolectric.org/}}: A library designed to stub and mock out the Android runtime when testing a project outside of a standard runtime environment. In this project, it is used to grant access to code paths during concrete execution that otherwise would be unreachable without that framework.
+
+%4 - JPF
+\item~\textbf{JPF}\cite{visser2003model}: Performs the actual concolic analysis. JPF is a good fit for this project since it is a freely available, widely used tool which provides the necessary extensibility options.
+
+%particularly due to its optional symbolic module which includes the actual concolic analysis.
+
+%While there are other tools that provide this functionality against vanilla .jar files, such as jCUTE\footnote{\url{http://osl.cs.illinois.edu/software/jcute/}} and CATG, JPF is a best fit for this project, particularly due to its Symbolic optional module which includes the actual concolic analysis.
+
+%% Removed for space reasons 7/17/2015
+%Additionally, it is actively supported with a robust development community (including NASA), which was critical to this project's development. One feature that other tools did not include was the ability to configure a flexible classpath at runtime with multiple directories. This functionality was required for the dynamic compilation described in the design portion of this work.
+\end{itemize}
+
+Several hurdles had to be overcome in the creation of our tool. First, the Android SDK does not support calls to arbitrary \emph{main} functions, so it is therefore necessary to provide a wrapper for a decompiled Android APK file. This provides a single input to be used as the root node for the concolic parser's tree. Second, Android applications are not designed to be run outside an Android runtime environment, and the provided Android development libraries are insufficient as they are only stubs. This obstacle was overcome through the use of Robolectric, a dynamic Android mocking library which allows for greater coverage of Android code paths.
+
+\subsection{Overview of Architecture}
+The user first provides CAA a path to the APK file; CAA then executes a linear series of steps to perform concolic analysis on the target application. A high level overview of the process is described below and is shown in Figure~\ref{fig:workflow}.
+
+\begin{figure}[h] %h for here, t for top, b for bottom
+
+\begin{center}
+%% Define block styles
+\tikzstyle{block} = [rectangle, draw, fill=white!20, node distance=1.0cm, text width=11em, text centered, rounded corners, align=center]
+\tikzstyle{line} = [draw, -latex']
+
+\begin{tikzpicture}[node distance = 2.0cm, auto]
+
+\node [block] (init) {Begin with APK};
+\node [block, below of=init] (1st) {Unpack APK resources and configuration files};
+\node [block, below of=1st] (2nd) {Convert APK to .java \& .class};
+\node [block, below of=2nd] (3rd) {Analyze user entry points into the application};
+\node [block, below = 0.3cm of 3rd] (4th) {Create wrapper for decompiled APK};
+\node [block, below = 0.3cm of 4th] (5th) {Create configuration files for concolic analysis tool};
+\node [block, below of=5th] (6th) {Run Java Pathfinder};
+\node [block, below of=6th] (7th) {Log output from Java Pathfinder};
+\node [block, below of=7th] (8th) {Process Complete};
+
+\node [block, dashed, right = 0.6cm of 1st] (1a) {APK res directory and assets};
+\node [block, dashed, below of=1a] (1b) {AndroidManifest.xml};
+\node [block, dashed, right = 0.6cm of 3rd] (4a) {Source Files};
+\node [block, dashed, below of=4a] (4b) {Manifest};
+\node [block, dashed, right = 0.6cm of 5th] (5a) {Java Pathfinder Configuration};
+\node [block, dashed, right = 0.6cm of 7th] (7a) {Java Pathfinder Results};
+
+\path [line] (init) -- (1st);
+\path [line] (1st) -- (2nd);
+\path [line] (2nd) -- (3rd);
+\path [line] (3rd) -- (4th);
+\path [line] (4th) -- (5th);
+\path [line] (5th) -- (6th);
+\path [line] (6th) -- (7th);
+\path [line] (7th) -- (8th);
+
+\path [line, dashed] (1st) -- (1a);
+\path [line, dashed] (1st) -- (1b);
+\path [line, dashed] (4th) -- (4a);
+\path [line, dashed] (4th) -- (4b);
+\path [line, dashed] (5th) -- (5a);
+\path [line, dashed] (7th) -- (7a);
+
+\end{tikzpicture}
+\caption{CAA Workflow}
+\label{fig:workflow}
+\end{center}
+\end{figure}
+
+
+%\vspace{-7 mm}
+
+
+\begin{enumerate}
+    %\itemsep-.2em %  \itemsep0em  %% This was the setting that was originally used
+
+    \setlength{\itemsep}{0pt} %Cut down on spacing for the different items in the list
+    \setlength{\parskip}{0pt} %Cut down on spacing for the different items in the list
+    \setlength{\parsep}{0pt}  %Cut down on spacing for the different items in the list
+
+ \item Unpack APK resources and configuration files
+ \item Convert APK .dex files to Java .class files
+  \item Analyze user entry points into the application
+ \item Create awrapper for decompiled APK
+ \begin{enumerate}
+	\itemsep-.2em %  \itemsep0em
+ 	\item Create Java source files for wrapper from templates
+ 	\item Fill templates with entry point information and calls
+ 	\item Compile the wrapper
+ \end{enumerate}
+ \item Create configuration files for concolic analysis tool
+ \item Run JPF (Java Pathfinder)
+ \item Log the output from JPF
+ \end{enumerate}
+
+
+
+The first step uses Apktool to produce the assets and configuration files which are later needed by Robolectric. All extracted files are placed in a special directory for later manipulation along with a copy of the targeted APK file. %All subsequent modification is done in this directory.
+
+The second step utilizes Dex2Jar to create the necessary Java .jar files from the APK file. The .jar format is required for later compilation and manipulation by the CAA tool. It exposes access to the internal code in a way that standard Java tools can easily work with. %It also provides readable source code, an invaluable resource during development. %This jar is also stored within the spawn directory.
+
+The third step is analyzing the provided source from the generated jar file. Through the use of reflection, each class is dynamically loaded and analyzed for known inputs, such as an ``OnCreate'' method of an activity. A blocklist is used to prevent excessive automated analysis of the Android libraries themselves, which are dynamically loaded to a custom classpath so that proper matching can happen. The types of inputs found are used to determine what functions need to be called and what kind of data they need to be sent by CAA and JPF.
+
+The fourth and most complex step creates a custom wrapper jar against the created jar. Several template files are used to create raw Java source files with tokens. These tokens are replaced by a source writer in CAA, which interprets the analysis from the previous step. Calls to supported functions that the framework or user would trigger manually are automated in the source files.
+
+%%% 7/17/15 Shortened
+%There are two .java files and a manifest file created from this process, as well as a .jpf file. The first Java file is a wrapper that makes all of the aforementioned calls to the jar converted from the APK file and wraps those calls in a single function as a JUnit test. Robolectric, the Android mocking library being used, operates as a JUnit TestRunner and thus the wrapper function must be a test to utilize the mocks. The second Java file is the wrapper runner whose purpose is loading the wrapper's tests into JUnit and firing them from inside a single entry point. This entry point is then exposed to JPF and indirectly provides access to the underlying functions from the APK file. The final file is a custom manifest that references all dependencies as well as the jar converted from the APK.  The newly created Java source and manifest are packaged into a custom wrapper jar to be used in the next step of the process.
+
+In the final phases, a .jpf file is created to be used used by JPF to store arguments for passing to the concolic tool. This stores the targeted entry function provided by the wrapper jar, the functions that should have the analysis run on them, and the settings to enable concolic analysis. Finally, the output generated by the tool is saved for the user. This output may be useful to researchers and developers in a variety of ways including clone detection, uncovering defects, and analyzing the app's functional flow.
+
+%A small example of this output is shown in Listing~\ref{lst:concolicoutput}, and more complete results may be found on the project website\todo{make sure this is one the website}.
+
+
+%%% 7/17/15 removed
+%\begin{lstlisting}[label=lst:concolicoutput, caption=Example Concolic Output\todo{remove?}]
+%8   checkcast
+%11  putfield java.util.HashMap.table
+%14  aload_0
+%15  iconst_0
+%16  putfield java.util.HashMap.hashSeed
+%19  aload_0
+%20  aconst_null
+%21  putfield java.util.HashMap.entrySet
+%24  iload_1
+%\end{lstlisting}
+
+\subsection{Usage Instructions}
+
+Once downloaded and installed using the instructions provided on our project website (\textbf{\ifisnopii \url{http://darwin.rit.edu/caa/} \else \url{http://hiddenToKeepAnon}\fi}), the tool may be used with the following command:~\emph{``java -jar CAA-1.0.0.jar \-apk \$PATH\_TO\_APK''} where~\emph{\$PATH\_TO\_APK} is the location of the APK file to be analyzed. A directory named ``spawn'' will be generated where several temporary artifacts of the process will be created. Results will be logged in a created directory named ``results'' as text files similar in format to ``\emph{\{\$APKFILENAME}\}.jpfout.txt.'' Thorough usage and installation instructions may be found on the project website. A sample of the instructions are shown in
+Figure~\ref{fig:CAAinstructions} and an example status screen of the app is shown in Figure~\ref{fig:usingCAA}.
+
+%%% DK: 7/18: I figured that this would be a good screenshot to show that the website did have instructions for running the app.
+\begin{figure}[ht!]
+\centering
+\frame{\includegraphics[width=0.47\textwidth]{images/instructionsscreenshot.png}}
+\caption{Example Usage Instructions from Website}
+\label{fig:CAAinstructions}
+\end{figure}
+
+
+\begin{figure}[ht!]
+\centering
+\frame{\includegraphics[width=0.45\textwidth]{images/CAA_Eclipse_small.png}}
+\caption{Example CAA Usage}
+\label{fig:usingCAA}
+\end{figure}
+
+\section{Limitations \& Future Work}
+\label{sec: limitations}
+
+While CAA represents a powerful and innovative static analysis tool, there are some notable limitations. A primary issue with the black box nature of this application is that certain Android apps require highly specific data at certain intervals, such as when communicating with servers. Robolectric has no way of knowing what an app expects back from specific calls, and thus cannot correctly mock it out; it can only mock out relatively simple or common Android API calls. This may cause certain code paths to be excluded from coverage if specific results for calls are expected.
+
+% The targeted coverage is limited to the activity lifecycle startup and is also restricted by the intentional black box testing nature of usage with mocks.
+
+%During the creation of tool, the~\emph{Dalvik} runtime was the the only available Android runtime. Near the end of development, Android 5.0 was released using the~\emph{ART} runtime. Available APKs are currently theoretically compatible with both and are convertible by Dex2Jar. In the future, this may not be the case as incompatibilities are discovered and the Dalvik runtime becomes antiquated or is no longer supported. Finally, CAA is limited by the tools it relies on and the idiosyncrasies and issues associated with them. As an example, the development of CAA revealed several issues and bugs in JPF's implementation of reflection, some of which are still outstanding and have the potential to affect the reliability of CAA.
+
+
+%\section{Future Work}
+%\label{sec: futurework}
+
+%%% Removed for space reasons 7/19/15
+%CAA is limited to inefficiently processing one APK file at a time; the concurrent processing of multiple applications would make the usage of the tool more efficient, allowing the application to be more easily utilized by other tools. This change could, for example, allow a user to compare two similar apps and run heuristics on the generated output more quickly (a use case that led to the creation of CAA).
+
+%%% Removed 7/17/15
+%The source writer could also be expanded to provide more coverage. For example, a filter for Android services could be added and the wrapper files could be compiled to target the launch and processing of these application parts. This could then be expanded upon as the Android SDK grows and changes, allowing new entry points and data sources to be covered.
+
+
+Future work will be done to evaluate CAA against leading Android testing tools. Areas of comparison may include analysis time, amount of code coverage, and precision \& recall of known errors. A few immediate uses of the tool include gaining a better understanding the functional nature of apps, seeking out redundant functionality, and finding defects.
+
+
+
+\section{Conclusion}
+\label{sec: conclusion}
+% If needed, this section can be shortened up a bit.
+
+We have presented CAA, a tool which analyzes Android applications using concolic analysis. We have made the tool, source code, and usage instructions available on our project website:~\textbf{\ifisnopii \url{http://darwin.rit.edu/caa/}\else \url{http://hiddenToKeepAnonymous}\fi}. We encourage others to use the tool not only for testing Android applications, but in their research as well.
+
+
+%%% Removed 7/17/15
+%While there are numerous other testing tools for Android applications (and even some which use concolic analysis), this is the first known freely available tool of its kind which is able to perform concolic analysis using only the source code of the Android application.
+
+%%% Removed 7/17/15
+%Through a series of seven steps, CAA extracts the source code of the application (using existing tools), dynamically loads the extracted Java class files looking for known inputs which are used in the customer wrapper, then generates the concolic analysis output, which may be used in a variety ways.
+
+
+
+\balance
+\bibliographystyle{abbrv}
+\bibliography{CA_Android_tool}
+
+% That's all folks!
+\end{document}
+
+
+%%%% Submission location
+
+
+
+
+
+% Todo
+%	Double check to see if we addressed the FSE feedback
+%	apk or APK (make consistent throughout)
+%	http://selab.uos.ac.kr/sacse15/
+% 	Make paper anonymous - ask about if I can include links to darwin.rit.edu?
+
+

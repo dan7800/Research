@@ -1,0 +1,66 @@
+### Got these results from running a sample from GP limited to 1417
+
+
+[1] "FuzzyRisk is less with p value 2.12982912451464e-32"
+[1] "FuzzyRisk Malware :  51 avg: 56.317"
+[1] "FuzzyRisk GP :  51 avg: 63.409"
+[1] "JavaFiles is less with p value 4.05460665244868e-165"
+[1] "JavaFiles Malware :  154 avg: 281.622"
+[1] "JavaFiles GP :  890 avg: 1461.906"
+[1] "Jlint is less with p value 1.5249132834288e-156"
+[1] "Jlint Malware :  46 avg: 87.402"
+[1] "Jlint GP :  245 avg: 403.601"
+[1] "DefectCount is less with p value 3.66545225269408e-22"
+[1] "DefectCount Malware :  6 avg: 1649.881"
+[1] "DefectCount GP :  9 avg: 7164.583"
+[1] "LOC is less with p value 4.05561345798249e-154"
+[1] "LOC Malware :  14963 avg: 30547.286"
+[1] "LOC GP :  94667 avg: 157780.928"
+[1] "Jlint.LOC is greater with p value 4.75871151427324e-09"
+[1] "Jlint.LOC Malware :  0.29892 avg: 0.313"
+[1] "Jlint.LOC GP :  0.26561 avg: 0.287"
+[1] "Defect.LOC is greater with p value 7.83061768870973e-110"
+[1] "Defect.LOC Malware :  0.05045 avg: 5.292"
+[1] "Defect.LOC GP :  0.01115 avg: 4.44"
+[1] "Opriv is greater with p value 2.70022901408296e-142"
+[1] "Opriv Malware :  4 avg: 5.143"
+[1] "Opriv GP :  1 avg: 1.503"
+[1] "Upriv is less with p value 3.09721792553158e-30"
+[1] "Upriv Malware :  1 avg: 1.562"
+[1] "Upriv GP :  2 avg: 2.627"
+[1] "PrivCount is greater with p value 3.08722330752485e-121"
+[1] "PrivCount Malware :  12 avg: 12.673"
+[1] "PrivCount GP :  6 avg: 7.954"
+[1] "OprivRatio is greater with p value 3.47647395584137e-11"
+[1] "OprivRatio Malware :  2 avg: 2.401"
+[1] "OprivRatio GP :  1 avg: 2.476"
+[1] "UPrivRatio is greater with p value 8.64066065094834e-75"
+[1] "UPrivRatio Malware :  6 avg: 8.056"
+[1] "UPrivRatio GP :  2 avg: 3.466"
+
+
+
+select ai.rowID,  FuzzyRiskValue  as FuzzyRisk,  JavaFiles  as JavaFiles,  JlintResult  as JLint, 
+ DefectCount  as DefectCount,  LOC  as LOC
+
+	,  (JlintResult/LOC) * 10000 as "Jlint/LOC"
+	,  (DefectCount/LOC) * 10000 as "Defect/LOC"
+	,  OPrivCount as OPriv
+	,  UPrivCount as UPriv
+	,  PrivCount as PrivCount
+	
+	, round((PrivCount/ OPrivCount),1)  as OPrivRatio
+	, round((PrivCount/ UPrivCount),1)  as UPrivRatio
+
+	from apkInformation ai
+	inner join toolResults tr on tr.apkID = ai.rowID
+
+	left outer join (select count (permissionID) as OPrivCount, apkID from overprivilege o group by apkID) overprivCount on overprivCount.apkID = ai.rowID
+
+	left outer join (select count (permissionID) as UPrivCount, apkID from underprivilege u group by apkID) underprivCount on underprivCount.apkID = ai.rowID
+
+	inner join (select count (privID) as PrivCount, rowID from apkParser_privs_join apj group by rowID) permissionCount on permissionCount.rowID = ai.rowID
+
+	where ai.lowerdownloads >=10000
+	and javaFiles >0
+	order by random() limit 1417
