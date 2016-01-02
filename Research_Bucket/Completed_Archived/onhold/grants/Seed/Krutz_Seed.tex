@@ -1,0 +1,137 @@
+\documentclass{article}
+
+\usepackage{times}
+\usepackage{color}
+\usepackage{url}
+
+
+\let\OLDthebibliography\thebibliography
+\renewcommand\thebibliography[1]{
+  \OLDthebibliography{#1}
+  \setlength{\parskip}{0pt}
+  \setlength{\itemsep}{0pt plus 0.3ex}
+}
+
+
+\title{Studying Redundant Functionality Through Concolic Analysis}
+\author{
+       Daniel E. Krutz \\
+Software Engineering Department
+%	\date{} % Remove the date
+}
+
+% Alter these values based on the actual length.
+% The paper should be 3 pages
+\usepackage[top=.3in, bottom=1in, left=1in, right=1in]{geometry}
+
+
+\newcommand{\todo}[1]{\colorbox{yellow}{\textbf{[#1]}}}
+\newcommand{\dan}[1]{\textcolor{blue}{{\it [Dan says: #1]}}}
+
+
+\begin{document}
+\maketitle
+
+
+\section{Overview}
+
+Redundant functionality, or code clones, are extremely widespread in software development. It has been estimated that clones typically comprise between 5-30\% of an application's source code~\cite{Baxter:1998:CDU:850947.853341}~\cite{Kim:2005:ESC:1095430.1081737}. Code clones may adversely affect the software development process for several reasons. They often raise the maintenance costs of a software project since alterations may need to be done several times~\cite{Juergens:2009:CCM:1555001.1555062} and unintentionally making inconsistent bug fixes to cloned code across a software system will likely cause further system faults~\cite{Deissenboeck_2010}. 
+
+There are four types of code clones. Type-1 clones are the simplest and represent identical code except for differences in whitespace, comments and layout. Type-2 clones are syntactically similar except for variations in identifiers and types. Type-3 clones are two segments which differ due to altered or removed statements. Type-4 clones are the most difficult to detect and represent two code segments which significantly differ syntactically, but produce identical results when executed~\cite{Gold:2010:ICC:1808901.1808916}. 
+
+Although there have been a substantial number of proposed clone detection techniques~\cite{wcre2013}~\cite{Dan123}, to our knowledge only two known tools are able to reliably discover type-4 clones. These are Memory Comparision-based Clone Detector (MeCC)~\cite{Kim:2011:MMC:1985793.1985835} and our tool, Concolic Code Clone Detection (CCCD)~\cite{wcre2013}. Most existing clone detection systems have struggled at finding type-4 clones due to an over-reliance on the semantic or syntactic properties of the source code. The ability to detect type-4 clones is critical since these clones not only comprise a significant portion of the duplicate functionality of an application, but may be the most problematic as well~\cite{Yuan:2011:CCM:2114489.2114766}. 
+
+An area which has recently gathered significant attention is software vulnerabilities. New vulnerabilities are discovered everyday, and often have adverse results on software systems and the people who rely upon them. Vulnerability classification and categorization may be used to generate helpful insights. Some of which include how it was created, why it was created, the proper repair method, and what vulnerabilities are yet to be discovered~\cite{Wu:2011:ERS:1985793.1985960}.
+
+The ability to reliably and effectively detect functional redundancy in an application has the ability to significantly assist in vulnerability detection and prevention. We propose using concolic analysis to first identify functionally similar portions of an application, and when a vulnerability is discovered in the system, similar functional segments of the source code will be examined for the same vulnerabilities. While we do not envision that all redundant vulnerabilities may be detected in this manner, we feel that we will be able to discover a significant portion using this process. Information about cloned vulnerabilities may then be aggregated together to provide more information about the vulnerability. We are unaware of any previous techniques which have attempted this, so the knowledge learned will be valuable for future research. 
+
+
+\emph{Problem Statement: }Detecting duplicate functionality is important in several areas of computing, such as code clone detection and vulnerability remediation. Unfortunately, the vast majority of current techniques suffer due to their inability to find the more complicated types of duplicate functionality. The goal of this work is to clearly and concisely define and refine a process of finding duplicate functionality using concolic analysis.  
+
+\subsection{Concolic Analysis for Clone Detection}
+
+Concolic analysis combines concrete and symbolic values in order to traverse all possible paths of an application (up to a given length). Concolic analysis has been traditionally used in software testing to find application faults~\cite{Kim:2012:IAC:2337223.2337373}. Since we have already demonstrated that concolic analysis is capable of discovering clones on a small scale~\cite{wcre2013}~\cite{Dan123}, we will next evaluate concolic analysis using a more robust set of test data. Concolic analysis will be run against several open source applications to determine what types of clones it is capable of finding on a much larger scale. Current candidates include Apache, Firefox and Thunderbird. Next, CloneDR\footnote{http://www.semdesigns.com/products/clone/}, Simian\footnote{http://www.harukizaemon.com/simian/}, and MeCC\footnote{http://ropas.snu.ac.kr/mecc/} will be executed against these applications. Each clone detection tool will have its analysis time recorded along with clones correctly identified (true positives), clones mistakenly identified (false positives), clones missed (false negatives) and items correctly not identified as clones (true negatives). These results will be recorded in~Table~\ref{table:clonecomparisionresults}. 
+
+
+\begin{table}[thb!]
+
+\begin{center}
+
+\begin{tabular}{r||l|l|l|l|l|l}
+  \hline
+\bfseries Tool & \bfseries Application & \bfseries Analysis Time & \bfseries True Positives & \bfseries False Positives & \bfseries  False Negatives & \bfseries  True Negatives \\ \hline\hline
+  \bfseries MeCC& Apache &  &  &  &  &  \\ \cline{2-7}
+   & Chromium &  &  &  &  &  \\ \cline{2-7}
+& Android  &  &  &  &  &  \\ \cline{2-7}
+  \hline
+  \bfseries  CCCD  & Apache &  &  &  &  &  \\ \cline{2-7}
+ & Chromium &  &  &  &  &  \\ \cline{2-7}
+& Android  &  &  &  &  &  \\ \cline{2-7}
+  \hline
+  \bfseries Simian & Apache &  &  &  &  &  \\ \cline{2-7}
+   & Chromium &  &  &  &  &  \\ \cline{2-7}
+& Android  &  &  &  &  &  \\ \cline{2-7}
+  \hline
+  \bfseries CloneDR & Apache &  &  &  &  &  \\ \cline{2-7}
+   & Chromium &  &  &  &  &  \\ \cline{2-7}
+& Android  &  &  &  &  &  \\ \cline{2-7}
+  \hline
+
+  \hline
+%\bfseries Total Possible & & 5 & 6 & 7 & 6 & 24 \\ \hline
+
+\end{tabular}
+
+\end{center}
+\caption{Clone Tool Comparison Results}
+\label{table:clonecomparisionresults}
+%\vspace{-0.3in}
+\end{table}
+
+
+\subsection{Redundant functionality and Vulnerabilities}
+
+% Reword much of this
+Concolic analysis will then be used to assist with the detection and analysis of software vulnerabilities. The first step will be to select several open source applications for analysis which all have well documented vulnerabilities. Current candidates include Apache, Chromium and Android. A previous version of each application's source code will be analyzed for similarities using concolic analysis. We will then examine the reported vulnerabilities on this version to determine:
+
+\begin{enumerate} \itemsep1pt \parskip0pt \parsep0pt
+ \item If a vulnerability exists in one cloned segment, does it exist in another? 
+ \item Have vulnerabilities been detected and fixed, only to have the same vulnerability to later be found in a cloned segment? 
+ \item What other useful information which concolic analysis could have provided may have been useful in resolving and preventing vulnerabilities across clone portions of code? 
+\end{enumerate}
+
+% Add more to this?
+% Could we show a table of how we are going to record the data?
+
+
+\subsection{Empirical Analysis}
+The next phase will be to analyze how clones affect software development. An empirical analysis will be conducted on the version control systems of several open source applications to determine the effect all types of code clones have on the the software development process. This will be accomplished by using the previously identified clones in the target applications to perform a qualitative and quantitative analysis  to answer questions about how clones affect software development. In order to examine existing repositories and answer these questions, a tool will be created which will gather information about each identified cloned and non-cloned items including when the clones were created, what developers modified the functions, the recorded bugs in the functions and the steps taken to fix each issue. This will be used to answer the questions of why the clones were created, if more bugs exist in these clones, do bugs occur consistently across the clones, do vulnerabilities exist across clones, and if vulnerabilities are linked to clones. While there has been work in determining how type-1 and type-2 clones affect the software development process~\cite{Juergens:2009:CCM:1555001.1555062}~\cite{Jarzabek:2010:CHM:1808901.1808911}, to our knowledge no work has been conducted on how more complicated type-3 and type-4 clones affect software development.
+
+
+% Subsection
+\subsection{Relevant Experience}
+
+The proposed project is closely related to my research expertise and my PhD thesis. For my dissertation~\cite{Dan123} I proposed and demonstrated the effectiveness of concolic analysis for clone detection on a fairly small scale. In a recent publication~\cite{wcre2013}, we used this technique to develop a tool for discovering code clones, Concolic Code Clone Detection (CCCD)~\cite{wcre2013}. This research demonstrated the ability of CCCD to effectively discover type-4 code clones, something that only one other tool (MeCC) is able to do. Based upon my dissertation work, our tool development and subsequent research, I believe that we have the necessary qualifications to successfully carry out the proposed project.
+
+\section{Proposal Goals} % Rename this?
+
+The findings of this project are anticipated to produce innovative and highly visible results and are anticipated to produce publications in venues such as FSE, ICSE, MSR or FASE. Several companies have expressed interest in such a robust concolic analysis process for clone, and possibly malware detection. Additionally, they are enthusiastic about a technique which would be able to analyze the amount of similarity between the source code of multiple applications to determine if functionality has been illegally replicated or the amount of new functionality a company would be achieving with the acquisition of a another software organization or package. The goal of this project lay a foundation for future research and demonstrate results to support a larger project which will be proposed to the NSF and industry for funding.
+
+\section{Budget}
+
+I am requesting a total of \$6,750 for this project. The project will be completed with the assistance of an undergraduate or graduate student over the course of both the Spring and Summer semesters. The requested budget is based on having the student work 10 hours per week for 15 weeks @ \$15/hr (totaling \$2,250) during the Spring term and 20 hours per week for 15 weeks during the Summer semester @\$15/hr (totaling \$4,500).
+
+The student will assist in comparing concolic analysis against leading clone detection tools and by performing an empirical analysis on the discovered type-3 and type-4 clones to further analyze how they affect the software development process. The student will also conduct research in determining how the vulnerability detection and remediation process may be enhanced using information gathered from concolic analysis. The final results will then be cleaned and properly formatting before being placed on the project website.
+
+%\bibliographystyle{abbrv}
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}
+
+
+
+% ? Should I use this for SEED as well?
+% Ask Emad which one he prefers
+% Update SEED paper some of the updates here. For instance, the intro about code clones.
+

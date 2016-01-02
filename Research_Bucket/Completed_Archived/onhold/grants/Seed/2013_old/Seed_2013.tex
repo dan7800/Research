@@ -1,0 +1,120 @@
+% Seed 2013 Proposal
+
+
+
+\title{Studying Code Clones Through Concolic Analysis}
+\author{
+       Daniel E. Krutz \\
+       Department of Software Engineering
+}
+
+
+\documentclass{article}
+
+\usepackage{times}
+\usepackage{color}
+
+% Alter these values based on the actual length.
+% The paper should be 3 pages, but the references do not count against the final length
+\usepackage[top=.3in, bottom=1in, left=1in, right=1in]{geometry}
+
+
+\newcommand{\todo}[1]{\colorbox{yellow}{\textbf{[#1]}}}
+\newcommand{\dan}[1]{\textcolor{blue}{{\it [Dan says: #1]}}}
+
+
+\begin{document}
+\maketitle
+
+%\begin{abstract}
+%This is the paper's abstract \ldots
+%\end{abstract}
+
+\section{Motivation}
+
+% What is the problem
+
+% Not sure if this section "flows" that well
+
+
+Code clones are extremely widespread in software development. It has been estimated that clones typically comprise between 5-30\% of an application's source code~\cite{Baxter:1998:CDU:850947.853341}~\cite{Schulze:2010:CCF:1942788.1868310}~\cite{Kim:2005:ESC:1095430.1081737}. Code clones may adversely affect the software development process for several reasons. They often raise the maintenance costs of a software project since alterations may need to be done several times~\cite{Juergens:2009:CCM:1555001.1555062}. Additionally, unintentionally making inconsistent bug fixes to cloned code across a software system will likely cause further system faults~\cite{Deissenboeck_2010}. 
+
+There are four types of code clones. Type-1 clones are the simplest and represent identical code except for differences in whitespace, comments and layout. Type-2 clones are syntactically similar except for variations in identifiers and types. Type-3 clones are two segments which differ due to altered or removed statements. Type-4 clones are the most difficult to detect and represent two code segments which significantly differ syntactically, but produce identical results when executed~\cite{Gold:2010:ICC:1808901.1808916}. 
+
+Although there have been a substantial number of proposed clone detection techniques~\cite{Roy07asurvey}, to our knowledge only two known tools are able to reliably discover type-4 clones. These are Memory Comparision-based Clone Detector (MeCC)~\cite{Kim:2011:MMC:1985793.1985835} and our tool, Concolic Code Clone Detection (CCCD)~\cite{wcre2013}. There are several reasons why most existing techniques have struggled at finding type-4 clones. Some of which include an over-reliance on the semantic or syntactic properties of the source code. The ability to detect type-4 clones is critical since these clones not only comprise a significant portion of the functional redundancy of an application, but may be the most problematic as well~\cite{Roy:2009:CEC:1530898.1531101}~\cite{Yuan:2011:CCM:2114489.2114766}. 
+
+Assessing the quality of any proposed clone detection technique is imperative for demonstrating its value. These evaluations typically involve two primary criteria. The first is the efficiency of the proposed method, both in terms of execution time and required system resources. The more difficult criteria to evaluate is the quality of the detection technique. Most commonly, precision and recall are measured against an oracle of predefined clones. Constructing such an oracle is difficult. While manually verifying simpler, type-1 clones is a time-consuming, but relatively easy task, manually identifying the more complicated types of clones becomes increasingly difficult to the point of being practically impossible. Recent research has shown that oracles created using a solely manual process are typically very inaccurate~\cite{Walenstein:2003:PCT:950792.951349}. The only known clone oracles which contain all four types of clones and have been verified both manually and by clone detection tools tools were created by Krawitz~\cite{Kraw2012} and Roy~\emph{et al.}~\cite{Roy:2009:CEC:1530898.1531101}. However, these two oracles are only comprised of a combined 24 methods and are unsuitable for a large scale analysis.  
+
+There has been a significant amount of research on how code clones affect the software development process~\cite{Juergens:2009:CCM:1555001.1555062}~\cite{Gode:2009:ETC:1637859.1638008}~\cite{Saha:2013:UET:2487085.2487117}. However, none of this work considers type-4 clones in their analysis. Only recently have there been any tools which have been capable of discovering these types of clones. In addition to software development, clone detection tools have been applied to other areas of computing such as malware detection and analysis~\cite{Saebjornsen:2009:DCC:1572272.1572287}.
+
+
+The first goal of this proposal is to evaluate our clone detection tool, CCCD, against other leading techniques. An empirical analysis will then be performed on several large open source applications to examine how type-3 and type-4 clones affect the software development process. Finally, a large code clone oracle which contains all four types of clones and has been rigorously verified by using both existing tools and by manual analysis will be created and made publicly available. This will not only assist our research, but will assist future researchers as well.
+
+
+% Clone oracle: \cite{Lavoie:2011:ATC:1985404.1985411} 
+% 
+
+
+\section{Execution Plan and Outcomes}
+
+% Should more proposed segemetns be added? Bugs/crashes/etc.....    ?
+
+There are three primary components to the proposed project. \\
+1) Analyze the effectiveness of concolic analysis for clone detection against numerous existing tools. \\
+2) Perform an empirical analysis to discover how type-3 and type-4 clones affect the software engineering life cycle. \\
+3) Build a robust code clone oracle which is publicly available. 
+
+
+\subsection{Effectiveness of Concolic Analysis}
+
+Concolic analysis will first be analyzed to determine its effectiveness in discovering clone clones. Since we have already demonstrated that concolic analysis is capable of discovering clones on a small scale~\cite{wcre2013}~\cite{Dan123}, we will next evaluate concolic analysis using a more robust set of test data. Concolic analysis will be run against several open source applications to determine what types of clones it is capable of finding on a much larger scale. Some of these candidates include Apache, Python and PostgreSQL. Next, several leading clone detection tools will be run against this same code base. Some of these other tools include CloneDR\footnote{http://www.semdesigns.com/products/clone/}, Simian\footnote{http://www.harukizaemon.com/simian/}, and MeCC\footnote{http://ropas.snu.ac.kr/mecc/}. The evaluation metrics will include analysis time, precision and recall, and types of clones discovered.
+
+\subsection{Empirical Analysis}
+
+An empirical analysis will be conducted on the version control systems of several open source applications to determine the effect all types of code clones have on the the software development process. This will be accomplished by first running CCCD on the source code of these applications to identify code clones. Next, a qualitative and quantitative analysis will be performed on the source code to answer some questions about how code clones affect software development. Some of these questions include why the clones were created, if more bugs exist in these clones, do bugs occur consistently across the clones, do vulnerabilities exist across clones, and if vulnerabilities are linked to clones. A tool will likely need to be created to assist with this process. While there has been work in determining how type-1 and type-2 clones affect the software development process~\cite{Juergens:2009:CCM:1555001.1555062}~\cite{Jarzabek:2010:CHM:1808901.1808911}, to our knowledge no work has been conducted on how more complicated type-3 and type-4 clones affect software development.
+
+
+% I reworked this entire section
+
+
+\subsection{Clone Oracle Creation}
+
+A code clone oracle containing all four types will then be generated and will be made publicly available for other researchers. While several other clone oracles exist, this will be the first significantly sized oracle to contain all four types of clones. We will create a code clone oracle containing all four types of clones using several verification techniques to ensure maximum quality. We will use much of the data used in our comparison of clone detection tools to assist in creating this oracle. First we will manually analyze the selected open source applications for clones. In order to do this in an efficient, but effective manner we will use a partially developed tool we have created known as GraphicDiff. This tool will automatically load each method from the targeted codebase and display them side by side for analysis. A simple interface will allow the user to record if the two displayed methods represent a clone, and if so what kind. They may then cycle onto the next set of methods. All methods in the target application will be displayed to the user in this manner. In order to ensure the highest level of quality using this manual technique, several researchers familiar with code clones will independently perform this analysis and discuss any discrepancies.
+
+% I feel like this could be worded better.
+\todo{Word this section better}
+The next step will involve analyzing this same source code using existing clone detection tools. This tool output will be compared with that from manual analysis to help ensure the best possible coverage and results. Discrepancies will be discussed and analyzed by several researchers. Based upon the ability of each tool in detecting clones, all identified clones will likely need to be manually analyzed and verified. Once the oracle has been created, the results will be posted online in an easily usable format and will available for future work by this project, and to other researchers.
+
+
+\section{Relevant Experience}
+
+The proposed project is closely related to my research expertise and my PhD thesis. For my dissertation~\cite{Dan123} I proposed and demonstrated the effectiveness of concolic analysis for clone detection on a fairly small scale. In a recent publication~\cite{wcre2013}, we used this technique to develop a tool for discovering code clones, Concolic Code Clone Detection (CCCD)~\cite{wcre2013}. This research demonstrated the ability of CCCD to effectively discover type-4 code clones, something that only one other tool (MeCC) is able to do. Based upon my dissertation work, our tool development and subsequent research, I believe that we have the necessary qualifications to successfully carry out the proposed project.
+
+\section{Proposal Goals} % Rename this?
+
+The findings of this project are anticipated to produce innovative and highly visible results and are anticipated to produce publications in venues such as FSE, ICSE, MSR or FASE. Several companies have expressed interest in such a robust concolic analysis process for clone, and possibly malware detection. Additionally, they are enthusiastic about a technique which would be able to analyze the amount of similarity between the source code of multiple applications to determine if functionality has been illegally replicated or the amount of new functionality a company would be achieving with the acquisition of a another software organization or package. The goal of this project lay a foundation for future research and demonstrate results to support a larger project which will be proposed to the NSF and industry for funding.
+
+\section{Budget}
+
+
+\dan{How do these number look?- Look at what I am requesting here}
+\dan{Summer?}
+\dan{Can I get a worker sooner?}
+
+I am requesting a total of \$6,750 for this project. The project will be completed with the assistance of an undergraduate or graduate student over the course of both the Spring and Summer semesters. The requested budget is based on having the student work 10 hours per week for 15 weeks @ \$15/hr (totaling \$2,250) during the Spring term and 20 hours per week for 15 weeks during the Summer semester @\$15/hr (totaling \$4,500).
+
+The student will assist in comparing concolic analysis against leading clone detection tools and by performing an empirical analysis on the discovered type-3 and type-4 clones to further analyze how they affect the software engineering process. Finally, they will assist in creating the software needed to generate the clone oracle, and building the web application to share this oracle information.
+
+
+%\bibliographystyle{abbrv}
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}
+This is never printed
+
+
+
+%%%% Todo
+% Change everything to "We"
+% Format paper better. Margins too wide.
