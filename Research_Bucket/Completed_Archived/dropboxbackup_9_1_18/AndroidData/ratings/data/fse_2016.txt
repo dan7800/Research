@@ -1,0 +1,27 @@
+
+
+
+
+>>>>>> Get all the quality and security information **************
+
+
+	select ai.Name, ai.Genre, ai.UserRating,  ai.LowerDownloads, ai.IsJavaAnalyze, tr.FuzzyRiskValue, tr.JlintResult, tr.DefectCount, tr.LOC 
+
+	,case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OPrivCount
+	,case when underprivCount.uprivcount is null then 0 else underprivCount.uprivcount end as UPrivCount
+	,case when permissionCount.permissionCount is null then 0 else permissionCount.permissionCount end as PermissionCount
+
+	from apkinformation ai
+	inner join toolresults tr on tr.apkID = ai.rowID
+	left outer join (select count (permissionID) as oprivcount, apkID from overprivilege group by
+	apkid) overprivCount on (overprivCount.apkid) = ai.rowID
+	left outer join (select count (permissionID) as uprivcount, apkID from underprivilege group
+	by apkid) underprivCount on (underprivCount.apkid) = ai.rowID
+	left outer join (select count (intentID) as intentscount, rowID from apkParser_intents_join
+	group by rowID) intentscount on (intentsCount.rowid) = ai.rowID
+	left outer join
+	(select count(rowID) as permissionCount from apkParser_privs_join apj2 where apj2.rowID >1 group by
+	rowID) permissionCount on (permissionCount.rowID) = ai.rowID
+
+
+ 

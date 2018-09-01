@@ -1,0 +1,99 @@
+
+***********************************************************************************
+
+
+%%% Get the evolution of apps
+
+#### GP
+	select count(privCount), avg(privCount) from app_toolinfo_minjava
+	where datepublished like '%2015%'
+
+### Malware
+
+	select count(ai.rowID) as AppCount, round(avg(FuzzyRiskValue),2) as FuzzyRisk, round(avg(JavaFiles),2) as JavaFiles, round(avg(JlintResult),2) as JLint, round(avg(DefectCount),2) as DefectCount, round(avg(LOC),2) as LOC, round(avg(simcad_clonefragment),2) as CloneFragment, round(avg(simcad_cloneGroup),2) as CloneGroup 
+
+		, round(avg(JlintResult)/avg(LOC) * 100,1) as "Jlint/LOC"
+		, round(avg(DefectCount)/avg(LOC) * 100,1) as "Defect/LOC"
+		, round(avg(OPrivCount),1) as OPriv
+		, round(avg(UPrivCount),1) as UPriv
+		, round(avg(PrivCount),1) as PrivCount
+		, round(round(avg(PrivCount),1)/round(avg(OPrivCount),1),2) as OPrivRatio
+		, round(round(avg(PrivCount),1)/round(avg(UPrivCount),1),2) as UPrivRatio
+		from apkInformation ai
+		inner join toolResults tr on tr.apkID = ai.rowID
+		left outer join (select count (permissionID) as OPrivCount, apkID from overprivilege o group by apkID) overprivCount on overprivCount.apkID = ai.rowID
+		left outer join (select count (permissionID) as UPrivCount, apkID from underprivilege u group by apkID) underprivCount on underprivCount.apkID = ai.rowID
+		
+
+		inner join (select count (privID) as PrivCount, rowID from apkParser_privs_join apj group by rowID) permissionCount on permissionCount.rowID = ai.rowID
+
+		and filecreated like '%2015%'
+
+
+
+%%%%% Break down by different groups
+
+### For GP
+
+select ai.genre, count(ai.rowID) as AppCount, round(avg(FuzzyRiskValue),2) as FuzzyRisk, round(avg(JavaFiles),2) as JavaFiles, round(avg(JlintResult),2) as JLint, round(avg(DefectCount),2) as DefectCount, round(avg(LOC),2) as LOC, round(avg(simcad_clonefragment),2) as CloneFragment, round(avg(simcad_cloneGroup),2) as CloneGroup 
+
+	, round(avg(JlintResult)/avg(LOC) * 1,5) as "Jlint/LOC"
+	, round(avg(DefectCount)/avg(LOC) * 1,5) as "Defect/LOC"
+	, round(avg(OPrivCount),1) as OPriv
+	, round(avg(UPrivCount),1) as UPriv
+	, round(avg(PrivCount),1) as PrivCount
+	, round(round(avg(PrivCount),1)/round(avg(OPrivCount),1),2) as OPrivRatio
+	, round(round(avg(PrivCount),1)/round(avg(UPrivCount),1),2) as UPrivRatio
+	from apkInformation ai
+	inner join toolResults tr on tr.apkID = ai.rowID
+	left outer join (select count (permissionID) as OPrivCount, apkID from overprivilege o group by apkID) overprivCount on overprivCount.apkID = ai.rowID
+	left outer join (select count (permissionID) as UPrivCount, apkID from underprivilege u group by apkID) underprivCount on underprivCount.apkID = ai.rowID
+	
+	--%% Keep this as inner join since apps with no permissions cannot exist
+	inner join (select count (privID) as PrivCount, rowID from apkParser_privs_join apj group by rowID) permissionCount on permissionCount.rowID = ai.rowID
+	
+	where lowerdownloads >=10000
+	and LOC > 0
+	group by genre
+	order by appcount desc
+
+
+
+
+### For Malware
+	select ai.genre, count(ai.rowID) as AppCount, round(avg(FuzzyRiskValue),2) as FuzzyRisk, round(avg(JavaFiles),2) as JavaFiles, round(avg(JlintResult),2) as JLint, round(avg(DefectCount),2) as DefectCount, round(avg(LOC),2) as LOC, round(avg(simcad_clonefragment),2) as CloneFragment, round(avg(simcad_cloneGroup),2) as CloneGroup 
+
+		, round(avg(JlintResult)/avg(LOC) * 1,5) as "Jlint/LOC"
+		, round(avg(DefectCount)/avg(LOC) * 1,5) as "Defect/LOC"
+		, round(avg(OPrivCount),1) as OPriv
+		, round(avg(UPrivCount),1) as UPriv
+		, round(avg(PrivCount),1) as PrivCount
+		, round(round(avg(PrivCount),1)/round(avg(OPrivCount),1),2) as OPrivRatio
+		, round(round(avg(PrivCount),1)/round(avg(UPrivCount),1),2) as UPrivRatio 
+	from app_toolinfo_minjava ai
+
+
+### Get the different permissions requested in each year for malware
+
+	## Get the permission Count
+
+	select 
+	--ai.rowID, ai.Name, ai.FIleCreated, apj.rowID, 
+	count(ap.privName) as PrivCount, ap.privName as PrivName
+	from apkinformation ai
+	inner join apkParser_privs_join apj on ai.rowID = apj.rowID
+	inner join apkParser_privs ap on ap.privID = apj.privID
+	where ai.filecreated <> ''
+	and fileCreated like '%2012%'
+	group by ap.privName
+	order by PrivCount desc
+
+	## Get the app count
+	select * 
+	from apkinformation ai
+	inner join (select count (privID) as PrivCount, rowID from apkParser_privs_join apj group by rowID) permissionCount on permissionCount.rowID = ai.rowID
+	where ai.filecreated <> ''
+	and fileCreated like '%2012%'
+
+	
+

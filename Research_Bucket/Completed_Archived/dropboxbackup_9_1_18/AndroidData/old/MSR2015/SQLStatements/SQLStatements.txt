@@ -1,0 +1,386 @@
+Notes:
+? Look in all versions, or just the terminal version?
+
+
+  #### Find top occuring over privs in all versions of apps
+  ##	2189 is hardcoded in
+
+/*
+	Query 1a - FDroid
+*/
+
+	select count (op.permissionID) as PermissionCount, p.name, round((count (op.permissionID)/2189.0),4)*100 as ORate
+	from version v
+	left outer join overpermission op on op.versionID = v.versionID
+	left outer join permission p on op.permissionID = p.permissionID
+	where v.isAPKExists = 1
+	group by op.permissionID
+	order by PermissionCount desc
+
+
+/*
+	Query 1b - Darwin
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+#### Applications with Overprivs in final version
+#	Must have at least 1 over priv in their versions
+#	
+/*
+	Query 2a - FDroid
+*/
+select ad.appID as appID, v.versionID
+, VersionCount.VersionCount as "# of Total Versions"
+--, overprivCount.oprivcount
+, case when LastVer_oprivcount is null then 0 else LastVer_oprivcount end as LastVer_oprivcount
+	
+from appdata ad
+inner join version v on v.appID = ad.appID
+
+left outer join (select count (VersionID) as VersionCount, appID from Version v2 group by appID) VersionCount on (VersionCount.appid) = ad.appID
+
+left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+-- Get the max version info
+inner join(
+	select ad.appID, max(versionID) as MaxVersion
+	from appdata ad
+	inner join version v on v.appID = ad.appID
+	where v.isAPKExists = 1
+	group by ad.appID
+) mv on mv.appID = ad.appID
+	
+	
+-- Get the max version
+left outer join (
+	select ad2.appID, oprivcount, count (ad2.appID) as OverPrivCount2
+	from appdata ad2 
+	left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = 	v.versionID
+	inner join version v on v.appID = ad2.appID group by ad2.appID) OCount1 on Ocount1.appID = ad.appID
+	
+	
+-- Find the oprivCount for the max version
+left outer join(select count(permissionID) as LastVer_oprivcount, versionID from overpermission group by versionID
+) MaxOverPriv on MaxOverPriv.versionID = mv.MaxVersion
+
+
+where v.isAPKExists = 1
+and VersionCount.VersionCount >= 3
+group by ad.appID
+order by LastVer_oprivcount desc
+
+
+/*
+	Query 2b - GooglePlay
+*/
+
+
+
+
+
+
+
+
+
+##### Overprivs by genre
+#- CHECK THIS
+#	Will need to do some manual work here combingthings & groups.
+#		Do it in excel.
+
+/*
+	Query 3a - Froid
+*/
+select  ad.categories as Category
+--, sum(VersionCount.VersionCount) as "# of Total Versions"	
+, count(ad.appID) as apps
+, sum(LastVer_oprivcount) as LastOverPrivCount
+
+from appdata ad
+inner join version v on v.appID = ad.appID
+
+left outer join (select count (VersionID) as VersionCount, appID from Version v2 group by appID) VersionCount on (VersionCount.appid) = ad.appID
+
+left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+-- Get the max version info
+inner join(
+	select ad.appID, max(versionID) as MaxVersion
+	from appdata ad
+	inner join version v on v.appID = ad.appID
+	where v.isAPKExists = 1
+	group by ad.appID
+) mv on mv.appID = ad.appID
+	
+	
+-- Get the max version
+left outer join (
+	select ad2.appID, oprivcount, count (ad2.appID) as OverPrivCount2
+	from appdata ad2 
+	left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = 	v.versionID
+	inner join version v on v.appID = ad2.appID group by ad2.appID) OCount1 on Ocount1.appID = ad.appID
+	
+	
+-- Find the oprivCount for the max version
+left outer join(select count(permissionID) as LastVer_oprivcount, versionID from overpermission group by versionID
+) MaxOverPriv on MaxOverPriv.versionID = mv.MaxVersion
+
+
+where v.isAPKExists = 1
+and VersionCount.VersionCount >= 3
+group by ad.categories
+order by LastVer_oprivcount desc
+
+
+
+/*
+	Query 3b - Darwin
+*/
+
+
+
+
+
+##### Version Grouping of apps
+#		Good definitions http://docs.sonarqube.org/display/SONAR/Metric+definitions
+#	Show the timeline of apps based on their versions
+
+/*
+	Query db
+*/
+
+select 
+count(row_num), row_num
+
+, round(avg(overprivCount.oprivcount),1) as OPriv
+, round(avg(underprivCount.uprivcount),1) as UPriv
+, round(avg(vul.fuzzy_risk),1)as FuzzyRisk
+, round(avg(cs.ncloc),1) as NCLOC
+, round(avg(cs.functions),1) as Functions
+, round(avg(cs.violations),1) as Violations
+, round(avg(cs.blocker_violations),1) as BlockerViolations
+, round(avg(cs.critical_violations),1) as CriticalViolations
+, round(avg(cs.major_violations),1) as MajorViolations
+, round(avg(cs.minor_violations),1) as MinorViolations
+
+
+from appdata ad
+
+inner join version v on v.appID = ad.appID
+
+left outer join Vulnerability vul on v.versionID = vul.versionID
+
+left outer join codingStandard cs on v.versionID = cs.versionID
+
+left outer join (select count (VersionID) as VersionCount, appID from Version v2 where isAPKExists=1 group by appID) VersionCount on (VersionCount.appid) = ad.appID
+
+left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+left outer join (select count (permissionID) as uprivcount, versionID from underpermission group by versionID) underprivCount on (underprivCount.versionID) = v.versionID
+
+
+left outer join
+	(
+		SELECT appID, t.build_number, versionID, (SELECT COUNT(*) FROM version counter
+	           WHERE t.appID= counter.appID AND t.build_number >= counter.build_number and isAPKExists=1) AS row_num 
+		FROM version t
+where isAPKExists=1
+		order by appID, row_num
+
+	) vi on vi.versionID = v.versionID
+
+where versioncount >=3
+and v.isAPKExists = 1
+group by row_num
+--group by ad.appID, v.versionID
+--order by ad.appID, row_num
+	
+	
+
+
+
+#### Find individual information for each app based on version
+#		Add search statements for summary permission names
+/*
+	Query 5
+*/
+
+select 
+ad.appID
+, row_num
+, VersionCount
+, case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OPriv
+, case when underprivCount.uprivcount is null then 0 else underprivCount.uprivcount end as UPriv
+, case when vul.fuzzy_risk is null then 0 else round(vul.fuzzy_risk,1) end as FuzzyRisk
+, case when commitCount.commitCount is null then 0 else commitCount.commitCount end as CommitCount
+, cs.ncloc
+, cs.functions
+, cs.violations
+, cs.blocker_violations
+, cs.critical_violations
+, cs.major_violations
+, cs.minor_violations
+
+
+from appdata ad
+
+inner join version v on v.appID = ad.appID
+
+left outer join Vulnerability vul on v.versionID = vul.versionID
+
+left outer join codingStandard cs on v.versionID = cs.versionID
+
+left outer join (select count (VersionID) as VersionCount, appID from Version v2 where isAPKExists=1 group by appID) VersionCount on (VersionCount.appid) = ad.appID
+
+left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+left outer join (select count (permissionID) as uprivcount, versionID from underpermission group by versionID) underprivCount on (underprivCount.versionID) = v.versionID
+
+
+left outer join
+	(
+		SELECT appID, t.build_number, versionID, (SELECT COUNT(*) FROM version counter
+	           WHERE t.appID= counter.appID AND t.build_number >= counter.build_number and isAPKExists=1) AS row_num 
+		FROM version t
+where isAPKExists=1
+		order by appID, row_num
+
+	) vi on vi.versionID = v.versionID
+
+left outer join ( select appID, case when count(commitID) is null then 0 else count(commitID) end as CommitCount
+	from gitHistory gh where (summary like '%permission%' or summary like '%privilege%' or summary like '%security%') group by appID
+ ) commitCount on CommitCount.appID = ad.appID
+
+where versioncount >=3
+and v.isAPKExists = 1
+order by ad.appID, row_num
+
+
+
+
+
+
+
+
+#### % Of apps having comment compared with overpriv
+#	--- This needs to be fixed
+#	
+
+/*
+  Query 6
+*/
+
+select    
+-- case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OPriv
+--, case when underprivCount.uprivcount is null then 0 else underprivCount.uprivcount end as UPriv
+
+count(ad.appID)
+ ,round(avg(overprivCount.oprivcount),2) as OPriv
+, round(avg(underprivCount.uprivcount),2) as UPriv
+
+from appdata ad
+
+inner join version v on v.appID = ad.appID
+--inner join githistory gh on gh.appID = ad.appID
+left outer join (select count (VersionID) as VersionCount, appID from Version v2 where isAPKExists=1 group by appID) VersionCount on (VersionCount.appid) = ad.appID
+
+left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+left outer join (select count (permissionID) as uprivcount, versionID from underpermission group by versionID) underprivCount on (underprivCount.versionID) = v.versionID
+
+
+left outer join
+  (
+    SELECT appID, t.build_number, versionID, (SELECT COUNT(*) FROM version counter
+             WHERE t.appID= counter.appID AND t.build_number >= counter.build_number and isAPKExists=1) AS row_num 
+    FROM version t
+where isAPKExists=1
+    order by appID, row_num
+
+  ) vi on vi.versionID = v.versionID
+
+where versioncount >=3
+and v.isAPKExists = 1
+--and (summary like '%permission%' or summary like '%privilege%' or summary like '%security%')
+order by ad.appID, row_num
+
+
+
+
+
+
+
+
+
+#### Applications with Overprivs
+#	Must have at least 1 over priv in their versions
+#	Must have at least 3 versions
+#	
+
+/*
+	Query X
+*/
+
+
+
+
+##### Apps with atleast X over privs
+
+/*
+	Query X
+*/
+
+
+
+
+
+
+
+
+##### Version Grouping of apps
+#	Show the timeline of apps based on their versions
+/*
+	Query X
+*/
+
+
+
+
+
+
+
+
+
+
+
+%%%%%   % of Genres with at least 1 Overprivledge/app
+
+
+/*
+	Query X - F-Droid
+*/
+
+
+
+
+
+
+
+
+
+
+
+/*
+	Query X - GooglePlay
+*/
+
+

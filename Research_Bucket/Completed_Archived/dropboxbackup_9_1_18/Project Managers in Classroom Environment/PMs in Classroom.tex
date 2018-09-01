@@ -1,0 +1,455 @@
+\newcommand{\sam}[1]{\textcolor{red}{{\it [Sam says: #1]}}}
+
+\documentclass{sig-alternate}
+
+
+\usepackage{epstopdf}
+\usepackage{color}
+\usepackage[table]{xcolor}
+\usepackage{balance}
+%\usepackage{auto-pst-pdf}
+
+\newif\ifisnopii
+\isnopiifalse % change to false to remove personally identifiable information (pii)
+
+\begin{document}
+%
+% --- Author Metadata here ---
+\conferenceinfo{SIGCSE'15,}{March 4--7, 2015, Kansas City, MO, USA.}
+\CopyrightYear{2014} % Allows default copyright year (20XX) to be over-ridden - IF NEED BE.
+%\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
+% --- End of Author Metadata ---
+
+
+
+\title{Implementing Project Managers in the Computing Classroom}
+
+\numberofauthors{1}
+\ifisnopii % turn on/off pii
+\author{
+\alignauthor
+Samuel A Malachowsky\\
+       \affaddr{Rochester Institute of Technology}\\
+       \affaddr{Rochester, NY, USA}\\
+       \email{samvse@rit.edu}
+}
+\else % turn on/off pii
+\author{
+\alignauthor
+XXX X XXX\\
+       \affaddr{xxxxx}\\
+       \affaddr{xxxx, xx, xxx}\\
+       \email{xxxxx@xxx.xxx}
+}
+\fi % end turn on/off pii
+
+\maketitle
+\begin{abstract}
+Project management is a discipline that spans many industries and has undeniable benefits in its application. Sometimes, however, it can be difficult to convey its importance in the classroom environment. Unfortunately, many project management classes cover the core concepts, but fail to provide students with the opportunity to experience the leadership elements so core to the discipline.
+
+This article describes an innovative approach to using Project Managers in the classroom that has had
+measured effects in several areas, including individual student participation, group project disposition, and
+in-class presentations. Results have been encouraging, with student feedback indicating positive effects
+on interest in the field and application of project management, improved group dynamics, and more
+individual participation in the outcome of group projects. The concepts herein have been successfully
+implemented with software engineering students, but they could easily be applied to any classroom that
+wishes to expand project management instruction beyond simple explanation of concepts, specifically
+through the use of a project manager-led group project.
+\end{abstract}
+
+\category{K.3.2}{Computers and Education}{Computer and Information Science Education}[curriculum,computer science education]
+\category{D.2.9}{Software Engineering}{Management}[productivity, programming teams]
+\category{K.6.1} {Management of Computing and Information Systems}{Project and People Management} [management techniques]
+
+\terms{Management, Human Factors}
+
+\keywords{Classroom, Curriculum, Project Management, Software Engineering, Team Development}
+
+\begin{table*}[t]
+\centering
+\caption{\textit{Process and Project Management} topics by week}
+\label{table:topics}
+\begin{tabular}{|p{0.25cm}|p{3.25cm}|p{13.0cm}|} \hline
+\cellcolor[gray]{0.9}&\textbf{Topic}\cellcolor[gray]{0.9}&\textbf{Details}\cellcolor[gray]{0.9}\\ \hline
+1&Course Introduction&Course overview, what a project is, why process is important, basic project terms\\ \hline
+&Classic Mistakes&Steve McConnell's list of classic mistakes \cite{McConnell1996}\\ \hline
+2&Core Concepts&The project triangle, process and productive work, the cone of uncertainty, etc.\\ \hline
+&Teams&Concepts (trust, conflict, accountability, etc.), leadership types, Tuckman's \cite{Tuckman1965} model\\ \hline
+3&Risk Management&What/when/why, assessment and control, quantification, risk tables\\ \hline
+&Lifecycle Planning&Explanations of 10 basic models: waterfall, spiral, evolutionary delivery, etc.  \\ \hline
+4&Methodology Concepts&Cockburn's methodology structure \cite{cockburn1997}, plan-driven methodologies (PSP, TSP, RUP)\\ \hline
+5&PM Anti-Patterns&What an anti-pattern is and some major examples \cite{antipatterns2014}\\ \hline
+6&Agile Methodologies&Agile concepts, comparisons to plan-driven, specific methodologies (Scrum, etc)\\ \hline
+7&Estimation&Basic process, challenges, methods, LOC vs. function points, risk reserves, expectations\\ \hline
+&CoCoMo&Constructive Cost Model \cite{Boehm1981} use cases, calculation, benefit, limitations, w/ function points\\ \hline
+8&Scheduling&Scheduling concepts, work breakdown structures, sequencing, scheduling tools, tracking\\ \hline
+9&Quality&Definition, relationship with testing, verification and validation, quality assurance\\ \hline
+10&Measurement/Metrics&Defined, project/product/process metrics, collection, analysis, examples of metrics\\ \hline
+11&Testing&Testing concepts, sweet spot, pooling/seeding/etc., the V model \cite{Feiler2012}\\ \hline
+12&Change Control&Types of change, maintenance (types, concepts), metrics, software distribution\\ \hline
+13&Communications&Channels, planning, stakeholders and team communication, professional responsibility\\ \hline
+14&Process Quality&Maturity models (CMMI \cite{cmmi2014}), process frameworks, application of changes to processes\\ \hline\end{tabular}
+\end{table*}
+
+\section{Introduction}
+Process is a major focus of software engineering and its curriculum \cite{Tadayon:2004:SEB:1050231.1050248,107024}; because of this, project management has
+been included as a required topic of study in many of these programs \cite{Walker:2002:IRT:775742.775765}. While
+project management principles and practices are frequently a part of these classes \cite{mit2012,Texas2012,wvu2014,rit2014}, many do not include the
+opportunity to participate as a project manager (PM) or as a member of a PM-led team \cite{Kessler:2007:ITA:1227504.1227420}. It is important to include the hands-on leadership and planning
+elements that make project management a discipline rather than simply conveying a collection of related
+methodologies \cite{1612134}. In many cases, the disciplines involved in
+project management itself has fallen to the instructors; this is often carried out either through frequent
+direct intervention with student groups (i.e.\ leadership) or through heavily structured assignment descriptions (i.e.\ project plans).
+Unfortunately, this may serve to negate the need or desire of individual students to venture into realistic
+project management within group work scenarios. As a result, these classes may be neglecting the lessons and skills 
+that all computing students need in a realistic team environment.
+
+At \ifisnopii the Rochester Institute of Technology (RIT)\else XXXX\fi, we have offered an upper division Process and
+Project Management class within the Software Engineering major since \ifisnopii 1998\else XXXX\fi. The focus of this course
+has included process methodologies, team development, and project management fundamentals. A
+project component has always been a significant part of this course, but until this point its primary focus
+has been delivery of project artifacts. In this paper, we describe an innovative approach for including a
+hands-on project management experience within the project component of the course. Under the
+supervision of the instructor, who serves as an advisor, students are given the opportunity to volunteer as
+PMs for the main group project. These PMs are given traditional expectations in
+managing their group's deliverables and dynamics, but are also expected to participate in a separate PM-only
+group that enhances their learning experience as well as that of their team members.
+
+This updated project format has been included in at least five class offerings and has experienced
+substantial success. Students have stated that it not only increased their knowledge and application of
+project management as a discipline, but that it has given them an opportunity to interact with project managers
+as a group member or vice versa. Results, in many cases, have far exceeded expectations, and student
+feedback has shown praise for both the interactive nature of the project and the resulting final
+presentation.
+
+The remainder of this paper is organized as follows. Section~\ref{sec:course} includes a description of the Process
+and Project Management course, including its purpose, structure, and components. Section~\ref{sec:project} describes
+the project, including its former state and changes that have been made to meet specific learning
+objectives. Section~\ref{sec:results} shares the results, including examples from recent implementations of the project.
+ Section~\ref{sec:feedback} includes both quantitative and qualitative student feedback. Section~\ref{sec:related} references
+related work. Section~\ref{sec:future} discusses planned or proposed future work related to the project, and section~\ref{sec:summary}
+provides a summary.
+
+\section{About the Course}
+\label{sec:course}
+Although students are primarily Software Engineering majors, Process and Project Management is
+also offered to other majors, including Computer Science, Computer Engineering, and Game Design. The
+only prerequisite is the Introduction to Software Engineering course, a survey course which includes basic
+concepts core to the major, such as requirements gathering, design, patterns, the concept of quality, and 
+the engineer's focus on identifying and solving the problem. In this prerequisite, students have also been introduced to some of the themes of
+Process and Project Management as well: teamwork and roles, an introduction to software development
+process methodologies, and basic scheduling and task management.
+
+Three of the primary goals of this course are to introduce students to the core concepts and artifacts of
+project management, to continue to reinforce the software engineering process including process models,
+and to demonstrate the importance of process and project management in the students' chosen discipline.
+Lectures and texts enhance the concepts with case studies and real-world examples, striving for both
+present and future relevance. In addition to process, covered concepts include classic mistakes (and
+anti-patterns), team development, specific software engineering models (waterfall, agile, etc.), risk
+management, estimating and scheduling, quality and metrics, communication management, and process
+maturity models. Table \ref{table:topics} includes a schedule of topics covered in this 15 week course.
+
+The Software Engineering department considers this 3-credit course the core class in the process track
+(one of two major tracks) taken by all students in the major. This class is a prerequisite for other classes,
+such as Software Process and Product Quality, and Trends in Software Development Process.
+Methodologies and processes taught in this class are also a required implementation in the Senior Project
+class which immediately precedes graduation. The department understands that a strong foundation in
+this area is a vital part of students' future success and the reputation of the college.
+
+Software Engineering majors typically take this course in their third year, and it often directly
+proceeds or follows students' required one-year cooperative internship (co-op). For many students, this
+time period is a watershed moment, as upper level courses and co-ops often have the effect of
+encouraging the student to realize their area of focus and concentration. Though not always an explicit
+minor, students naturally begin to specialize in areas such as testing, design, enterprise or web systems,
+process and project management, or other related disciplines.
+
+While most students are not likely to become PMs directly upon graduation, we do expend effort to allow students to see the value of
+the discipline and its individual practices, which will inevitably come into play in the modern team-based computing environment. Half of class time is devoted to lectures, and the
+remainder is reserved for reinforcing activities, discussion, and group work time. Students are graded in
+several criteria, including short quizzes, three exams, individual and group activities, and a large group
+project. Class sizes have typically ranged from 20 to 35 students.
+
+\section{About the Project}
+\label{sec:project}
+This course has always had a major project component, as exposure to both the expectations and the artifacts
+within a typical project has been an objective since its inception.  This project has been in many ways similar to those in other classes: 
+groups are assigned, each group is required to complete a paper, and all are required to present findings to the
+class at the end of the term. The primary deliverable is a project plan based upon a problem
+statement provided by the instructor early in the course.
+
+\begin{table}
+\label{table:projectsched}
+\caption{Project Activity by Week}
+\begin{tabular}{|p{0.3cm}|p{2.5cm}|p{4.4cm}|} \hline
+\cellcolor[gray]{0.9}&\textbf{Activity}\cellcolor[gray]{0.9}&\textbf{Details}\cellcolor[gray]{0.9}\\ \hline
+1-5&Pre-Project&Students are encouraged to review the project outline\\ \hline
+6&Project Begins&Required deliverables and due dates set\\ \hline
+9&Draft 1 Due&Outline, risks, scope, requirements\\ \hline
+12&Peer Evaluation 1&\\ \hline
+12&Draft 2 Due&Updates to draft 1, process methodology, estimating, and scheduling\\ \hline
+13&Cross-Group Feedback&Feedback effort is graded\\ \hline
+14&Final Version Due&Updates to draft 2, lessons learned\\ \hline
+15&Group Presentations&10-15 minutes in length\\ \hline
+15&Peer Evaluation 2&Completed after final presentation\\ 
+\hline\end{tabular}
+\end{table}
+
+While the problem statement has varied, the deliverables have remained consistent: an overview and scope, list of
+functional and nonfunctional requirements, methodologies overview, schedules and their justifications,
+risks, metrics, and lessons learned. Deliverables are turned in three times, with each building on the
+previous version. Groups participate in cross-team feedback with other groups, and a 10-15 minute final
+presentation takes place during the last week of the semester. Opportunities for group members to
+provide feedback on each other's performance are in week 12 and at the end of the semester. Table 2 
+contains the main activities and their typical timetable.
+
+Because of its similarity to other paper-based group projects, students have been familiar with and
+competent at completing the assignment, but many have felt that it was merely an extension of individual
+assignments and have treated it as such. It had become evident that student groups have been dividing work
+ineffectively and inconsistencies in both the content and flow of their papers and the final presentation
+have demonstrated this ineffectiveness. These symptoms and the desire to allow students to have a PM-led 
+experience have prompted us to make some changes to both the project and its disposition.
+
+The first significant change is the inclusion of a formal PM role within the group project. Students
+are notified on several occasions prior to beginning the project that the final project teams are to be led by
+a voluntary PM. At the same time, students are told that this PM will have the opportunity to earn a
+higher grade; peer evaluations are a significant part of the grade, and positive leadership as a PM is a
+good way to earn higher evaluations. Those who are considering volunteering are asked to review the PM
+Activity Guide, a document that specifies their responsibilities as a PM. Finally, they are asked to note
+preferred team members for an opportunity to be afforded to them in group assignment efforts later in the
+semester.  Group assignments early in the semester, in-class activities, and previous interactions with other
+students are useful in assisting with evaluation of potential team members.
+
+Selection of the PMs takes place at the start of the project directly after the first midterm, roughly one
+third of the way through the semester. The process is public by show of hands and is continued until the
+appropriate number of PMs have volunteered. Students and instructors are rarely surprised at who has
+chosen to volunteer, as many have worked together in previous classes or even in the early part of the
+current class. In the past, there have always been an appropriate number of volunteers, and rarely have
+any volunteered who did not receive the opportunity to participate as a PM.  In this situation, a random subset
+is chosen by the instructor. Previous efforts have yielded
+between 1/4 and 1/5 of the class --- an appropriate number, as 4 or 5 students per group is desirable.
+
+The second change has been to treat the PMs as a separate group, requiring them to cooperate in
+several separate activities. The first activity exclusive to this group is the formation of the teams that they
+will each lead. This takes place immediately after selection of PMs and is a private negotiation
+process between PMs, as not to embarrass team members who are chosen near the end. As the semester
+progresses, PMs are called together weekly to check progress, answer questions about upcoming
+deliverables, and to mutually benefit each other in these exchanges. Checking attendance is integrated as
+well; PMs are asked if any of their group members are missing, and, if so, whether they had indicated to
+the group their expected absence. At the end of the semester, PMs are required to evaluate each other in
+the areas of teamwork, knowledge and skills, dependability, initiative and creativity, adaptability and
+flexibility, and delivery of results. Table \ref{table:PMtasks} contains the main activities and their typical timetable.
+
+\begin{table}
+\label{table:PMtasks}
+\caption{Project Manager Activity by Week}
+\begin{tabular}{|p{0.3cm}|p{2.9cm}|p{4.0cm}|} \hline
+\cellcolor[gray]{0.9}&\textbf{Activity}\cellcolor[gray]{0.9}&\textbf{PM Responsibility}\cellcolor[gray]{0.9}\\ \hline
+1-5&Consideration&Potential PMs consider volunteering\\ \hline
+6&Project Begins&Volunteer as PM, final roster selection\\ \hline
+7-11&Weekly Check-Ins&Cross-team problem solving\\ \hline
+9-14&Deliverables Due&Manage group schedule, division of work, and accountability\\ \hline
+12-14&Presentation Differentiation&PMs meet at least twice, provide summary to the instructor\\ \hline
+15&Group Presentations&Report Order of presentations to the instructor\\ \hline
+15&PM Peer Evaluation&Completed after final presentation\\ 
+\hline\end{tabular}
+\end{table}
+
+The final and possibly the most unique change to the project relates directly to the separate PM-only
+group. As a group, the PMs are expected to initiate a way of differentiating the final presentation.
+Because each group is completing a project with the same guidelines, case study, and deliverable, the
+final presentations can be both repetitive and rather difficult to grade, with later-presenting groups
+unfairly benefiting from the insights or mistakes of their predecessors. Relating to their task of
+differentiation, some guidelines and previous examples are given, but the task is intentionally left up to
+the PMs. They are required to meet twice near the end of the semester and to provide a meeting summary
+to the instructor.
+
+Benefits to this differentiation are seen in both the presentation itself and the engagement of the
+students both before and after the presentation. Because of the requirement to differentiate, 
+group members are forced to prepare something other than a rehash of their paper.  During the
+presentation itself students are more likely to listen, participate, and learn because the other groups'
+presentations are each significantly different. Although the project deliverables do not extend beyond
+project documentation, the opportunity to create something unique in the final presentation can act as a de
+facto product for the team, giving them the satisfaction of creating something besides an unimplemented
+project plan.
+
+\section{Project Results}
+\label{sec:results}
+Class dynamics have been positive since the implementation of the project changes. The grouping of
+students as the application and combining of concepts becomes a more prominent part of the course has
+allowed students to participate in class activities as larger units rather than individual students. The
+instructor has been able to call on groups rather than individuals to answer a question, resulting in less
+individual embarrassment or awkward class flow and in a more positive cooperative effort.
+
+Because of the group selection technique, instances of a ``super group'' or a ``left-over'' group formed after others 
+have banded together has become less common.  Although there are still instances of
+groups that perform significantly better or worse than their peers, final grade distribution typically indicates
+that groups have a good mixture of students. In many instances, the PMs apply the team building principles
+learned in the first part of the course not only to group management, but also in consideration and
+selection of the team members themselves. Overall, this has resulted in more diverse, and therefore more
+consistently successful, groups.
+
+The experience within the group project has also had positive effects on the students individually. In
+many cases, students have discovered or cemented a desire to pursue project management as their chosen
+field, and have attributed that choice at least in part to the class project experience. Additionally, many
+students have reported that lessons learned within their group were immediately applicable in co-ops or
+other classes, and viewed group work differently than they had previously. Both PMs and group members
+have indicated that the experience also made them better team members, as they had a greater knowledge
+of the responsibilities of a PM and were able to assist in ways they previously had not even considered.
+These results have been in line with pedagogical goals, especially demonstrating the importance of process 
+and project management in the academic and work environment.
+
+Diversification of the final presentation has also had surprising effects. The PM groups, tasked with
+working together to make the final presentation more interesting and less repetitive, have come up with
+some very innovative ways of doing this. Some of the best results have come from simple ideas like
+combining all groups slides into one deck for presentation --- eliminating much of the downtime between
+presentations and some of the unfair advantage that later presenting groups hold over their predecessors. PMs have also
+served as timekeepers for other groups, monitored their team members to ensure they are paying attention, and 
+have reviewed each other's planned presentation against the published rubric beforehand.
+
+The most typical method of final presentation diversification has been to either divide by subject area
+(i.e.\ risks, methodology, etc.) or to focus more on what each group has done differently rather than
+repeating similar parts of their project implementation. The most surprising and imaginative
+result so far has been a project management play depicting the project's progress through its planning
+stages --- including 5 minutes in Shakespearian English, video projector sets, and a ``process methodology
+smack-down''. In all cases, the resulting presentations have been more interesting and have required
+students to be more engaged in both the preparation and disposition of their contribution.
+
+Student feedback has been generally positive, and is discussed in the next section.
+
+\begin{table*}[t]
+\caption{Survey questions and results (\% who agree/strongly agree) from PMs and group members}
+\label{table:satisfaction}
+\begin{tabular}{|p{16.3cm}|c|} \hline
+\textbf{The Field of Project Management}\cellcolor[gray]{0.9}&\cellcolor[gray]{0.9}\\ \hline
+The use of project managers in this course enhanced my understanding of project
+management as a discipline&85\%\\ \hline
+The use of project managers has increased my interest in the field of project
+management&85\%\\ \hline
+\textbf{Project Manager-Led Groups}\cellcolor[gray]{0.9}&\cellcolor[gray]{0.9}\\ \hline
+The project manager group made time management and transitions between
+presentations easier or less intrusive&91\%\\ \hline
+The opportunity to participate as a project manager increased my overall satisfaction with the course (even if I did not choose to participate as a project manager)&73\%\\ \hline
+Overall, the use of an assigned project manager improved group dynamics&84\%\\ \hline
+Overall, the use of an assigned project manager made my group project more successful&91\%\\ \hline
+\textbf{Diversification of the Final Presentation}\cellcolor[gray]{0.9}&\cellcolor[gray]{0.9}\\ \hline
+I feel that I learned more from diversification of the groups' presentations than I would have if each group had presented similar material&87\%\\ \hline
+My preparation and engagement for the presentation was more interesting because of diversification of the groups' presentations&87\%\\ \hline
+Other groups' presentations were more engaging because of diversification of the groups' presentations&82\%\\ \hline\end{tabular}
+\end{table*}
+
+\section{Student Feedback}
+\label{sec:feedback}
+Students have expressed high satisfaction with various elements of the group project within the
+course. In a voluntary survey given at the end of the semester, students were asked to compare previous
+group work issues with those encountered during this class. Issues reported as previously common but
+reduced for the duration of this project included poor time management and organization, lack of
+leadership, complications with division of labor, communication breakdown, and failure of teammates to
+show up to meetings.
+
+The survey also asked for general feedback on the group project. Some of their responses were as
+follows:
+
+\begin{quotation}I really like how the project managers volunteered for the position, because it meant that they
+were willing to put forth the effort to manage the group, and as a result I felt more motivated to
+participate as a member.\end{quotation}
+
+\begin{quotation}The use of project managers helped keep our group on track, moving forward and not waiting
+until the last minute to start working on each section.\end{quotation}
+
+\begin{quotation}The project managers were helpful because it gave our group a certain line of communication
+with the professor, which was more helpful than individually having questions answered.\end{quotation}
+
+\begin{quotation}I liked the idea of all of us presenting one big presentation with each group in charge of a
+specific part.\end{quotation}
+
+\begin{quotation}I think the use of project managers really helped highlight the things we were learning in this
+class --- at least that was the experience I had in my group. When you have a proactive PM who is
+good about getting people to show up to meetings and actually getting their work done, it becomes
+much easier to complete a project, and do it well.\end{quotation}
+
+Students were also asked questions related to learning, project success, and engagement with the field
+of project management. Questions were answered using a standard Likert scale. Table \ref{table:satisfaction} lists
+statements and the percentages that agreed or strongly agreed. Respondents comprised of 90\% or greater of classes
+surveyed. 21\% of respondents participated as a PM.
+
+In general, students who volunteered to lead a group as a PM were more engaged, stated that they
+learned more, and expressed greater satisfaction with the project. Students who did not choose to
+participate as a PM also seemed to have an improved experience, and in some cases have stated that they
+would like to lead project teams in future classes.
+
+\section{Related Work}
+\label{sec:related}
+There has been significant development in the areas of both process and project management in the
+classroom. Previous works have stated the importance of such an educational focus and, although varied, 
+they lend credibility to providing a more realistic, PM-led team experience in the classroom. Oudshoorn, Brown, 
+and Maciunas \cite{533976} discussed implementation of a more
+realistic problem solving situations for software engineering project teams. Similarly, Villarreal and
+Butler \cite{Villarreal:1998:GCS:274790.273157} and Henry and LaFrance \cite{Henry:2006:IRS:1181901.1181908} 
+emphasized the importance of realistic experience and pioneered methodologies in this
+area, expressing the understanding that unrealistic classroom situations and projects do not provide as
+much value as some may believe. Providing a more realistic teamwork experience in the software
+engineering classroom has also been specifically focused upon by Walker and Slotterbeck \cite{Walker:2002:IRT:775742.775765},
+showing the need to address the issue before students have reached their capstone class.
+
+Tan and Phillips \cite{Tan:2005:RPM:1059888.1059947} outlined an example of bringing more realistic project management scenarios
+into the computer information systems curriculum. A comparison of project management instruction
+through heavy use of antipatterns verses patterns in instruction was the focus of research by Staemelos,
+Settas, and Mallini \cite{6065055}. Goldin and Rudahl \cite{5341212}, Albernethy, Piegari, and Reichgelt \cite{Abernethy:2007:TPM:1181849.1181888}, and
+Tan and Jones \cite{Tan:2008:CSC:1352627.1352651} have presented methodologies for presenting processes in such a way that they
+become meaningful, such as an experience-based approach or having teams interact directly with clients
+external to the classroom. Most of these authors have also included explanations of the additional
+demands that are placed on the instructor, and have in many cases built upon each other's work. When considered 
+as a group, they show a need for more direct engagement by students in the disposition of the project itself, 
+rather than more passive preplanned instructor project management.
+
+\section{Future Work}
+\label{sec:future}
+This updated project format has been successfully utilized in several sections of the Process and
+Project Management course, but there are enhancements planned for future sections. Moving forward,
+one of the main objectives is to provide a group project environment that more realistically simulates both
+the actual and the ideal project in the real world soon to be encountered by the students. In relation to
+this, the structure of the deliverables could be organized differently, with more guidance related to
+individual parts, such as sample risks, less reliance upon the instructor to define what should be included
+in functional and nonfunctional requirements, and the possible introduction of a mid-project requirements
+change.
+
+One risk that has so far not been encountered is a lack of or a surplus of volunteers for the role of PM.
+This may require more explicit definitions of both the role and contingencies. The role the PM fulfills
+within their group could also be more explicitly defined by requiring agendas, meeting minutes, and
+lessons learned at regular intervals throughout the class.
+
+Given that the PMs in the class are relatively inexperienced leaders, surprisingly few issues have been
+encountered related to this. The negotiation process by the PMs to select team members is not well
+documented and can vary with personalities and circumstances. The meetings between the PMs in
+preparation for the final presentation have not encountered any issues, no group has expressed the wish to
+expel their PM, and no PM has dropped the class or explicitly chosen to discontinue the role as of yet.
+While these risks are minimal, mitigation and management strategies should be put in place should the
+need arise.
+
+Use of an explicit PM role and deliberate differentiation of the final presentation is something that
+could be adapted for use in other courses, especially those that have similar projects conducted by
+multiple groups.  As an example, in a class where multiple groups have solved the same problem, the
+final presentation could, through interaction between groups, completely omit problem definition
+and instead focus on the differences of the groups' results.
+
+
+\section{Summary}
+\label{sec:summary}
+We feel that it is important for students, as part of a process-oriented study, to have the opportunity to
+experience a PM-led team, either as a voluntary PM or as a team member. This experience could prove valuable 
+to any computing student, because modern work environments frequently require team interaction, with or 
+without a PM or team leader. In response to this, we have
+developed an innovative project structure which not only fulfills this need but also serves to increase
+variety and student attentiveness to the final group presentation.
+
+We have witnessed an increase in student satisfaction, improved group dynamics, interest in the
+field of project management, and a greater understanding of the modern team-driven computing environment. 
+Instructors and surveyed students have noted that groups more thoroughly engage with the
+project as well as the other students participating the final presentation. It is our sincere hope that others
+will find the ideas and results outlined in this paper inspiring, possibly resulting in the choice to make
+similar improvements to courses or academic programs in which they participate.
+
+\balance
+\bibliographystyle{abbrv}
+\bibliography{PMs-in-Classroom}
+\end{document}

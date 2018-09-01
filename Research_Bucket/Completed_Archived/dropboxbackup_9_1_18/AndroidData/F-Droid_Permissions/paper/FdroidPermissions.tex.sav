@@ -1,0 +1,922 @@
+
+%\documentclass{llncs}
+%
+
+\documentclass[journal,transmag]{IEEEtran}
+
+
+%\usepackage{makeidx}  % allows for index generation
+\usepackage{cite}
+\usepackage{color}
+\usepackage{balance}
+\usepackage{times}
+\usepackage{url}
+\urlstyle{same} % formats footnotes
+%\usepackage{xcolor}
+\usepackage{pgfplots} %% Image png
+\usepackage{soul} % highlighting
+%\usepackage{multirow}
+%\usetikzlibrary{patterns} %% Used for bar charts
+%\usepackage{float} %% Used for side by side minipages
+\usepackage{multirow}
+%\usepackage{subfigure} % Needed for showing charts side by side
+
+%\usepackage{amssymb}% Checkmark
+\usepackage{caption} % Bar chart
+\usetikzlibrary{patterns} % Bar chart
+
+
+
+
+%%
+%\usepackage{tikz}
+%\usepackage{caption}
+%\usepackage{soul} % Used for highlighting % \hl{this is some highlighted text}
+%\usepackage{times} % Used for formatting formatting url footnotes
+%\urlstyle{same} % Used for formatting formatting url footnotes
+%\usepackage[binary-units=true]{siunitx}
+
+
+
+
+% Define flow chart styles
+\tikzstyle{decision} = [diamond, draw, fill=blue!20,
+    text width=15em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20,
+    text width=15em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+
+\usetikzlibrary{shapes,arrows, positioning} % Needed for analysis diagram
+
+
+
+\newcommand{\todo}[1]{\textcolor{cyan}{\textbf{[#1]}}}
+\newcommand{\dan}[1]{\textcolor{blue}{{\it [Dan says: #1]}}}
+\newcommand{\andy}[1]{\textcolor{blue}{{\it [Andy says: #1]}}}
+\newcommand{\sam}[1]{\textcolor{blue}{{\it [Sam says: #1]}}}
+
+\begin{document}
+
+% The Evolution of Open Source Android App Permissions
+% Understanding Permission Usage in Open Source Android Apps
+% Permission Usage in Open Source Android Apps
+% An Examination of the Evolution of Open Source Android Permissions++++
+
+%\title{Permission Usage in Open Source Android Apps}
+%\title{Permissions in Open Source Android Apps: Who adds them? When and Why?}
+\title{Who Added that Permission to My Open Source Android App?}
+%
+%\author{Daniel E. Krutz, Andres Ruiz, Jacob~Peterson, Andrew~Filipski, Jared Smith, and Samuel A. Malachowsky}
+%\institute{Rochester Institute of Technology, Rochester NY 14623, USA \\
+%\email{\{dxkvse, ajr2546, jrp9988, abf1932, jps6773, samvse\}@rit.edu}
+%}
+
+%\title{xxxxx}
+
+%\author{\IEEEauthorblockN{Daniel E. Krutz, Mehdi Mirakhorli, and Samuel~A.~Malachowsky}
+\author{\IEEEauthorblockN{xxxxx}
+\IEEEauthorblockA{
+Rochester Institute of Technology,
+Rochester, NY, USA\\
+%\{dxkvse, mxmvse, samvse\}@rit.edu}
+\{xxx, xxx, xxxx\}@rit.edu}
+}
+
+
+
+\maketitle
+
+\begin{abstract}
+
+Android applications (apps) rely on a permission-based model to carry out core functionality. Unfortunately, permissions are frequently misused by developers for a variety of reasons including a lack of permission enforcement in the Android OS and poor permission and project comprehension by the developer. In this paper, we examine a large set of open source Android version control repositories to better understand when, why, and how permissions are added. Our primary findings include: I) There is no significant correlation between the ratio of permissions-based commits and overall project commits by a developer. Our data indicates that developers with a low number of overall project commits make a disproportionately high number of permissions-related commits. II) There is no significance correlation between an app's user rating and the ratio of permissions-altering commits to overall commits. III) Permissions are added at a consistent rate throughout the software project. %% But with slight uptickets
+
+%\todo{Add yasmine?}
+%\todo{just as likely to make permissions and substractions}
+\todo{Add more of an analysis to the paper. Why do people care? Why is this work important? What problems does it solve?}
+
+
+%%% Also look to see who is removing the overprivs. Are certain people more likely to remove overprivs?
+
+\end{abstract}
+% \keywords{Android Permissions, Mining Software Repositories, Software Evolution}
+
+
+
+\section{Introduction}
+
+Android is the world's most popular mobile OS~\cite{OSMarketShare_URL} with over 1.8 million apps available from Google Play alone~\cite{statistica_url}. A cornerstone of Android security is its usage of permissions. Android apps do not have any default permissions associated with it. A developer must explicitly state the permissions an app must request, while the end user must accept any requested `dangerous' permissions, some of which include the ability to read SMS messages, record audio through the phone's microphone, and access the user's location~\cite{AndroidSystemPermissions_URL}.
+
+The decision of what permissions an app should have access to should not be taken lightly since they carry a variety of possible security and functional implications. Some of which include under \& over-permissions, increased app susceptibility to malware and unwanted data leakage to ad libraries~\cite{Felt:2011:APD:2046707.2046779, Grace:2012:UEA:2185448.2185464}. In order to more properly address these permissions-based issues, we need to understand more about permissions in the app development process. In the following work, we describe our examination of  open source Android app repositories in order to better understand how permissions fit into the development process. Our work is guided by the following research questions:
+
+\noindent
+\textbf{RQ1:}~\emph{What is the correlation strength between the overall number of commits by a developer, and permission-based commits?} We found that developers with low project commit ratios make a disproportionately high number of permissions-based project decisions and that there is no significant correlation between the number of project commits, and permissions-related project commits.
+
+\noindent
+\textbf{RQ2:}~\emph{Is there a correlation between the ratio of developer permission-based commits to overall project commits, and user ratings?} We found virtually no relationship between the ratio of developer permission-based commits to overall project commits, and user ratings.
+
+
+\noindent
+\textbf{RQ3:}~\emph{At what development stages are permissions being added to Android projects?} We found that permissions are added at a fairly consistent level throughout the development life cycle of an app. %, but often encounter spurts in permission additions at various stages.
+
+
+The rest of the paper is organized as follows: In Section~\ref{sec: relatedworks} we discusses related work and Section~\ref{sec: androidapps} describes the permission structure of Android apps. Section~\ref{sec: collection} presents our collection and analysis process, while Section~\ref{sec: evaluation} addresses our research questions. Section~\ref{sec: futurework} discusses future work to be conducted in this area, while Section~\ref{sec: conclusion} concludes our work.
+
+
+\section{Related Work}
+\label{sec: relatedworks}
+
+% The MSR 2015 data paper
+% Mention the felt studies of oveprivs
+% What studies show when permissions are added to an app?
+
+
+%%%% Update this to make it relevant and change its wording from the security darwin paper
+%Thus far, there has been relatively little work on understanding when and why Android permissions are added during an app's development process. However, t
+
+There has been substantial work in understanding why Android permissions are inappropriately used, and the negative implications misuse carries. Grace et al.\cite{Grace:2012:UEA:2185448.2185464} conducted work on permissions probing and found that more than half of all ad libraries try to probe for available app permissions. Upon discovering an available permission in the app they are attached to, ad libraries may then collect potentially sensitive user information, which could severely hurt the privacy of the user. This issue demonstrates the importance of ensuring that apps have appropriate permissions. Stevens~\emph{et al.}\cite{6624000} analyzed 10,000 free Android apps and found that an effective method of avoiding permission misuse is through developer education and community support.
+
+
+Research has been conducted in analyzing the effects of permissions on the user's perception of the app. Egelman et al.\cite{Egelman12choicearchitecture} found that approximately 25\% of users were typically willing to pay a premium in order to use the same application, but with fewer permissions. Contrary to these findings, other research has argued that users typically pay little attention to permissions when installing an app, and often do not understand or care about the precise functionality for most of the granted permissions~\cite{Felt:2012:APU:2335356.2335360, Kelley:2012:CPI:2426020.2426027}.
+
+
+
+%%% Might be good to include, but not really sure this should be there in the lit review
+Krutz~\emph{et al.}\cite{krutz2015FDroid} created a public dataset of over 10,000 Android apps from the F-Droid\footnote{https://f-droid.org/} repository, which we used as the basis for our work.\dan{add...}
+
+%% How do people contribute to open source projects
+%%%%%% Not sure there is enough space for this
+%There are a wide range of current works which have analyzed open source projects for a variety of security and quality related tendencies.~\cite{5560680, Meneely:2009:SOS:1653662.1653717}
+
+
+
+
+%%% 100 App reviews:
+
+
+
+
+\section{Android Permissions}
+\label{sec: androidapps}
+
+Android apps operate under a permission-based system where each app requires specific permissions to carry out specific functionality. For example, in order for an app to read SMS messages, it must request the \texttt{READ\_SMS} permission, and to use the camera the app would request the \texttt{CAMERA} permission. The~\emph{AndroidManifest.xml} file contains all requested permissions for an app. In the current version of Android (6.0), there are 136 permissions available for developers~\cite{AndroidPermissions_URL}. While many of these permissions are considered to be less dangerous or \emph{Normal} permissions, others carry significantly more potentially hazardous risks and are known as \emph{Dangerous} permissions. Users must explicitly allow the app to make use of these more threatening permissions. Deciding on the permissions an app should request is considered to be one of the most sensitive activities undertaken during app development due to the potential security risks~\cite{Felt:2011:APD:2046707.2046779, 5482589} and possible negative effects on the user's perception of the app~\cite{Egelman12choicearchitecture}. In our analysis, we recorded both Normal and Dangerous permissions.
+
+
+
+% There is a strong correlation between the rating and the number of app downloads \cite{6224306}
+
+
+
+\section{Data Collection and Analysis}
+\label{sec: collection}
+
+%Our dataset was built in two primary phases: the data collection process which included gathering source code and version control information from the F-Droid repository, and then analyzing the this information using a custom built tool, oSARA.
+
+%\hl{In order to analyze the collected repositories, we created a tool known as the Open Source Android Repository Analyzer (oSARA)}. Using this tool,
+
+Following a process similar to one defined by Krutz et al.\cite{krutz2015FDroid}, our first step was to collect open source Android repositories from F-Droid, which hosts over 1,100 open source Android apps. We collected the complete git repositories for each app, which contains all version control information about each project. In order to analyze the collected repositories, we created a tool known as `the Open Source Android Repository Analyzer (oSARA). Using this tool, we extracted version control commit information such as when the commit was made and who the committer was. The committed version of the AndroidManifest.xml file was also extracted from from the repositories, and all metadata was stored in an SQLite database. Using this information, we were able to correlate the altered Android permissions with a specific commit in the version control repository. We then calculated the Developer's Commit Ratio (DCR) for each app, which is defined as: DCR = $(\frac{Individual Author Commits}{Total App Commits})$. For each committed AndroidManifest.xml file that contained altered permissions, we recorded this DCR value. In this analysis, we only examined the master branch for each git repository, and only considered apps with at least 2 committers and at least 10 commit updates to the AndroidManifest.xml file. This left us with a total of 481 apps with a total of 13,036 manifest commits.
+
+
+
+% View to get the 481 apps
+% select AppID, count (AppID) as AppCount from android_manifest_commitinfo group by appID
+
+
+%% No way to ensure that single developers are not using muliple accounts
+
+%% User Ratings
+We then calculated the average Google Play user rating for each of the collected apps, which we found by matching the retrieved package and app name to the corresponding app in Google Play. We did not create associations when we did not find matches for both the package and app name, and excluded this information from our analysis. We also excluded apps with less than 25 user reviews, leading to a total of 96 apps. This sample size is larger or similar in size to other studies which have examined user feedback in Android apps~\cite{Khalid:2014:PDT:2635868.2635909, Gui:2015:TAH:2818754.2818769}. An overview of the data collection and analysis process is shown in Figure~\ref{fig:analysisprocess}.
+
+
+    \tikzstyle{line} = [draw, -latex']
+
+    \tikzstyle{block} = [rectangle, draw, fill=white!20,
+    text width=5em, text centered, rounded corners, node distance=2.2cm, minimum height=4em]
+
+  %  \tikzstyle{GP} = [rectangle, draw, fill=blue!20, text width=5em, text centered, node distance=2.2cm, minimum height=4em]
+
+ %   \tikzstyle{database}=
+  %      [cylinder, draw, fill=white!20, draw=black!70, minimum width=1.5cm, minimum height=2cm, rotate=90, text centered]
+
+
+%\tikzstyle{database}=[cylinder,draw=black,thick, minimum width=1.5cm, minimum height=2cm,
+%        shape border rotate=90]
+
+
+%   \tikzstyle{database}= [cylinder, draw, fill=white!20, draw=black!70, minimum width=1.3cm, minimum height=2.4cm,text centered, shape border rotate=90]
+
+
+\tikzstyle{database}= [fill=blue!20, cylinder, shape border rotate=90, draw,minimum height=2.2cm,minimum width=1.55cm]
+
+
+	\begin{figure}[h]
+	\begin{center}
+% \resizebox {\columnwidth} {!} {  %% Makes the image too big
+    \resizebox{.45\textwidth}{!}{
+	\begin{tikzpicture}[node distance = 2cm, auto]
+    % Place nodes
+     		\node [database] (init) {F-Droid};
+     		\node [block, right of=init] (jar) {Collect Repositories};
+     		\node [block, right of=jar] (java) {Analyze Repositories};
+     		\node [block, right of=java] (R) {Data Analysis};
+ %           \node [block, right of=R] (sqlite) {SQLite DB};
+
+            \path [line] (init) -- node {}(jar);
+     		\path [line] (jar) -- node {}(java);
+     		\path [line] (java) -- node {}(R);
+%            \path [line] (R) -- node {}(sqlite);
+
+	\end{tikzpicture}
+%	}
+}
+	\end{center}
+	\caption{App Repository Collection and Analysis Process\todo{add a box for oSARA}}
+	\label{fig:analysisprocess}
+	\end{figure}
+
+
+
+% \vspace{-8mm}
+
+\section{Evaluation}
+\label{sec: evaluation}
+
+% Our primary research questions will be answered in the following section.
+
+Using the collected data, we were then able to address our research questions. \\
+
+\noindent
+\textbf{RQ1: What is the correlation strength between the overall number of commits by a developer, and permission-based commits?} %\emph{We found that developers with low project commit ratios make a disproportionately high number of permissions-based project decisions and that there is no correlation between the number of project commits, and permission related project commits.}
+
+Our first goal was to calculate the ratio of a developer's permission-based commits to overall project commits. Understanding who is making permissions-related project decisions is important since permissions often negatively affect a user's perception of the app~\cite{Egelman12choicearchitecture} and carry numerous security related risks~\cite{Felt:2011:APD:2046707.2046779, 5482589}. Using oSARA, we recorded the developer's DCR score for each added or removed permission in the app's commit history, which provided us with a ratio of a developer's permissions-related commits to overall project commits. In our analysis, we were careful to count only altered permissions in an app's commit history. If a developer did not change the app's requested permissions, this commit was not included in our permissions-related analysis since it did not include a permissions-related alteration. However, this commit would be included in our count of the overall developer commits since it did involve other alterations to the project. We recorded the average DCR mean, mode, median, and standard deviation for all analyzed apps. The results of this analysis is shown in Table~\ref{Table:percentageCommitPermssion}.
+
+
+\begin{table}
+\begin{center}
+\caption{Developer DCR Statistics}
+\label{Table:percentageCommitPermssion}
+ \begin{tabular}{ | l | c | c | c | c | } \hline
+
+  \bfseries Permission Action & \bfseries Mean & \bfseries Mode & \bfseries Median & \bfseries Std  \\ \hline
+
+    Add & .52 & .84 & .45 & .333 \\ \hline
+    Remove & .524 & .84 & .5 & .335 \\ \hline \hline
+    Total & 0.521 & 0.84 & .5 & .334 \\ \hline
+	
+  \end{tabular}
+  \end{center}
+\end{table}
+
+
+%% The data is now skewed and is centered around .5, but it is widely distributed
+%All
+%Mean	0.521483898
+%Mode	0.84
+%Median	0.5
+%Std	0.333794422
+%Range	1
+%
+%+
+%Mean	0.519277382
+%Mode	0.84
+%Median	0.45
+%Std	0.332817837
+%Range	1
+%
+%
+%-
+%Mean	0.523728766
+%Mode	0.84
+%Median	0.5
+%Std	0.334779493
+%Range	1
+
+
+
+
+%%% low presenters are responsabile for X number of the commits
+
+Although the mean of the DCR values are centered around .52, the large standard deviation of .33 demonstrates a significant variation of the DCR levels among all of the developers. In order to better understand this large range, we next examined the DCR level of committers at a much more granular level. Our first step was to group all developers into five groups based on their percentage of commits they were responsible for in an individual project. For each of these groups, we determined the average number of permissions both added and removed  for each developer in this group. The results of this analysis are shown in Figure~\ref{fig:permissionRanges}.
+
+
+% Table~\ref{Table:permissionRanges}.
+
+
+ %%% Get all the commits for these users, not just their permission based commits
+ %%     Wouldn't it just be lower there?
+
+
+% \begin{table}[h]
+%\begin{center}
+%\caption{Developer Commit Ranges\todo{bar chart}}
+%\label{Table:permissionRanges}
+% \begin{tabular}{ | c | c | } \hline
+%
+%  \bfseries \% of Project Commits & \bfseries \% of Permissions Based Alterations \\ \hline
+%
+%    0-.19 & 24    \\ \hline
+%    .2-.39 & 11    \\ \hline
+%    .4-.59 & 20    \\ \hline
+%    .6-.79 & 14   \\ \hline
+%    .8-1.0 & 31    \\ \hline
+%
+%  \end{tabular}
+%  \end{center}
+%\end{table}
+
+
+
+
+%\definecolor{bblue}{HTML}{4F81BD}
+%\definecolor{rred}{HTML}{C0504D}
+%\definecolor{ggreen}{HTML}{9BBB59}
+%\definecolor{ggrey}{HTML}{707070}
+%
+%
+%\begin{center}
+%\begin{tabular}{@{}lp{2cm}}
+%%\resizebox {\columnwidth} {!} {
+% % \resizebox{.8\textwidth}{!}{
+%% \scalebox{.9}[0.85]{ %Width, Height
+%\scalebox{1.1}[.9]{ %Width, Height
+%\begin{tikzpicture}
+%    \begin{axis}[
+%        width  = .50*\textwidth,
+%        height = 8cm,
+%legend style={at={(0.47,0.3)},anchor=north},
+%        major x tick style = transparent,
+%        ybar,
+%%        bar width=10pt,
+%        bar width=18pt,
+%        ymajorgrids = true,
+%	xlabel={Developer Commit Group by Percentage of Commits},
+%	ylabel = {Average Developer DCR \%},
+%        symbolic x coords={0-.19,.2-.39, .4-.59, .6-.79, .8-1},
+%        xtick = data,
+%        scaled y ticks = false,
+%    ]
+%
+%       \addplot[style={ggreen,pattern=north east lines,mark=none}, postaction={}] % Precision
+%           coordinates {(0-.19, 24) (.2-.39,11)(.4-.59,20)(.6-.79,14)(.8-1,31)};
+%
+%    \end{axis}
+%
+%\end{tikzpicture}
+%}
+%\end{tabular}
+%  \captionof{figure}{Developer Commit Ranges\todo{add bar items}}
+%\label{fig:permissionRanges}
+%\end{center}
+
+
+
+
+
+
+
+
+
+\definecolor{bblue}{HTML}{4F81BD}
+\definecolor{rred}{HTML}{C0504D}
+\definecolor{ggreen}{HTML}{9BBB59}
+\definecolor{ggrey}{HTML}{707070}
+
+
+\begin{center}
+\begin{tabular}{@{}lp{2cm}}
+%\resizebox {\columnwidth} {!} {
+ % \resizebox{.8\textwidth}{!}{
+% \scalebox{.9}[0.85]{ %Width, Height
+\scalebox{.8}[.8]{ %Width, Height
+ \begin{tikzpicture}
+    \begin{axis}[
+        ybar stacked,
+        bar width=14pt,
+%        axis lines*=middle,
+        xlabel={Developer Commit Group by Percentage of Commits},
+	    ylabel = {Average Developer DCR \%},
+        symbolic x coords={0-.19,.2-.39, .4-.59, .6-.79, .8-1},
+        axis on top=false,
+        xtick=data,
+        enlarge y limits=0.2,
+       % after end axis/.code={
+%            \node at ({rel axis cs:0,0}|-{axis cs:0,0}) [anchor=east] {0};
+%        }
+    ]
+      \addplot[
+        fill=ggreen,
+        draw=none,
+        bar shift=12pt,
+        mark options={
+            gray,
+            thick,
+            dashed
+        },
+        mark=waterfall bridge
+        %% Added permissions
+      ] coordinates { (0-.19, 12) (.2-.39, 05) (.4-.59,11) (.6-.79,07) (.8-1,15) };
+      \addplot[
+        fill=ggrey,
+        draw=none,
+        bar shift=12pt
+        %% Removed permissions
+      ] coordinates { (0-.19,12) (.2-.39,06) (.4-.59,09) (.6-.79,07) (.8-1,16)};
+    \end{axis}
+  \end{tikzpicture}
+}
+\end{tabular}
+  \captionof{figure}{Developer Commit Ranges\todo{fix chart}}
+\label{fig:permissionRanges}
+\end{center}
+
+
+
+%This demonstrates and that over 55\% of all permissions based commits are being made by these two groups.
+\todo{add description of adding and removing permissions}
+
+This demonstrates that a surprisingly large number of authors with low amounts of project based commits performed a large number of permission-related commits. For example, authors who performed less than 20\% of an app's total commits performed 24\% of a project's permission-related commits. Permissions-related commits for authors who had significantly more project related commits was higher, but still not proportional with the number of overall project commits. We also found that developers in each category had approximately the same likelihood of adding or removing permissions.
+
+
+% The data collected from the static analysis tools along with user ratings data was analyzed using standard libraries, such as the {\it stats} library in R.
+
+
+We next used the Spearmen, Kendall and Pearson correlation metrics to determine the correlation strength between a developer's total project commits, and permission-based commits. The results of our analysis is shown in Table~\ref{Table:commitownership}. When using these correlation metrics, the correlation coefficient will vary between -1 and +1. As the value of the coefficient approaches $\pm$1, there is more of a monotonic, or perfect degree of association between the evaluated values. The relationship between the evaluated values becomes weaker as the correlation coefficient approaches 0. Our findings demonstrate an extremely weak association between the total number of application commits, and permissions-related commits. This further indicates that developers with a low number of project commits were making a disproportionably high number of permissions-related commits.
+
+\begin{table}[h]
+\begin{center}
+\caption{Correlation of Total Commits and permission-based Commits}
+\label{Table:commitownership}
+
+
+    \begin{tabular}{ | c | c | c | } \hline
+
+    \bfseries ~~~~Spearman~~~~ & \bfseries ~~~~Kendall~~~~ & \bfseries ~~~~Pearson~~~~  \\ \hline \hline
+    0.044 & 0.025 & 0.067 \\ \hline
+  \end{tabular}
+
+  \end{center}
+\end{table}
+
+
+
+%%% Next show the chart with the ownership vs. Permission info "growthrate "
+
+% We used the Spearman rho and Kendall correlation metrics to determine if there was a correlation between quality and security. Using these correlation metrics, we evaluated the relationship strength of quality (Coding Standards Defects \& Jlint Errors) and security (Androrisk \& over-permissions). The results of this analysis are shown in Table~\ref{table:appCorrelationMetrics}.
+
+
+
+%\noindent
+%\textbf{Discussion:} % implications
+
+
+
+The implications for these results are important since the proper use of permissions is crucial for a variety of security and functional reasons~\cite{Felt:2011:APD:2046707.2046779, 5482589, Egelman12choicearchitecture}. A key question is why developers with such a low number of overall project commits are making a disproportionately high number of permissions-based decisions. There are several possible explanations for this which should be further explored. One possibility is that developers with less project commits will have less overall project knowledge, and will mistakenly believe that permissions should be added or removed from the project. A contrarian view would suggest that `permission experts' perform a large number of permission-related changes to apps, but do not make a significant number of other alterations.
+
+
+
+We next sought to understand if developers from several projects were making a high ratio of permissions based commits across several projects. By using the developer's email address, we first located developers who had made commits to at least 3 projects. This left us with a total of 15 different developers across 100 projects, 17,527 overall git commits, 617 updated AndroidManifest.xml files, and 1,342 altered permissions. \todo{what is the proper way to do this?}
+
+%% Double check these numbers
+
+\todo{finish}
+
+
+%%% See if there is a higher ratio of these people compared to everyone across all projects
+
+
+%% Add in other assumptions
+
+
+
+
+%%% However, would the higher committers then receive higher scores since they would be removing/adding these permissions back into the system?
+
+
+
+
+%%% MIght not be a bad idea to find specific instances of these people
+
+
+%%% Ratings
+
+
+
+%%%% 1)
+% % of commits that remove vs. add permissions
+
+% Adds: 18087
+% Removing: 17778
+
+%% The commiters who alter an app's permissions account for approximately 52% of an app's total commits
+%   Developers are just as likely to add and remove permissions, but only the developers who account for 52% of all commits alter an app's permissions
+%%	?? What other types of analysis could be done on this data?
+
+	% Maturity of committers who add permissions
+	% Total:
+	% Add: 0.519277381544774
+	% Remove: 0.523728765890443
+
+
+
+%%%% 2) The rate that permissions are added to apps
+% <<Show chart>>
+
+
+
+
+
+
+
+%% Who made the initial permission commit in permssions which are in A) The most recent version of the app B) Were in the app for more than 40 versions?
+
+
+% Count the number of adds and removes for each commit. Right now, we are just calculating the total count differences
+% During the lifecycle of an app, look at ownership commits - Compare the different charts with one another
+
+
+
+%%% Measure the ownership changes at each commit level
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Check to see
+
+
+% ) Check to see how many authors work on multiple projects
+
+
+
+%%% Do a correlation of the number of projects that each top committer has
+%%%%		Check to make sure that I am just not collecting the top values with the view I wrote
+%%% Manually join similar emails ???????
+
+%
+%-- Committer cross projects
+%select trimmedEmail, max(GHCommitCount) as maxGHCommits, min(GHCommitCount) as minGHCommits, round(avg(GHCommitCount),1) as avgGHCommits
+%from (
+%	select count(AppID) as GHCommitCount, appID, trimmedEmail
+%	from githistory gh
+%	group by trimmedemail, appID
+%	order by AppID, trimmedEmail
+%) a
+%where trimmedEmail <> ''
+%group by trimmedEmail
+%
+%
+%
+%
+%
+%select author_email, max(GHCommitCount) as maxAMCommits, min(GHCommitCount) as minAMCommits, round(avg(GHCommitCount),1) as avgAMCommits
+%from (
+%	select count(AppID) as GHCommitCount, appID, author_email
+%	from android_manifest_commitinfo
+%	group by author_email, appID
+%	order by AppID, author_email
+%) a
+%where author_email <> ''
+%group by author_email
+%
+%
+%
+%
+%
+%
+%select author_email, max(GHCommitCount) as maxAMCommits, min(GHCommitCount) as minAMCommits, round(avg(GHCommitCount),1) as avgACommits, maxGHCommits, minGHCommits, avgGHCommits
+%from (
+%	select count(AppID) as GHCommitCount, appID, author_email
+%	from android_manifest_commitinfo
+%	group by author_email, appID
+%	order by AppID, author_email
+%) a
+%left join (select trimmedEmail, max(GHCommitCount) as maxGHCommits, min(GHCommitCount) as minGHCommits, round(avg(GHCommitCount),1) as avgGHCommits
+%from (
+%	select count(AppID) as GHCommitCount, appID, trimmedEmail
+%	from githistory gh
+%	group by trimmedemail, appID
+%	order by AppID, trimmedEmail
+%) a
+%where trimmedEmail <> ''
+%group by trimmedEmail
+%) gh1 on gh1.trimmedEmail = author_email
+%
+%
+%where author_email <> ''
+%group by author_email
+%
+%
+%
+%
+%
+%
+%
+%	drop view App_Author_GH_Contributes_view;
+%	create view App_Author_GH_Contributes_view as
+%	select distinct (gh.trimmedemail), gh2.AuthorCount as totalAuthProjects,  gh3.totalAuthCommitCount as totalAuthCommitCount, ManifestAuthorCount, gh5.authorCount, gh5.totalcommit , gh5.percentcommitter, maxAMCommits, minAMCommits, avgACommits, maxGHCommits, minGHCommits, avgGHCommits
+%	from githistory gh
+%    inner join (
+%    select count(distinct(gh.appID)) as AuthorCount, gh.trimmedemail  from githistory gh  group by gh.trimmedemail order by trimmedemail, gh.appID
+%    ) gh2 on gh2.trimmedemail = gh.trimmedemail
+%    inner join (select count(gh.trimmedemail) as totalAuthCommitCount, gh.trimmedemail from githistory gh group by gh.trimmedemail) gh3 on gh3.trimmedemail = gh.trimmedemail
+%
+%	left join (select count(author_email) as ManifestAuthorCount, author_email from android_Manifest_commitInfo amc where author_email <>'' group by author_email
+%) gh4 on gh4.author_email = gh.trimmedemail
+%
+%left join(select distinct(SUBSTR(SUBSTR(email, 3,LENGTH(email)-0), 1,LENGTH(SUBSTR(email, 3,LENGTH(email)-0))-1)) as trimEmail, authorCount, totalCommit, percentCommitter
+%from PermissionChange_FrequencyBase_view
+%where trimEmail <> ''
+%order by trimEmail) gh5 on gh5.trimEmail = gh.trimmedemail
+%
+%
+%inner join(
+%	select author_email, max(GHCommitCount) as maxAMCommits, min(GHCommitCount) as minAMCommits, round(avg(GHCommitCount),1) as avgACommits, maxGHCommits, minGHCommits, avgGHCommits
+%from (
+%	select count(AppID) as GHCommitCount, appID, author_email
+%	from android_manifest_commitinfo
+%	group by author_email, appID
+%	order by AppID, author_email
+%) a
+%left join (select trimmedEmail, max(GHCommitCount) as maxGHCommits, min(GHCommitCount) as minGHCommits, round(avg(GHCommitCount),1) as avgGHCommits
+%from (
+%	select count(AppID) as GHCommitCount, appID, trimmedEmail
+%	from githistory gh
+%	group by trimmedemail, appID
+%	order by AppID, trimmedEmail
+%) a
+%where trimmedEmail <> ''
+%group by trimmedEmail
+%) gh1 on gh1.trimmedEmail = author_email
+%
+%
+%where author_email <> ''
+%group by author_email
+%
+%) ci on ci.author_email = gh.trimmedemail
+%
+%
+%
+%where gh.trimmedemail <> ''
+%group by gh.trimmedemail
+%order by gh2.authorCount desc;
+%	
+%select * from App_Author_GH_Contributes_view;
+
+
+
+
+
+
+
+
+
+
+
+%%%% mention that.... -> We only know people who are contributing to these GH projects, cannot tell what other projects outside the ones we collected the authors have contributed in
+
+
+
+
+
+
+
+
+
+
+
+%%%% Check to see which permissions were being added by specific people
+\todo{which permissions are being added by specific committers}
+
+
+
+
+%%% Is there a correlation between the permissions users are adding and overprivs in general
+
+%%%
+
+
+
+
+-- Tie ins between specific permissions, overprivs and developer comprehension
+-- Where can I get complete results for this from?
+- Maybe mention that we ran stowaway on XK Google play apps. Many other works have reported the top overprivs, we wanted to get a listing of them all.
+
+
+
+
+
+
+
+
+%% User ratings
+\textbf{RQ2: Is there a correlation between the ratio of developer permission-based commits to overall project commits, and user ratings?}
+
+We found that low percentage committers were making a large amount of permission changes, so our next goal was to examine any effects this may have on user ratings. From our collected data, we performed Spearman, Kendall and Pearson correlations to determine if there was a relationship between the ratio of developer permission-based commits to overall project commits, and user ratings for an app. The results of this analysis are shown in Table~\ref{Table:userRationCorrelation}.
+
+
+
+ \begin{table}[]
+\begin{center}
+\caption{DCR Score and User Rating Correlation}
+\label{Table:userRationCorrelation}
+ \begin{tabular}{ | c | c | c | } \hline
+
+    \bfseries ~~~~Spearman~~~~ & \bfseries ~~~~Kendall~~~~ & \bfseries ~~~~Pearson~~~~  \\ \hline \hline
+    0.086 & -0.059 & -0.0969 \\ \hline
+
+        %Spear: 0.08593607
+        %Kendall: -0.0595565
+        %Pearson: -0.09695318
+
+  \end{tabular}
+  \end{center}
+\end{table}
+
+
+These values indicate very weak relationships between the ratio of developer permission-based commits to overall project commits, and user ratings. Although developers with a low number of project commits are making a disproportionably high number of permissions-related commits, this does not appear to have a strong effect on user ratings (perception) of an app. \\
+
+
+
+
+
+
+%% Talk about why it is important to understand the lifecycle of an app.
+\textbf{RQ3: At what development stages are permissions being added to Android projects?} %\emph{We found that permissions are being added at a fairly consistent level, but with a slight increase about 94 commits in to a project.}
+
+Our final research question was to understand the rate that permissions are being added and removed from Android apps. We began by selecting apps with at least 120 commits to their AndroidManifest.xml file, which did not need to contain alterations to the requested app permissions, only changes to any part of the file. We selected 120 commits since this represented a significant number of commits, and because we had at least 25 different apps with this number of AndroidManifest.xml commits. For commits 1-120 of the AndroidManifest.xml file, we determined the average number of permissions requested in each group. The results are shown in Figure~\ref{fig:Evolution}. On average, apps began with 4.68 permissions in their initial commit, and grew to requesting 10.05 permissions in commit 120. Our findings demonstrate that requested permissions are growing at a reasonably steady rate throughout an app's life cycle.
+
+%\begin{minipage}{1.0\linewidth}
+          \begin{figure}[h]
+              %\includegraphics[width=\linewidth]{images/PermissionLifeCycle.png}
+              \includegraphics[scale=0.55]{images/PermissionLifeCycleTrendLine.png}
+
+              \caption{Rate of Added Permissions\todo{make into latex chart?}}
+              \label{fig:Evolution}
+          \end{figure}
+ %     \end{minipage}
+
+% Add a "moving average bar" to the table - In excel this is called a "Trendline" ?
+% The first 120 commits of apps with at least 120 alterations to their AndroidManifest file.
+
+
+%%% Removed since I did not feel like an analysis would be all that useful
+ % Surprisingly, there is a large jump in the number of requested permissions beginning from the \#94-\#120 commit mark with an average of 3.18 permissions added during this time frame. This is surprising since in the previous 93 commits, there was only an average growth of 2.19 permissions. % Our results also demonstrate that permissions are sometimes even removed from apps, which demonstrate that this is something which developers are paying attention to.
+
+The intent is to show that permissions are added at a near-linear rate, some limitations would include the availability of new permissions, or changes to the Android permission structure.
+
+
+
+
+%%%%%%%%%%
+% Look at committers across projects
+% permission churn rate to permission usage
+%
+
+
+
+\section{Ad Libraries} % Rename
+
+
+
+-	\hl{How often are AD libraries changed during the development process? When are they added during the app development process.}
+%		Where would these AD libraries be referenced? (In the code)?
+%		Could we build a detection mechanism to find these?
+%		Run PScout on the completed APK files. Get these values to see if there is a correlation.
+%	
+
+
+% ? How does Android M work with Ad libraries? How does this new process affect things?
+
+% Is there a correlation between Ad libraries, and permissions in general?
+% Correlation between # of ads and rating (tie into mei's study)
+% Correlation between when an ad is added (and number of them) and rating
+% Do the commit messages tell us anything
+
+
+% Maybe correlate with Findbugs: Have Cesar run Findbugs on the APKs and add these to the DB
+
+% Look at Mei's Ad library paper to see how he discovered Ad libraries. This will likely be a larger, student driven task.
+
+
+
+%%% Maybe provide a short section on this after each part?
+\section{Future Work}
+\label{sec: futurework}
+
+Although our results provided several interesting findings, there are areas which can be more thoroughly explored and elaborated upon. In our analysis, we studied open source Android apps in a variety of categories, but only from a single source. In future work, we will expand our app selection and include apps collected from other sources as well. However, this could be difficult since finding a substantial number of other open source repositories for Android apps may be a challenging process.
+
+
+Previous work has analyzed apps through the examination of version control repositories and many studies have integrated developer interviews in their analysis. Our work should be expanded to include developer interviews and more qualitative information. Further work could also be done to examine apps at different development stages using various static analysis tools  to examine a variety of security and quality based metrics of each app. Some potential tools include Stowaway~\cite{Felt:2011:APD:2046707.2046779}, PScout\footnote{\url{http://pscout.csl.toronto.edu/}}, FindBugs\footnote{\url{http://findbugs.sourceforge.net/}}, or TaintDroid\footnote{\url{http://www.appanalysis.org/download.html}}.
+
+% Threats
+\hl{Evaluating apps through user ratings is a difficult task as there are numerous security and quality metrics which may affect a user's perception of the app. Although some studies have found that permissions significantly affect a user's perception of an app, other studies have demonstrated that permissions play a much more significant role in a user's perception of an app and that there are numerous other factors which play a much more significant role.}
+
+% There are many
+
+
+%% Look for users across different projects. Experts?
+%% Correlate the size of the project into the analysis.
+
+
+
+\todo{look at other feedback from MSR paper and add this in}
+
+
+
+\section{Conclusion}
+\label{sec: conclusion}
+
+
+%The goal of this research was to better understand how permissions are being added to Android apps.
+
+
+\noindent \textbf{Summary}:
+We examined 1,179 open source Android apps from the F-Droid repository to better understand when, why and how permissions are added to open source Android apps. We also checked for a correlation between the number of permissions and total app commits by a developer, and user ratings.
+
+\noindent \textbf{Findings}:
+We found that: I) Developers with a low number of project based commits make a disproportionately high number of permissions-related commits. II) The user rating of an app is not affected by the number of permissions added by low or high-committers. III) Permissions are consistently added to an app during its development.
+
+
+%We found that: A) There is only a very weak correlation in the ratio of permissions based commits and overall project commits by a developer. In fact, we found that developers with low overall project commits make a disproportionately high number of permissions related commits. B) That there is no significance correlation in the ratio of permission based commits to overall project commits of a developer, and user rating of the app. C) Permissions are
+%added at a fairly consistent amount throughout the software project. \todo{reword this entire section}
+
+
+\balance
+\bibliographystyle{abbrv}
+\bibliography{FdroidPermissions}
+
+
+
+\end{document}
+
+
+
+%%%%% Types of comparisions that we can do
+
+%	Kolmogorov-Smirnov
+%	Mann-Whitney U
+%	Standard deviation
+
+
+
+
+? Who is removing the overprivs
+-- double check the results to make sure that they are accurate
+
+
+- Are developers that change permissions more often more likely to add overprivs?
+
+********
+We next checked to see
+
+
+
+-- For all developers, see if there is a correlation with the number of added permissions and recorded overprivs
+
+
+
+
+
+-- If people add 1 overpriv, are they likely to add another?
+-- Are the same people adding overprivs, removing them?
+-- How frequently are overprivs removed?
+
+%%% Todo
+
+
+
+%%% Other stats ideas
+% 	Interview some of Hussein's friends. See if we can do a developer study.
+%		Potential questions: Who adds permissions to apps? When are they added? Why do you add or remove permissions from apps? How much attention do you pay to app permissions?
+%	? Has this type of study been done before?
+
+
+
+% Other RQs
+%	
+
+
+
+% Venues
+%	IEEE Software:
+%	ICSME 6/24 ERA: http: //icsme2016.github.io/cfp/era-track.html
+%	FSE: Workshop? - Mei said it MIGHT fit in here
+
+
+
+
+%%% Other random thoughts
+%	Who is adding the overprivs
+%	Are people removing the overprivs
+%	When are they being added in
+%	What is the rate of adding and removing permissions
+%   
+
+
+% What permissions are most likely to be added, but not altered. Does this tie into permission comprehension.
+
+
+
+%% Actions
+%	Double check the results being returned from the manifest examination list
+%	

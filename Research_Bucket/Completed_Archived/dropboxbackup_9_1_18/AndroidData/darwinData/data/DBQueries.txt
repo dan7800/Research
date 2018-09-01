@@ -1,0 +1,228 @@
+%%%%% These can probably be broken down into individual queries, or written more eloquently to be released
+%% Or even include this information as views in the actual sqlitedb
+
+
+%%%%%% Get basic app information with tool results
+
+drop view App_ToolInfo_MinJava;
+CREATE VIEW App_ToolInfo_MinJava AS
+ select ai.rowID, * 
+    from apkinformation ai
+    inner join toolresults tr on ai.rowID = tr.rowID
+    left outer join (select count (permissionID) as OPrivCount, apkID from overprivilege o group by apkID) overprivCount on overprivCount.apkID = ai.rowID
+    left outer join (select count (permissionID) as UPrivCount, apkID from underprivilege u group by apkID) underprivCount on underprivCount.apkID = ai.rowID
+    inner join (select count (privID) as PrivCount, rowID from apkParser_privs_join apj group by rowID) permissionCount on permissionCount.rowID = ai.rowID
+    inner join signinginfo si on si.rowID = ai.rowID
+    
+    where javaFiles >0
+
+
+    -----> Same thing, but with clearner name
+
+drop view App_ToolInfo;
+CREATE VIEW App_ToolInfo AS
+ select ai.rowID, * 
+    from apkinformation ai
+    inner join toolresults tr on ai.rowID = tr.rowID
+    left outer join (select count (permissionID) as OPrivCount, apkID from overprivilege o group by apkID) overprivCount on overprivCount.apkID = ai.rowID
+    left outer join (select count (permissionID) as UPrivCount, apkID from underprivilege u group by apkID) underprivCount on underprivCount.apkID = ai.rowID
+    inner join (select count (privID) as PrivCount, rowID from apkParser_privs_join apj group by rowID) permissionCount on permissionCount.rowID = ai.rowID
+    inner join signinginfo si on si.rowID = ai.rowID
+    
+    where javaFiles >0
+
+
+%%% Find the total number of apps that have overprivs
+    drop view appsWithOverPriv;
+    CREATE VIEW appsWithOverPriv AS
+    select count(ai.RowID), ai.OprivCount--, UprivCount
+        from App_ToolInfo_MinJava ai
+        left outer join (select count (permissionID) as OPrivCount, apkID from overprivilege o group by apkID) overprivCount on overprivCount.apkID = ai.rowID
+        left outer join (select count (permissionID) as UPrivCount, apkID from underprivilege u group by apkID) underprivCount on underprivCount.apkID = ai.rowID
+        inner join toolResults tr on tr.apkID = ai.rowID
+        where ai.oprivcount > 0
+
+
+
+
+%%%%%%%%%%%% More than 10k vs. less than 10k
+>>>> % Jlint and Defect /LOC are broken
+%%%%%  Make sure to get rid of null values
+        select ai.Name,
+  tr.FuzzyRiskValue as FuzzyRisk
+,  tr.JavaFiles  as JavaFiles
+,  tr.JlintResult  as JLint
+,  tr.DefectCount  as DefectCount
+,  tr.LOC  as LOC
+,  tr.simcad_clonefragment  as CloneFragment
+,  tr.simcad_cloneGroup  as CloneGroup 
+    ,  (tr.JlintResult/tr.LOC) * 100 as "Jlint/LOC"
+    ,  (tr.DefectCount/tr.LOC) * 100 as "Defect/LOC"
+    ,  OPrivCount  as OPriv
+    ,  UPrivCount  as UPriv
+    ,  PrivCount  as PrivCount
+    
+    from App_ToolInfo_MinJava ai
+    inner join toolResults tr on tr.apkID = ai.rowID
+    left outer join (select count (permissionID) as OPrivCount, apkID from overprivilege o group by apkID) overprivCount on overprivCount.apkID = ai.rowID
+    left outer join (select count (permissionID) as UPrivCount, apkID from underprivilege u group by apkID) underprivCount on underprivCount.apkID = ai.rowID
+    
+    --%% Keep this as inner join since apps with no permissions cannot exist
+    inner join (select count (privID) as PrivCount, rowID from apkParser_privs_join apj group by rowID) permissionCount on permissionCount.rowID = ai.rowID
+    
+    --and datepublished like '%2015%'
+    where lowerdownloads <10000  %%% Toggle this based on the number of downloads you want to check for
+    and tr.LOC > 0
+
+
+
+
+
+    %%%%%%% 
+    %% Get total number of discovered permissions
+
+
+
+%%%%%%%%%%% Get Top Genre Counts
+  
+    drop view topGenreCounts;
+    CREATE VIEW topGenreCounts AS
+    select genre, count(genre) as GenreCount from App_ToolInfo_MinJava group by genre order by GenreCount desc
+
+
+
+%%%%% Find which overprivs occur most often
+
+    drop view topOccuringOverPrivs;
+    CREATE VIEW topOccuringOverPrivs AS
+     select p.Name, round((CAST(count(p.Name) as float)/t2.TotalCount) * 100,2) as PercentOccuring, count(p.Name) as pCount, t2.TotalCount
+    from App_ToolInfo_MinJava ai
+    ,(select count(ai2.Name) as TotalCount from App_ToolInfo_MinJava ai2 inner join toolResults tr on tr.apkID = ai2.rowID 
+    --where lowerdownloads >=10000
+    ) t2
+    inner join overprivilege o on ai.rowID = o.apkid
+    inner join permissions p on p.pid = o.permissionID
+    --where ai.lowerdownloads >=10000
+    group by p.Name
+    order by pCount desc
+
+
+%%%%% Get version counts for all the apps
+    drop view appVersionCounts;
+    CREATE VIEW appVersionCounts AS
+    select Name, count(name) as Versions
+    from App_ToolInfo_MinJava
+    group by Name, Developer
+    order by versions desc
+
+
+%%%% Get average stats for all items
+
+    drop view avgAppValues;
+    CREATE VIEW avgAppValues AS
+    select round(avg(UserRating),2) as avgUserRating
+    , round(avg(GeneratedFileSize),2) as avgFileSize
+    , round(avg(FuzzyRiskvalue),2) as avgAndroRisk
+    , round(avg(JavaFiles),2) as avgJavaFiles
+    , round(avg(classFiles),2)as avgClassFiles
+    , round(avg(JLintResult),2) as avgJLint
+    , round(avg(DefectCOunt),2) as avgCodingStandardDefectCount
+    , round(avg(LOC),2) as avgLoC
+    , round(avg(Simcad_cloneFragment),2) as avgCloneFragment
+    , round(avg(UprivCount),2) as avgUnderPriv
+    , round(avg(OPrivCount),2) as avgOverpriv
+    , round(avg(privcount) ,2) as avgPermissions
+    from App_ToolInfo_MinJava
+
+
+
+%%%%% Get some overall stats
+
+    %% Privs -- Get overall stats
+
+    select count(OPrivCount), count(uPrivCount), count(privcount)
+    from apkinformation ai
+    inner join toolresults tr on ai.rowID = tr.rowID
+    left outer join (select count (permissionID) as OPrivCount, apkID from overprivilege o group by apkID) overprivCount on overprivCount.apkID = ai.rowID
+    left outer join (select count (permissionID) as UPrivCount, apkID from underprivilege u group by apkID) underprivCount on underprivCount.apkID = ai.rowID
+    inner join (select count (privID) as PrivCount, rowID from apkParser_privs_join apj group by rowID) permissionCount on permissionCount.rowID = ai.rowID
+    where javaFiles >0
+
+        %%%% Unique apps & versions
+
+
+
+%%%% Get general permission counts
+
+
+    drop view PermissionCount;
+    CREATE VIEW PermissionCount AS
+
+    select ap.PrivName, count(ap.privID) as PrivCount
+    from apkParser_privs_join apj
+    inner join apkParser_privs ap on ap.privID = apj.privid
+    inner join app_toolinfo_MinJava atm on atm.rowID = apj.rowID
+    group by ap.privName
+    order by PrivCount desc
+
+
+
+%%%% Get general Overprivs counts
+
+    drop view OPrivCount;
+    CREATE VIEW OPrivCount AS
+    select p.name, count(p.name) as OPrivCount
+    from Overprivilege o
+    inner join permissions p on o.permissionID = p.pid
+    inner join app_toolinfo_MinJava atm on atm.rowID = o.apkID
+    group by p.Name
+    order by OPrivCount desc
+
+
+%%%% Get general Underprivs counts
+
+    drop view UPrivCount;
+    CREATE VIEW UPrivCount AS
+
+    select p.name, count(p.name) as UPrivCount
+    from Underprivilege u
+    inner join permissions p on u.permissionID = p.pid
+    inner join app_toolinfo_MinJava atm on atm.rowID = u.apkID
+    group by p.Name
+    order by uPrivCount desc
+
+
+
+
+********** Signining Information **********
+
+%%%%% 
+select distinct owner_cn from signinginfo
+
+
+****************************************
+
+    %%% Get all of the apps with more than one md5 signing
+
+    drop view md5SigninginInfo;
+    CREATE VIEW md5SigninginInfo AS
+    select atm.rowid, atm.Name, atm.md5, atm.Developer, md5Count
+    from App_ToolInfo_MinJava atm
+    inner join (select count (atm3.md5) as md5Count, atm3.md5 from App_ToolInfo_MinJava atm3 group by atm3.md5) md5Count on md5Count.md5 = atm.md5
+
+    where md5Count > 1
+    order by atm.md5
+
+
+%%%% Merely gather the version info
+    select atm.rowid, atm.Name, atm.md5, atm.Developer, md5Count
+    from App_ToolInfo_MinJava atm
+    inner join (select count (atm3.md5) as md5Count, atm3.md5 from App_ToolInfo_MinJava atm3 group by atm3.md5) md5Count on md5Count.md5 = atm.md5
+
+    where md5Count >=6
+    order by md5Count--, atm.md5
+
+
+
+
+

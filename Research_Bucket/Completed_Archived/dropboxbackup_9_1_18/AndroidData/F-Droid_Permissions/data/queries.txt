@@ -1,0 +1,54 @@
+-- Who is adding the overprivs?
+-- Who is adding privs in general
+
+
+*****
+? Are we storing just the app's privs at all?
+
+
+*****
+
+
+
+#### Previous query
+select 
+    count(row_num), row_num
+
+    , round(avg(overprivCount.oprivcount),1) as OPriv
+    , round(avg(underprivCount.uprivcount),1) as UPriv
+    , round(avg(vul.fuzzy_risk),1)as FuzzyRisk
+    , round(avg(cs.ncloc),1) as NCLOC
+    , round(avg(cs.functions),1) as Functions
+    , round(avg(cs.violations),1) as Violations
+    , round(avg(cs.blocker_violations),1) as BlockerViolations
+    , round(avg(cs.critical_violations),1) as CriticalViolations
+    , round(avg(cs.major_violations),1) as MajorViolations
+    , round(avg(cs.minor_violations),1) as MinorViolations
+
+    from appdata ad
+
+    inner join version v on v.appID = ad.appID
+    left outer join Vulnerability vul on v.versionID = vul.versionID
+    left outer join codingStandard cs on v.versionID = cs.versionID
+    left outer join (select count (VersionID) as VersionCount, appID from Version v2 where isAPKExists=1 group by appID) VersionCount on (VersionCount.appid) = ad.appID
+    left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+    left outer join (select count (permissionID) as uprivcount, versionID from underpermission group by versionID) underprivCount on (underprivCount.versionID) = v.versionID
+    left outer join (select count (permissionID) as uprivcount, versionID from underpermission group by versionID) underprivCount on (underprivCount.versionID) = v.versionID
+
+    left outer join
+        (
+            SELECT appID, t.build_number, versionID, (SELECT COUNT(*) FROM version counter
+                   WHERE t.appID= counter.appID AND t.build_number >= counter.build_number and isAPKExists=1) AS row_num 
+            FROM version t
+    where isAPKExists=1
+            order by appID, row_num
+
+        ) vi on vi.versionID = v.versionID
+
+    where versioncount >=3
+    and v.isAPKExists = 1
+    and ncloc >0
+    group by row_num
+    --group by ad.appID, v.versionID
+    --order by ad.appID, row_num
+    

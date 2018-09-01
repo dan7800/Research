@@ -1,0 +1,132 @@
+
+
+
+\todo{update and talk about how we collceted Data for F-droid}
+We analyzed 30,020 Android application files over a period of 3 months using a variety of different tools. The results of this analysis have been stored in a publicly accessible database located on our project website\footnote{http://darwin.rit.edu}. Our methodology is as follows:
+
+\begin{enumerate}
+  \item Collect APK files
+  \item Reverse-engineer binaries
+  \item Execute static analysis tools
+  \item Complete evaluation (see Section~\ref{sec: evaluation})
+\end{enumerate}
+
+We created the~\emph{Darwin} tool that downloads Android Application (.apk) files and invokes various static analysis tools against these files.
+
+\label{sec: collection}
+\subsection{Step 1: Collect APK files}
+
+
+Android APK files were pulled from GooglePlay with a custom-built collector, which used~\emph{Scrapy}~\footnote{http://scrapy.org} as a foundation. We chose to pull from GooglePlay since it is the most popular source of Android applications~\cite{listofstores_URL} and was able to provide various application information such as the developer, version, genre, user rating, and number of downloads. To limit the impact of seldom-downloaded applications, we divided of our results into two groups: applications with at least 10,000 downloads, and those with less than 10,000 downloads. Of the 30,020 applications downloaded, 12,215 had at lt least 10,000 downloads, while 17,805 had fewer.
+
+ %To limit the impact of seldom-downloaded applications, we only included applications with at least 10,000 downloads in our results. Of the 30,020 applications downloaded, 12,215 had at lt least 10,000 downloads, while 17,805 had fewer. In our presented results, unless otherwise noted the data set we will be referencing is the one comprising applications with at least 10,000 downloads. \dan{I added above...State why?}
+
+\subsection{Step 2: Reverse-engineer binaries}
+\label{sec: decompliation}
+\todo{drive home that we are using a simlar process to what was done before. Show that we are using an estatblished, quality practice/}
+Some of our static analysis tools require source code instead of binary code, so we followed a reverse engineering process similar to that as proposed by previous research~\cite{Lee_2013,6687155}. For many of our static analysis tools, the downloaded APK files had to be decompiled to .java files. The first step was to unzip the .apk file using a simple unix command, which creates the files shown in Table~\ref{Table:apkcontents}. Next, we used two open source tools to complete the reverse engineering process. These were:
+
+\begin{itemize}
+  \item \textbf{dex2jar~\cite{dex2jar_key}:} Convert the .dex file into a .jar file. A java jar command is then used to convert this to .class files.
+  \item \textbf{jd-cmd~\cite{jdcmd_key}:} A command line decompiler that converts .class files to .java.
+\end{itemize}
+
+Additionally, we recorded the number of extracted class and java files. The de-compilation process is shown in Figure~\ref{fig:extractionprocess}.
+
+
+
+% ~\cite{Lee_2013} %% This diagram is largely copied from here
+
+% Define block styles
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse,fill=white!20, node distance=2.2cm,
+    minimum height=2em]
+
+	\begin{figure}[h]
+	\begin{center}
+\label{fig:extractionprocess}
+\begin{tikzpicture}[node distance = 2cm, auto]
+    % Place nodes
+     \node [cloud] (init) {.apk};
+     \node [cloud, right of=init] (dex) {.dex};
+     \node [cloud, right of=dex] (jar) {.jar};
+     \node [cloud, right of=jar] (java) {.java};
+
+     \path [line] (init) -- node {unzip}(dex);
+     \path [line] (dex) -- node {dex2jar}(jar);
+     \path [line] (jar) -- node {jd-cmd}(java);
+
+\end{tikzpicture}
+\caption{APK Extraction Process}
+\end{center}
+\end{figure}
+
+
+\subsection{Step 3. Execute static analysis tools}
+\label{sec: analysis}
+
+The next phase was to analyze the extracted source code for a variety of metrics, including potential security risks, permissions issues, potential non-security defects, and misuse of coding standards. We also collected information about software clones, which are functionally equivalent portions of an application that may differ syntactically. A sign of poorly written software, clones may be detrimental to an application in a variety of ways, including increased maintenance costs and inconsistent bug fixes~\cite{Roy:2009:CEC:1530898.1531101}. We used the following tools for our analysis:
+
+ \textbf{Stowaway\cite{Felt:2011:APD:2046707.2046779}:} Reports the overprivileges and underpriviledges of an application, which we recorded. Slight modifications were made to the existing version of Stowaway to accommodate our process and current Android applications with updated permissions. Permlyzer~\cite{6698893}, a more modern permission detection tool, was not used since its authors have not made it available for download.
+
+ \textbf{AndroRisk\cite{androguard_url}:} A component of the Androguard reverse engineering tool which reports the risk indicator of an application for potential malware. We recorded the reported risk level for each APK file.
+
+ \textbf{CheckStyle\cite{checkstyle_key}:} A development tool to measure how well developers adhere to coding standards such as annotation usage, size violations, and empty block checks. We recorded the total number of violations of these standards. Default application settings were used for our analysis.
+
+ \textbf{Jlint\cite{jlint_key}:} Examines java code to find bugs, inconsistencies, and synchronization problems by conducting a data flow analysis and building lock graphs. We recorded the total number of discovered bugs. This tool was selected over FindBugs~\cite{findbugs_key} since it was able to analyze the applications much faster, while still providing accurate results~\cite{rutar2004comparison}.
+
+ \textbf{Simcad\cite{6613857}:} A powerful software clone detection tool which we used to record the number of clones discovered for each target application.
+
+ \textbf{APKParser\cite{apkparser_link}:} A tool designed to read various information from Android APK files including the version, intents, and permissions. We used the output from this tool to determine the application version, minimum SDK, and target SDK.
+
+We also recorded other metrics about each application including total lines of code, number of java files, application version, target SDK, and minimum SDK.
+
+% DK - Not sure if I should mention this part
+%Whenever we were forced to slightly alter an existing application, we ensured its quality by testing it against \todo{finish this}
+
+% DK -  Should I do this?
+%\todo{Make sure to provide good justification for the use of selected tools. IE why was one tool chosen over another...}
+
+Stowaway and Androrisk were able to analyze the raw APK files, while CheckStyle, Jlint, and Nicad required the APK files to be decompiled. All results were recorded in an SQLite~\footnote{http://www.sqlite.org/} database, which is publicly available on the project website. The full analysis process is shown in Figure~\ref{fig:analysisprocess}.
+
+\begin{figure}[h]
+\begin{center}
+\label{fig:analysisprocess}
+% Define block styles
+\tikzstyle{line} = [draw, -latex']
+
+%\tikzstyle{cloud} = [draw, ellipse,fill=white!20, node distance=1.5cm, minimum height=2em]
+\tikzstyle{cloud} = [draw=none, ellipse,fill=white!20, node distance=1.5cm, minimum height=2em]
+
+\tikzstyle{block} = [rectangle, draw, fill=white!20, text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{c} = [draw, cylinder, shape border rotate=90, aspect=0.75, minimum height=70, minimum width=30]
+
+\begin{tikzpicture}[node distance = 1.5cm, auto]
+
+    % Place nodes
+     \node [cloud] (init) {APK Collection};
+     \node [block, below of=init] (ApkFiles) {ApkFiles};
+     \node [cloud, below of=ApkFiles] (Decompile) {Decompile};
+     \node [block, below of=Decompile] (DecompiledFiles) {Decompiled Files};
+     \node [cloud, below of=DecompiledFiles] (JavaAnalysis) {Java Analysis};
+    % \node [cloud, right of=ApkFiles] (apkanalysis) {Stowaway AndroRisk};
+    % \node [c, right of=DecompiledFiles] (SqliteDB) {SqliteDB};
+     \node[c] (SqliteDB) [below right=-1.0cm and 2.4cm of DecompiledFiles]{SQLiteDB};
+
+    \node[cloud] (apkanalysis) [below right=-0.9cm and 2.0cm of ApkFiles]
+       {APK Analysis};
+
+    % Draw edges
+    \path [line] (init) -- (ApkFiles);
+    \path [line] (ApkFiles) -- (Decompile);
+    \path [line] (Decompile) -- (DecompiledFiles);
+    \path [line] (DecompiledFiles) -- (JavaAnalysis);
+    \path [line] (ApkFiles) -- (apkanalysis);
+    \path [line] (apkanalysis) -- (SqliteDB);
+    \path [line] (JavaAnalysis) -- (SqliteDB);
+    \path [line] (Decompile) -- (SqliteDB);
+
+\end{tikzpicture}
+\caption{APK Analysis Process}
+\end{center}
+\end{figure}

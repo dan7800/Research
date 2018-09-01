@@ -1,0 +1,335 @@
+*********************************************************************************
+************************************  DARWIN ************************************
+*********************************************************************************
+
+
+
+%%% Overpriv Count for indivdual apps
+
+	select ai.Name, ai.Genre, overprivCount.oprivcount
+	from apkinformation ai
+	left outer join (select count (permissionID) as oprivcount, apkID from overprivilege group by
+	apkid) overprivCount on (overprivCount.apkid) = ai.rowID
+	where oprivcount > 0 
+	and ai.lowerdownloads >=10000 
+	and genre = 'Communication'
+	order by oprivcount desc
+
+
+%%%% OverprivCount by Genre
+
+	select ai.Genre, oprivcount, count(ai.genre) as GenreWithOverPriv, totalGenre.TotalGenreCount, round(cast(count(ai.genre) as float)/cast(totalGenre.TotalGenreCount as float),2) * 100 as AtleastXOverPrivPercentage
+	from apkinformation ai
+	left outer join (select count (permissionID) as oprivcount, apkID from overprivilege group by
+	apkid) overprivCount on (overprivCount.apkid) = ai.rowID
+
+	inner join (select Genre, count(Genre) as TotalGenreCount from apkinformation where lowerdownloads >=10000  Group by genre) 
+		totalGenre on totalGenre.Genre = ai.Genre
+	where oprivcount > 0
+	and ai.lowerdownloads >=10000 
+	group by ai.Genre
+	order by AtleastXOverPrivPercentage desc
+
+
+%%% Overpriv Ratio by Genre
+
+	select ai.genre, count(ai.Genre) as TotalCount, t2.OprivCount,round(cast(t2.OprivCount as float)/cast(count(ai.Genre) as float),2)as OverPrivRatio
+	from apkinformation ai
+	inner join (select count(op.PermissionID) as OprivCount, genre from Overprivilege op inner join apkinformation ai on ai.rowID = op.apkid where ai.lowerDownloads >=10000 group by ai.Genre) t2 on t2.genre = ai.genre
+	--where ai.Genre = 'Comics'
+	and ai.lowerdownloads >=10000
+	group by ai.genre
+	--order by OverPrivRatio desc
+	order by ai.Genre
+
+
+
+
+%%% Overpriv Ratio by Genre
+
+	
+	select ai.genre,  count(ai.Name) as AppCount, TotalCount.GenreCount--, round((CAST(count(ai.Name) as float)/TotalCount.GenreCount) * 1,2) as RateOccuring
+
+	, round(round(count(ai.Name),2)/round(GenreCount,2) * 100,1) as OccuringRate
+
+	from apkinformation ai
+	inner join overprivilege o on ai.rowID = o.apkid
+	inner join (
+		select genre, count(genre) as GenreCount
+		from apkinformation ai
+		where lowerdownloads >=10000
+		group by genre
+		order by ai.Genre
+	) totalCount on totalCount.genre = ai.Genre
+	where lowerdownloads >=10000
+	group by ai.genre
+	--order by TotalCount.GenreCount desc, ai.genre asc
+	--order by RateOccuring desc
+	order by OccuringRate
+
+
+%%%% Overpriv Count for each app
+
+	select ai.Name, count(ai.Name)
+	from apkinformation ai
+	inner join overprivilege o on ai.rowID = o.apkid
+	where lowerdownloads >=1000
+	group by ai.Name
+	having count(ai.Name) > 0
+	order by ai.Name
+
+
+
+*********************************************************************************
+***********************************  Join     ***********************************
+*********************************************************************************
+
+
+
+
+
+
+*********************************************************************************
+***********************************  Androsec ***********************************
+*********************************************************************************
+
+
+%%% Get the over priv ratio for apps by genre
+	select ad.Categories --round(avg(case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end),5) as OPriv
+
+	, sum(overprivCount.oprivcount) as OverPrivCount, count(ad.appID) as AppCount
+	, round(round(sum(overprivCount.oprivcount),2)/round(count(ad.appID),2)*100,1) as OccuringRate
+
+	from appdata ad
+
+	inner join version v on v.appID = ad.appID
+
+	left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+	group by ad.Categories
+	order by ad.categories
+
+%%%% Find information about a specific app and all of its versions
+
+	select v.VersionID, ad.AppID, ad.Auto_Name, case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OPriv, build_number
+
+	from appdata ad
+
+	inner join version v on v.appID = ad.appID
+
+	left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+	left outer join (select count (permissionID) as uprivcount, versionID from underpermission group by versionID) underprivCount on (underprivCount.versionID) = v.versionID
+
+	where ad.appID = 818
+	order by v.build_number
+
+
+
+%%%% Get all the commits for a specific app
+	select gh.appID, gh.author, gh.email, datetime(time, 'unixepoch') as CommitDate,  gh.summary
+
+	from githistory gh where appID = 818
+	--and summary like '%permission%'
+	and summary like '%external%'
+
+
+%%% Find all the manifest commits for an app
+	select ad.auto_Name, ama.Appname, amc.AppID, amc.Commit_Order, amc.commit_message, amc.author_name
+	from Android_Manifest_CommitInfo amc 
+	inner join Android_Manifest_AppInfo ama on ama.appID = amc.appID
+	inner join appdata ad on ad.name = ama.AppName
+	--where ad.appID = 963
+
+%%% Find all Manifest permissions for a given app
+	select ama.AppID, author_Name, commit_date, commit_Order, amc.Commit_ID, amp.permission_ID, Permission
+	from Android_Manifest_AppInfo ama
+	inner join Android_Manifest_CommitInfo amc on ama.AppID = amc.AppID
+	inner join Android_Manifest_permission_join ampj on ampj.Commit_ID = amc.commit_ID
+	left outer join android_Manifest_Permission amp on amp.permission_ID = ampj.permission_ID
+
+	where ama.AppID = 654
+	order by ama.AppID, commit_Order, amp.permission_ID
+
+
+
+
+%%% Find all Manifest permission COUNTS for a given app
+--- Find the permission Counts for a given app in the Manifest files
+
+	select ama.AppID, author_Name, commit_date, commit_Order, amc.Commit_ID, PermCommitCount
+	from Android_Manifest_AppInfo ama
+	inner join Android_Manifest_CommitInfo amc on ama.AppID = amc.AppID
+
+	left outer join(select count(commit_ID) as PermCommitCount, commit_ID  from android_Manifest_permission_join ampj2 group by Commit_ID) PermissionCommitCount on PermissionCommitCount.commit_ID = amc.Commit_ID
+
+	where ama.AppID = 654
+	order by ama.AppID, commit_Order
+
+
+%%% Find the number of permissions for all groups of apps
+%%% 	Look at the major version of each app ?
+
+
+	Drop view AndroSecPermissionsByApp;
+	Create view AndroSecPermissionsByApp as
+
+	select ad.appID, v.versionID, ad.auto_name, ad.categories, v.version, VersionCount.VersionCount as TotalVersions
+
+	, case when  overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OverprivCount
+	, case when   permcount.PermissionCount is null then 0 else  permcount.PermissionCount end as PermCount
+
+	, v.version_order as VersionGroup
+	--, row_num as VersionGroup
+	, round(vul.fuzzy_risk,0) as FuzzyRisk
+
+	, cs.ncloc as NCLOC
+	, cs.functions as Functions
+	, cs.violations as Violations
+	, cs.blocker_violations as BlockerViolations
+	, cs.critical_violations as CriticalViolations
+	, cs.major_violations as MajorViolations
+	, cs.minor_violations as MinorViolations
+
+
+	, v.isapkexists
+
+	from appdata ad
+	inner join version v on v.appID = ad.appID
+	left outer join codingStandard cs on v.versionID = cs.versionID
+
+
+	left outer join (select count (VersionID) as VersionCount, appID from Version v2 where v2.isAPKExists='1' group by appID) VersionCount on (VersionCount.appid) = ad.appID
+
+	left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+	left outer join (select count (permissionID) as PermissionCount, commitID from permission_version_join group by commitID) permcount on (permcount.commitID) = v.versionID
+
+	left outer join Vulnerability vul on v.versionID = vul.versionID
+
+/*
+	-- Put the version order in
+	left outer join
+		(
+			SELECT appID, t.build_number, versionID, (SELECT COUNT(*) FROM version counter
+		 WHERE t.appID= counter.appID AND t.build_number >= counter.build_number and isAPKExists='1') AS row_num
+			FROM version t
+			where t.isAPKExists='1'
+			order by appID, row_num
+
+		) vi on vi.versionID = v.versionID
+*/
+
+	 where v.isAPKExists='1'
+	--and ad.appID = 2
+	order by ad.appID, v.version
+
+
+
+### Get the average Permissions/OverPrivs for each app in the group
+
+	select count(VersionGroup) as Count, asa.VersionGroup, round(avg(asa.OverprivCount),2) as avgOPriv, round(avg(asa.PermCount),2) as avgPermCount , round(avg(asa.FuzzyRisk/10),2) as avgFRisk, round((round(avg(asa.OverprivCount),2)/ round(avg(asa.PermCount),2)),2) * 10 as OPrivRatio
+
+	, round(avg(NCLOC),1) as NCLOC
+	, round(avg(Functions),1) as Functions
+	, round(avg(Violations),1) as Violations
+	, round(avg(BlockerViolations),1) as BlockerViolations
+	, round(avg(CriticalViolations),1) as CriticalViolations
+	, round(avg(MajorViolations),1) as MajorViolations
+	, round(avg(MinorViolations),1) as MinorViolations
+
+	from AndroSecPermissionsByApp asa
+	where asa.TotalVersions >= 3
+	group by VersionGroup
+
+
+
+### Get total number of overprivs and permissions for each group
+
+	select asa.VersionGroup, sum(OverPrivCount), sum(PermCount), round((round(sum(OverPrivCount),4)/round( sum(PermCount),4)),4)*10 as Rate
+	from AndroSecPermissionsByApp asa
+	where asa.TotalVersions >= 3
+	group by VersionGroup
+
+
+
+##### Find the number of permissions in each commit of the Android Manfiest File
+
+
+
+
+
+
+%%% Find the ratio of overpermissions to permissions in each app
+%%% 	Look at the major version of each app ?
+
+
+
+%%% Which specific permissions have the highest ratio
+
+
+
+
+### Find information about the AndroidManifest commit messages
+#	? Do people ever cut down on the number of commit messages?
+
+
+### Look at the permissions for each commit of an application
+
+-- Find the number of permissions for each commit group of an application
+
+	select ama.AppID, ama.AppName, amc.Commit_ID, amc.Commit_Message, permissionCount.PermissionCount, commit_order, commitcount.commitcount
+	from Android_Manifest_AppInfo ama
+	inner join Android_Manifest_CommitInfo amc on ama.AppID = amc.AppID
+
+
+	left outer join(select count (Permission_ID) as PermissionCount, commit_ID  from android_Manifest_permission_join ampj group by ampj.commit_ID) permissionCount on permissionCount.commit_ID = amc.commit_ID
+
+	-- Get the number of apps for each item
+	left outer join(select count(commit_ID) as CommitCount, commit_ID, appID from android_Manifest_CommitInfo group by appID) commitcount on commitcount.appID = ama.appID
+
+	where commitCount > 15
+
+	###### Now the same query, but with averages
+
+	## DK: 5/22/15 - The view works, but some of the commit_Orders are missing. This makes some values appear a bit off.
+
+	select round(avg(permissionCount.PermissionCount),2) as avgPermCount, commit_order, count(CommitCount) as AppCount
+	from Android_Manifest_AppInfo ama
+	inner join Android_Manifest_CommitInfo amc on ama.AppID = amc.AppID
+
+
+	left outer join(select count (Permission_ID) as PermissionCount, commit_ID  from android_Manifest_permission_join ampj group by ampj.commit_ID) permissionCount on permissionCount.commit_ID = amc.commit_ID
+
+	-- Get the number of apps for each item
+	left outer join(select count(commit_ID) as CommitCount, commit_ID, appID from android_Manifest_CommitInfo group by appID) commitcount on commitcount.appID = ama.appID
+
+	-- Change this depending on the number of apps you actually want to have
+	where commitCount > 40
+
+	group by commit_order
+	Having appCount > 25
+
+
+
+### Find the overpriv information for each app 
+	select ad.appID, name, auto_name, v.isAPKExists, v.version_order, case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OPriv
+	from version v
+	inner join appdata ad on ad.appID = v.appID
+
+	left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+	where v.isapkExists = 1
+	order by v.appID, v.version_order
+
+
+### Now find specific information about the app and why it is overprived
+
+	
+
+
+
+
+
+
+
+##### Find out when commits were made that caused the app to be over prived

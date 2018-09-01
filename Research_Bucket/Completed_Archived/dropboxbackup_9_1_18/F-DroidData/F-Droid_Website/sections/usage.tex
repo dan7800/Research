@@ -1,0 +1,162 @@
+We will next discuss several usage scenarios for the classroom, researchers, developers, and general users.
+
+
+%%% Provide a brief introduction
+
+
+\subsection{Classroom Activities} % Find a better name for this?
+% 	Understand common mistakes in mobile & open source development
+%	How can it be used in a classroom setting
+
+Students and instructors may use the website and collected data for the purpose of not only learning about Android applications, but for general software development as well. Students can see and learn from the mistakes that developers have made at both the individual app level, and the aggregate level as well. While there numerous possible activities that can be conducted in the classroom using our website and data, we will discuss two which will be both valuable for instructing students on the importance and proper implementation of Android security, and will be fun and easy to implement in a classroom setting.
+
+
+%The first activity is relatively simple where a student, or team of students examined an application which contained an over-priviliedge. They would then repair the vulnerability in the application and then possibly perform analysis on the app to determine the possible negative ramifications this vulnerability may have.
+
+
+
+An example activity for a classroom could be to have a student, or group of students examine a pre-determined app, analyze its permissions issues, report on the possible negative ramifications of this permissions gap, and finally repair the permissions issue. In one example, students could be asked to examine ``Beam File'' (\url{http://androsec.rit.edu/analytics/85}), an app for transferring documents. Our analysis has shown that the first two versions of the app have 2 overprivileges and one underprivilege, while the final version has three overprivileges and no underprivileges. In the most recent version of the app, the discovered overprivileges include~\emph{NFC},~\emph{INTERNET}, and~\emph{READ\_EXTERNAL\_STORAGE}. The next phase would have students report on how these overprivileges could be dangerous to a device. In this case, possible examples would include transporting sensitive information by the open internet privilege, or accessing sensitive data on the external storage device. Depending on the depth the instructor wanted the students to explore these vulnerabilities, students could also be asked to further explore vulnerabilities that have used these overprivileges in previous attacks. Students would then repair the overprivilege by eliminating these permissions from the~\emph{AndroidManifest.xml} file.
+
+
+The second activity would be more research oriented. Students would use the aggregate results from the website and dataset to conduct a study on permission based vulnerabilities in Android applications. The precise details of the study would be instructor driven, but possibilities include students determining why over-privileges took place, andc which apps contained unnecessary functionality that led to avoidable vulnerabilities. Depending on the nature of the analysis, student would likely use external resources and information along with he data provided by our site. The activity would be intended for more advanced or upper level students. 
+
+
+
+
+
+
+%%% Identify the over privs - use tool?
+%%% Identify what the possible problems could be from this over priv. Explore the types of attacks that could occur
+%%% Fix overpriv - and recompile the app
+%%% If the course is using static analysis tools, then rescan the app.
+
+
+
+
+% Probably good to have an actual developer activity, but probably not in this section
+
+
+
+
+% While there are several possible case studies which students can undertake,
+
+%One \todo{finish}
+
+
+% Different groups find over permissions in applications and explore how they might lead to a vulnerability in that app.
+
+%%%% Provide a clear example of how students could learn from this data
+%       What over and under permissions are the most prelevant?
+
+
+%\todo{? Download an app \& fix it. - Common mistakes that are made in software development - Small case study/analysis of the apps}
+
+
+
+%For instance, the problem of over \& under permissions may be driven home by showing how XXX \% of apps contain at least 1 over privilege.
+
+
+
+
+% See common mistakes that are made
+% What is the typical trajectory of software developmet
+% See differences in source code from one application to the next
+% Fix overprivledges in identified apk files
+%
+
+
+%\dan{Classroom activity}
+%% Provide a clear description of a classroom activity that could be used here. It should be ~1/2 page long.
+%% 		This should be something that should be easily repeatable for the average instructor/student.
+
+% Ideas
+%   How do apps relate to each other
+%   Download an app with security vulnerabilities and fix it
+%   Analyze specific apps and report on their vulnerabilities
+%
+
+
+
+
+
+
+
+\subsection{Researcher}
+
+%
+% How do genres compare
+% How do apps compare
+% What are the most commonly occurring over privs
+% Commit messages
+
+
+%%%% The following was taken directly from the MSR paper and probably should be re-worded
+A dataset such as ours has a vast array of possible uses such as helping to better understand the development process of individual Android applications or studying dominant paradigms in app development at a more aggregate level. We next provide exemplar usage scenarios for such data. \\
+
+\textbf{Facilitate research on mining software repositories}
+Researchers can easily download all of the raw data as well as analytical results and conduct research experiments. An example of empirical software engineering research that could be assisted by our dataset is the exploration of the evolution of Android applications. Overall, we collected 4,416 versions of 1,179 apps, however the number of collected versions for each app widely varied. For example, 514 apps only had 1 defined version while one of the apps had 48 total versions. Future researchers may be able to use the included commit message information to study different characteristics of apps.
+
+Our version control history not only includes the log message, but also the committer and the time of commit, which has been previously used in wide range of mining software repositories research~\cite{Eyolfson:2011:TDD:1985441.1985464, bachmann2010missing, Buse:2010:ADP:1858996.1859005, Dallmeier:2007:EBL:1321631.1321702}.
+
+
+We collected data from over 13,036 commits of the AndroidManifest.xml in the examined version control systems and recorded 69,707 total permissions used. This data can be used to determine how the app's settings and permission levels change and evolve over the time either at an individual app level, or a more aggregate level such as by genre.\\
+
+
+% Talk about number of unique contributors
+%
+
+
+
+\textbf{Benchmark Dataset}
+\dan{remove or expand section?}
+% Probably a good idea to reword this or just remove it
+The collected data and the static analysis results can be used as benchmark datasets, allowing other researchers to compare their created static analysis results with our collected and analyzed data. This is especially useful since we are not attempting to present any specific findings or tools in our work, only data, eliminating any reason to exclude or bias information contained within the dataset.
+
+
+\subsection{Developer}
+
+There are numerous uses of this dataset for Android developers. In the event they are the creator for an app hosted on F-Droid, they may not only examine the lifecycle of their own app, but also how it compares to other existing ones as well. The majority of app developers do not use F-Droid to host their project, but they may still substantially gain from our website and data. One way to learn is by the witnessing the mistakes that others are making. Developers may observe the most pervasive over and under permissions for apps, or even genres of apps and will learn to be more vigilant in checking their own apps for these issues. \dan{what would be some good things to add here?}
+
+% All
+%   See the most pervasive over privs and do not use them in their own apps
+% Developers of specific Apps
+%   See the problems in their apps and then fix them
+%   Compare their apps against other apps
+%       Overall and in their genres
+%
+
+
+
+
+
+
+
+\subsection{General User}
+%\todo{
+% How do apps compare
+ %How do author's/developers of apps compare
+ %What permissions to watch out for when installing their apps
+ %Which genre of apps are most susceptible to problems
+%}
+
+General users would be able to use our site and data set in several ways. The first is that they could examine how apps that they use evolve over time. Perhaps the latest, greatest version version of an app they enjoy is actually~\emph{less} secure than a new version of the app. Users could also understand how many apps, which should contain relatively small amounts of permissions and rights, are often given too many permissions for the type of app they are. For example, a simple app such as a wallpaper app with a high Androrisk score indicates that it probably uses too many permissions and contains an unnecessary amount of functionality. This is problematic since relatively simple apps, such as wallpaper apps, often mask more sinister apps or open the door to vulnerabilities, either intentional or unintentional.
+
+
+%%%% Not sure if a quote like this should be used
+% Furthermore, pre-installed applications have “more permissions” (i.e., silent installation) than other legitimate mobile apps, so they can download more malware or access users’ confidential information.
+%~\cite{Zheng:2014:DSE:2590296.2590313}
+
+
+% "Investigating User Privacy in Android Ad Libraries"
+%   Libraries in Android applications run in the same process space as the application code and thus have the same capabilities
+
+
+
+\dan{This section should probably be improved upon}
+
+
+% Our repo unfortunately only contains a small subset of all Android apps, so it is unlikely that they could find the app they use on our site.
+
+
+
+% which apps have more permissions and security risks than they need. For example, a wallpaper app that contains a high risk vulneraiblity score

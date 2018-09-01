@@ -1,0 +1,528 @@
+
+
+%%% Get the amount of times each permission has been accepted or rejected
+
+
+select Count(ar.PermissionName) as TotalPermission, ar.PermissionName, NoRat.PermCount as TotalNoRat, Rat.PermCount as TotalRat, RatAccept.PermCount as RatAccept, RatReject.PermCount as RatReject, NoRatAccept.PermCount as NoRatAccept, NoRatReject.PermCount as NoRatReject
+from appresults ar
+-- Get the total number of times the permission was requested with No Rational
+inner join (
+	select Count(NoRat.PermissionName) as PermCount, NoRat.PermissionName 
+	from appresults NoRat
+	where TestType = 'No Rational'
+	group by NoRat.PermissionName
+) NoRat on NoRat.PermissionName = ar.PermissionName
+
+-- Get the total number of times the permission was requested with Rational
+inner join (
+	select Count(Rat.PermissionName) as PermCount, Rat.PermissionName 
+	from appresults Rat
+	where TestType = 'Rational'
+	group by Rat.PermissionName
+) Rat on Rat.PermissionName = ar.PermissionName
+
+-- Rat Accept
+inner join (
+	select Count(NoRat.PermissionName) as PermCount, NoRat.PermissionName
+	from appresults NoRat
+	where TestType = 'Rational'
+	and isGranted = 'Grant'
+	group by NoRat.PermissionName
+) RatAccept on RatAccept.PermissionName = ar.PermissionName
+
+-- Rat Reject
+inner join (
+	select Count(NoRat.PermissionName) as PermCount, NoRat.PermissionName
+	from appresults NoRat
+	where TestType = 'Rational'
+	and isGranted = 'Deny'
+	group by NoRat.PermissionName
+) RatReject on RatReject.PermissionName = ar.PermissionName
+
+
+-- No Rat Accept
+inner join (
+	select Count(NoRat.PermissionName) as PermCount, NoRat.PermissionName
+	from appresults NoRat
+	where TestType = 'No Rational'
+	and isGranted = 'Grant'
+	group by NoRat.PermissionName
+) NoRatAccept on NoRatAccept.PermissionName = ar.PermissionName
+
+
+-- No Rat Reject
+inner join (
+	select Count(NoRat.PermissionName) as PermCount, NoRat.PermissionName
+	from appresults NoRat
+	where TestType = 'No Rational'
+	and isGranted = 'Deny'
+	group by NoRat.PermissionName
+) NoRatReject on NoRatReject.PermissionName = ar.PermissionName
+
+
+
+group by ar.PermissionName
+
+
+
+
+
+
+
+
+
+
+
+
+%%%% Insert (Update statement was ran after this)
+
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5925115741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.5901388889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5901388889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5896180556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.5887962963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5887962963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5884837963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.5836111111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5836111111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.583287037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5799537037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.5799537037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.579375');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5768865741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5761111111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5761111111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5759027778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.5751273148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5746527778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5746527778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5739583333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.5738773148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5711574074');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5711574074');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5703819444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.566087963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.566087963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5650578704');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5605092593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5605092593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5601851852');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5580092593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.5580092593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.5578356481');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5573611111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5534722222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5534606481');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5530439815');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5525925926');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.5525925926');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.551400463');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5472916667');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5472916667');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5467824074');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5464236111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.5464236111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5459027778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.5442939815');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.5437731482');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.5404398148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5404398148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5403587963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5403587963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5400231481');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5399189815');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.5388657407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5367476852');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5367476852');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5358912037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.53375');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.53375');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5333912037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.5325694444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5325694444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5319560185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.527974537');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.527974537');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.527962963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.527962963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5274421296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5273148148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.5267476852');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5235648148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.5235648148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5234606481');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5234606481');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.523125');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5229282407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5221527778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5221527778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5200694444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5200462962');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5200462962');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5196990741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5180324074');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5174305556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5174305556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5170949074');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5151967593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5139583333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5139583333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5135069444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.5124537037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.5113773148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5105787037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5105787037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5102546296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.5074884259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.5074884259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5070138889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5053935185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.5053935185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5048148148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.5025115741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.5025115741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5021990741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.5005671296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.4958101852');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4958101852');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4954513889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4946875');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.4940972222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.4909837963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4909837963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.4904861111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4904861111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4904166667');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4901736111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.4889351852');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.4868865741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4865509259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4865509259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4862731481');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.4853009259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4845833333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4813194444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4813194444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4809606482');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.4781597222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4781597222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4779513889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4778703704');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4778703704');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4773842593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.4763888889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4763773148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4758333333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.474375');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.474375');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4740277778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.4713425926');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4708564815');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4668055556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4668055556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4665046296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4664699074');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4631018518');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4631018518');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4628009259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.461875');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.461875');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4615740741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4595486111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4595486111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4585416667');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4557291667');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.4557291667');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.455162037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4547337963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4547337963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4543287037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.451099537');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.451099537');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.450787037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4496064815');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4496064815');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4486226852');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.448599537');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.448599537');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4456134259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4434259259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4428009259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.4428009259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4423148148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4409837963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4409837963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4406481481');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4406365741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4401736111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4401157407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.4381597222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4337962963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4337615741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4337615741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4333449074');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4315625');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4315625');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4312037037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4312037037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4302893519');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.4270023148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4270023148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4265046296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4258333333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.422337963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.422337963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.422025463');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.421875');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.421875');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4215625');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.4213657407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4190972222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4190972222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4189236111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.4186111111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4186111111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4181828703');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4163888889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4163888889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4159027778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4135532407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4135532407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.412974537');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.4099768518');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.4099768518');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.409837963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.409837963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4095486111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4092013889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4048842593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.4018402778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4018402778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.4004166667');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.4004166667');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4003472222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.4000810185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3972800926');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3972800926');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3965393519');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3964351852');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3964351852');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3960185185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.3924305556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.3924305556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3919907407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.3914930556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.3914930556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3910416667');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.386400463');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3853240741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3853125');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3849421296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.3838888889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.3838888889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3831712963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3804282407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3804282407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3799189815');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.3787152778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.3787152778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.378275463');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3753472222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3753472222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.3752430556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.3752430556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.374849537');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3748032407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.3715277778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.3715277778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3709375');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3705902778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3705902778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3702546296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.3694097222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3672337963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3672337963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3668171296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3656944444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','No Rational','42497.3647916667');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.3639467593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.3639467593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3631134259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3600694444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3600578704');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3596296296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3553935185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3553935185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3551273148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3517592593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3517592593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3513657407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.3473842593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.3473842593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3469097222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3439583333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.3439583333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3434259259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3403240741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3403240741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3399189815');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3364351852');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3364351852');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3358796296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3330902778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.3330902778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3327314815');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3281597222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3281597222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3275115741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.3243055556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3243055556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3239467593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.3129050926');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','No Rational','42497.3129050926');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3123958333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','No Rational','42497.3088078703');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.3088078703');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3083912037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3056134259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','No Rational','42497.301875');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','No Rational','42497.301875');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.3016435185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.2987152778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','No Rational','42497.2987152778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.5799652778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.5799652778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5795138889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.5743055556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.5743055556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5738194444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.5697453704');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.5697453704');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5690046296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.5639699074');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.5639699074');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5635648148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.5562615741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.5562615741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5557986111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.5531365741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.5531365741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5526967593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','Rational','42497.5496180556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.5453356481');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.5453356481');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5449652778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.5422337963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.5422337963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.541875');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.5375810185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.5375810185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5369560185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.5316319444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.5316319444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5314467593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.529525463');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.529525463');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5288888888');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.5234143519');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.5234027778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5228009259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.5160763889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.5160763889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5153009259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.5084259259');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.5084143519');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5079861111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.504525463');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.504525463');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.5040972222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.5002083333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.5001967593');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4996643519');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.4907407407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.4907407407');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4901736111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4760069444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.472337963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.472337963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.471412037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4675810185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4630208333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4566203704');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.448587963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.448587963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4481365741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.4445023148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.4445023148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4440856481');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.4399768518');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.4399768518');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4386458333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4331018518');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.4278240741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.4278240741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4270486111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.4185416667');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.4185416667');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4179861111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.414537037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.414537037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4138773148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.409849537');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.409849537');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4092013889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.4041898148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','Rational','42497.4027199074');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.3976388889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.3976388889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.397025463');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.3924421296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.3924421296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3921875');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3840972222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.3803703704');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.3803703704');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3800810185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.3755902778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.3755902778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.375150463');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.3722569444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.3722569444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3710763889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3661689815');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.3627314815');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.3627314815');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3621180556');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.3592361111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.3592361111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3587731481');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3532638889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Denail','Rational','42497.3521296296');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3453472222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.3410185185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.3410185185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3405208333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.3363310185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.3363310185');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3358912037');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3323611111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.3285763889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.3285763889');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3281944444');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.3237847222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Denail','Rational','42497.3237847222');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3232523148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3156018518');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3123958333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.3098611111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.3098611111');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3095833333');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.3068865741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Denail','Rational','42497.3068865741');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3062152778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.3020023148');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.298599537');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.2943402778');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('READ_PHONE_STATE','Grant','Rational','42497.292337963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('GET_ACCOUNTS','Grant','Rational','42497.292337963');
+insert into AppResults (PermissionName, isGranted, TestType, TestDate) values ('ACCESS_FINE_LOCATION','Grant','Rational','42497.2919212963');

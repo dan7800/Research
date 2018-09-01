@@ -1,0 +1,284 @@
+
+#### --- PROBABLY OBSOLETE  - QUERY 1
+####% Count of overprivs in all versions of apps
+####### Count by doing an order by
+
+
+/*
+	Query 1
+*/
+
+
+
+	select ad.appID
+	, sum(case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end)  as OPrivCounter
+
+	from appdata ad
+
+	inner join version v on v.appID = ad.appID
+
+	left outer join (select count (VersionID) as VersionCount, appID from Version v2 group by appID) VersionCount on (VersionCount.appid) = ad.appID
+
+	left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+	left outer join (select count (permissionID) as uprivcount, versionID from underpermission group by versionID) underprivCount on (underprivCount.versionID) = v.versionID
+
+	left outer join Vulnerability vul on v.versionID = vul.versionID
+
+	left outer join
+	(
+		SELECT appID, t.build_number, versionID, (SELECT COUNT(*) FROM version counter
+	           WHERE t.appID= counter.appID AND t.build_number >= counter.build_number) AS row_num
+		FROM version t
+		order by appID, row_num
+
+	) vi on vi.versionID = v.versionID
+	where VersionCount.VersionCount >= 4
+	--and row_num <= 5
+	group by ad.appID
+
+	--order by ad.appID, row_num
+	order by OPrivCounter
+
+
+
+#### QUERY 2
+##### Number of overprivs in our last collected state of the application
+
+
+
+
+
+
+
+
+
+
+
+
+#### --- PROBABLY OBSOLETE  - QUERY 3
+#### Needs to only look at queries that have Version.IsAPKExist = 1
+##### Numbers of apps with X overprivs
+####		I put the results into excel to analyze them
+####		See: XOverPrivCount.xls
+
+
+/*
+	Query 3
+
+*/
+	select 
+	ad.appID
+	, case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OPriv
+	, case when underprivCount.uprivcount is null then 0 else underprivCount.uprivcount end as UPriv
+	--, case when vul.fuzzy_risk is null then 0 else vul.fuzzy_risk end as FuzzyRisk
+	, v.versionID
+	, max (v.VersionID) as MaxVersion
+	--, avg(overprivCount.oprivcount) as AvgOverPrivs
+	, case when cc.CommentCount is null then 0 else cc.CommentCount end as CommentCount
+
+
+	from appdata ad
+
+	inner join version v on v.appID = ad.appID
+
+	left outer join (select count (VersionID) as VersionCount, appID from Version v2 group by appID) VersionCount on (VersionCount.appid) = ad.appID
+
+	left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+	left outer join (select count (permissionID) as uprivcount, versionID from underpermission group by versionID) underprivCount on (underprivCount.versionID) = v.versionID
+
+	left outer join Vulnerability vul on v.versionID = vul.versionID
+
+	left outer join
+	(
+		SELECT appID, t.build_number, versionID, (SELECT COUNT(*) FROM version counter
+	           WHERE t.appID= counter.appID AND t.build_number >= counter.build_number) AS row_num
+		FROM version t
+		order by appID, row_num
+
+	) vi on vi.versionID = v.versionID
+	
+	-- Get the number of comments made for the apps
+	left outer join(
+		select ad.appID
+		--	, gh.summary
+		, count(ad.appID) as CommentCount
+		from appdata ad
+		inner join githistory gh on gh.appID = ad.appID
+		where gh.summary like '%permission%' 
+		or gh.summary like '%privilege%'
+		group by ad.appID
+
+	) cc on cc.appID = ad.appID
+	
+	
+	
+	
+	
+	where VersionCount.VersionCount >= 4
+	--and OPriv > 0
+	--and row_num <= 5
+	group by ad.appID
+	order by OPriv desc
+
+
+
+
+
+
+#### QUERY 4
+## If an App has an overpriv, how likely is it to be underprived?
+
+/*
+	Query 4
+*/
+	select 
+		ad.appID
+		, case when overprivCount.oprivcount is null then 0 else overprivCount.oprivcount end as OPriv
+		, case when underprivCount.uprivcount is null then 0 else underprivCount.uprivcount end as UPriv
+		--, case when vul.fuzzy_risk is null then 0 else vul.fuzzy_risk end as FuzzyRisk
+		, v.versionID
+	--	, max (v.VersionID) as MaxVersion
+		--, avg(overprivCount.oprivcount) as AvgOverPrivs
+
+		from appdata ad
+
+		inner join version v on v.appID = ad.appID
+
+		left outer join (select count (VersionID) as VersionCount, appID from Version v2 group by appID) VersionCount on (VersionCount.appid) = ad.appID
+
+		left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+		left outer join (select count (permissionID) as uprivcount, versionID from underpermission group by versionID) underprivCount on (underprivCount.versionID) = v.versionID
+
+		left outer join Vulnerability vul on v.versionID = vul.versionID
+
+		left outer join
+		(
+			SELECT appID, t.build_number, versionID, (SELECT COUNT(*) FROM version counter
+		           WHERE t.appID= counter.appID AND t.build_number >= counter.build_number) AS row_num
+			FROM version t
+			order by appID, row_num
+
+		) vi on vi.versionID = v.versionID
+		where VersionCount.VersionCount >= 4
+		and OPriv > 0
+		and UPriv > 0 -- Toggle this on for the count
+
+	order by ad.appID, v.versionID
+
+
+
+
+
+
+
+
+#### QUERY 5
+#### Apps where each version has 1 overpriv
+# 
+
+
+
+
+#### QUERY 6
+#### Find apps that have no overprivs, all over privs, or some overprivs
+# 	This looks at all the versions of the apps.
+#	How many versions of the app had at least 1 OverPriv
+
+/*
+Query 6
+	Yes = 1
+	No = 0
+*/
+
+select 
+	ad.appID
+	
+	, case when OCount1.OverPrivCount2 is null then 0 else OCount1.OverPrivCount2 end as "# of OverPriv Versions"
+	, VersionCount.VersionCount as "# of Total Versions"
+	, case when OCount1.OverPrivCount2 = VersionCount.VersionCount then 1 else 0 end as AllOverPriv
+	, case when OCount1.OverPrivCount2 is NULL then 1 else 0 end as NoneOverPriv
+	, case when OCount1.OverPrivCount2 > 0 then 1 else 0 end as SomeOverPriv
+	, case when cc.CommentCount is null then 0 else cc.CommentCount end as CommentCount
+	, case when LastVer_oprivcount is null then 0 else LastVer_oprivcount end as LastVer_oprivcount
+	, case when TotalOverPrivCount is null then 0 else TotalOverPrivCount end as TotalOverPrivCountAllVersions
+
+	from appdata ad
+
+	inner join version v on v.appID = ad.appID
+
+	left outer join (select count (VersionID) as VersionCount, appID from Version v2 group by appID) VersionCount on (VersionCount.appid) = ad.appID
+
+	left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+	left outer join (select count (permissionID) as uprivcount, versionID from underpermission group by versionID) underprivCount on (underprivCount.versionID) = v.versionID
+
+--	left outer join Vulnerability vul on v.versionID = vul.versionID
+
+	left outer join
+	(
+		SELECT appID, t.build_number, versionID, (SELECT COUNT(*) FROM version counter
+	           WHERE t.appID= counter.appID AND t.build_number >= counter.build_number) AS row_num
+		FROM version t
+		order by appID, row_num
+
+	) vi on vi.versionID = v.versionID
+	
+	
+	-- Get the number of comments made for the apps
+	left outer join(
+		select ad.appID
+		, count(ad.appID) as CommentCount
+		from appdata ad
+		inner join githistory gh on gh.appID = ad.appID
+		where gh.summary like '%permission%' 
+		or gh.summary like '%privilege%'
+		group by ad.appID
+
+	) cc on cc.appID = ad.appID
+
+	-- Get the max version info
+	inner join(
+		select ad.appID, max(versionID) as MaxVersion
+		from appdata ad
+		inner join version v on v.appID = ad.appID
+		where v.isAPKExists = 1
+		group by ad.appID
+	) mv on mv.appID = ad.appID
+	
+	
+	-- Get the max version
+	left outer join (
+	select ad2.appID, oprivcount, count (ad2.appID) as OverPrivCount2
+	from appdata ad2 
+		left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = 	v.versionID
+		inner join version v on v.appID = ad2.appID group by ad2.appID) OCount1 on Ocount1.appID = ad.appID
+	
+	
+	-- Find the oprivCount for the max version
+	left outer join(select count(permissionID) as LastVer_oprivcount, versionID from overpermission group by versionID
+	) MaxOverPriv on MaxOverPriv.versionID = mv.MaxVersion
+
+
+	-- Get the total number of overprivs for all versions of an app
+	left outer join(
+		select ad.appID,  count(op.permissionID) as TotalOverPrivCount
+		from appdata ad
+		inner join version v on v.appID = ad.appID
+		inner join OverPermission op on op.versionID = v.versionID
+		where v.isAPKExists = 1
+		group by ad.AppID
+		order by ad.appID
+	) TotalOverPrivCount on TotalOverPrivCount.appID=ad.appID
+	
+	
+	where v.isAPKExists = 1
+	and VersionCount.VersionCount >= 4
+--	and ad.appID = 151
+	
+	group by ad.appID
+	order by ad.appID, row_num
+		
+		

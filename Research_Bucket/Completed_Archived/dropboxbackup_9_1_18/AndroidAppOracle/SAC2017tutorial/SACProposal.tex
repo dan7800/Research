@@ -1,0 +1,326 @@
+
+%\documentclass{sig-alternate-05-2015}
+\documentclass[titlepage]{article}
+
+\usepackage{cite}
+\usepackage{url}
+\usepackage{color}
+%\usepackage{balance}
+\usepackage{caption}
+
+
+%%% check all of these
+
+
+\usepackage{listings}
+\usepackage{times}
+
+\usepackage{enumitem} % Use for enumerating A, B, C etc...
+\urlstyle{same} % Used for formatting formatting url footnotes
+\usepackage{xparse} % used for border around mini page
+
+
+
+
+\usepackage{xcolor}
+\usepackage{pgfplots}
+
+
+%\usepackage{hyperref}
+%\hypersetup{colorlinks=true, urlcolor=blue, citecolor=cyan, pdfborder={0 0 0},}
+\usepackage{soul} % highlighting
+
+
+
+
+\newcommand{\todo}[1]{\textcolor{cyan}{\textbf{[#1]}}}
+\newcommand{\sam}[1]{\textcolor{green}{{\it [Sam: #1]}}}
+\newcommand{\dan}[1]{\textcolor{blue}{{\it [Dan: #1]}}}
+
+
+\newif\ifisnopii
+%\isnopiifalse % Hide Info
+\isnopiitrue  % Show Info
+
+
+
+\title{Some things I did}
+\begin{document}
+
+%	An Oracle of Vulnerable Android Apps for Education
+%	An Educational Oracle of Vulnerable Android Apps
+\title{Teaching Android Security: A Public Educational Activity of Vulnerable Android Applications}
+
+
+
+\author{
+Daniel~E.~Krutz\\ 	
+Software Engineering Department\\
+Rochester Institute of Technology\\
+1 Lomb Memorial Drive\\
+Rochester, NY, USA \\
+\{dxkvse\}@rit.edu
+}
+
+\date{} % Remove the date
+
+\maketitle
+
+
+
+
+\section*{Abstract}
+%\begin{abstract}
+
+%This activity describes a public educational activity to assist in the instruction of both students and developers in creating secure Android apps. Our set of activities includes example vulnerable applications, information about each vulnerability, steps how to repair the vulnerabilities, and information about how to confirm that the vulnerability has been properly repaired. Our goal is to make these activities available to other instructors for use in their classrooms ranging from the K-12 to university settings. A secondary goal of this project is that it also fosters interest in security, and computing. \dan{Make sure that this is up to date with the ACM InRoads}
+
+
+This tutorial presents a public educational activity to assist in the instruction of both students and developers in creating secure Android apps. These activities include example vulnerable applications, information about each vulnerability, steps how to repair the vulnerabilities, and information about how to confirm that the vulnerability has been properly repaired. Our goal is for instructors to use these activities in their mobile, security, and general computing courses ranging from the K-12 to university settings. A secondary goal of this project is to foster interest in security and computing through demonstrating its importance. All project activities may be found on the project website: \textbf{\url{www.TeachingMobileSecurity.com}} and more information about the activity may be found in an upcoming ACM InRoads article.
+
+%% Abstract, including a brief summary of the topic
+
+%\end{abstract}
+
+
+
+
+\section{Project}
+
+\subsection{Motivation}
+
+
+%Security is hard, and teaching security can be even harder. The mobile revolution has allowed anyone with a basic understanding of development to upload their applications (``apps'') to an app store, making them available to millions of potential users. With extreme openness comes great danger; inexperienced developers have the capability to create vulnerable apps that can negatively affect millions of users. Additionally, experienced developers can and do make mistakes due to the challenging nature of creating secure software.
+
+Developers frequently create vulnerable software for a wide range of reasons: ignorance of how to create secure apps, simple errors, or a lack of understanding of the importance of secure app development. We have created a public sample set of vulnerable Android apps in order to help educate developers to create secure apps and demonstrate the importance of secure app development.
+
+% Motivation, target audience, and interest for the SAC community
+
+There have been many recent publications and funded projects which address the deficiencies of security related activities which may be used in an educational environment~\cite{Bai:2014:IHL:2538862.2538997, Guo:2013:LMS:2445196.2445394, Chi:2014:DIT:2670739.2670756, Li:2016:DHL:2978192.2978225, 10.1109/MSP.2011.139}. Our project is distinct in that it exclusively focuses on mobile security.
+
+
+%-- Talk about how the project is different, but doesn't give too much away
+
+
+
+
+
+\subsection{Project Outline}
+
+%Outline, including a short summary of every section (up to 2 pages). For each topic, indicate the estimated duration, the basic and most relevant literature, and its subtopics
+
+Although the number of activities is growing, we currently have ten vulnerability exercises ranging from proper Intent protection to more complicated activities such as correct use of content providers. Each example contains a clear demonstration of the negative ramifications of the vulnerability, steps to repair the vulnerability, and posted actions to ensure that it has been resolved. The process outline of each activity is shown in Figure~\ref{fig:AppRepairprocess}.
+
+
+\tikzstyle{decision} = [diamond, draw, fill=blue!20,
+    text width=15em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20,
+    text width=15em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+
+\usetikzlibrary{shapes,arrows, positioning} % Needed for analysis diagram
+
+
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, rectangle,fill=white!20, node distance=5cm, % Distance between boxes
+    minimum height=2em]
+
+	\begin{figure}[h]
+	\begin{center}
+
+\begin{tikzpicture}[node distance = 5cm, auto]
+    % Place nodes
+
+
+     %\node [cloud] (init) {Vulnerable App};
+     \node (init) [draw, align=center]{Vulnerable \\ App};
+
+
+   % \node [cloud, right of=init] (dex) {Secure App};
+   \node (dex) [draw, right of=init, align=center]  {Secure \\ App};
+%      \node (dex) [right of=init]{Secure \\ App};
+
+
+%     \node [cloud, right of=dex] (jar) {Verified Secure App};
+        \node (jar) [cloud, right of=dex, align=center] {Verified \\ Secure App};
+
+  %   \node [cloud, right of=jar] (java) {.java};
+
+     \path [line] (init) -- node {Repair Process}(dex);
+     \path [line] (dex) -- node {Verification Process}(jar);
+
+
+\end{tikzpicture}
+\caption{App Repair Process}
+\label{fig:AppRepairprocess}
+\end{center}
+\end{figure}
+
+
+\pagebreak
+Each of the exercises contains:
+
+\begin{enumerate}
+   \setlength{\itemsep}{0pt} %Cut down on spacing for the different items in the list
+   \setlength{\parskip}{0pt} %Cut down on spacing for the different items in the list
+   \setlength{\parsep}{0pt}  %Cut down on spacing for the different items in the list
+    \item Mobile apps which contain well defined vulnerabilities.
+    \item Documentation about the adverse effects of the vulnerabilities and how they may be exploited.
+    \item Step by step documentation how to repair the vulnerabilities.
+    \item Instructions how to verify that the vulnerability has been repaired.
+    \item Examples of the apps which have already had the vulnerabilities repaired.
+\end{enumerate}
+
+%% Remove this part if space is an issue
+Activities begin with providing the user some background (when, why, and how the vulnerability may occur) about the specific vulnerability being targeted. Whenever possible, users are also provided with a real-world example of occurrences of the vulnerability such as where they occurred in specific apps. Also included are some basic reasons about why the vulnerability occurs and common developer mistakes which lead to the vulnerability.
+
+
+
+
+\subsection{Project Objectives}
+%Specific goals and objectives
+
+
+Creating accurate, robust activities can be a difficult and time consuming task for instructors. In order to alleviate some of these challenges, our goal is for instructors to use some of these activities in their mobile, security, and general computing courses.
+%% Add to this?
+
+
+\subsection{Schedule}
+% Would would we accomplish in the tutorial? How long would be spend on each item? What would the tutorial look like?
+
+The following schedule will be used in our tutorial. All times are approximate, and our activity set has over ten possible exercises which may be done in this tutorial. However, we will select a few which will be the most beneficial for the attendees and may extend or shorten specific activities as time allows.
+
+
+% 1/2 day = 3 hours
+%30 min: Project Introduction - Where it can be used, who can use it, the website, basic introduction etc...
+%30 min: Machine setup etc....
+%
+%40 min: Activity 1
+%40 min: Activity 2
+%40 min: Activity 3
+
+
+\begin{table}[ht]% Try here, and then top
+\begin{center}
+\caption{Schedule}
+\label{Table:apkcontents}
+  \begin{tabular}{| l | l | } \hline
+
+    \bfseries Length & \bfseries Activity \\ \hline
+    30 min & Project Introduction \\ \hline
+    30 min & Machine setup \\ \hline
+    40 min & Exercise \#1 \\ \hline
+    40 min & Exercise \#2 \\ \hline
+    40 min & Exercise \#3 \\ \hline
+
+  \end{tabular}
+  \end{center}
+\end{table}
+
+
+
+
+
+
+
+
+
+\section{Tutorial Information}
+
+\begin{enumerate}
+	\item \textbf{Duration:} Half-day (although it could be full day if needed). The activity-set is comprised of many exercises, so we would not expect to get through all of them in a single day. For this tutorial, we would focus on educating others about the activity-set, along with how to most properly use it in their classrooms. 
+	
+	\item \textbf{Expected background of the audience:} Audience will not need to have any background in mobile development, although some programming experience would be beneficial. Expected participants include computing educators; especially those who teach either mobile or security related courses. This tutorial would also serve as a beneficial exposure to the activity set to developers as well.
+	\item \textbf{Required Equipment:} The tutorial will require a projector be made available to the instructor, and each participant should bring their own Windows, or Mac laptop. A virtual machine pre-loaded with the appropriate software will be provided to each participant.
+	
+	
+	\item \textbf{Teaching Materials:} All existing teaching materials may be found on the project website: \textbf{\url{www.TeachingMobileSecurity.com}}. %This includes all activities, and a brief background on the project.
+
+\end{enumerate}
+
+%Duration (full-day or half-day tutorial)
+%Expected background of the audience
+%Audio Visual equipment needed for the presentation
+%Teaching materials on the topic by the presenters, such as slides of earlier tutorials or courses (please provide a link only)
+
+
+
+\section{Presenter Information}
+%A biographical sketch of the presenter(s) (with full name, address, e-mail, institution, education, publications, and experience in the subject of the tutorial)
+
+
+
+
+\begin{enumerate}
+	\item \textbf{Full Name:} Daniel E. Krutz: \url{http://www.se.rit.edu/~dkrutz/}
+	\item \textbf{Address:} One Lomb Memorial Drive, Rochester, NY 14623-5603 \url{www.rit.edu}, \url{http://www.se.rit.edu}
+	\item \textbf{E-mail:} dxkvse@rit.edu
+	\item \textbf{Institution:} Software Engineering Department, Rochester Institute of Technology
+	\item \textbf{Education:} PhD Computer Science - Nova Southeastern University 2013
+	\item \textbf{Related Works:}
+	
+	Projects related to Android apps and security:
+	\begin{enumerate}
+	
+	\item \textbf{Darwin Project\footnote{\url{http://darwin.rit.edu}}:} Analyzes downloaded apps for a vareity of security and quality related metrics. To date, the project has analyzed over 70,000 Android apps. This project resulted in a team of my students winning 1st place in an IEEE student research competition~\cite{IEEE1stPlace_url}.
+	
+	\item \textbf{Androsec Project\footnote{\url{http://androsec.rit.edu}}:} Collects and analyzes Android version control repositories from F-Droid, an open source Android app repository. This project has already resulted in an MSR publication~\cite{krutz2015MSR} and current research is being conducted using this data set.
+	
+	
+	\item \textbf{M-Perm\footnote{\url{http://www.m-perm.com}}:} A tool for detection the permission gap in Android 6.0 and above apps.
+	
+	
+	\end{enumerate}
+	
+		
+	Daniel also has several recent pedagogically focused publications ranging from how to best instruct Deaf/Hard of Hearing students in computing to innovative activities in Software Security courses~\cite{krutz2013teaching,krutz2014using, krutz2015enhancing,malachowsky2015project,krutz2015insider,krutz2013experiencing,lutz2012instilling,krutz2013bug}
+	
+	\item \textbf{Background:}  Daniel is a lecturer at the Rochester Institute of Technology in the Software Engineering department. He received his PhD in Computer Science in 2013 from Nova Southeastern University. Some of the courses he has taught include Introduction to Software Engineering, Engineering of Secure Software, Web Engineering, Foundations of Software Engineering (Graduate), and Research Methods (Graduate). Daniel's research interests include Mobile security and Software Engineering Education.
+
+
+%	\item \textbf{XXXX:} XXXX
+
+\end{enumerate}
+
+
+
+\section*{Acknowledgements}
+\ifisnopii % turn on/off pii
+This work is partially sponsored by a SIGCSE Special Projects Grant. % Maybe we should leave this in regardless. It makes it more likely that the paper will be accepted
+
+\else % turn on/off pii
+Author and funding acknowledgments hidden for review anonymity.
+\fi % end turn on/off pii
+
+%\balance
+\bibliographystyle{abbrv}
+\bibliography{SACProposal}
+
+
+
+% That's all folks!
+\end{document}
+
+
+
+
+%%%% Related works:
+
+%% Find other recent grants and papers on this, especially to the NSF 
+
+
+
+%%%% Todo
+%	Notes:
+% Due: September 25, 2016
+% Limit: 1000 words
+
+
+%   Change our to the
+
+
+% http://www.sigapp.org/sac/sac2017/tutorials.html
+
+% Previous Tutorials: http://www.sigapp.org/sac/sac2016/tutorials.html
+
+
+% Submit to: hanaa.hachimi@univ-ibntofail.ac.ma; amine_aouatif@univ-ibntofail.ac.ma

@@ -1,0 +1,140 @@
+Dear Daniel,
+
+the Tool Demonstrations Committee of ESEC/FSE 2015 has evaluated your
+paper and proposal for a tool demonstration entitled:
+
+ Concolic Analysis for Android Applications
+
+We regret to inform you that the Committee has decided not to accept
+your paper and tool demonstration for publication and presentation at
+the conference.
+
+Below please find the reviews of your submission.  We hope that the
+comments and insights offered by the reviewers will be helpful to you.
+
+Best regards,
+
+Antonio Carzaniga and Arie van Deursen
+Co-Chairs of the Tool Demonstrations Committee
+
+
+----------------------- REVIEW 1 ---------------------
+PAPER: 5
+TITLE: Concolic Analysis for Android Applications
+AUTHORS: Daniel Krutz, Patrick McAfee and Samuel Malachowsky
+
+
+----------- REVIEW -----------
+There are various challenges in performing concolic analysis, or any
+other type of analysis, for Android apps, such as the lack of a main
+entry point, heavy use of reflection, callbacks registered via XML,
+etc. This paper presents a tool that aims to eliminate these
+complications and perform concolic analysis, using Java Path Finder,
+in a single process.
+
+The paper is well-written, yet I have noted some minor corrections:
+ + Section 1, p.1 2nd paragraph: "Concolic analysis is a power/ful/
+   static analysis technique..."
+ + p.3 "It can also provides", "what kind of data they need to be
+   sent".
+ + p.4 "the Dalvik runtime was the the only Android runtime."
+
+
+Also, the introduction section states that "traditional concolic tools
+will not work on Android applications because the apps lack a main
+method which is typically required for concolic analysis tools."
+
+Droidel does something similar
+(https://www.cs.colorado.edu/~sabl4745/papers/droidel.pdf,
+https://github.com/cuplv/droidel).
+
+Quoted from Droidel's documentation of github:
+ /Droidel generates a harness that can be used as a single entrypoint
+ for an Android app. The harness is a slightly modified version of
+ the framework's ActivityThread.main method./
+
+It all seems very relevant, and should probably be included in the
+related work section.
+
+
+My main objection is that, as the authors themselves state, the core
+of the tool is based on linking several previously existing tools
+together and running them with a single process. Despite the technical
+difficulties in accomplishing such a task, it seems mostly an
+engineering effort. The actual concolic analysis is performed by JPF,
+which also generates the final output, which is not even
+post-processed by CAA, as far I understand. As for the series of
+preprocessing steps that constitute the tool's pipeline, they do not
+seem that related to the nature of the analysis.
+
+So, the whole process is essentially a wrapper around JPF. Again, this
+may be challenging but I cannot see much point in a demonstration
+about this. A run like the one depicted in Figure 3 is certainly not
+sufficient.
+
+
+----------------------- REVIEW 2 ---------------------
+PAPER: 5
+TITLE: Concolic Analysis for Android Applications
+AUTHORS: Daniel Krutz, Patrick McAfee and Samuel Malachowsky
+
+
+----------- REVIEW -----------
+Summary:
+The paper describes a tool to perform concolic analysis of android applications. 
+First, the approach uses a third-party toolchain to enable the use of Java Path Finder as a backend for the analysis of android applications. Second, the approach generates configuration files for the actual concolic analysis, thus it calls
+JPF and collects its output.
+
+
+Evaluation:
+I personally believe that porting a concolic analysis tool to a novel world like the one of android application is potentially interesting, worth of research effort and I appreciate the work of the authors. However, I have doubts about the maturity of the approach and its effectiveness as a tool demo presented at a conference like ESEC/FSE.
+
+I believe the paper lacks evidence that the tool may provide any practical advantage and that it can actually be demonstrated in a tool demo session. The authors do not provide examples of issues and/or bugs that have been actually found (only?) by concolic analysis in android applications, especially considering the severe limitations described in Section 5. The tool demo really looks like running a toolchain as a black box without any precise discussion of the output of the analysis. On page 3, authors claim that "A small example of this output is shown in Listing 2, and more complete results may be found on the project website.", but I was not able to find such more complete and discussed examples.
+
+Obviously, being a tool demo, I did not expect strong evidence, but at least a couple of examples (taken from real applications) that can be significant to convince the audience that concolic analysis is useful in the world of android applications, especially with respect to the state of the art and again considering the limitations of the current version of the tool. 
+
+Citing the CfP, there is no “walk through of the actual demonstration, provided as an appendix to the paper”, that 
+in this case would have helped me clarifying this doubts. The website ( http://darwin.rit.edu/caa/index.html?page=tool )
+does not help clarifying this issue. At the page describing the tool, the example application that is mentioned is ‘some_test_file.apk’, which does not look like a concrete android application at all.
+
+
+----------------------- REVIEW 3 ---------------------
+PAPER: 5
+TITLE: Concolic Analysis for Android Applications
+AUTHORS: Daniel Krutz, Patrick McAfee and Samuel Malachowsky
+
+
+----------- REVIEW -----------
+This paper presents CAA, a tool that performs concolic analysis on Android
+apps.  It builds on top of some existing tools (such as JPF), operates in 7
+phases, and works for compiled apps and source code, without requiring an
+emulator or physical Android device. 
+
+Overall, the paper is well written, easy to follow, and provides sufficient
+details about addressed challenges and the tool itself. The tool is certainly
+useful, publicly available and well documented. I also like that the paper is
+very up-front when it comes to limitations and the paper states how the tool
+can be improved. 
+
+Unfortunately, neither the submission nor the tool website provide information
+about the actual demo, so it is hard to judge what to expect. For a live demo,
+I think it would be interesting to see 1) how CAA can be used for bug finding
+or test input generation and 2) how to use (extend) CAA in a research project. 
+
+The paper has no evaluation. While an evaluation is not necessarily required
+for a tool demo, it would strengthen the paper. I would like to see, at least,
+a concrete use case and some performance metrics (e.g., run time and achieved
+code coverage). Additionally, the discussion of closely related work is
+somewhat vague and the comparison of CAA with existing approaches should be
+improved. For example, how does CAA perform for a specific use case such as
+test input generation?
+
+A few minor comments:
+- p1: "produces far different output" -> too vague and should be clarified.
+- p2: "to be used as the the root node" -> duplicated "the"
+- p3: "It can also provides readable" -> It can also provide
+- p3: "There are two. java files and and" -> duplicated "and"
+- p3: Listing 2 and Figure 3 do not add much and could be omitted (e.g., to
+ add a concrete use case, realistic example, or -even better- a preliminary
+ evaluation).
+- p3: $APKFILENAME -> check character encoding of "F"

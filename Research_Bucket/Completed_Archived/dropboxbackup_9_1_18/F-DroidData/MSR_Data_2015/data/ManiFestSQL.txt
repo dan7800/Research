@@ -1,0 +1,15 @@
+-- Old
+--SELECT * FROM android_manifest_commitInfo
+--select * from android_manifest_permission_join order by commit_ID
+--select * from android_manifest_intent_join
+-- select * from Android_manifest_commitInfo
+
+
+
+***********************
+-- Most commonly used permissions
+select amp.Permission, count (amj.permission_ID) as permissionIDCount
+from Android_Manifest_Permission_join amj
+inner join android_manifest_permission amp on amj.Permission_ID = amp.Permission_ID
+group by amj.permission_ID
+order by permissionIDCount desc

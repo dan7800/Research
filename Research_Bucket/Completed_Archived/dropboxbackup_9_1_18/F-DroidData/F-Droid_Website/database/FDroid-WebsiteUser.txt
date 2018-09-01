@@ -1,0 +1,24 @@
+
+### Find the basic security information for each version
+###		This will tell us what permissions have changed between each app version
+
+	select ad.appID, ad.auto_Name, v.versionID, overprivCount.oprivcount, vul.Fuzzy_Risk, VersionCount.VersionCount
+	from overpermission o
+	inner join version v on o.versionID = v.VersionID
+	inner join appdata ad on ad.appID = v.appID
+
+	left outer join (select count (VersionID) as VersionCount, appID from Version v2 where isapkexists='1' group by appID) VersionCount on (VersionCount.appid) = ad.appID
+
+	left outer join (select count (permissionID) as oprivcount, versionID from overpermission group by versionID) overprivCount on (overprivCount.versionID) = v.versionID
+
+	inner join vulnerability vul on vul.versionID = v.versionID
+	
+	where versioncount >=3
+	order by ad.appID, v.versionID
+
+
+###
+
+
+
+

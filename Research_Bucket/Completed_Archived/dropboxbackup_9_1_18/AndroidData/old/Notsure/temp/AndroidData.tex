@@ -1,0 +1,127 @@
+\documentclass{article}
+\usepackage[latin1]{inputenc}
+\usepackage{tikz}
+%%%<
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+
+\usepackage{cite}
+\usepackage{color}
+\usepackage{courier}
+
+\usepackage{tikz}
+%\usepackage{listings}
+\usepackage{balance} % Add this back in. Probably needed during camera ready.
+\usepackage{pgfplots}
+%%
+
+\usepackage{graphicx}% http://ctan.org/pkg/graphicx
+
+
+
+
+\usepackage{listings}
+%\usepackage{pxfonts}
+\usepackage{times}
+%\usepackage{xspace}
+\usepackage{booktabs}
+\usepackage{fancybox}
+
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{url}
+\urlstyle{same}
+\usepackage{xcolor}
+
+
+\usepackage{caption}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{patterns}
+\usepackage[numbers]{natbib} % Used to fix formatting issue.
+\usepackage{soul} % Needed for wrapping of highlighted text
+
+
+% Define bar chart colors
+%
+\definecolor{bblue}{HTML}{4F81BD}
+\definecolor{rred}{HTML}{C0504D}
+\definecolor{ggreen}{HTML}{9BBB59}
+\definecolor{ggrey}{HTML}{707070}
+%\definecolor{ppurple}{HTML}{9F4C7C}
+
+% Define flow chart styles
+\tikzstyle{decision} = [diamond, draw, fill=blue!20,
+    text width=15em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20,
+    text width=15em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+
+\usetikzlibrary{shapes,arrows, positioning} % Needed for analysis diagram
+
+\newcommand{\todo}[1]{\textcolor{cyan}{\textbf{[#1]}}}
+\newcommand{\xxx}[1]{\textcolor{green}{{\it [xxx says: #1]}}}
+\newcommand{\dan}[1]{\textcolor{blue}{{\it [Dan says: #1]}}}
+
+
+\PreviewEnvironment{center}
+\setlength\PreviewBorder{10pt}%
+%%%>
+
+\usetikzlibrary{shapes,arrows}
+\usepackage{caption}
+\newcommand*{\h}{\hspace{5pt}}% for indentation
+\newcommand*{\hh}{\h\h}% double indentation
+\begin{document}
+\begin{center}
+  \captionof{figure}{Flowchart of participants' progress through
+    the phases of the trial}
+  % setting the typeface to sans serif and the font size to small
+  % the scope local to the environment
+  \sffamily
+  \footnotesize
+  
+  
+  \tikzstyle{c} = [draw, cylinder, shape border rotate=90, aspect=0.75, %
+      minimum height=60, minimum width=20]
+    
+  \begin{tikzpicture}[auto,
+    block_noborder/.style ={rectangle, draw=none, thick, fill=none,
+      text width=7em, text centered, minimum height=1em},
+    block_normal/.style ={rectangle, draw=black, thick, fill=white,
+      text width=10em, text centered, minimum height=3em, inner sep=6pt},
+      line/.style ={draw, thick, -latex', shorten >=0pt}]
+    % outlining the flowchart using the PGF/TikZ matrix funtion
+    \matrix [column sep=5mm,row sep=3mm] {
+      % enrollment - row 1
+
+ %    & \node [block_noborder] (APKCollection) {APK Collection}; \\
+ %     & \node [block_normal] (APKFiles) {Apk Files}; 
+ %    & \node [block_noborder] (APKAnalysis) {APK Analysis}; \\
+ %    & \node [block_noborder] (Decompile) {Decompile}; \\
+ %     & \node [block_normal] (DecompiledFiles) {Decompiled Files}; 
+%      & \node[c] (SqliteDB) [right=0.0cm and -0.0cm of APKCollection]{SqliteDB}; \\
+%      & \node [block_noborder] (JavaAnalysis) {Java Analysis}; \\
+      
+ & \node [block_noborder] (init) {APK Collection};
+& \node [block_noborder, below of=init] (ApkFiles) {ApkFiles};
+& \node [block_noborder, below of=ApkFiles] (Decompile) {Decompile};
+& \node [block_noborder, below of=Decompile] (DecompiledFiles) {Decompiled Files};
+& \node [block_noborder, below of=DecompiledFiles] (JavaAnalysis) {Java Analysis};
+ & \node[c] (SqliteDB) [below right=-1.0cm and 2.4cm of DecompiledFiles]          
+    };% end matrix
+    % connecting nodes with paths
+    \begin{scope}[every path/.style=line]
+
+%     \path (APKCollection) -- (APKFiles);
+ %    \path (APKFiles) -- (Decompile);
+%     \path (Decompile) -- (DecompiledFiles);
+%     \path (DecompiledFiles) -- (JavaAnalysis);
+%     \path (APKFiles) -- (APKAnalysis);   
+%     \path (APKAnalysis) -- (SqliteDB);   
+%       \path (JavaAnalysis) -- (SqliteDB);   
+      
+    \end{scope}
+  \end{tikzpicture}
+\end{center}
+\end{document}

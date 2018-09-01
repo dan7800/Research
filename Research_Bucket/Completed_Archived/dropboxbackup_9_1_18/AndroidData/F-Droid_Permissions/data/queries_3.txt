@@ -1,0 +1,1080 @@
+********** Adding some commonly used queries  ********
+
+
+***
+-- Get all commit messages that have to do with permissions.
+--          The goal here is to tie the commit messages in with the permissions updates. ?
+--  ?????? > Is this even meaningful, why not just look at what is exactly added
+
+
+
+******* Get all the versions that permissions are added into
+
+
+
+%%%%% Get all the commit items
+    -- must reverse the order of the items in this list
+    drop view Commit_view_backwards;
+    create view Commit_view_backwards as
+    select   amc.appID, amc.commit_ID,amc.commit_Order, case when PermissionCount.PermissionCount is null then 0 else PermissionCount.PermissionCount end as PermissionCount, amc.commit_val, ama.appName, commit_date, amc.appID, orderdate
+    from Android_Manifest_CommitInfo amc
+
+    left outer join (
+    select count (Commit_ID) as PermissionCount, commit_ID  from Android_Manifest_permission_join ampj group by ampj.commit_ID
+    ) PermissionCount on PermissionCount.commit_ID = amc.Commit_ID
+
+    inner join Android_Manifest_AppInfo ama on ama.appID = amc.appID
+
+    order by amc.AppID, amc.commit_order desc
+
+
+
+
+%%%% Committer percentage
+
+
+        ###Changed from group by gh.AppID, gh.author to group by gh.AppID, gh.trimmedEmail -- Many authors were different, but email was the same
+
+        drop view CommitterPercentage_view;
+        create view CommitterPercentage_view as                                                                     
+        select ad.auto_name as Auto_Name, ad.name as AppName ,gh.appID, gh.author, gh.trimmedEmail,  count(author) as AuthorCount, gh2a.TotalCommitCount as totalCommit,  round((count(author)*1.00)/(gh2a.TotalCommitCount*1.00),2) as PercentCommitter
+        from githistory gh
+        inner join (select gh2.appID, count(gh2.commitID) as TotalCommitCount from githistory gh2 group by gh2.appID order by gh2.appID) gh2a on gh2a.appID = gh.appID
+        inner join appdata ad on ad.appID = gh.appID
+        group by gh.AppID, gh.trimmedEmail
+        order by gh.appID, gh.trimmedEmail
+
+
+
+        %% get commiter/author count
+        drop view author_Count_view;
+        create view author_Count_view as 
+        select distinct(gh.appID) as appID, ac.authCount
+        from githistory gh
+        inner join (select count (distinct author) as authCount, appID from githistory group by appID) ac on ac.appID = gh.appID
+        order by gh.appID
+
+
+        %% Get the total number of commits for each author in an app
+
+
+%%%% Join the two AppIDs together
+    drop view appID_join_view;
+    create view appID_join_view as 
+    select ama.AppID as amaAPPID, ad.appID as appDataAppID, ad.Name as appName
+    from android_manifest_appInfo ama 
+    inner join appdata ad on ad.name = ama.AppName
+
+
+%%% Get the proper order of all commits into the DB
+
+    drop view ManifestPermissionCommitt_view;
+    create view ManifestPermissionCommitt_view as  
+    select  Permission_ID, gh.appID, author, email,  summary, ampj.commit_ID, commit_order,  commit_date, alteredDate
+    from android_Manifest_permission_join ampj
+    inner join githistory gh on gh.commitID = ampj.commit_ID
+
+    inner join (select appID, commit_Date, commit_Order, commit_ID, OrderDate, alteredDate 
+    from Android_Manifest_CommitInfo
+    order by altereddate asc) amc on amc.commit_ID = gh.commitID
+    order by gh.appID asc, alteredDate asc
+
+
+
+
+    %% Main permission change view
+%%% Will there be a problem with this since it is being linked into git history?
+
+
+---- 4/27/2016 - Changed to not link to GitHistory
+--  8/27/16 - Relinked to ama to get the app name
+
+
+
+
+           drop view PermissionChange_view;
+            create view PermissionChange_view as 
+            select amcc.AppID, ama.appName, amcc.commitID, amcc.permissionID, Permission, amcc.Action, altereddate, amc.Author_Name as Author, author_email, isDangerous --, gh.author, gh.email, gh.summary
+            from Android_Manifest_Commit_Changes amcc
+            inner join Android_Manifest_CommitInfo amc on amc.commit_ID = amcc.commitID
+            inner join githistory gh on gh.commitID = amcc.commitID
+            inner join Android_Manifest_Permission amp on amp.permission_ID = amcc.permissionID
+            inner join android_manifest_appInfo ama on ama.appID = amc.appID
+            where altereddate is not null and altereddate!=''
+            order by altereddate;
+
+
+
+            -- 8/27 changed the GH author to manifest author
+            drop view PermissionChange_view;
+            create view PermissionChange_view as 
+            select amcc.AppID, ama.appName, amcc.commitID, amcc.permissionID, Permission, amcc.Action, altereddate, gh.author, gh.email, gh.summary
+            from Android_Manifest_Commit_Changes amcc
+            inner join Android_Manifest_CommitInfo amc on amc.commit_ID = amcc.commitID
+            inner join githistory gh on gh.commitID = amcc.commitID
+            inner join Android_Manifest_Permission amp on amp.permission_ID = amcc.permissionID
+            inner join android_manifest_appInfo ama on ama.appID = amc.appID
+            where altereddate is not null and altereddate!=''
+            order by altereddate;
+
+
+
+
+
+            -- Get the committers for 
+            select *
+            from oPrivsRecentVersion_view ovv
+            inner join mostRecentPermCommitter_view mpv on mpv.appname = ovv.appName  and mpv.permission = ovv.PermName
+
+
+            -- The reason why many of the results are not being returned is that many of the commits are not in 'Android_Manifest_CommitInfo'
+
+
+
+
+                    ---- 4/28/2016 - Updated
+                        drop view PermissionChange_view;
+                        create view PermissionChange_view as 
+                        select amcc.AppID, amcc.commitID, amcc.permissionID, Permission, amcc.Action, altereddate, author_Name as Author, author_Email as Email--, gh.author, gh.email, gh.summary
+                        from Android_Manifest_Commit_Changes amcc
+                        inner join Android_Manifest_CommitInfo amc on amc.commit_ID = amcc.commitID
+                        inner join Android_Manifest_Permission amp on amp.permission_ID = amcc.permissionID
+                        where altereddate is not null and altereddate!=''
+                        order by altereddate;
+
+
+    drop view PermissionChange_view;
+    create view PermissionChange_view as   
+ 
+    select ama.AppID, ama.appName, amcc.commitID, amcc.permissionID, Permission, amcc.Action, altereddate, author_Name as Author, author_Email as Email--, gh.author, gh.email, gh.summary
+    from Android_Manifest_Commit_Changes amcc
+    inner join Android_Manifest_CommitInfo amc on amc.commit_ID = amcc.commitID
+    inner join android_manifest_appInfo ama on ama.appID = amc.appID
+    inner join Android_Manifest_Permission amp on amp.permission_ID = amcc.permissionID
+
+    where altereddate is not null and altereddate!=''
+--  and ama.appID = 10
+    order by altereddate;
+
+
+
+    %%% Frequency of additions and removing
+
+
+
+
+    drop view PermissionChange_FrequencyBase_view;
+    create view PermissionChange_FrequencyBase_view as 
+    select pv.appID, pv.commitID, pv.PermissionID, permission, pv.Action, cpv.author, cpv.authorCount, cpv.totalCommit, cpv.percentCommitter,author_email, isdangerous
+    from PermissionChange_view  pv
+    inner join CommitterPercentage_view cpv on cpv.appName = pv.appName and cpv.trimmedemail=pv.author_email;
+    
+    select * from PermissionChange_FrequencyBase_view;
+
+
+
+
+
+
+    %%% Determine the percent committers
+    select * 
+    from PermissionChange_FrequencyBase_view pcfv
+    where pcfv.percentCommitter between .6 and  .79
+    and action='A'
+
+
+
+    %%% Create view for overprivs
+
+
+
+-- The problem is that I don't tie the versions into commits, so we can only do it by app.
+-- I tried tying it into the app ID just to see if there was a correlation.
+
+
+select v.versionID, appID, max(versionCounter) as MaxVersionID, OPrivCount
+from version v
+left join (select o.versionID, count(permissionID) as OPrivCount 
+from overpermission o
+group by o.versionID) opv on opv.versionID = v.versionID
+where isAPKExists = 1
+group by appID
+order by appID, v.versionID
+
+
+
+
+
+
+
+
+
+
+    %% Get frequency of permissions both added and removed
+    select permission, count(pcfv.permissionID) as permissionCount
+    from PermissionChange_FrequencyBase_view pcfv 
+    inner join Android_Manifest_Permission amp on amp.permission_ID = pcfv.permissionID
+    where action = 'A'
+    group by pcfv.permissionID
+    order by permissionCount desc
+
+
+   
+
+
+    -- Get the number of commits for each permission
+
+
+select ampj.permission_ID, amp.permission, round(avg(percentCommitter),2) as avgCommiter, count(commitID) as commitCount
+from android_manifest_permission_join ampj
+inner join android_manifest_permission amp on amp.permission_ID = ampj.permission_ID
+inner join PermissionChange_FrequencyBase_view pfv on pfv.commitID = ampj.commit_ID
+
+group by ampj.permission_ID
+having commitCount >=4000 -- 6000 = 12
+order by avgCommiter
+--order by commitCount
+
+
+
+
+
+
+
+    % Get the permission rates of apps. Look at all commits for their lifecycle
+
+    % First get the commit count
+
+    drop view CommitCount_view;
+    create view CommitCount_view as  
+    select cvb.appID as AppID, cvb.commit_ID as commitID, cvb.permissionCount as permissioncount, amc.altereddate as CommitDate, commitCount, amc.orderdate, percentCommitter
+    from Commit_view_backwards cvb
+    inner join Android_Manifest_CommitInfo amc on amc.commit_ID = cvb.commit_ID
+    inner join (select cvb.appID as AppID, count(commit_ID) as commitCount
+    from Commit_view_backwards cvb
+    group by appID) cc on cc.appID = cvb.appID
+    left join (select distinct(commitID) as commitID, percentCommitter from PermissionChange_FrequencyBase_view) pcv on pcv.commitID = cvb.commit_ID
+--    where commitCount >=25 -- Removed for user rating
+    and percentCommitter is not null
+    order by appID, commitDate asc;
+
+    %% now get the commit counts for each
+    select orderDate, round(avg(permissionCount),2) as PermissionCount, count(appID) as Apps
+    from CommitCount_view
+--    where commitCount >=50 -- No use since it is in the referenced view
+    group by orderDate
+    order by orderDate
+
+
+    %%% Get the overpermissions for each group
+
+
+    drop view overprivsVersions_view;
+    create view overprivsVersions_view as 
+    select v.versionID, v.appID, v.versionCounter , op.overprivCOunt
+    from version v
+    inner join (select count (permissionID) as overPrivCount, versionID from overpermission group by versionID) op on op.versionID = v.versionID
+    where v.isapkexists=1
+    order by v.appID, v.versionID, versionCOunter
+
+    %% get overpriv averages for each
+    select round(avg(overPrivCount),2) as overprivcount, versioncounter
+    from overprivsVersions_view
+    group by versionCounter
+    order by versioncounter
+
+
+
+
+%% Get the comparison of # of committers vs. Overprivs
+
+
+    select  overPrivCount, round(avg(authcount),2) as authCount, count(ov.appID) as appCount
+    from overprivsVersions_view ov
+    inner join (select * from author_Count_view) acv on acv.appID = ov.appID
+    where versionCounter=3
+    and authcount > 1
+    group by overPrivCount
+    order by overPrivCount
+    % Note: must still find apps with 0 overprivs, and need to normalize by the number of requested permissions
+    %%% This doesn't return a lot of records
+
+
+
+
+
+
+    % Query to get the 481 apps
+     select AppID, count (AppID) as AppCount from android_manifest_commitinfo group by appID
+
+
+
+
+
+select cvb.appID as AppID, cvb.commit_ID as commitID, cvb.permissionCount as permissioncount, amc.altereddate as CommitDate
+from Commit_view_backwards cvb
+inner join Android_Manifest_CommitInfo amc on amc.commit_ID = cvb.commit_ID
+
+
+
+
+
+
+
+/*
+-- remember that commit ID may not be the best order of things
+select * 
+from android_Manifest_permission_join ampj
+inner join githistory gh on gh.commitID = ampj.commit_ID
+order by gh.appid, gh.commitID
+*/
+
+-- Get the % commits of each commiitter for their project
+
+
+
+
+
+
+
+
+%%%% Get all the commits where a permission was added
+
+
+
+
+
+
+
+
+
+%%% Get the information to tell us which ratings information to gather
+
+    drop view UserRating_view;
+    create view UserRating_view as
+    select u.appID, u.avgRating, u.Five, u.Four, u.three, u.two, u.one, u.total, gh.GitCommitCount, ManifestCommits, avgManifestCommitter
+    from userratings u
+    inner join (select count (commitID) as GitCommitCount, appID from githistory group by appID) gh on gh.appID = u.appID
+    inner join (select appID, count(commit_ID) as ManifestCommits from android_Manifest_commitInfo group by appID) amc on amc.appID = u.appID
+    inner join (select distinct (AppID) as AppID, avg(percentCommitter) as avgManifestCommitter from CommitCount_view group by appID) cv on cv.appID = u.appID
+    where total >=25
+
+
+
+
+*********************** 
+-- Get the information to see if there are common "experts" across projects
+
+
+-- Get the number of projects each author has contributed to
+    drop view App_Author_GH_Contributes_view;
+    create view App_Author_GH_Contributes_view as 
+    select distinct (gh.trimmedemail), gh2.AuthorCount as totalAuthProjects,  gh3.totalAuthCommitCount as totalAuthCommitCount, ManifestAuthorCount, gh5.authorCount, gh5.totalcommit , gh5.percentcommitter, maxAMCommits, minAMCommits, avgACommits, maxGHCommits, minGHCommits, avgGHCommits
+    from githistory gh 
+    inner join (
+    select count(distinct(gh.appID)) as AuthorCount, gh.trimmedemail  from githistory gh  group by gh.trimmedemail order by trimmedemail, gh.appID
+    ) gh2 on gh2.trimmedemail = gh.trimmedemail
+    inner join (select count(gh.trimmedemail) as totalAuthCommitCount, gh.trimmedemail from githistory gh group by gh.trimmedemail) gh3 on gh3.trimmedemail = gh.trimmedemail
+
+    left join (select count(author_email) as ManifestAuthorCount, author_email from android_Manifest_commitInfo amc where author_email <>'' group by author_email
+) gh4 on gh4.author_email = gh.trimmedemail
+
+left join(select distinct(SUBSTR(SUBSTR(email, 3,LENGTH(email)-0), 1,LENGTH(SUBSTR(email, 3,LENGTH(email)-0))-1)) as trimEmail, authorCount, totalCommit, percentCommitter
+from PermissionChange_FrequencyBase_view
+where trimEmail <> ''
+order by trimEmail) gh5 on gh5.trimEmail = gh.trimmedemail
+
+
+inner join(
+    select author_email, max(GHCommitCount) as maxAMCommits, min(GHCommitCount) as minAMCommits, round(avg(GHCommitCount),1) as avgACommits, maxGHCommits, minGHCommits, avgGHCommits
+from (
+    select count(AppID) as GHCommitCount, appID, author_email
+    from android_manifest_commitinfo 
+    group by author_email, appID
+    order by AppID, author_email
+) a
+left join (select trimmedEmail, max(GHCommitCount) as maxGHCommits, min(GHCommitCount) as minGHCommits, round(avg(GHCommitCount),1) as avgGHCommits
+from (
+    select count(AppID) as GHCommitCount, appID, trimmedEmail
+    from githistory gh
+    group by trimmedemail, appID
+    order by AppID, trimmedEmail
+) a
+where trimmedEmail <> ''
+group by trimmedEmail
+) gh1 on gh1.trimmedEmail = author_email
+
+
+where author_email <> ''
+group by author_email
+
+) ci on ci.author_email = gh.trimmedemail
+
+
+
+where gh.trimmedemail <> ''
+group by gh.trimmedemail
+order by gh2.authorCount desc;
+    
+    
+    
+
+
+
+
+%%%%%% Get the most recent overprivs
+--      select *  from oPrivsRecentVersion_view ov
+
+
+--select * from mostRecentPermCommitter_view mrc
+
+    drop view oPrivsRecentVersion_view;
+    create view oPrivsRecentVersion_view as 
+    select versionCounter, p.permissionID as PermissionID, p.name as PermName, ad.appID as adAppID, adj.amaAppID as amAppID,  ad.Name as AppName, auto_Name
+    from overpermission op 
+    inner join permission p on p.permissionID = op.permissionID
+    inner join version v on v.versionID = op.versionID
+    inner join appdata ad on ad.appID = v.appID
+    inner join appID_join_view adj on adj.appdataappid = v.appID
+    inner join (
+        select max(Build_Number) as MaxBuld, versionID, appID
+        from version where isapkExists = 1 
+        group by appID
+        order by appID
+    ) maxOV on maxOV.versionID = v.versionID 
+
+    where isapkExists = 1
+
+    %%% Get all oprivs
+    drop view oPrivsAllVersions_view;
+    create view oPrivsAllVersions_view as 
+    select versionCounter, p.permissionID as PermissionID, p.name as PermName, ad.appID as adAppID, adj.amaAppID as amAppID,  ad.Name as AppName, auto_Name, build_number
+    from overpermission op 
+    inner join permission p on p.permissionID = op.permissionID
+    inner join version v on v.versionID = op.versionID
+    inner join appdata ad on ad.appID = v.appID
+    inner join appID_join_view adj on adj.appdataappid = v.appID
+    where isapkExists = 1
+
+    %%% Get all uprivs
+    drop view uPrivsAllVersions_view;
+    create view uPrivsAllVersions_view as 
+    select versionCounter, p.permissionID as PermissionID, p.name as PermName, ad.appID as adAppID, adj.amaAppID as amAppID,  ad.Name as AppName, auto_Name, build_number
+    from underpermission op 
+    inner join permission p on p.permissionID = op.permissionID
+    inner join version v on v.versionID = op.versionID
+    inner join appdata ad on ad.appID = v.appID
+    inner join appID_join_view adj on adj.appdataappid = v.appID
+    where isapkExists = 1
+
+
+
+
+
+%%%% Get only the max version
+
+
+
+
+%%%% Get the most recent committer of a permission
+    drop view mostRecentPermCommitter_view;
+    create view mostRecentPermCommitter_view as
+    select max(alteredDate) as MaxDate, pcv.AppID, commitID, permissionID, permission, action, alteredDate, author, email, ama.appName--, summary
+    from PermissionChange_view pcv
+    inner join android_manifest_appInfo ama on ama.appID = pcv.appID
+    where action = 'A'
+    group by pcv.appID, permissionID;
+
+
+
+
+
+%%%% Get the correlation between an author's permission based commits and overprivs they introduce.
+
+    drop view OverPrivsAndOwner_view;
+    create view OverPrivsAndOwner_view as
+    select uv.AppID, uv.AppName, uv.Author, uv.Email, uv.AuthorCount, uv.TotalCount, uv.PermOwner, OPrivCount 
+    from UserPermUpdate_view uv
+    left join (select count(PermName) as OPrivCount, ouv.Author, ouv.AppName, ouv.adAppID, ouv.amAppiD, build_number, email
+    from OPrivs_To_UserPrivs_view ouv
+    inner join (select max(build_Number) as maxBuild, adAppID from OPrivs_To_UserPrivs_view group by adAppID) mb on mb.adAppID = ouv.adAppID and mb.maxBuild=ouv.build_number
+    group by ouv.adAppID, Author) ouv2 on ouv2.AppName = uv.AppName and ouv2.Email = uv.Email
+    order by appID
+
+
+
+
+
+
+%%%%% Get ownership of all overprivs -- This probably needs a bit of work
+
+    select * 
+    from oPrivsAllVersions_view ov 
+    inner join(
+        select max(altereddate) as altereddate,AppName, permission,Author, email
+        from PermissionChange_view pc 
+        where action = 'A' 
+        group by appID, permission
+        order by AppName, altereddate
+    ) perm on perm.appname = ov.appname and perm.permission = ov.permname
+    inner join CommitterPercentage_view cpv on cpv.trimmedEmail = perm.email and cpv.appname = ov.AppName
+    order by ov.amAPpID;
+
+
+
+
+
+
+
+%%%%%% Look for a correlation between developers and overprivs
+
+
+
+
+
+
+
+
+
+%%%%% Do a correlation between number of permission changes and overprivs
+
+
+
+
+%%% PermOwnership
+
+    drop view UserPermUpdate_view;
+    create view UserPermUpdate_view as
+      
+    select pc.AppID, appName,pc.Author, pc.Email, count(pc.AppID) as AuthorCount, tc.TotalCount as TotalCount, round(((count(pc.AppID)*1.00)/(tc.TotalCount*1.00)*1),2) as PermOwner
+    from PermissionChange_view pc 
+    inner join(
+        select AppID, count(AppID) as TotalCount 
+        from PermissionChange_view pc 
+        where action = 'A' 
+    --  and pc.appID = 10
+        group by AppID
+    ) tc on tc.AppID = pc.AppID
+
+    where action = 'A' 
+    --and pc.appID = 10
+--    and email = 'arthur@dasz.at'
+    group by pc.AppID, author
+
+
+
+
+
+%%% Compare overprivs against the number of permissions modified by the user
+***********
+
+   
+
+   %%% Overprivs
+   drop view OPrivs_To_UserPrivs_view;
+   create view OPrivs_To_UserPrivs_view as
+   
+   select ov.VersionCounter, ov.PermissionID, ov.PermName, ov.adAppID, ov.AmAppID, ov.AppName, ov.auto_name, ov.build_number, altereddate, ov.Appname, Permission, cpv.Author, uv.email, trimmedEmail, cpv.AuthorCount as AuthorCommitCount, totalCommit, PercentCommitter, uv.AuthorCount, TotalCount as PermTotalCount, PermOwner
+    from oPrivsAllVersions_view ov 
+    inner join(
+        select max(altereddate) as altereddate,AppName, permission,Author, email
+        from PermissionChange_view pc 
+        where action = 'A' 
+        group by appID, permission
+        order by AppName, altereddate
+    ) perm on perm.appname = ov.appname and perm.permission = ov.permname
+    inner join CommitterPercentage_view cpv on cpv.trimmedEmail = perm.email and cpv.appname = ov.AppName
+    left join UserPermUpdate_view uv on uv.appname = ov.appname and uv.email = perm.email
+    order by ov.amAPpID;
+    
+
+
+    %%%% Underprivs
+    drop view UPrivs_To_UserPrivs_view;
+    create view UPrivs_To_UserPrivs_view as
+   
+   select ov.VersionCounter, ov.PermissionID, ov.PermName, ov.adAppID, ov.AmAppID, ov.AppName, ov.auto_name, ov.build_number, altereddate, ov.Appname, Permission, cpv.Author, uv.email, trimmedEmail, cpv.AuthorCount as AuthorCommitCount, totalCommit, PercentCommitter, uv.AuthorCount, TotalCount as PermTotalCount, PermOwner
+    from uPrivsAllVersions_view ov 
+    inner join(
+        select max(altereddate) as altereddate,AppName, permission,Author, email
+        from PermissionChange_view pc 
+        where action = 'A' 
+        group by appID, permission
+        order by AppName, altereddate
+    ) perm on perm.appname = ov.appname and perm.permission = ov.permname
+    inner join CommitterPercentage_view cpv on cpv.trimmedEmail = perm.email and cpv.appname = ov.AppName
+    left join UserPermUpdate_view uv on uv.appname = ov.appname and uv.email = perm.email
+    order by ov.amAPpID;
+
+
+
+%%% Get the count of permissions changes and overprivs for each user.
+
+
+
+
+
+
+
+
+
+
+-- Get all developers for each app and see if there is a correlation between the number of commits, and number of overprivs for each app & Then do an aggregate for each developer
+
+
+
+*********************** 
+
+- Need to build a list of the permissions in each group
+- Need to know what changes
+
+
+1) Loop through each AppID in the list
+2) For the first list, build a list of permissions
+3) Each each subsequent list, record what changes
+
+
+********* Used for debugging *********
+
+
+
+delete from dummy;
+
+insert into dummy (appID, commit_ID, permission_ID) values (1,1,1);
+insert into dummy (appID, commit_ID, permission_ID) values (1,2,1);
+insert into dummy (appID, commit_ID, permission_ID) values (1,2,2);
+insert into dummy (appID, commit_ID, permission_ID) values (1,2,3);
+insert into dummy (appID, commit_ID, permission_ID) values (1,3,1);
+--insert into dummy (appID, commit_ID, permission_ID) values (1,3,2);
+insert into dummy (appID, commit_ID, permission_ID) values (1,3,4);
+insert into dummy (appID, commit_ID, permission_ID) values (1,3,5);
+insert into dummy (appID, commit_ID, permission_ID) values (1,4,1);
+
+
+insert into dummy (appID, commit_ID, permission_ID) values (2,1,1);
+insert into dummy (appID, commit_ID, permission_ID) values (2,2,1);
+insert into dummy (appID, commit_ID, permission_ID) values (2,2,2);
+
+insert into dummy (appID, commit_ID, permission_ID) values (3,1,3);
+insert into dummy (appID, commit_ID, permission_ID) values (3,2,1);
+
+select AppID, Commit_ID, Permission_ID from dummy;
+
+
+
+
+-- Determine who added a permission that is being removed
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%
+
+
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (2, 4.3, 4529, 1931, 798, 298, 361, 7917);
+
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (8, 3.9, 831, 375, 172, 98, 2015, 3491);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (10, 4.5, 641, 193, 60, 18, 38, 950);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (13, 4.2, 7231, 2491, 1213, 459, 760, 12154);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (29, 4.2, 24, 2, 3, 3, 3, 35);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (41, 4.2, 8, 3, 2, 0, 1, 14);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (45, 4.1, 65, 6, 10, 6, 12, 99);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (51, 2, 1, 0, 0, 0, 1, 2);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (56, 4.4, 4682, 940, 428, 209, 417, 6676);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (58, 4.2, 45, 10, 3, 3, 7, 68);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (69, 3.8, 761, 334, 204, 92, 227, 1618);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (88, 4.3, 1732, 428, 158, 70, 212, 2600);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (98, 4.5, 888, 221, 57, 31, 62, 1259);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (112, 4.2, 1362, 651, 250, 99, 114, 2476);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (115, 4.4, 3013, 1478, 326, 105, 121, 5043);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (131, 3.9, 850, 227, 111, 95, 227, 1510);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (135, 3, 11, 1, 4, 1, 11, 28);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (152, 4.3, 725, 199, 83, 57, 73, 1137);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (161, 4.2, 30089, 9183, 4453, 2245, 4283, 50253);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (183, 4.5, 249, 89, 16, 4, 9, 367);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (189, 4.5, 7294, 1733, 376, 175, 398, 9976);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (197, 3.9, 254, 80, 65, 32, 65, 496);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (207, 4.5, 6134, 1314, 459, 190, 405, 8502);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (216, 5, 1, 0, 0, 0, 0, 1);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (218, 4.5, 71, 19, 5, 0, 6, 101);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (228, 4.6, 107, 40, 6, 0, 3, 156);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (234, 4.4, 1433, 276, 121, 35, 125, 1990);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (238, 4.3, 454, 160, 62, 34, 33, 743);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (250, 4.2, 317, 64, 47, 13, 45, 486);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (256, 4.6, 22900, 6348, 1279, 372, 652, 31551);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (271, 3.6, 461, 163, 116, 87, 189, 1016);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (277, 4.8, 1836, 165, 50, 21, 39, 2111);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (313, 4.5, 288, 47, 13, 10, 23, 381);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (315, 4.2, 31608, 12440, 4313, 1727, 4389, 54477);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (316, 4.8, 8, 0, 1, 0, 0, 9);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (323, 4.3, 186, 101, 27, 10, 16, 340);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (338, 4.6, 10631, 3417, 849, 212, 248, 15357);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (345, 4, 1178, 495, 172, 92, 304, 2241);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (349, 4.4, 17, 8, 1, 0, 2, 28);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (350, 3.3, 23, 8, 2, 7, 15, 55);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (360, 4.4, 140, 36, 15, 5, 8, 204);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (362, 4.4, 851, 237, 71, 40, 61, 1260);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (371, 4.1, 11823, 5613, 2314, 1390, 1714, 22854);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (383, 4.4, 52, 10, 4, 1, 5, 72);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (392, 4, 3, 0, 0, 0, 1, 4);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (399, 3.3, 32, 34, 31, 20, 17, 134);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (434, 4, 25, 6, 3, 1, 6, 41);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (436, 4.7, 284, 26, 22, 1, 11, 344);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (440, 3.6, 38, 15, 16, 7, 16, 92);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (442, 2.8, 21, 19, 13, 10, 37, 100);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (447, 4.2, 1956, 732, 321, 155, 268, 3432);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (453, 4.8, 22, 2, 1, 0, 0, 25);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (455, 4, 40, 11, 4, 3, 10, 68);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (456, 4.1, 981, 537, 247, 90, 127, 1982);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (461, 4.3, 1052, 600, 187, 51, 78, 1968);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (462, 3.2, 106, 68, 54, 25, 86, 339);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (463, 4.2, 2488, 867, 383, 158, 296, 4192);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (473, 4.3, 1311, 450, 187, 74, 135, 2157);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (486, 4.5, 1105, 242, 85, 29, 45, 1506);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (490, 4.2, 2836, 1077, 425, 151, 390, 4879);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (496, 4.2, 327, 85, 32, 19, 47, 510);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (497, 4.4, 11714, 3293, 1217, 516, 622, 17362);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (502, 4.4, 2681, 575, 197, 88, 293, 3834);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (523, 4.4, 64, 17, 6, 1, 5, 93);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (528, 3.7, 2134, 1493, 840, 443, 611, 5521);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (535, 4, 228, 77, 29, 20, 53, 407);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (539, 3.7, 29, 17, 4, 6, 10, 66);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (540, 4.2, 171, 21, 11, 3, 35, 241);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (589, 4.4, 5, 1, 0, 1, 0, 7);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (605, 4.3, 27, 6, 5, 0, 3, 41);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (644, 4.2, 400, 134, 55, 28, 42, 659);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (646, 3.8, 178, 57, 28, 17, 60, 340);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (651, 4.1, 3507, 732, 346, 235, 628, 5448);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (99, 4.7, 186, 37, 3, 4, 2, 232);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (130, 4, 1703, 99, 331, 182, 252, 2567);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (141, 4, 21, 9, 1, 2, 5, 38);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (142, 4.3, 1332, 459, 154, 67, 139, 2151);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (230, 4.5, 640, 187, 57, 23, 37, 944);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (236, 4, 687, 185, 112, 57, 146, 1187);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (237, 4.5, 3739, 1436, 282, 108, 121, 5686);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (273, 4.5, 351, 75, 26, 16, 22, 490);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (299, 3.5, 28, 23, 11, 7, 16, 85);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (308, 4.7, 9, 1, 1, 0, 0, 11);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (333, 4.1, 602, 292, 105, 47, 91, 1137);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (358, 4.5, 4277, 1270, 287, 128, 205, 6167);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (364, 4.3, 509, 235, 67, 34, 45, 890);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (373, 4.6, 1309, 394, 89, 25, 22, 1839);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (398, 4.4, 347, 75, 32, 11, 36, 501);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (419, 4.1, 1789, 930, 406, 153, 259, 3537);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (422, 4.2, 481, 139, 58, 34, 64, 776);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (441, 3.8, 153, 34, 23, 17, 49, 276);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (449, 3.7, 7, 6, 1, 1, 3, 18);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (460, 4.1, 75, 24, 5, 5, 14, 123);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (477, 4.3, 49, 12, 6, 3, 5, 75);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (480, 4, 135, 21, 25, 5, 33, 219);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (482, 4.4, 1858, 562, 171, 74, 151, 2816);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (493, 4.1, 14, 13, 5, 2, 0, 34);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (495, 4, 1467, 565, 294, 132, 306, 2764);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (510, 3.9, 13, 4, 3, 3, 2, 25);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (545, 4.1, 52, 15, 8, 4, 10, 89);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (563, 4.5, 245, 46, 14, 4, 19, 328);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (606, 4, 5, 4, 9, 1, 1, 20);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (681, 4.6, 1768, 479, 104, 48, 50, 2449);
+
+
+
+
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (294, 4.4, 13082, 3367, 1313, 613, 1191, 19566);
+insert into UserRatings (AppID, AvgRating, Five, Four, Three, Two, One, Total) values (52, 3.5, 29, 24, 12, 10, 13, 88);
+
+
+
+
+
+
+
+select * from UserRatings;
+
+
+
+
+*******************************************
+&&&& Add notation for dangerous permissions
+
+
+
+-- Dummy reset to be 0
+update android_Manifest_permission set isDangerous = 0;
+
+
+--update android_Manifest_permission set isDangerous = 1 where  Permission= "android.permission.SEND_SMS";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.SEND_SMS";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.RECEIVE_SMS";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.RECEIVE_MMS" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.READ_CELL_BROADCASTS";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.READ_SMS";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.WRITE_SMS" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.RECEIVE_WAP_PUSH" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.READ_CONTACTS" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.WRITE_CONTACTS" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.READ_CALL_LOG" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.WRITE_CALL_LOG" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.READ_SOCIAL_STREAM" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.WRITE_SOCIAL_STREAM" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.READ_PROFILE" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.WRITE_PROFILE" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.READ_CALENDAR"  ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.WRITE_CALENDAR";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.READ_USER_DICTIONARY";
+update android_Manifest_permission set isDangerous = 1 where Permission= "com.android.browser.permission.READ_HISTORY_BOOKMARKS";
+update android_Manifest_permission set isDangerous = 1 where Permission= "com.android.browser.permission.WRITE_HISTORY_BOOKMARKS";
+update android_Manifest_permission set isDangerous = 1 where Permission= "com.android.voicemail.permission.ADD_VOICEMAIL" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.ACCESS_FINE_LOCATION" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.ACCESS_COARSE_LOCATION" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.ACCESS_MOCK_LOCATION" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.INTERNET" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.CHANGE_WIFI_STATE";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.CHANGE_WIMAX_STATE" ;
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.BLUETOOTH";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.BLUETOOTH_ADMIN";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.NFC";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.AUTHENTICATE_ACCOUNTS";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.USE_CREDENTIALS";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.MANAGE_ACCOUNTS";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.CHANGE_WIFI_MULTICAST_STATE";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.RECORD_AUDIO";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.CAMERA";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.PROCESS_OUTGOING_CALLS";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.READ_PHONE_STATE";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.READ_PRECISE_PHONE_STATE";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.CALL_PHONE";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.USE_SIP";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.WRITE_EXTERNAL_STORAGE";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.DISABLE_KEYGUARD";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.GET_TASKS";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.SYSTEM_ALERT_WINDOW";
+update android_Manifest_permission set isDangerous = 1 where Permission= "com.android.launcher.permission.INSTALL_SHORTCUT";
+update android_Manifest_permission set isDangerous = 1 where Permission= "com.android.launcher.permission.UNINSTALL_SHORTCUT";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.SUBSCRIBED_FEEDS_WRITE";
+update android_Manifest_permission set isDangerous = 1 where Permission= "android.permission.CLEAR_APP_CACHE";
+
+select * from android_Manifest_permission;
+
+
+
+********************************************
+update appdata set GHIssues_Open = 38  , GHIssues_Closed= 35  where appID =  2;
+update appdata set GHIssues_Open = 18  , GHIssues_Closed= 10  where appID =  8;
+update appdata set GHIssues_Open = 3  , GHIssues_Closed= 3  where appID =  10;
+update appdata set GHIssues_Open = 11  , GHIssues_Closed= 6  where appID =  13;
+update appdata set GHIssues_Open = 10  , GHIssues_Closed= 2  where appID =  29;
+update appdata set GHIssues_Open = 22  , GHIssues_Closed= 207  where appID =  41;
+update appdata set GHIssues_Open = 23  , GHIssues_Closed= 50  where appID =  45;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  51;
+update appdata set GHIssues_Open = 22  , GHIssues_Closed= 18  where appID =  56;
+update appdata set GHIssues_Open = 13  , GHIssues_Closed= 12  where appID =  58;
+update appdata set GHIssues_Open = 18  , GHIssues_Closed= 15  where appID =  69;
+update appdata set GHIssues_Open = 6  , GHIssues_Closed= 7  where appID =  88;
+update appdata set GHIssues_Open = 189  , GHIssues_Closed= 1282  where appID =  98;
+update appdata set GHIssues_Open = 13  , GHIssues_Closed= 7  where appID =  112;
+update appdata set GHIssues_Open = 8  , GHIssues_Closed= 112  where appID =  115;
+update appdata set GHIssues_Open = 17  , GHIssues_Closed= 30  where appID =  131;
+update appdata set GHIssues_Open = 12  , GHIssues_Closed= 50  where appID =  135;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 25  where appID =  152;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  161;
+update appdata set GHIssues_Open = 44  , GHIssues_Closed= 112  where appID =  183;
+update appdata set GHIssues_Open = 59  , GHIssues_Closed= 610  where appID =  189;
+update appdata set GHIssues_Open = 10  , GHIssues_Closed= 4  where appID =  197;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 2  where appID =  207;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  216;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  218;
+update appdata set GHIssues_Open = 63  , GHIssues_Closed= 412  where appID =  228;
+update appdata set GHIssues_Open = 5  , GHIssues_Closed= 8  where appID =  234;
+update appdata set GHIssues_Open = 4  , GHIssues_Closed= 6  where appID =  238;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  250;
+update appdata set GHIssues_Open = 71  , GHIssues_Closed= 38  where appID =  256;
+update appdata set GHIssues_Open = 72  , GHIssues_Closed= 109  where appID =  271;
+update appdata set GHIssues_Open = 64  , GHIssues_Closed= 248  where appID =  277;
+update appdata set GHIssues_Open = 29  , GHIssues_Closed= 81  where appID =  313;
+update appdata set GHIssues_Open = 62  , GHIssues_Closed= 47  where appID =  315;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  316;
+update appdata set GHIssues_Open = 19  , GHIssues_Closed= 11  where appID =  323;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  338;
+update appdata set GHIssues_Open = 10  , GHIssues_Closed= 152  where appID =  345;
+update appdata set GHIssues_Open = 3  , GHIssues_Closed= 0  where appID =  349;
+update appdata set GHIssues_Open = 31  , GHIssues_Closed= 5  where appID =  350;
+update appdata set GHIssues_Open = 8  , GHIssues_Closed= 5  where appID =  360;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  362;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  371;
+update appdata set GHIssues_Open = 18  , GHIssues_Closed= 53  where appID =  383;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  392;
+update appdata set GHIssues_Open = 6  , GHIssues_Closed= 0  where appID =  399;
+update appdata set GHIssues_Open = 2  , GHIssues_Closed= 0  where appID =  434;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  436;
+update appdata set GHIssues_Open = 2  , GHIssues_Closed= 8  where appID =  440;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  442;
+update appdata set GHIssues_Open = 41  , GHIssues_Closed= 377  where appID =  447;
+update appdata set GHIssues_Open = 41  , GHIssues_Closed= 187  where appID =  453;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  455;
+update appdata set GHIssues_Open = 5  , GHIssues_Closed= 36  where appID =  456;
+update appdata set GHIssues_Open = 4  , GHIssues_Closed= 5  where appID =  461;
+update appdata set GHIssues_Open = 2  , GHIssues_Closed= 1  where appID =  462;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  463;
+update appdata set GHIssues_Open = 41  , GHIssues_Closed= 45  where appID =  473;
+update appdata set GHIssues_Open = 5  , GHIssues_Closed= 4  where appID =  486;
+update appdata set GHIssues_Open = 8  , GHIssues_Closed= 2  where appID =  490;
+update appdata set GHIssues_Open = 145  , GHIssues_Closed= 742  where appID =  496;
+update appdata set GHIssues_Open = 28  , GHIssues_Closed= 154  where appID =  497;
+update appdata set GHIssues_Open = 3  , GHIssues_Closed= 7  where appID =  502;
+update appdata set GHIssues_Open = 1  , GHIssues_Closed= 6  where appID =  523;
+update appdata set GHIssues_Open = 302  , GHIssues_Closed= 947  where appID =  528;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  535;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  539;
+update appdata set GHIssues_Open = 20  , GHIssues_Closed= 33  where appID =  540;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  589;
+update appdata set GHIssues_Open = 18  , GHIssues_Closed= 24  where appID =  605;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 2  where appID =  644;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  646;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  651;
+update appdata set GHIssues_Open = 176  , GHIssues_Closed= 404  where appID =  99;
+update appdata set GHIssues_Open = 42  , GHIssues_Closed= 81  where appID =  130;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  141;
+update appdata set GHIssues_Open = 84  , GHIssues_Closed= 61  where appID =  142;
+update appdata set GHIssues_Open = 27  , GHIssues_Closed= 52  where appID =  230;
+update appdata set GHIssues_Open = 1  , GHIssues_Closed= 10  where appID =  236;
+update appdata set GHIssues_Open = 203  , GHIssues_Closed= 1162  where appID =  237;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  273;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 1  where appID =  299;
+update appdata set GHIssues_Open = 14  , GHIssues_Closed= 12  where appID =  308;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 223  where appID =  333;
+update appdata set GHIssues_Open = 4  , GHIssues_Closed= 2  where appID =  358;
+update appdata set GHIssues_Open = 89  , GHIssues_Closed= 59  where appID =  364;
+update appdata set GHIssues_Open = 123  , GHIssues_Closed= 161  where appID =  373;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  398;
+update appdata set GHIssues_Open = 12  , GHIssues_Closed= 20  where appID =  419;
+update appdata set GHIssues_Open = 396  , GHIssues_Closed= 1472  where appID =  422;
+update appdata set GHIssues_Open = 1  , GHIssues_Closed= 0  where appID =  441;
+update appdata set GHIssues_Open = 13  , GHIssues_Closed= 30  where appID =  449;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  460;
+update appdata set GHIssues_Open = 12  , GHIssues_Closed= 28  where appID =  477;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 1  where appID =  480;
+update appdata set GHIssues_Open = 5  , GHIssues_Closed= 25  where appID =  482;
+update appdata set GHIssues_Open = 1  , GHIssues_Closed= 3  where appID =  493;
+update appdata set GHIssues_Open = 60  , GHIssues_Closed= 106  where appID =  495;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 2  where appID =  510;
+update appdata set GHIssues_Open = 0  , GHIssues_Closed= 0  where appID =  545;
+update appdata set GHIssues_Open = 8  , GHIssues_Closed= 3  where appID =  563;
+update appdata set GHIssues_Open = 19  , GHIssues_Closed= 8  where appID =  606;
+update appdata set GHIssues_Open = 128  , GHIssues_Closed= 515  where appID =  681;
+update appdata set GHIssues_Open = 154  , GHIssues_Closed= 495  where appID =  294;
+update appdata set GHIssues_Open = 2  , GHIssues_Closed= 2  where appID =  52;
+
+
+
+*******************************************
+
+- Get who added the overprivs
+
+
+
+-- Who is adding the overprivs
+-- 
+
+
+
+
+***************************** 8/27/16
+
+
+*** Attempting to find the people making the overpriv commits
+
+
+1) Who made the most recent commits to an app
+
+>>>> Tie it into their DCR score
+-- Find the most recent committer of a permission for an app
+
+
+    drop view try2_MostRecentAdded_Permission_view;
+    create view try2_MostRecentAdded_Permission_view as 
+    select AppID, max(AlteredDate) as altDate, Permission, AppName, author, author_email, isdangerous
+    from PermissionChange_view pcv
+    where action = 'A'
+    group by appID, permission
+    order by altereddate, permission
+
+
+
+2) What are the overprivs of the most recent apps
+
+
+    drop view try2_OverPrivs_view;
+    create view try2_OverPrivs_view as 
+    select max(build_number) as Max_Build_Number,* 
+    from oPrivsAllVersions_view
+    group by AppName
+
+
+
+
+
+
+3) Find the DRC and tie the views together
+
+
+-- check this. It coul still have issues.
+
+    select ov.appname, mpv.author, PermName, mpv.author_email,  mpv.appname, percentCommitter
+    from try2_OverPrivs_view ov
+    inner join try2_MostRecentAdded_Permission_view mpv on mpv.Appname = ov.appName and mpv.permission = ov.permName
+    inner join CommitterPercentage_view cv on cv.trimmedemail = mpv.author_email and cv.appname = mpv.appname
+    
+    
+    order by ov.appname, permname
+--   inner join CommitterPercentage_view cv on (ov.appname = mpv.appname and mpv.author_email = cv.trimmedemail)
+    
+
+
+
+
+
+
+
+
+&&&&&&&& Scratch &&&&&&&
+
+-- Most commonly revoked permissions
+
+select distinct(Permission),  pr.PermissionCountR, pa.PermissionCountA from PermissionChange_view pv1
+inner join(select count(Permission) as PermissionCountR, Permission as PermissionRemove from PermissionChange_view pv where action = 'R' group by Permission) pr on pr.PermissionRemove = pv1.Permission
+inner join(select count(Permission) as PermissionCountA, Permission as PermissionAdd from PermissionChange_view pv where action = 'A' group by Permission) pa on pa.PermissionAdd = pv1.Permission
+order by pa.PermissionCountA desc
+
+
+
+? People with higher DCR scores - What RQs could we use
+
+
+
+
+

@@ -1,0 +1,198 @@
+
+
+
+***********************************************************************************
+
+drop view view_0_3;
+ CREATE VIEW view_0_3 AS
+select
+ai.rowID
+,ai.genre
+,ai.UserRating
+,ai.LowerDownloads
+,tr.FuzzyRiskValue
+,JavaFiles
+,DefectCount
+,loc
+,overprivCount.oprivcount as OPrivCount
+,underprivCount.uprivcount UPrivCount
+,permissionCount.permissionCount as PermissionCount
+, JLintResult
+
+from 
+apkinformation ai
+inner join toolresults tr on tr.apkid = ai.rowID
+inner join (
+select ai2.rowID, ai2.range
+from (
+select rowID, Name, version, case
+when UserRating <.1 then '0'
+when UserRating <=3 then '1'
+when UserRating >3 then '2'
+else 'x' end as range from apkinformation) ai2) ai2
+on ai2.rowid = ai.rowID
+left outer join (select count (permissionID) as oprivcount, apkID from overprivilege group by
+apkid) overprivCount on (overprivCount.apkid) = ai.rowID
+left outer join (select count (permissionID) as uprivcount, apkID from underprivilege group
+by apkid) underprivCount on (underprivCount.apkid) = ai.rowID
+left outer join (select count (intentID) as intentscount, rowID from apkParser_intents_join
+group by rowID) intentscount on (intentsCount.rowid) = ai.rowID
+left outer join
+(select count(rowID) as permissionCount from apkParser_privs_join apj2 where apj2.rowID >1 group by
+rowID) permissionCount on (permissionCount.rowID) = ai.rowID
+where ai.lowerdownloads > 999
+and userrating != 0.0
+and ai2.range ='1'
+
+
+
+___________
+General stats:
+
+
+select * from view_0_3
+
+Genre: select Genre, count(genre) as GenreCount  from view_0_3 group by genre order by genrecount desc
+
+LOC: 81184 - select avg(loc) from view_0_3
+
+
+
+
+
+
+
+***********************************************************************************
+
+drop view view_3_5;
+ CREATE VIEW view_3_5 AS 
+select
+ai.rowID
+,ai.genre
+,ai.UserRating
+,ai.LowerDownloads
+,tr.FuzzyRiskValue
+,JavaFiles
+,DefectCount
+,loc
+,overprivCount.oprivcount as OPrivCount
+,underprivCount.uprivcount UPrivCount
+,permissionCount.permissionCount as PermissionCount
+, JlintResult
+from 
+apkinformation ai
+inner join toolresults tr on tr.apkid = ai.rowID
+inner join (
+select ai2.rowID, ai2.range
+from (
+select rowID, Name, version, case
+when UserRating <.1 then '0'
+when UserRating <=3 then '1'
+when UserRating >3 then '2'
+else 'x' end as range from apkinformation) ai2) ai2
+on ai2.rowid = ai.rowID
+left outer join (select count (permissionID) as oprivcount, apkID from overprivilege group by
+apkid) overprivCount on (overprivCount.apkid) = ai.rowID
+left outer join (select count (permissionID) as uprivcount, apkID from underprivilege group
+by apkid) underprivCount on (underprivCount.apkid) = ai.rowID
+left outer join (select count (intentID) as intentscount, rowID from apkParser_intents_join
+group by rowID) intentscount on (intentsCount.rowid) = ai.rowID
+left outer join
+(select count(rowID) as permissionCount from apkParser_privs_join apj2 where apj2.rowID >1 group by
+rowID) permissionCount on (permissionCount.rowID) = ai.rowID
+where ai.lowerdownloads > 999
+and userrating != 0.0
+and ai2.range ='2'
+--order by random() limit 1000
+
+
+
+****************************************
+-- Breaking things down by group
+
+-- Get top 5 genres
+
+select Genre, count(genre) as GenreCount 
+from App_ToolInfo_MinJava 
+group by genre 
+order by genrecount desc
+
+
+
+-- Get all the info for the top genres from each view
+
+
+-- First create a table to be quried with the top 1000 values from 3->5. This will make it easier
+
+drop table random_2050_3_5;
+create table random_2050_3_5 as
+select * 
+from view_3_5
+limit 2050
+
+
+
+%%%%% Next get the top genre information for 0-3
+select * 
+from view_0_3
+where genre = 'Tools' or Genre = 'Education' or Genre = 'Entertainment' or Genre = 'Business' or Genre = 'Lifestyle'
+order by genre
+
+
+%%%%% Next get the top genre information for 3-5
+%select * 
+%from random_1000_3_5
+%where genre = 'Tools' or Genre = 'Education' or Genre = 'Entertainment' or Genre = 'Business' or Genre = 'Lifestyle'
+%order by genre
+
+
+%%%% Create a table containing both sets of data
+drop table combinedUserRatingInfo;
+create table combinedUserRatingInfo as
+
+select '3-5',* from random_2050_3_5
+union all
+select '0-3',* from view_0_3;
+
+
+
+
+********************************
+
+
+%%%% Get average values
+
+
+select round(avg(UserRating),2) as avgUserRating, round(avg(LowerDownloads),2) as avgLowerDownloads, round(avg(FuzzyRiskValue),2) as avgAndroRisk, round(avg(JavaFiles),2) as avgJavaFiles, round(avg(DefectCount),2) as avgCSErrors, round(avg(LOC),2) as avgLOC, round(avg(OprivCount),2) as avgOpriv, round(avg(UPrivCount),2) as avgUpriv, round(avg(PermissionCount),2) as avgPermCount, round(avg(JlintResult) ,2) as avgJlint
+
+--from random_2050_3_5
+
+from view_0_3
+
+
+*********** Get the files for the user ratings information
+
+select c.*, ai.apkid
+from combinedUserRatingInfo c
+inner join apkinformation ai on ai.rowID = c.rowID
+where ai.userrating >=3
+-- where ai.userrating <3
+
+
+
+#### The scripts to pull in the results of the discovered APK files 
+
+### Use this in excel. I think it is correct? It deserves some checking
+="or ai.APKID='" &A1&"'"
+
+
+### Copies the data over
+INSERT INTO tmpAPKExists (apkID)
+SELECT rowID FROM APKInformation
+
+
+select ai.rowID, ai.Name, ai.UserRating, uq.isExists from apkinformation ai 
+inner join UserRatingsQuality uq on ai.apkID = uq.apkID 
+where uq.isexists ='true'
+and userrating > 3
+

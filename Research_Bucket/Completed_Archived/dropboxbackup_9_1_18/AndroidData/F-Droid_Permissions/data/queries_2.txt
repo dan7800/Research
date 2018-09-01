@@ -1,0 +1,203 @@
+
+
+%%% Get the basic app's commit info
+
+select ama.appName, amc.Author_Name, amc.author_email, amc.Commit_Date, amc.commit_ID, amc.Commit_Order, amc.commit_message 
+from android_manifest_commitInfo amc
+inner join android_manifest_appinfo ama on ama.appID = amc.appID
+
+
+13,000 commits?
+
+
+%%%%%%%%%%%%%%%%% Next get the permission count for each of these commits
+    select amc.appID, amc.commit_ID,amc.commit_Order, case when PermissionCount.PermissionCount is null then 0 else PermissionCount.PermissionCount end as PermissionCount,
+    amc.commit_val, ama.appName
+    from Android_Manifest_CommitInfo amc
+
+    left outer join (
+    select count (Commit_ID) as PermissionCount, commit_ID  from Android_Manifest_permission_join ampj group by ampj.commit_ID
+    ) PermissionCount on PermissionCount.commit_ID = amc.Commit_ID
+
+    inner join Android_Manifest_AppInfo ama on ama.appID = amc.appID
+
+    order by amc.AppID, amc.commit_ID, amc.Commit_Order
+    --inner join Android_Manifest_permission_join ampj on ampj.commit_ID
+
+
+&&&&&&&&& Total Number of apps with X number of commits - 
+    select gh.AppID, count(CommitID)  as totalCommits
+    from githistory gh
+    group by gh.appID
+    having totalCommits > 300 
+
+
+%%% Get the total number of permissions for each of these commits
+
+
+
+
+
+%%%% Generic Date/Time searching
+    select date(time,'unixepoch', 'localtime') as datetime1
+    from githistory
+    order by datetime1
+
+
+
+%%%%% What permissions are people removing
+
+
+
+
+
+
+
+%%%%% What permissions are people Adding
+
+
+
+
+
+
+%%%% See how many commit messages actually mention anything about permissions
+%%% Run this command about permissions and then manually remove the messages which do not match permissions?
+%%%% After manually finding all of the information, maybe run a command to alter a "isPermissionRelated" bit field to make analysis easier.
+
+    select * from githistory gh 
+    where summary like '%permission%' 
+    or summary like '%ACCESS_CHECKIN_PROPERTIES%'
+    or summary like '%ACCESS_COARSE_LOCATION%'
+    or summary like '%ACCESS_FINE_LOCATION%'
+    or summary like '%ACCESS_LOCATION_EXTRA_COMMANDS%'
+    or summary like '%ACCESS_NETWORK_STATE%'
+    or summary like '%ACCESS_NOTIFICATION_POLICY%'
+    or summary like '%ACCESS_WIFI_STATE%'
+    or summary like '%ACCOUNT_MANAGER%'
+    or summary like '%ADD_VOICEMAIL%'
+    or summary like '%BATTERY_STATS%'
+    or summary like '%BIND_ACCESSIBILITY_SERVICE%'
+    or summary like '%BIND_APPWIDGET%'
+    or summary like '%BIND_CARRIER_MESSAGING_SERVICE%'
+    or summary like '%BIND_CARRIER_SERVICES%'
+    or summary like '%BIND_CHOOSER_TARGET_SERVICE%'
+    or summary like '%BIND_DEVICE_ADMIN%'
+    or summary like '%BIND_DREAM_SERVICE%'
+    or summary like '%BIND_INCALL_SERVICE%'
+    or summary like '%BIND_INPUT_METHOD%'
+    or summary like '%BIND_MIDI_DEVICE_SERVICE%'
+    or summary like '%BIND_NFC_SERVICE%'
+    or summary like '%BIND_NOTIFICATION_LISTENER_SERVICE%'
+    or summary like '%BIND_PRINT_SERVICE%'
+    or summary like '%BIND_REMOTEVIEWS%'
+    or summary like '%BIND_TELECOM_CONNECTION_SERVICE%'
+    or summary like '%BIND_TEXT_SERVICE%'
+    or summary like '%BIND_TV_INPUT%'
+    or summary like '%BIND_VOICE_INTERACTION%'
+    or summary like '%BIND_VPN_SERVICE%'
+    or summary like '%BIND_WALLPAPER%'
+    or summary like '%BLUETOOTH%'
+    or summary like '%BLUETOOTH_ADMIN%'
+    or summary like '%BLUETOOTH_PRIVILEGED%'
+    or summary like '%BODY_SENSORS%'
+    or summary like '%BROADCAST_PACKAGE_REMOVED%'
+    or summary like '%BROADCAST_SMS%'
+    or summary like '%BROADCAST_STICKY%'
+    or summary like '%BROADCAST_WAP_PUSH%'
+    or summary like '%CALL_PHONE%'
+    or summary like '%CALL_PRIVILEGED%'
+    or summary like '%CAMERA%'
+    or summary like '%CAPTURE_AUDIO_OUTPUT%'
+    or summary like '%CAPTURE_SECURE_VIDEO_OUTPUT%'
+    or summary like '%CAPTURE_VIDEO_OUTPUT%'
+    or summary like '%CHANGE_COMPONENT_ENABLED_STATE%'
+    or summary like '%CHANGE_CONFIGURATION%'
+    or summary like '%CHANGE_NETWORK_STATE%'
+    or summary like '%CHANGE_WIFI_MULTICAST_STATE%'
+    or summary like '%CHANGE_WIFI_STATE%'
+    or summary like '%CLEAR_APP_CACHE%'
+    or summary like '%CONTROL_LOCATION_UPDATES%'
+    or summary like '%DELETE_CACHE_FILES%'
+    or summary like '%DELETE_PACKAGES%'
+    or summary like '%DIAGNOSTIC%'
+    or summary like '%DISABLE_KEYGUARD%'
+    or summary like '%DUMP%'
+    or summary like '%EXPAND_STATUS_BAR%'
+    or summary like '%FACTORY_TEST%'
+    or summary like '%FLASHLIGHT%'
+    or summary like '%GET_ACCOUNTS%'
+    or summary like '%GET_ACCOUNTS_PRIVILEGED%'
+    or summary like '%GET_PACKAGE_SIZE%'
+    or summary like '%GET_TASKS%'
+    or summary like '%GLOBAL_SEARCH%'
+    or summary like '%INSTALL_LOCATION_PROVIDER%'
+    or summary like '%INSTALL_PACKAGES%'
+    or summary like '%INSTALL_SHORTCUT%'
+    or summary like '%INTERNET%'
+    or summary like '%KILL_BACKGROUND_PROCESSES%'
+    or summary like '%LOCATION_HARDWARE%'
+    or summary like '%MANAGE_DOCUMENTS%'
+    or summary like '%MASTER_CLEAR%'
+    or summary like '%MEDIA_CONTENT_CONTROL%'
+    or summary like '%MODIFY_AUDIO_SETTINGS%'
+    or summary like '%MODIFY_PHONE_STATE%'
+    or summary like '%MOUNT_FORMAT_FILESYSTEMS%'
+    or summary like '%MOUNT_UNMOUNT_FILESYSTEMS%'
+    or summary like '%NFC%'
+    or summary like '%PACKAGE_USAGE_STATS%'
+    or summary like '%PERSISTENT_ACTIVITY%'
+    or summary like '%PROCESS_OUTGOING_CALLS%'
+    or summary like '%READ_CALENDAR%'
+    or summary like '%READ_CALL_LOG%'
+    or summary like '%READ_CONTACTS%'
+    or summary like '%READ_EXTERNAL_STORAGE%'
+    or summary like '%READ_FRAME_BUFFER%'
+    or summary like '%READ_INPUT_STATE%'
+    or summary like '%READ_LOGS%'
+    or summary like '%READ_PHONE_STATE%'
+    or summary like '%READ_SMS%'
+    or summary like '%READ_SYNC_SETTINGS%'
+    or summary like '%READ_SYNC_STATS%'
+    or summary like '%READ_VOICEMAIL%'
+    or summary like '%REBOOT%'
+    or summary like '%RECEIVE_BOOT_COMPLETED%'
+    or summary like '%RECEIVE_MMS%'
+    or summary like '%RECEIVE_SMS%'
+    or summary like '%RECEIVE_WAP_PUSH%'
+    or summary like '%RECORD_AUDIO%'
+    or summary like '%REORDER_TASKS%'
+    or summary like '%REQUEST_IGNORE_BATTERY_OPTIMIZATIONS%'
+    or summary like '%REQUEST_INSTALL_PACKAGES%'
+    or summary like '%RESTART_PACKAGES%'
+    or summary like '%SEND_RESPOND_VIA_MESSAGE%'
+    or summary like '%SEND_SMS%'
+    or summary like '%SET_ALARM%'
+    or summary like '%SET_ALWAYS_FINISH%'
+    or summary like '%SET_ANIMATION_SCALE%'
+    or summary like '%SET_DEBUG_APP%'
+    or summary like '%SET_PREFERRED_APPLICATIONS%'
+    or summary like '%SET_PROCESS_LIMIT%'
+    or summary like '%SET_TIME%'
+    or summary like '%SET_TIME_ZONE%'
+    or summary like '%SET_WALLPAPER%'
+    or summary like '%SET_WALLPAPER_HINTS%'
+    or summary like '%SIGNAL_PERSISTENT_PROCESSES%'
+    or summary like '%STATUS_BAR%'
+    or summary like '%SYSTEM_ALERT_WINDOW%'
+    or summary like '%TRANSMIT_IR%'
+    or summary like '%UNINSTALL_SHORTCUT%'
+    or summary like '%UPDATE_DEVICE_STATS%'
+    or summary like '%USE_FINGERPRINT%'
+    or summary like '%USE_SIP%'
+    or summary like '%VIBRATE%'
+    or summary like '%WAKE_LOCK%'
+    or summary like '%WRITE_APN_SETTINGS%'
+    or summary like '%WRITE_CALENDAR%'
+    or summary like '%WRITE_CALL_LOG%'
+    or summary like '%WRITE_CONTACTS%'
+    or summary like '%WRITE_EXTERNAL_STORAGE%'
+    or summary like '%WRITE_GSERVICES%'
+    or summary like '%WRITE_SECURE_SETTINGS%'
+    or summary like '%WRITE_SETTINGS%'
+    or summary like '%WRITE_SYNC_SETTINGS%'
+    or summary like '%WRITE_VOICEMAIL%'
